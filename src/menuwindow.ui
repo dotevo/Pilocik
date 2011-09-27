@@ -13,42 +13,132 @@
   <property name="windowTitle">
    <string>MenuWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/*WINDOW*/
+QFrame{
+
+/*background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #ade650, stop: 1.0 #82be37);*/
+background-color: rgba(30%, 60%, 100%, 50%);
+   border: 1px solid #000;
+     border-radius: 10px;}
+
+QLabel{
+	color: #000;
+}
+QLineEdit {
+     background: #cdff70;
+     border: 1px solid #000;
+}
+
+QPushButton{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #AAA, stop: 0.4 #888,
+                                 stop: 0.5 #777, stop: 1.0 #666);
+     border-radius: 4px;
+     border: 1px solid black;
+    width: 90px
+}
+
+QPushButton:hover{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #CCC, stop: 0.4 #AAA,
+                                 stop: 0.5 #999, stop: 1.0 #888);
+}
+
+QPushButton:pressed{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #888, stop: 0.4 #999,
+                                 stop: 0.5 #AAA, stop: 1.0 #CCC);
+}</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="TMovableFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>141</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="lineWidth">
-     <number>5</number>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>bla</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="toolButton">
-       <property name="text">
-        <string>...</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Mówing mud</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>Statik mud</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="TMovableFrame" name="frame_2">
+      <property name="styleSheet">
+       <string notr="true">QFrame{
+
+/*background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #ade650, stop: 1.0 #82be37);*/
+background-color: rgba(90%, 60%, 10%, 50%);
+   border: 1px solid #000;
+     border-radius: 10px;}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>5</number>
+      </property>
+      <property name="midLineWidth">
+       <number>49</number>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>bla</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButton_2">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="TMovableFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="lineWidth">
+       <number>5</number>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>bla</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButton">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
