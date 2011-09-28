@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::TClockWidget *ui;
+
+public slots:
+    void updateTime();
 };
 
 #endif // TCLOCKWIDGET_H

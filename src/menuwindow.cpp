@@ -17,7 +17,7 @@ MenuWindow::MenuWindow(QWidget *parent) :
 }
 
 void MenuWindow::addWidgets(){
-    TWidgetManager::getInstance().addWidget("Clock",new TClockWidget());
+    TWidgetManager::getInstance().addWidget("Clock", new TClockWidget());
 }
 
 MenuWindow::~MenuWindow()
