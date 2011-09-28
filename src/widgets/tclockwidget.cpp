@@ -1,5 +1,6 @@
 #include "tclockwidget.h"
 #include "ui_tclockwidget.h"
+#include "QDebug"
 #include "QTimer"
 #include "QDateTime"
 
@@ -13,6 +14,10 @@ TClockWidget::TClockWidget(QWidget *parent) :
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
     timer->start(1000);
+
+    qDebug() << "parent_width " << parent;
+
+    move(50, 25);
 }
 
 TClockWidget::~TClockWidget()
