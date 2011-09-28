@@ -16,13 +16,7 @@
   <property name="styleSheet">
    <string notr="true">/*WINDOW*/
 
-QLabel {
-	color: #FFF;
-	border: 0;
-	background: rgba(255, 0, 0, 200);
-	font-weight: bold;
-	font-family: &quot;Verdana&quot;;
-}
+
 
 QFrame {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
@@ -36,6 +30,14 @@ QFrame {
                                  stop: 0 rgba(52, 52, 52, 255),
                                  stop: 0.49 rgba(84, 84, 84, 255));
     border-radius: 10px;
+}
+
+QLabel {
+	color: #FFF;
+	border: 0;
+	background: rgba(255, 0, 0, 200);
+	font-weight: bold;
+	font-family: &quot;Verdana&quot;;
 }
 
 QPushButton{
@@ -93,7 +95,7 @@ QPushButton:pressed{
      <x>0</x>
      <y>0</y>
      <width>481</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
