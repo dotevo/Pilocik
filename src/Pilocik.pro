@@ -12,12 +12,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         menuwindow.cpp \
-    tmovableframe.cpp
+    tmovableframe.cpp \
+    twidget.cpp \
+    twidgetmanager.cpp \
+    widgets/tclockwidget.cpp
 
 HEADERS  += menuwindow.h \
-    tmovableframe.h
+    tmovableframe.h \
+    twidget.h \
+    twidgetmanager.h \
+    widgets/tclockwidget.h
 
-FORMS    += menuwindow.ui
+FORMS    += menuwindow.ui \
+    widgets/tclockwidget.ui
 
 INCLUDEPATH += ./
 
@@ -33,6 +40,17 @@ Debug:OBJECTS_DIR = ../build/debug/.obj
 Debug:MOC_DIR = ../build/debug/.moc
 Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
+
+
+
+
+
+
+
+
+
+
+
 
 
 
