@@ -1,8 +1,13 @@
+
 build/*
 
 *Makefile*
 #Qt
 *.user
+*.creator
+*.includes
+*.config
+*.files
 
 # Compiled Object files
 *.slo
