@@ -1,0 +1,3 @@
+[submodule "lib/sosmscout"]
+	path = lib/sosmscout
+	url = git://github.com/dotevo/sosmscout.git
