@@ -15,16 +15,19 @@ SOURCES += main.cpp\
     tmovableframe.cpp \
     twidget.cpp \
     twidgetmanager.cpp \
-    widgets/tclockwidget.cpp
+    widgets/tclockwidget.cpp \
+    navigationwindow.cpp
 
 HEADERS  += menuwindow.h \
     tmovableframe.h \
     twidget.h \
     twidgetmanager.h \
-    widgets/tclockwidget.h
+    widgets/tclockwidget.h \
+    navigationwindow.h
 
 FORMS    += menuwindow.ui \
-    widgets/tclockwidget.ui
+    widgets/tclockwidget.ui \
+    navigationwindow.ui
 
 INCLUDEPATH += ./
 
@@ -40,6 +43,9 @@ Debug:OBJECTS_DIR = ../build/debug/.obj
 Debug:MOC_DIR = ../build/debug/.moc
 Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
+
+
+
 
 
 

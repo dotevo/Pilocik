@@ -13,24 +13,14 @@ MenuWindow::MenuWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    TWidgetManager::getInstance().setParent(ui->centralWidget);
-    // Tomek: IMO should be one button that changes the mode, so this is temporary...
-    TWidgetManager::getInstance().setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
-    ui->pushButton_3->setEnabled(true);
-    ui->pushButton_4->setEnabled(false);
-
-    addWidgets();
 }
 
-void MenuWindow::addWidgets(){
-    TWidgetManager::getInstance().addWidget("Clock", new TClockWidget());
-}
 
 MenuWindow::~MenuWindow()
 {
     delete ui;
 }
-
+/*
 void MenuWindow::on_pushButton_3_clicked()
 {
     TWidgetManager::getInstance().setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
@@ -44,3 +34,4 @@ void MenuWindow::on_pushButton_4_clicked()
     ui->pushButton_3->setEnabled(true);
     ui->pushButton_4->setEnabled(false);
 }
+*/
