@@ -16,18 +16,21 @@ SOURCES += main.cpp\
     twidget.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
-    navigationwindow.cpp
+    navigationwindow.cpp \
+    routewindow.cpp
 
 HEADERS  += menuwindow.h \
     tmovableframe.h \
     twidget.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
-    navigationwindow.h
+    navigationwindow.h \
+    routewindow.h
 
 FORMS    += menuwindow.ui \
     widgets/tclockwidget.ui \
-    navigationwindow.ui
+    navigationwindow.ui \
+    routewindow.ui
 
 INCLUDEPATH += ./
 
@@ -45,6 +48,9 @@ Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES +=
+
+
+
 
 
 

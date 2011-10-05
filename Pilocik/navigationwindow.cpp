@@ -44,8 +44,12 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
 
     QRect rect2=ui->routeFrame->geometry();
     rect2.setSize(size);
+    rect2.setX(0);
+    rect2.setY(0);
     ui->routeFrame->setGeometry(rect2);
     ui->routeFrame->raise();
+
+
 }
 
 void NavigationWindow::on_menuButton_clicked(){
