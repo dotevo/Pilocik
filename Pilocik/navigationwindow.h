@@ -19,6 +19,10 @@ public:
 private slots:
     void on_menuButton_clicked();
 
+    void on_routeButton_clicked();
+
+    void on_routeBackButton_clicked();
+
 private:
     Ui::NavigationWindow *ui;
     void addWidgets();

@@ -14,6 +14,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     addWidgets();
     TWidgetManager::getInstance().setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
+    ui->routeFrame->setVisible(false);
 }
 
 NavigationWindow::~NavigationWindow()
@@ -33,13 +34,31 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     ui->menuButton->move(point);
     QPoint point2(size.width()-ui->sliderButton->geometry().width(),size.height()-ui->sliderButton->geometry().height());
     ui->sliderButton->move(point2);
-    QSize menuPanelsize(size.width(),size.height()/2);
+
+
+    QSize menuPanelsize(size.width(),(size.height()>200)?100:size.height()/2);
     QRect rect=ui->menuPanel->geometry();
     rect.setSize(menuPanelsize);
     ui->menuPanel->setGeometry(rect);
     ui->menuPanel->raise();
+
+    QRect rect2=ui->routeFrame->geometry();
+    rect2.setSize(size);
+    ui->routeFrame->setGeometry(rect2);
+    ui->routeFrame->raise();
 }
 
 void NavigationWindow::on_menuButton_clicked(){
     ui->menuPanel->setVisible(!ui->menuPanel->isVisible());
+}
+
+void NavigationWindow::on_routeButton_clicked()
+{
+    ui->menuPanel->setVisible(false);
+    ui->routeFrame->setVisible(true);
+}
+
+void NavigationWindow::on_routeBackButton_clicked()
+{
+    ui->routeFrame->setVisible(false);
 }

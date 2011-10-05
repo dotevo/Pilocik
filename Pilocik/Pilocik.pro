@@ -44,6 +44,16 @@ Debug:MOC_DIR = ../build/debug/.moc
 Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
+RESOURCES +=
+
+
+
+
+
+
+
+
+
 
 
 
