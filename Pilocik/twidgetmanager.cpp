@@ -13,15 +13,17 @@ TWidgetManager& TWidgetManager::getInstance(){
 
 
 TWidget* TWidgetManager::getWidget(QString name){
-    //TODO
+    return 0;
 }
 
 QList<TWidget*> TWidgetManager::getWidgetList(){
-    //TODO
+	QList<TWidget*> lista;
+	return lista;
 }
 
 QList<TWidget*> TWidgetManager::getWidgetVisibleList(){
-    //TODO
+    QList<TWidget*> lista;
+	return lista;
 }
 
 void TWidgetManager::setMode(TMovableFrame::TMOVABLEMODE mode){
