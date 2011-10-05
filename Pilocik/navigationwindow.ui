@@ -576,8 +576,44 @@ border-bottom-left-radius: 10px;
      </item>
     </layout>
    </widget>
+   <widget class="MapRenderWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>673</width>
+      <height>378</height>
+     </rect>
+    </property>
+    <widget class="QSlider" name="zoomSlider">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>10</y>
+       <width>24</width>
+       <height>160</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </widget>
+   <zorder>menuPanel</zorder>
+   <zorder>routeFrame</zorder>
+   <zorder>widget</zorder>
+   <zorder>sliderButton</zorder>
+   <zorder>menuButton</zorder>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MapRenderWidget</class>
+   <extends>QWidget</extends>
+   <header>maprenderwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
