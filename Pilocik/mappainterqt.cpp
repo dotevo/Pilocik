@@ -319,7 +319,7 @@ namespace osmscout {
     painter->resetTransform();
   }
 
-  void MapPainterQt::DrawIcon(const IconStyle* style,
+  void MapPainterQt::DrawIcon2(const IconStyle* style,
                               double x, double y)
   {
     assert(style->GetId()>0);
