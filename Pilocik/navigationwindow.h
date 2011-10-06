@@ -23,6 +23,14 @@ private slots:
 
     void on_routeBackButton_clicked();
 
+    void on_zoomSlider_valueChanged(int value);
+
+    void on_zoomSlider_sliderPressed();
+
+    void on_zoomSlider_sliderReleased();
+
+    void on_pushButton_4_clicked();
+
 private:
     Ui::NavigationWindow *ui;
     void addWidgets();

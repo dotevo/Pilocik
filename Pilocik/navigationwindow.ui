@@ -193,7 +193,7 @@ QComboBox QAbstractItemView {
      <string notr="true">#menuButton{
 border-top-left-radius: 0px;
 border-bottom-left-radius: 0px;
-border-bottom-rigth-radius: 0px;
+border-bottom-right-radius: 0px;
 border-top-right-radius: 10px;
 }
 </string>
@@ -213,7 +213,7 @@ border-top-right-radius: 10px;
     </property>
     <property name="styleSheet">
      <string notr="true">#sliderButton{
- border-radius: 0px;
+border-radius: 0px;
 border-top-left-radius: 10px;
 border-bottom-left-radius: 10px;
 }
@@ -588,11 +588,23 @@ border-bottom-left-radius: 10px;
     <widget class="QSlider" name="zoomSlider">
      <property name="geometry">
       <rect>
-       <x>460</x>
+       <x>530</x>
        <y>10</y>
        <width>24</width>
        <height>160</height>
       </rect>
+     </property>
+     <property name="minimum">
+      <number>1000</number>
+     </property>
+     <property name="maximum">
+      <number>100000</number>
+     </property>
+     <property name="singleStep">
+      <number>1000</number>
+     </property>
+     <property name="value">
+      <number>10000</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -615,5 +627,22 @@ border-bottom-left-radius: 10px;
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>NavigationWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

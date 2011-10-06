@@ -22,7 +22,6 @@ NavigationWindow::~NavigationWindow()
     delete ui;
 }
 
-
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance().addWidget("Clock", new TClockWidget());
 }
@@ -61,4 +60,19 @@ void NavigationWindow::on_routeButton_clicked()
 void NavigationWindow::on_routeBackButton_clicked()
 {
     ui->routeFrame->setVisible(false);
+}
+
+void NavigationWindow::on_zoomSlider_valueChanged(int value)
+{
+    ui->widget->setZoom(value);
+}
+
+void NavigationWindow::on_zoomSlider_sliderPressed()
+{
+    ui->widget->setStartZoom(ui->zoomSlider->value());
+}
+
+void NavigationWindow::on_zoomSlider_sliderReleased()
+{
+    ui->widget->setFinishZoom(ui->zoomSlider->value());
 }

@@ -1,6 +1,8 @@
 #include "maprenderwidget.h"
 #include "navigationwindow.h"
 
+#include "qmath.h"
+
 #include <iostream>
 #include <iomanip>
 
@@ -30,7 +32,7 @@ void MapRenderWidget::init()
 {
     moving = false;
     scaling = false;
-    nothing = true;
+    noPaint = true;
 
     map = "";
     style = "";
@@ -61,16 +63,55 @@ void MapRenderWidget::init()
 
 }
 
-void MapRenderWidget::paintEvent(QPaintEvent *)
+void MapRenderWidget::forceRepaint()
 {
-    if (!nothing)
-        DrawMap();
+    noPaint = false;
+    repaint();
+    noPaint = true;
 }
 
+void MapRenderWidget::setZoom(int value)
+{
+    noPaint = false;
+
+    scaling = true;
+
+    zoom = value;
+    scalingLevel = zoom / startZoom;
+
+    repaint();
+
+    scaling = false;
+    noPaint = true;
+}
+
+void MapRenderWidget::setStartZoom(int value)
+{
+    startZoom = value;
+}
+
+void MapRenderWidget::setFinishZoom(int value)
+{
+    finishZoom = value;
+
+    noPaint = false;
+
+    scaling = false;
+
+    repaint();
+
+    noPaint = true;
+}
+
+void MapRenderWidget::paintEvent(QPaintEvent *e)
+{
+    if (!noPaint)
+        DrawMap(e->rect());
+}
 
 void MapRenderWidget::mousePressEvent(QMouseEvent *e)
 {
-    nothing = false;
+    noPaint = false;
     moving = true;
     startPoint = e->globalPos();
     lastPoint = e->globalPos();
@@ -93,8 +134,7 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e)
     startPoint = QPoint(0, 0);
 
     repaint();
-    nothing = true;
-
+    noPaint = true;
 }
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
@@ -107,7 +147,7 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-int MapRenderWidget::DrawMap()
+int MapRenderWidget::DrawMap(QRect rect)
 {
     // std::cerr << "DrawMapQt <map directory> <style-file> <width> <height> <lon> <lat> <zoom> <output>" << std::endl;
 //    std::cerr << "Default values!";
@@ -123,7 +163,18 @@ int MapRenderWidget::DrawMap()
 
     else if (scaling)
     {
+        QPainter *windowPainter = new QPainter(this);
 
+        double distX = width/2 * (double)(1 - scalingLevel);
+        double distY = height/2 * (double)(1 - scalingLevel);
+
+        windowPainter->translate(distX, distY);
+        windowPainter->scale(scalingLevel, scalingLevel);
+
+        QRect expose = windowPainter->matrix().inverted().mapRect(rect).adjusted(-1, -1, 1, 1);
+
+        windowPainter->drawPixmap(expose, pixmap, expose);
+        //windowPainter->drawPixmap(0, 0, pixmap);
     }
 
     else
