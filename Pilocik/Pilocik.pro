@@ -20,7 +20,10 @@ SOURCES += main.cpp\
     pointselectionwindow.cpp \
     infowindow.cpp \
     optionswindow.cpp \
-    mapoptionswindow.cpp
+    mapoptionswindow.cpp \
+    useroptionswindow.cpp \
+    gpsoptionswindow.cpp \
+    keyboardwindow.cpp
 
 HEADERS  += \
     tmovableframe.h \
@@ -32,7 +35,10 @@ HEADERS  += \
     pointselectionwindow.h \
     infowindow.h \
     optionswindow.h \
-    mapoptionswindow.h
+    mapoptionswindow.h \
+    useroptionswindow.h \
+    gpsoptionswindow.h \
+    keyboardwindow.h
 
 FORMS    += \
     widgets/tclockwidget.ui \
@@ -41,7 +47,10 @@ FORMS    += \
     pointselectionwindow.ui \
     infowindow.ui \
     optionswindow.ui \
-    mapoptionswindow.ui
+    mapoptionswindow.ui \
+    useroptionswindow.ui \
+    gpsoptionswindow.ui \
+    keyboardwindow.ui
 
 INCLUDEPATH += ./
 
@@ -59,6 +68,15 @@ Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES +=
+
+
+
+
+
+
+
+
+
 
 
 
