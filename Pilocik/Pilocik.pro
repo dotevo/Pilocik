@@ -11,26 +11,37 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        menuwindow.cpp \
     tmovableframe.cpp \
     twidget.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
     navigationwindow.cpp \
-    routewindow.cpp
+    routewindow.cpp \
+    pointselectionwindow.cpp \
+    infowindow.cpp \
+    optionswindow.cpp \
+    mapoptionswindow.cpp
 
-HEADERS  += menuwindow.h \
+HEADERS  += \
     tmovableframe.h \
     twidget.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
-    routewindow.h
+    routewindow.h \
+    pointselectionwindow.h \
+    infowindow.h \
+    optionswindow.h \
+    mapoptionswindow.h
 
-FORMS    += menuwindow.ui \
+FORMS    += \
     widgets/tclockwidget.ui \
     navigationwindow.ui \
-    routewindow.ui
+    routewindow.ui \
+    pointselectionwindow.ui \
+    infowindow.ui \
+    optionswindow.ui \
+    mapoptionswindow.ui
 
 INCLUDEPATH += ./
 
@@ -48,6 +59,21 @@ Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES +=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
