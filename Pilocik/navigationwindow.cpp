@@ -76,3 +76,9 @@ void NavigationWindow::on_zoomSlider_sliderReleased()
 {
     ui->widget->setFinishZoom(ui->zoomSlider->value());
 }
+
+void NavigationWindow::on_pushButton_4_clicked()
+{
+    this->close();
+}
+

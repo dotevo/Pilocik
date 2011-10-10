@@ -182,14 +182,14 @@ int MapRenderWidget::DrawMap(QRect rect)
         osmscout::DatabaseParameter databaseParameter;
         osmscout::Database          database(databaseParameter);
 
-        if (!database.Open(map.c_str())) {
+		if (!database.Open((const char*)map.toAscii())) {
             std::cerr << "Cannot open database" << std::endl;
             return 1;
         }
 
         osmscout::StyleConfig styleConfig(database.GetTypeConfig());
 
-        if (!osmscout::LoadStyleConfig(style.c_str(),styleConfig)) {
+        if (!osmscout::LoadStyleConfig((const char*)style.toAscii(),styleConfig)) {
             std::cerr << "Cannot open style" << std::endl;
         }
 
