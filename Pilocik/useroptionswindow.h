@@ -1,19 +1,22 @@
 #ifndef USEROPTIONSWINDOW_H
 #define USEROPTIONSWINDOW_H
 
-#include <QFrame>
+#include "qfullscreenframe.h"
 
 namespace Ui {
     class UserOptionsWindow;
 }
 
-class UserOptionsWindow : public QFrame
+class UserOptionsWindow : public QFullScreenFrame
 {
     Q_OBJECT
 
 public:
-    explicit UserOptionsWindow(QWidget *parent = 0);
+    explicit UserOptionsWindow(NavigationWindow *parent);
     ~UserOptionsWindow();
+
+private slots:
+    void on_okButton_clicked();
 
 private:
     Ui::UserOptionsWindow *ui;

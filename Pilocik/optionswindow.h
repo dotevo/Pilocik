@@ -8,6 +8,8 @@ namespace Ui {
 }
 
 class MapOptionsWindow;
+class GPSOptionsWindow;
+class UserOptionsWindow;
 
 class OptionsWindow : public QFullScreenFrame
 {
@@ -22,9 +24,15 @@ private slots:
 
     void on_mapButton_clicked();
 
+    void on_GPSButton_clicked();
+
+    void on_userButton_clicked();
+
 private:
     Ui::OptionsWindow *ui;
     MapOptionsWindow * moWin;
+    GPSOptionsWindow *gpsWin;
+    UserOptionsWindow *userWin;
 };
 
 #endif // OPTIONSWINDOW_H
