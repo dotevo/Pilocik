@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     mapoptionswindow.cpp \
     useroptionswindow.cpp \
     gpsoptionswindow.cpp \
-    keyboardwindow.cpp
+    keyboardwindow.cpp \
+    qfullscreenframe.cpp
 
 HEADERS  += \
     tmovableframe.h \
@@ -38,7 +39,8 @@ HEADERS  += \
     mapoptionswindow.h \
     useroptionswindow.h \
     gpsoptionswindow.h \
-    keyboardwindow.h
+    keyboardwindow.h \
+    qfullscreenframe.h
 
 FORMS    += \
     widgets/tclockwidget.ui \
@@ -68,6 +70,8 @@ Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES +=
+
+
 
 
 

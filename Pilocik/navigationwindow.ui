@@ -15,6 +15,10 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*WINDOW*/
+QWidget &gt; QTabWidget{
+	background: #3c3c3c;
+}
+
 
 QFrame{
 	background:
@@ -26,6 +30,7 @@ qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
    border-radius: 10px;
    border: 2px solid rgb(70, 70, 70);
 }
+
 
 QLabel {
 	color: #FFF;
@@ -76,7 +81,6 @@ QPushButton:disabled{
 	color: rgba(255, 255, 255, 100);
 }
 
-
 #menuPanel{
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                  stop: 0 rgba(0, 0, 0, 230),
@@ -101,6 +105,14 @@ QLineEdit{
    border: 1px solid rgb(180, 180, 180 );
 }
 
+QListView{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #d3d3d3,
+                                 stop: 1 #f9f9f9);
+   border-radius: 8px;  
+   border: 1px solid rgb(180, 180, 180 );
+}
+
 /*RADIOBUTTON*/
 QRadioButton{
 color: #DDD;
@@ -112,14 +124,14 @@ font-size: 12px;
 	width: 20px;
 	height: 20px;
 }
- QRadioButton::indicator::unchecked {
+ QRadioButton::indicator::checked {
 	background: qradialgradient(cx:0, cy:0, radius: 1,
                  fx:0.5, fy:0.5, stop:0 #f9f9f9, stop:1 #a3a3a3);
    border-radius: 11px;  	
    border: 1px solid rgb(40, 40,40 );
  }
 
- QRadioButton::indicator::checked {
+ QRadioButton::indicator::unchecked {
 	background: qradialgradient(cx:0, cy:0, radius: 1,
                  fx:0.3, fy:0.3, stop:0 #222, stop:1 #444);
    border-radius: 11px;  	
@@ -177,7 +189,53 @@ QComboBox QAbstractItemView {
                                  stop: 1 #f9f9f9);
    border-radius: 0px;  
 
- }</string>
+ }
+
+/*TABWIDGET*/
+QTabWidget{     border: 1px solid #000;}
+ QTabWidget::pane {border-top: 0px solid #000;}
+ QTabWidget::tab-bar {left: 5px;}
+
+
+ QTabBar::tab {
+	background: rgba(0,0,0,0);
+     border: 1px solid #EEE;
+     border-top: 0px solid #000;
+     border-bottom: 0px solid #000;
+     min-width: 100px;
+     padding: 4px;
+     color: white;
+	font-weight: bold;
+ }
+
+
+ QTabBar::tab:selected {
+	font-size: 16px;
+ }
+
+
+
+/*SPECYFIC!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/*RouteWindow*/
+#toButton,#fromButton,#toClrButton,#fromClrButton,#nearestButton,#nearestClrButton{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #d3d3d3,
+                                 stop: 1 #f9f9f9);
+   border-radius: 8px;  
+   border: 1px solid rgb(180, 180, 180 );
+   color:#000;
+}
+
+#toButton:pressed,#fromButton:pressed,#toClrButton:pressed,#fromClrButton:pressed,#nearestButton:pressed,#nearestClrButton:pressed{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #a3a3a3,
+                                 stop: 1 #c9c9c9);
+}
+QFullScreenFrame{
+	background: rgba(50,50,50,200);
+   border-radius: 0px;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="menuButton">
@@ -253,7 +311,20 @@ border-bottom-left-radius: 10px;
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="gpsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>GPS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="optionsButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -266,7 +337,7 @@ border-bottom-left-radius: 10px;
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="creditsButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -306,32 +377,8 @@ border-bottom-left-radius: 10px;
      </item>
     </layout>
    </widget>
-   <widget class="RouteWindow" name="routeFrame">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>110</y>
-      <width>321</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-   </widget>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>RouteWindow</class>
-   <extends>QFrame</extends>
-   <header>routewindow.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

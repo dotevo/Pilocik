@@ -1,19 +1,22 @@
 #ifndef MAPOPTIONSWINDOW_H
 #define MAPOPTIONSWINDOW_H
 
-#include <QFrame>
+#include "qfullscreenframe.h"
 
 namespace Ui {
     class MapOptionsWindow;
 }
 
-class MapOptionsWindow : public QFrame
+
+class MapOptionsWindow : public QFullScreenFrame
 {
     Q_OBJECT
-
 public:
-    explicit MapOptionsWindow(QWidget *parent = 0);
+    explicit MapOptionsWindow(NavigationWindow *parent);
     ~MapOptionsWindow();
+
+private slots:
+    void on_okButton_clicked();
 
 private:
     Ui::MapOptionsWindow *ui;
