@@ -11,12 +11,19 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        menuwindow.cpp \
     tmovableframe.cpp \
-    twidget.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
     navigationwindow.cpp \
+    routewindow.cpp \
+    pointselectionwindow.cpp \
+    infowindow.cpp \
+    optionswindow.cpp \
+    mapoptionswindow.cpp \
+    useroptionswindow.cpp \
+    gpsoptionswindow.cpp \
+    keyboardwindow.cpp \
+    qfullscreenframe.cpp \
     maprenderwidget.cpp \
     ../lib/sosmscout/src/osmscout/Database.cpp \
     ../lib/sosmscout/src/osmscout/StyleConfigLoader.cpp \
@@ -62,20 +69,39 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/ost/ParserT.cpp \
     ../lib/sosmscout/src/osmscout/ost/ScannerT.cpp \
     ../lib/sosmscout/src/osmscout/MapPainter.cpp \
-    mappainterqt.cpp
+    mappainterqt.cpp \
+    twidget.cpp
 
 
-HEADERS  += menuwindow.h \
-    tmovableframe.h \
+HEADERS  +=  tmovableframe.h \
     twidget.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
-    maprenderwidget.h
+    maprenderwidget.h \
+    routewindow.h \
+    pointselectionwindow.h \
+    infowindow.h \
+    optionswindow.h \
+    mapoptionswindow.h \
+    useroptionswindow.h \
+    gpsoptionswindow.h \
+    keyboardwindow.h \
+    qfullscreenframe.h
 
-FORMS    += menuwindow.ui \
+
+
+FORMS    += \
     widgets/tclockwidget.ui \
-    navigationwindow.ui
+    navigationwindow.ui \
+    routewindow.ui \
+    pointselectionwindow.ui \
+    infowindow.ui \
+    optionswindow.ui \
+    mapoptionswindow.ui \
+    useroptionswindow.ui \
+    gpsoptionswindow.ui \
+    keyboardwindow.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -95,6 +121,35 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
