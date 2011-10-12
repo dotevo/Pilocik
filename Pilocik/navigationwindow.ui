@@ -413,7 +413,6 @@ border-bottom-left-radius: 10px;
     </widget>
    </widget>
    <zorder>menuPanel</zorder>
-   <zorder>routeFrame</zorder>
    <zorder>widget</zorder>
    <zorder>sliderButton</zorder>
    <zorder>menuButton</zorder>
