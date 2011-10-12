@@ -1,9 +1,8 @@
 #include "twidgetmanager.h"
-#include "twidget.h"
 
 #include <QMapIterator>
 
-TWidgetManager::TWidgetManager(){
+TWidgetManager::TWidgetManager():qGraphicsScene(0,0,1,1){
 }
 
 TWidgetManager& TWidgetManager::getInstance(){
@@ -12,29 +11,29 @@ TWidgetManager& TWidgetManager::getInstance(){
 }
 
 
-TWidget* TWidgetManager::getWidget(QString name){
+TMovableFrame* TWidgetManager::getWidget(QString name){
     return 0;
 }
 
-QList<TWidget*> TWidgetManager::getWidgetList(){
-	QList<TWidget*> lista;
+QList<TMovableFrame*> TWidgetManager::getWidgetList(){
+        QList<TMovableFrame*> lista;
 	return lista;
 }
 
-QList<TWidget*> TWidgetManager::getWidgetVisibleList(){
-    QList<TWidget*> lista;
+QList<TMovableFrame*> TWidgetManager::getWidgetVisibleList(){
+    QList<TMovableFrame*> lista;
 	return lista;
 }
 
 void TWidgetManager::setMode(TMovableFrame::TMOVABLEMODE mode){
-    QMapIterator<QString, TWidget*> i(widgets);
+    QMapIterator<QString, TMovableFrame*> i(widgets);
      while (i.hasNext()) {
          i.next();
          i.value()->setMode(mode);
      }
 }
 
-void TWidgetManager::addWidget(QString name, TWidget* w){
+void TWidgetManager::addWidget(QString name, TMovableFrame* w){
     if(w!=0){
         widgets.insert(name,w);
         w->setParent(parent);

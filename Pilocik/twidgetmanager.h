@@ -8,22 +8,24 @@
 class TWidget;
 
 //singleton
-class TWidgetManager
+class TWidgetManager: public QGraphicsScene
 {
 private:
     TWidgetManager();
-    QMap <QString, TWidget*> widgets;
+    QMap <QString, TMovableFrame*> widgets;
     QWidget *parent;
 public:
+    typedef QGraphicsScene qGraphicsScene;
+
     static TWidgetManager& getInstance();
     TWidgetManager(TWidgetManager const&);              // Don't Implement
     void operator=(TWidgetManager const&);          // Don't implement
 
     void setWidgetVisible(QString name,bool visible);
-    TWidget* getWidget(QString name);
-    QList<TWidget*> getWidgetList();
-    QList<TWidget*> getWidgetVisibleList();
-    void addWidget(QString name, TWidget* w);
+    TMovableFrame* getWidget(QString name);
+    QList<TMovableFrame*> getWidgetList();
+    QList<TMovableFrame*> getWidgetVisibleList();
+    void addWidget(QString name, TMovableFrame* w);
     void setMode(TMovableFrame::TMOVABLEMODE mode);
     void setParent(QWidget *w);
 };

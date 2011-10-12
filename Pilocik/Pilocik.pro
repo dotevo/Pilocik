@@ -12,7 +12,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     tmovableframe.cpp \
-    twidget.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
     navigationwindow.cpp \
@@ -28,7 +27,6 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     tmovableframe.h \
-    twidget.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
@@ -70,6 +68,8 @@ Debug:RCC_DIR = ../build/debug/.rcc
 Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES +=
+
+
 
 
 

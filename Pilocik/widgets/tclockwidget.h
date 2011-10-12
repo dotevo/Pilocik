@@ -1,18 +1,18 @@
 #ifndef TCLOCKWIDGET_H
 #define TCLOCKWIDGET_H
 
-#include "../twidget.h"
+#include "../tmovableframe.h"
 
 namespace Ui {
     class TClockWidget;
 }
 
-class TClockWidget : public TWidget
+class TClockWidget : public TMovableFrame
 {
     Q_OBJECT
 
 public:
-    explicit TClockWidget(QWidget *parent = 0);
+    explicit TClockWidget(QGraphicsScene *parent);
     ~TClockWidget();
 
 private:

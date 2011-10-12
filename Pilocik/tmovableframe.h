@@ -2,6 +2,8 @@
 #define TMOVABLEFRAME_H
 
 #include <QFrame>
+#include <QGraphicsScene>
+
 class QEvent;
 class QMouseEvent;
 
@@ -14,7 +16,7 @@ public:
         MOVING = 1
     };
 
-    TMovableFrame(QWidget *parent = 0);
+    TMovableFrame(QGraphicsScene*scene);
 
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
@@ -23,6 +25,9 @@ public:
 private:
     TMOVABLEMODE mode;
     QPoint offset;
+    int type;
+  protected:
+    QGraphicsProxyWidget *proxy;
 };
 
 #endif // TMOVABLEFRAME_H

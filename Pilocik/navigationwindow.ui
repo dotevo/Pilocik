@@ -31,6 +31,12 @@ qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
    border: 2px solid rgb(70, 70, 70);
 }
 
+QGraphicsView{
+	background: #3c3c3c;
+   border-radius: 0px;
+   border: 0px solid rgb(70, 70, 70);
+}
+
 
 QLabel {
 	color: #FFF;
@@ -377,6 +383,29 @@ border-bottom-left-radius: 10px;
      </item>
     </layout>
    </widget>
+   <widget class="QGraphicsView" name="mainView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>61</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="viewportUpdateMode">
+     <enum>QGraphicsView::FullViewportUpdate</enum>
+    </property>
+   </widget>
+   <zorder>mainView</zorder>
+   <zorder>menuButton</zorder>
+   <zorder>sliderButton</zorder>
+   <zorder>menuPanel</zorder>
   </widget>
  </widget>
  <resources/>
