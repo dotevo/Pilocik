@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/png">
+        <file>images/icons/14x14/standard/bus_stop.png</file>
+        <file>images/icons/14x14/standard/cemetery.png</file>
+        <file>images/icons/14x14/standard/forest.png</file>
+        <file>images/icons/14x14/standard/hospital.png</file>
+        <file>images/icons/14x14/standard/parking.png</file>
+        <file>images/icons/14x14/standard/pharmacy.png</file>
+        <file>images/icons/14x14/standard/scrub.png</file>
+    </qresource>
+    <qresource prefix="/svg">
+        <file>images/icons/svg/standard/bus_stop.svg</file>
+        <file>images/icons/svg/standard/cemetery.svg</file>
+        <file>images/icons/svg/standard/forest.svg</file>
+        <file>images/icons/svg/standard/hospital.svg</file>
+        <file>images/icons/svg/standard/parking.svg</file>
+        <file>images/icons/svg/standard/pharmacy.svg</file>
+        <file>images/icons/svg/standard/scrub.svg</file>
+    </qresource>
+</RCC>

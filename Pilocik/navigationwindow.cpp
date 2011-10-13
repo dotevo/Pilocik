@@ -30,7 +30,6 @@ NavigationWindow::~NavigationWindow()
     delete optionsWin;
 }
 
-
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance().addWidget("Clock", new TClockWidget(&(TWidgetManager::getInstance())));
 }
@@ -84,3 +83,24 @@ void NavigationWindow::on_optionsButton_clicked()
     optionsWin->setVisible(true);
     optionsWin->raise();
 }
+
+void NavigationWindow::on_zoomSlider_valueChanged(int value)
+{
+    ui->widget->setZoom(value);
+}
+
+void NavigationWindow::on_zoomSlider_sliderPressed()
+{
+    ui->widget->setStartZoom(ui->zoomSlider->value());
+}
+
+void NavigationWindow::on_zoomSlider_sliderReleased()
+{
+    ui->widget->setFinishZoom(ui->zoomSlider->value());
+}
+
+void NavigationWindow::on_pushButton_4_clicked()
+{
+    this->close();
+}
+

@@ -21,3 +21,13 @@ build/*
 *.lai
 *.la
 *.a
+
+#Visual Strudio
+*.vcproj*
+*.ncb
+*.sln
+*.suo
+*.idb
+*/ui_*
+*/release/*
+*/debug/*
