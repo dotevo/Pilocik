@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QGraphicsProxyWidget>
 #include "tmovableframe.h"
+#include <math.h>
 
 TMovableFrame::TMovableFrame(QGraphicsScene *a):QFrame()
 {
@@ -40,14 +41,36 @@ void TMovableFrame::mouseMoveEvent(QMouseEvent* event)
         if(type==0)
             move(mapToParent(event->pos() - offset));
         else if(type==1){
-            qreal ang=(event->pos().x() - offset.x())/proxy->scene()->width();
-            proxy->rotate(proxy->rotation()+ang);
-        }else{
-            QPointF x=proxy->mapFromScene(event->pos().x() - offset.x(),event->pos().y() - offset.y());
+            float xx=this->pos().x();
+            float yy=this->pos().y();
+            float x=event->pos().x()+xx;
+            float y=event->pos().y()+yy;
+            float alpha;
 
-            qDebug()<<x.x()<<":"<<x.y()<<"\n";
-            proxy->scale(x.x(),x.y());
+            if ((x > xx) && (y >= yy))                              // xx i yy to pozycje œrodka trójk¹ta
+                alpha = ((float)atan((y - yy) / (x - xx)))*180/M_PI;
+             else if ((x > xx) && (y < yy))
+                alpha = (float)(atan((y-yy)/(x-xx)) + 2 * M_PI)*180/M_PI;
+             else if(x < xx)
+                alpha = (float)(atan((y-yy)/(x-xx)) + M_PI)*180/M_PI;
+             else if ((x == xx) && (y > yy))
+                alpha = (float)2*180;
+             else
+                alpha = (float)(3 *180 / 2);
+
+            alpha=((int)alpha/45)*45;
+            qDebug()<<xx<<":"<<yy<<";"<<x<<":"<<y<<"M\n"<<"Q"<<alpha<<"\n";
+            proxy->rotate(alpha-proxy->rotation());
+        }else{
+            float x=event->pos().x();
+            x/=this->width();
+            float y=event->pos().y();
+            y/=this->height();
+            qDebug()<<x<<":"<<y<<";"<<event->pos().x()<<":"<<event->pos().y()<<"\n";
+            if(x>0&&y>0&&proxy->size().width()>1&&proxy->size().height()>1)
+            proxy->scale(x,y);
         }
+        //offset=event->pos();
 
     }
 }
