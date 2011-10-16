@@ -69,7 +69,8 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/ost/ParserT.cpp \
     ../lib/sosmscout/src/osmscout/ost/ScannerT.cpp \
     ../lib/sosmscout/src/osmscout/MapPainter.cpp \
-    mappainterqt.cpp
+    mappainterqt.cpp \
+    tlineedit.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -85,7 +86,8 @@ HEADERS  +=  tmovableframe.h \
     useroptionswindow.h \
     gpsoptionswindow.h \
     keyboardwindow.h \
-    qfullscreenframe.h
+    qfullscreenframe.h \
+    tlineedit.h
 
 
 
@@ -119,6 +121,12 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+
+
+
+
+
 
 
 

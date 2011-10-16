@@ -14,13 +14,14 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     ui(new Ui::NavigationWindow)
 {
     ui->setupUi(this);
-    TWidgetManager::getInstance().setParent(ui->mainView);
-    ui->mainView->setScene(&TWidgetManager::getInstance());
+    TWidgetManager::getInstance()->setParent(ui->mainView);
+    ui->mainView->setScene(TWidgetManager::getInstance());
 
     addWidgets();
-    TWidgetManager::getInstance().setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
+    TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
     addFrames();
+    ui->mainView->setVisible(false);
 }
 
 NavigationWindow::~NavigationWindow()
@@ -28,10 +29,11 @@ NavigationWindow::~NavigationWindow()
     delete ui;
     delete routeWin;
     delete optionsWin;
+    delete TWidgetManager::getInstance();
 }
 
 void NavigationWindow::addWidgets(){
-    TWidgetManager::getInstance().addWidget("Clock", new TClockWidget(&(TWidgetManager::getInstance())));
+    TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(TWidgetManager::getInstance()));
 }
 
 void NavigationWindow::addFrames(){

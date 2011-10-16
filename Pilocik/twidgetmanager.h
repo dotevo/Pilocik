@@ -14,10 +14,13 @@ private:
     TWidgetManager();
     QMap <QString, TMovableFrame*> widgets;
     QWidget *parent;
+    static TWidgetManager *instance;
 public:
+    ~TWidgetManager();
+
     typedef QGraphicsScene qGraphicsScene;
 
-    static TWidgetManager& getInstance();
+    static TWidgetManager* getInstance();
     TWidgetManager(TWidgetManager const&);              // Don't Implement
     void operator=(TWidgetManager const&);          // Don't implement
 

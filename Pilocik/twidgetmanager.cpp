@@ -2,11 +2,17 @@
 
 #include <QMapIterator>
 
+TWidgetManager * TWidgetManager::instance=0;
+
 TWidgetManager::TWidgetManager():qGraphicsScene(0,0,1,1){
 }
 
-TWidgetManager& TWidgetManager::getInstance(){
-    static TWidgetManager instance;
+TWidgetManager::~TWidgetManager(){
+}
+
+TWidgetManager* TWidgetManager::getInstance(){
+    if(instance==0)
+        instance=new TWidgetManager();
     return instance;
 }
 
