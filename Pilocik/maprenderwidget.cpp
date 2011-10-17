@@ -39,7 +39,7 @@ void MapRenderWidget::init()
 
 #ifdef Q_OS_UNIX
      map = "/home/bartek/osmscout-map/3poland/";
-    style = "/home/bartek/QtProjects/OSMNavi/styles/standard.oss.xml";
+    style = "/home/bartek/QtProjects/OSMNavi/styles/standard.oss2.xml";
 #endif
 
 #ifdef Q_OS_WIN
@@ -94,13 +94,9 @@ void MapRenderWidget::setFinishZoom(int value)
 {
     finishZoom = value;
 
-    noPaint = false;
-
     scaling = false;
 
-    repaint();
-
-    noPaint = true;
+    forceRepaint();
 }
 
 void MapRenderWidget::paintEvent(QPaintEvent *e)

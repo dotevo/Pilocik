@@ -1,3 +1,7 @@
+/*
+  Class from library osmscout. It's not documented :-)
+*/
+
 #include <osmscout/MapPainterQt.h>
 
 #include <cassert>
