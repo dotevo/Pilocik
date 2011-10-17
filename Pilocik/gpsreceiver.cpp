@@ -1,10 +1,8 @@
 #include "gpsreceiver.h"
-#include <windows.h>
-#include <QString>
-#include <QStringList>
 #include <QThread>
 #include <QList>
 #include <QMetaType>
+#include <cstdlib>
 
 GPSdata::GPSdata()
 {
@@ -81,7 +79,9 @@ GPSreceiver::GPSreceiver()
 GPSreceiver::~GPSreceiver()
 {
     disable();
+    #ifdef Q_OS_WIN
     CloseHandle(hInput);
+    #endif
     terminate();
 }
 
@@ -92,6 +92,7 @@ void GPSreceiver::setSimPath(QString path)
 
 bool GPSreceiver::startSimulation()
 {
+#ifdef Q_OS_WIN
     QString lBuffer;
 
     hInput = CreateFile((LPCTSTR)path.utf16(),                // file to open
@@ -142,10 +143,12 @@ bool GPSreceiver::startSimulation()
             }
         }
     }
+#endif
 }
 
 int GPSreceiver::connectSerialPort()
 {
+#ifdef Q_OS_WIN
     LPCWSTR serialPorts[] = {L"COM1:", L"COM2:", L"COM3:", L"COM4:", L"COM5:", L"COM6:", L"COM7:", L"COM8:", L"COM9:"};
     int serialPortIndex = 0;
     bool connected;
@@ -206,10 +209,12 @@ int GPSreceiver::connectSerialPort()
     }while(!connected && serialPortIndex<9);
 
     return connected ? serialPortIndex : 0;
+#endif
 }
 
 bool GPSreceiver::testSerialPort()
 {
+#ifdef Q_OS_WIN
     QString test;
     int i = 0;
     while(!test.contains("$") && i++<25)
@@ -226,10 +231,12 @@ bool GPSreceiver::testSerialPort()
         test.append(Byte);
     }
     return test.contains("$");
+#endif
 }
 
 bool GPSreceiver::startRealGPS()
 {
+    #ifdef Q_OS_WIN
     int port = connectSerialPort();
     serialPort = "COM" + QString::number(port);
     emit statusUpdate("Connected to "+serialPort);
@@ -269,6 +276,7 @@ bool GPSreceiver::startRealGPS()
             lBuffer.clear();
         }
     }
+#endif
 }
 
 void GPSreceiver::run()
@@ -305,3 +313,4 @@ QStringList* GPSreceiver::getOutputBuffer()
 {
     return &output;
 }
+

@@ -1,6 +1,9 @@
 #ifndef GPSRECEIVER_H
 #define GPSRECEIVER_H
-#include <windows.h>
+
+#ifdef Q_OS_WIN
+    #include <windows.h>
+#endif
 #include <QCoreApplication>
 #include <QString>
 #include <QStringList>
@@ -26,7 +29,9 @@ class GPSreceiver : public QThread
     Q_OBJECT
 
 private:
+#ifdef Q_OS_WIN
     HANDLE hInput;
+#endif
     QStringList output;
     QString path;
     int mode;

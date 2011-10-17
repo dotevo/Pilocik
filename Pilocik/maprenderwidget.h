@@ -59,7 +59,6 @@ public:
 
 private:
     GPSreceiver* gps;
-
     QString   map;
     QString   style;
     QString   output;
