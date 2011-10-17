@@ -4,6 +4,11 @@
 #include <QDebug>
 #include "twidgetmanager.h"
 #include "widgets/tclockwidget.h"
+#include "routewindow.h"
+#include "optionswindow.h"
+#include "gpsinfowindow.h"
+
+NavigationWindow *NavigationWindow::main=0;
 
 NavigationWindow::NavigationWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,16 +19,27 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     addWidgets();
     TWidgetManager::getInstance().setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
-    ui->routeFrame->setVisible(false);
+    addFrames();
 }
 
 NavigationWindow::~NavigationWindow()
 {
     delete ui;
+    delete routeWin;
+    delete &gps;
 }
 
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance().addWidget("Clock", new TClockWidget());
+}
+
+void NavigationWindow::addFrames(){
+    routeWin=new RouteWindow(this);
+    routeWin->setVisible(false);
+    optionsWin=new OptionsWindow(this);
+    optionsWin->setVisible(false);
+    gpsInfoWin=new GPSInfoWindow(this);
+    gpsInfoWin->setVisible(false);
 }
 
 void NavigationWindow::resizeEvent ( QResizeEvent * event ){
@@ -41,10 +57,7 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     ui->menuPanel->setGeometry(rect);
     ui->menuPanel->raise();
 
-    QRect rect2=ui->routeFrame->geometry();
-    rect2.setSize(size);
-    ui->routeFrame->setGeometry(rect2);
-    ui->routeFrame->raise();
+    emit sizeChanged(this);
 }
 
 void NavigationWindow::on_menuButton_clicked(){
@@ -54,12 +67,23 @@ void NavigationWindow::on_menuButton_clicked(){
 void NavigationWindow::on_routeButton_clicked()
 {
     ui->menuPanel->setVisible(false);
-    ui->routeFrame->setVisible(true);
+    routeWin->setVisible(true);
+    routeWin->raise();
 }
 
-void NavigationWindow::on_routeBackButton_clicked()
+
+void NavigationWindow::on_optionsButton_clicked()
 {
-    ui->routeFrame->setVisible(false);
+    ui->menuPanel->setVisible(false);
+    optionsWin->setVisible(true);
+    optionsWin->raise();
+}
+
+void NavigationWindow::on_gpsButton_clicked()
+{
+    ui->menuPanel->setVisible(false);
+    gpsInfoWin->setVisible(true);
+    gpsInfoWin->raise();
 }
 
 void NavigationWindow::on_zoomSlider_valueChanged(int value)

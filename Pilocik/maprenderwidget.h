@@ -1,6 +1,7 @@
 #ifndef MAPRENDERWIDGET_H
 #define MAPRENDERWIDGET_H
 
+#include "gpsreceiver.h"
 #include <QWidget>
 #include <QList>
 #include <QPainter>
@@ -57,6 +58,7 @@ public:
     void forceRepaint();
 
 private:
+    GPSreceiver* gps;
 
     QString   map;
     QString   style;
@@ -83,6 +85,9 @@ private:
       @brief Initializing variables depending of the operating system.
       */
     void init();
+
+private slots:
+    void positionUpdate(GPSdata gps_data);
 };
 
 #endif // MAPRENDERWIDGET_H
