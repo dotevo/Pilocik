@@ -26,6 +26,13 @@ protected:
 private slots:
     void saveFocusWidget(QWidget *oldFocus, QWidget *newFocus);
     void buttonClicked(QWidget *w);
+    void on_closeButton_clicked();
+    void on_space_button_clicked();
+
+    void on_back_button_clicked();
+
+signals:
+    void close(KeyboardWindow*win);
 };
 
 #endif // KEYBOARDWINDOW_H

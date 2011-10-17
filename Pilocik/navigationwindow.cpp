@@ -21,7 +21,8 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
     addFrames();
-    ui->mainView->setVisible(false);
+    ui->widget->setVisible(false);
+    ui->mainView->raise();
 }
 
 NavigationWindow::~NavigationWindow()
