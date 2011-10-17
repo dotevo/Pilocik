@@ -2,6 +2,7 @@
 #include "navigationwindow.h"
 
 #include "qmath.h"
+#include "gpsreceiver.h"
 
 #include <iostream>
 #include <iomanip>
@@ -47,6 +48,11 @@ void MapRenderWidget::init()
     style = "c:/map/standard.oss.xml";
 #endif
 
+#ifdef WINCE
+    map = "/ResidentFlash/ZPI/map";
+    style = "/ResidentFlash/ZPI/standard.oss.xml";
+#endif
+
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
@@ -61,6 +67,10 @@ void MapRenderWidget::init()
     pixmap = QPixmap(width, height);
     pixmap.fill(QColor(200, 200, 200));
 
+
+    NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
+    gps = &(navi->gps);
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::forceRepaint()
@@ -241,4 +251,11 @@ int MapRenderWidget::DrawMap(QRect rect)
             std::cout << "Cannot create QPainter" << std::endl;
         }
     }
+}
+
+void MapRenderWidget::positionUpdate(GPSdata gps_data)
+{
+    lat = gps_data.lat;
+    lon = gps_data.lon;
+    forceRepaint();
 }

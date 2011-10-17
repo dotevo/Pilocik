@@ -6,6 +6,7 @@
 #include "widgets/tclockwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
+#include "gpsinfowindow.h"
 
 NavigationWindow *NavigationWindow::main=0;
 
@@ -25,6 +26,7 @@ NavigationWindow::~NavigationWindow()
 {
     delete ui;
     delete routeWin;
+    delete &gps;
 }
 
 void NavigationWindow::addWidgets(){
@@ -36,6 +38,8 @@ void NavigationWindow::addFrames(){
     routeWin->setVisible(false);
     optionsWin=new OptionsWindow(this);
     optionsWin->setVisible(false);
+    gpsInfoWin=new GPSInfoWindow(this);
+    gpsInfoWin->setVisible(false);
 }
 
 void NavigationWindow::resizeEvent ( QResizeEvent * event ){
@@ -73,6 +77,13 @@ void NavigationWindow::on_optionsButton_clicked()
     ui->menuPanel->setVisible(false);
     optionsWin->setVisible(true);
     optionsWin->raise();
+}
+
+void NavigationWindow::on_gpsButton_clicked()
+{
+    ui->menuPanel->setVisible(false);
+    gpsInfoWin->setVisible(true);
+    gpsInfoWin->raise();
 }
 
 void NavigationWindow::on_zoomSlider_valueChanged(int value)
