@@ -3,7 +3,7 @@
 # Project created by QtCreator 2011-09-27T08:39:56
 #
 #-------------------------------------------------
-
+ 
 QT       += core gui
 
 TARGET = ../../build/Pilocik
@@ -70,7 +70,9 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/ost/ScannerT.cpp \
     ../lib/sosmscout/src/osmscout/MapPainter.cpp \
     mappainterqt.cpp \
-    twidget.cpp
+    twidget.cpp \
+    gpsinfowindow.cpp \
+    gpsreceiver.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -87,7 +89,9 @@ HEADERS  +=  tmovableframe.h \
     useroptionswindow.h \
     gpsoptionswindow.h \
     keyboardwindow.h \
-    qfullscreenframe.h
+    qfullscreenframe.h \
+    gpsinfowindow.h \
+    gpsreceiver.h
 
 
 
@@ -101,7 +105,8 @@ FORMS    += \
     mapoptionswindow.ui \
     useroptionswindow.ui \
     gpsoptionswindow.ui \
-    keyboardwindow.ui
+    keyboardwindow.ui \
+    gpsinfowindow.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -121,6 +126,18 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
