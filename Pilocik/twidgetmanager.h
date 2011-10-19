@@ -5,7 +5,6 @@
 
 #include "tmovableframe.h"
 
-class TWidget;
 
 /**
  * @brief Singleton. This class is layer to show widgets and is needed to manage them.

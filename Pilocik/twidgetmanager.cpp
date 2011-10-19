@@ -18,7 +18,7 @@ TWidgetManager* TWidgetManager::getInstance(){
 
 
 TMovableFrame* TWidgetManager::getWidget(QString name){
-    return 0;
+    return widgets[name];
 }
 
 QList<TMovableFrame*> TWidgetManager::getWidgetList(){

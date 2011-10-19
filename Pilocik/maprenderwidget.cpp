@@ -2,6 +2,7 @@
 #include "navigationwindow.h"
 
 #include "qmath.h"
+#include "gpsreceiver.h"
 
 #include <iostream>
 #include <iomanip>
@@ -33,18 +34,24 @@ void MapRenderWidget::init()
     moving = false;
     scaling = false;
     noPaint = true;
+    gpsActive = false;
 
     map = "";
     style = "";
 
 #ifdef Q_OS_UNIX
      map = "/home/bartek/osmscout-map/3poland/";
-    style = "/home/bartek/QtProjects/OSMNavi/styles/standard.oss.xml";
+    style = "/home/bartek/QtProjects/OSMNavi/styles/standard.oss2.xml";
 #endif
 
 #ifdef Q_OS_WIN
     map = "c:/map/";
     style = "c:/map/standard.oss.xml";
+#endif
+
+#ifdef WINCE
+    map = "/ResidentFlash/ZPI/map";
+    style = "/ResidentFlash/ZPI/standard.oss.xml";
 #endif
 
     translatePoint = QPoint(0, 0);
@@ -54,6 +61,7 @@ void MapRenderWidget::init()
     //height = 480;
     width = 673;
     height = 378;
+    angle = 0;
     lat = 51.1;
     lon = 17.03;
     zoom = 2*2*2*2*1024;
@@ -61,6 +69,10 @@ void MapRenderWidget::init()
     pixmap = QPixmap(width, height);
     pixmap.fill(QColor(200, 200, 200));
 
+
+    NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
+    gps = navi->gps;
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::forceRepaint()
@@ -94,13 +106,9 @@ void MapRenderWidget::setFinishZoom(int value)
 {
     finishZoom = value;
 
-    noPaint = false;
-
     scaling = false;
 
-    repaint();
-
-    noPaint = true;
+    forceRepaint();
 }
 
 void MapRenderWidget::paintEvent(QPaintEvent *e)
@@ -202,8 +210,12 @@ int MapRenderWidget::DrawMap(QRect rect)
             osmscout::MapData             data;
             osmscout::MapPainterQt        mapPainter;
 
+            drawParameter.SetOptimizeAreaNodes(true);
+            drawParameter.SetOptimizeWayNodes(true);
+
             projection.Set(lon,
                            lat,
+                           angle,
                            zoom,
                            width,
                            height);
@@ -226,7 +238,8 @@ int MapRenderWidget::DrawMap(QRect rect)
                                    projection,
                                    drawParameter,
                                    data,
-                                   painter)) {
+                                   painter,
+                                   gpsActive)) {
  //               std::cerr << "Drawing!" << std::endl;
  //               std::cerr << "Zoom: " << zoom << std::endl;
 
@@ -241,4 +254,14 @@ int MapRenderWidget::DrawMap(QRect rect)
             std::cout << "Cannot create QPainter" << std::endl;
         }
     }
+}
+
+void MapRenderWidget::positionUpdate(GPSdata gps_data)
+{
+    lat = gps_data.lat;
+    lon = gps_data.lon;
+    angle = gps_data.angle;
+    gpsActive = (lat!=0 && lon!= 0);
+    if(gpsActive)
+        forceRepaint();
 }

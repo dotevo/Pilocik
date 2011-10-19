@@ -4,8 +4,10 @@
 #include <QDebug>
 #include "twidgetmanager.h"
 #include "widgets/tclockwidget.h"
+#include "widgets/tspeedmeterwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
+#include "gpsinfowindow.h"
 
 NavigationWindow *NavigationWindow::main=0;
 
@@ -13,6 +15,8 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NavigationWindow)
 {
+    gps = new GPSreceiver();
+
     ui->setupUi(this);
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
@@ -25,6 +29,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 
 NavigationWindow::~NavigationWindow()
 {
+    gps->disable();
     delete ui;
     delete routeWin;
     delete optionsWin;
@@ -33,6 +38,8 @@ NavigationWindow::~NavigationWindow()
 
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
+    TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
 }
 
 void NavigationWindow::addFrames(){
@@ -40,6 +47,8 @@ void NavigationWindow::addFrames(){
     routeWin->setVisible(false);
     optionsWin=new OptionsWindow(this);
     optionsWin->setVisible(false);
+    gpsInfoWin=new GPSInfoWindow(this);
+    gpsInfoWin->setVisible(false);
 }
 
 void NavigationWindow::resizeEvent ( QResizeEvent * event ){
@@ -77,6 +86,13 @@ void NavigationWindow::on_optionsButton_clicked()
     ui->menuPanel->setVisible(false);
     optionsWin->setVisible(true);
     optionsWin->raise();
+}
+
+void NavigationWindow::on_gpsButton_clicked()
+{
+    ui->menuPanel->setVisible(false);
+    gpsInfoWin->setVisible(true);
+    gpsInfoWin->raise();
 }
 
 void NavigationWindow::on_zoomSlider_valueChanged(int value)

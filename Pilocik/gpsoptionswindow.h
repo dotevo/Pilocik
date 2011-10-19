@@ -2,6 +2,7 @@
 #define GPSOPTIONSWINDOW_H
 
 #include "qfullscreenframe.h"
+#include "gpsreceiver.h"
 
 namespace Ui {
     class GPSOptionsWindow;
@@ -19,8 +20,12 @@ public:
 
 private slots:
     void on_okButton_clicked();
+    void on_startSimButton_clicked();
+    void on_stopSimButton_clicked();
+    void simStatusUpdate(QString string);
 
 private:
+    GPSreceiver* gps;
     Ui::GPSOptionsWindow *ui;
 };
 

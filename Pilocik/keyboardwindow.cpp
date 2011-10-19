@@ -4,14 +4,12 @@
 
 bool KeyboardWindow::opened=0;
 
-KeyboardWindow::KeyboardWindow(NavigationWindow *parent,QLineEdit *text,QWidget *view) :
+KeyboardWindow::KeyboardWindow(NavigationWindow *parent,QWidget *view) :
     QFullScreenFrame(parent),
-    ui(new Ui::KeyboardWindow),lastFocusedWidget(0)
+    ui(new Ui::KeyboardWindow)
 {
-    textEdit=text;
     ui->setupUi(this);
-    ui->textFrame->layout()->addWidget(textEdit);
-
+    textEdit=ui->textLineEdit;
     //Number buttons
     signalMapper.setMapping(ui->b0_button,ui->b0_button);
     signalMapper.setMapping(ui->b1_button,ui->b1_button);
@@ -107,68 +105,44 @@ KeyboardWindow::KeyboardWindow(NavigationWindow *parent,QLineEdit *text,QWidget 
     connect(ui->slash_button, SIGNAL(clicked()),&signalMapper, SLOT(map()));
 
 
-
-
-
     connect(&signalMapper, SIGNAL(mapped(QWidget*)),
             this, SLOT(buttonClicked(QWidget*)));
     opened=true;
 }
 
-KeyboardWindow::~KeyboardWindow()
-{
+KeyboardWindow::~KeyboardWindow(){
     delete ui;
     opened=false;
 }
 
-void KeyboardWindow::saveFocusWidget(QWidget * /*oldFocus*/, QWidget *newFocus)
-{
-    if (newFocus != 0 && !this->isAncestorOf(newFocus)) {
-        lastFocusedWidget = newFocus;
-    }
-}
-
-bool KeyboardWindow::event(QEvent *e)
-{
-    switch (e->type()) {
-    case QEvent::WindowActivate:
-        //if (lastFocusedWidget)
-          //  lastFocusedWidget->activateWindow();
-        break;
-    default:
-        break;
-    }
-}
 
 
 void KeyboardWindow::buttonClicked(QWidget *w){
-    int curs=this->textEdit->cursorPosition();
-    QString s=this->textEdit->text();
-    this->textEdit->setText(s.left(curs)+((QPushButton*)w)->text()+s.right(s.length()-curs));
-    this->textEdit->setCursorPosition(curs+1);
-    this->textEdit->activateWindow();
+    int curs=ui->textLineEdit->cursorPosition();
+    QString s=ui->textLineEdit->text();
+    ui->textLineEdit->setText(s.left(curs)+((QPushButton*)w)->text()+s.right(s.length()-curs));
+    ui->textLineEdit->setCursorPosition(curs+1);
+    ui->textLineEdit->activateWindow();
 }
-
-
 
 void KeyboardWindow::on_closeButton_clicked(){
     emit close(this);
 }
 
 void KeyboardWindow::on_space_button_clicked(){
-    int curs=this->textEdit->cursorPosition();
-    QString s=this->textEdit->text();
-    this->textEdit->setText(s.left(curs)+" "+s.right(s.length()-curs));
-    this->textEdit->setCursorPosition(curs+1);
-    this->textEdit->activateWindow();
+    int curs=ui->textLineEdit->cursorPosition();
+    QString s=ui->textLineEdit->text();
+    ui->textLineEdit->setText(s.left(curs)+" "+s.right(s.length()-curs));
+    ui->textLineEdit->setCursorPosition(curs+1);
+    ui->textLineEdit->activateWindow();
 }
 
 void KeyboardWindow::on_back_button_clicked()
 {
-    int curs=this->textEdit->cursorPosition();
-    QString s=this->textEdit->text();
+    int curs=ui->textLineEdit->cursorPosition();
+    QString s=ui->textLineEdit->text();
     if(curs>=1){
-        this->textEdit->setText(s.left(curs-1)+s.right(s.length()-curs));
-        this->textEdit->setCursorPosition(curs-1);
+        ui->textLineEdit->setText(s.left(curs-1)+s.right(s.length()-curs));
+        ui->textLineEdit->setCursorPosition(curs-1);
     }
 }
