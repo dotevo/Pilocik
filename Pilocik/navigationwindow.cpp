@@ -14,15 +14,13 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     ui(new Ui::NavigationWindow)
 {
     ui->setupUi(this);
-    TWidgetManager::getInstance()->setParent(ui->mainView);
-    ui->mainView->setScene(TWidgetManager::getInstance());
-
+    TWidgetManager::getInstance()->setParent(this);
     addWidgets();
     TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
     addFrames();
-    ui->widget->setVisible(false);
-    ui->mainView->raise();
+    ui->widget->setVisible(true);
+    ui->widget->lower();
 }
 
 NavigationWindow::~NavigationWindow()
@@ -34,7 +32,7 @@ NavigationWindow::~NavigationWindow()
 }
 
 void NavigationWindow::addWidgets(){
-    TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(TWidgetManager::getInstance()));
+    TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
 }
 
 void NavigationWindow::addFrames(){
@@ -58,12 +56,6 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     rect.setSize(menuPanelsize);
     ui->menuPanel->setGeometry(rect);
     ui->menuPanel->raise();
-
-    QSize viewSize(size.width(),size.height());
-    QRect rect2=ui->mainView->geometry();
-    rect2.setSize(viewSize);
-    ui->mainView->setGeometry(rect2);
-    ui->mainView->lower();
 
     emit sizeChanged(this);
 }

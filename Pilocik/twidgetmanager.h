@@ -12,7 +12,7 @@ class TWidget;
  *
  * @class TWidgetManager twidgetmanager.h "Pilocik/twidgetmanager.h"
  */
-class TWidgetManager: public QGraphicsScene
+class TWidgetManager
 {
 private:
 /**
@@ -31,13 +31,6 @@ public:
      * @fn ~TWidgetManager
      */
     ~TWidgetManager();
-
-    /**
-     * @brief
-     *
-     * @typedef qGraphicsScene     */
-    typedef QGraphicsScene qGraphicsScene;
-
     /**
      * @brief
      *

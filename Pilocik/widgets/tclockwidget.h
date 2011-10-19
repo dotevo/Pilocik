@@ -12,7 +12,7 @@ class TClockWidget : public TMovableFrame
     Q_OBJECT
 
 public:
-    explicit TClockWidget(QGraphicsScene *parent);
+    explicit TClockWidget(QWidget *parent);
     ~TClockWidget();
 
 private:

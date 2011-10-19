@@ -4,7 +4,7 @@
 
 TWidgetManager * TWidgetManager::instance=0;
 
-TWidgetManager::TWidgetManager():qGraphicsScene(0,0,1,1){
+TWidgetManager::TWidgetManager(){
 }
 
 TWidgetManager::~TWidgetManager(){

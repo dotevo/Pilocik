@@ -5,7 +5,7 @@
 #include "QTimer"
 #include "QDateTime"
 
-TClockWidget::TClockWidget(QGraphicsScene *parent) :
+TClockWidget::TClockWidget(QWidget *parent) :
     TMovableFrame(parent),
     ui(new Ui::TClockWidget)
 {
@@ -30,5 +30,4 @@ void TClockWidget::updateTime()
 {
     QDateTime time = QDateTime::currentDateTime();
     ui->timeLabel->setText(time.toString("hh:mm:ss, d MMM yyyy"));
-    proxy->scene()->update(proxy->rect());
 }

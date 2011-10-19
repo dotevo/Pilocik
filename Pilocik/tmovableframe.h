@@ -32,7 +32,7 @@ public:
  * @fn TMovableFrame
  * @param scene
  */
-    TMovableFrame(QGraphicsScene*scene);
+    TMovableFrame(QWidget*parent);
 
     /**
      * @brief
@@ -65,9 +65,6 @@ public:
 private:
     TMOVABLEMODE mode; /**< TODO */
     QPoint offset; /**< TODO */
-    int type; /**< TODO */
-  protected:
-    QGraphicsProxyWidget *proxy; /**< TODO */
 };
 
 #endif // TMOVABLEFRAME_H
