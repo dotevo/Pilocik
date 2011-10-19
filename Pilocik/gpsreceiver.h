@@ -1,14 +1,18 @@
 #ifndef GPSRECEIVER_H
 #define GPSRECEIVER_H
 
-#ifdef Q_OS_WIN
-    #include <windows.h>
-#endif
 #include <QCoreApplication>
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
 #include <QThread>
 #include <QList>
+#include <QFile>
+#include <QTimer>
+#ifdef Q_OS_WINCE_STD
+    #include <windows.h>
+#endif
+
 
 class GPSdata
 {
@@ -29,11 +33,12 @@ class GPSreceiver : public QThread
     Q_OBJECT
 
 private:
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WINCE_STD
     HANDLE hInput;
 #endif
     QStringList output;
     QString path;
+    QFile file;
     int mode;
     bool contiunue;
 
@@ -50,15 +55,17 @@ public:
     GPSreceiver();
     ~GPSreceiver();
     void setSimPath(QString path);
-    void run();
     void disable();
     void setMode(int m);
-    QStringList* getOutputBuffer();
     void clearBuffer();
+
+protected:
+    void run();
 
 signals:
     void positionUpdate(GPSdata gpsData);
     void statusUpdate(QString status);
+    void simStatusUpdate(QString status);
 };
 
 #endif // GPSRECEIVER_H

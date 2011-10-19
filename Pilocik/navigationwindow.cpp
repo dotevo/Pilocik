@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "twidgetmanager.h"
 #include "widgets/tclockwidget.h"
+#include "widgets/tspeedmeterwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
 #include "gpsinfowindow.h"
@@ -14,6 +15,8 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NavigationWindow)
 {
+    gps = new GPSreceiver();
+
     ui->setupUi(this);
     TWidgetManager::getInstance().setParent(ui->centralwidget);
     addWidgets();
@@ -24,13 +27,16 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 
 NavigationWindow::~NavigationWindow()
 {
+    gps->disable();
     delete ui;
     delete routeWin;
-    delete &gps;
 }
 
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance().addWidget("Clock", new TClockWidget());
+    TWidgetManager::getInstance().addWidget("SpeedMeter", new TSpeedMeterWidget());
+
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance().getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
 }
 
 void NavigationWindow::addFrames(){

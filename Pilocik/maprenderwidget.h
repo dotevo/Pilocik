@@ -63,11 +63,12 @@ private:
     QString   style;
     QString   output;
     size_t    width,height;
-    double    lon,lat,zoom;
+    double    lon,lat,angle,zoom;
 
     QPixmap pixmap;
 
     bool noPaint;
+    bool gpsActive;
 
     bool moving;
     QPoint startPoint;  // mouse is pressed

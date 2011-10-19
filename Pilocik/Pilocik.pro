@@ -72,7 +72,8 @@ SOURCES += main.cpp\
     mappainterqt.cpp \
     twidget.cpp \
     gpsinfowindow.cpp \
-    gpsreceiver.cpp
+    gpsreceiver.cpp \
+    widgets/tspeedmeterwidget.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -91,8 +92,8 @@ HEADERS  +=  tmovableframe.h \
     keyboardwindow.h \
     qfullscreenframe.h \
     gpsinfowindow.h \
-    gpsreceiver.h
-
+    gpsreceiver.h \
+    widgets/tspeedmeterwidget.h
 
 
 FORMS    += \
@@ -106,7 +107,8 @@ FORMS    += \
     useroptionswindow.ui \
     gpsoptionswindow.ui \
     keyboardwindow.ui \
-    gpsinfowindow.ui
+    gpsinfowindow.ui \
+    widgets/tspeedmeterwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -126,6 +128,19 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+OTHER_FILES +=
+
+
+
+
+
+
+
+
+
+
+
 
 
 

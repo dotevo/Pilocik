@@ -13,7 +13,7 @@ TWidgetManager& TWidgetManager::getInstance(){
 
 
 TWidget* TWidgetManager::getWidget(QString name){
-    return 0;
+    return widgets[name];
 }
 
 QList<TWidget*> TWidgetManager::getWidgetList(){

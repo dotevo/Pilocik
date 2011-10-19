@@ -9,7 +9,8 @@ GPSOptionsWindow::GPSOptionsWindow(NavigationWindow *parent) :
     ui->setupUi(this);
     sizeChanged((QWidget*)parent);
     ui->gpxFolderLineEdit->setText("\\ResidentFlash\\ZPI\\bielany.gps");
-    gps = &(parent->gps);
+    gps = parent->gps;
+    connect(gps, SIGNAL(simStatusUpdate(QString)), this, SLOT(simStatusUpdate(QString)));
 }
 
 GPSOptionsWindow::~GPSOptionsWindow()
@@ -32,4 +33,9 @@ void GPSOptionsWindow::on_startSimButton_clicked()
 void GPSOptionsWindow::on_stopSimButton_clicked()
 {
     gps->disable();
+}
+
+void GPSOptionsWindow::simStatusUpdate(QString status)
+{
+    ui->simStatus->setText(status);
 }

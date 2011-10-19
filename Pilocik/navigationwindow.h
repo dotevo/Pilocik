@@ -16,7 +16,7 @@ class NavigationWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    GPSreceiver gps;
+    GPSreceiver* gps;
     explicit NavigationWindow(QWidget *parent = 0);
     ~NavigationWindow();
     void    resizeEvent ( QResizeEvent * event );

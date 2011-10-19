@@ -17,7 +17,7 @@ TClockWidget::TClockWidget(QWidget *parent) :
 
     qDebug() << "parent_width " << parent;
 
-    move(50, 25);
+    move(5, 5);
 }
 
 TClockWidget::~TClockWidget()

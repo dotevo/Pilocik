@@ -34,6 +34,7 @@ void MapRenderWidget::init()
     moving = false;
     scaling = false;
     noPaint = true;
+    gpsActive = false;
 
     map = "";
     style = "";
@@ -60,6 +61,7 @@ void MapRenderWidget::init()
     //height = 480;
     width = 673;
     height = 378;
+    angle = 0;
     lat = 51.1;
     lon = 17.03;
     zoom = 2*2*2*2*1024;
@@ -69,7 +71,7 @@ void MapRenderWidget::init()
 
 
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
-    gps = &(navi->gps);
+    gps = navi->gps;
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
@@ -208,8 +210,12 @@ int MapRenderWidget::DrawMap(QRect rect)
             osmscout::MapData             data;
             osmscout::MapPainterQt        mapPainter;
 
+            drawParameter.SetOptimizeAreaNodes(true);
+            drawParameter.SetOptimizeWayNodes(true);
+
             projection.Set(lon,
                            lat,
+                           angle,
                            zoom,
                            width,
                            height);
@@ -232,7 +238,8 @@ int MapRenderWidget::DrawMap(QRect rect)
                                    projection,
                                    drawParameter,
                                    data,
-                                   painter)) {
+                                   painter,
+                                   gpsActive)) {
  //               std::cerr << "Drawing!" << std::endl;
  //               std::cerr << "Zoom: " << zoom << std::endl;
 
@@ -253,5 +260,8 @@ void MapRenderWidget::positionUpdate(GPSdata gps_data)
 {
     lat = gps_data.lat;
     lon = gps_data.lon;
-    forceRepaint();
+    angle = gps_data.angle;
+    gpsActive = (lat!=0 && lon!= 0);
+    if(gpsActive)
+        forceRepaint();
 }
