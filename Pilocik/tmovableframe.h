@@ -7,27 +7,67 @@
 class QEvent;
 class QMouseEvent;
 
+/**
+ * @brief
+ *
+ * @class TMovableFrame tmovableframe.h "Pilocik/tmovableframe.h"
+ */
 class TMovableFrame : public QFrame
 {
     Q_OBJECT
 public:
+    /**
+     * @brief
+     *
+     * @enum TMOVABLEMODE
+     */
     enum TMOVABLEMODE{
         STAND = 0,
         MOVING = 1
     };
 
+/**
+ * @brief
+ *
+ * @fn TMovableFrame
+ * @param scene
+ */
     TMovableFrame(QGraphicsScene*scene);
 
+    /**
+     * @brief
+     *
+     * @fn mousePressEvent
+     * @param event
+     */
     void mousePressEvent(QMouseEvent* event);
+    /**
+     * @brief
+     *
+     * @fn mouseMoveEvent
+     * @param event
+     */
     void mouseMoveEvent(QMouseEvent* event);
+    /**
+     * @brief
+     *
+     * @fn mouseReleaseEvent
+     * @param event
+     */
     void mouseReleaseEvent(QMouseEvent* event);
+    /**
+     * @brief
+     *
+     * @fn setMode
+     * @param mode
+     */
     void setMode(TMovableFrame::TMOVABLEMODE mode);
 private:
-    TMOVABLEMODE mode;
-    QPoint offset;
-    int type;
+    TMOVABLEMODE mode; /**< TODO */
+    QPoint offset; /**< TODO */
+    int type; /**< TODO */
   protected:
-    QGraphicsProxyWidget *proxy;
+    QGraphicsProxyWidget *proxy; /**< TODO */
 };
 
 #endif // TMOVABLEFRAME_H
