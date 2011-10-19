@@ -25,6 +25,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     addFrames();
     ui->widget->setVisible(true);
     ui->widget->lower();
+    ui->menuPanel->raise();
 }
 
 NavigationWindow::~NavigationWindow()
@@ -71,6 +72,7 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
 
 void NavigationWindow::on_menuButton_clicked(){
     ui->menuPanel->setVisible(!ui->menuPanel->isVisible());
+    ui->widget->repaint();
 }
 
 void NavigationWindow::on_routeButton_clicked()

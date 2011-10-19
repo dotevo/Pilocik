@@ -21,6 +21,8 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
+    typedef QWidget widget;
+
     explicit MapRenderWidget(QWidget *parent = 0);
     ~MapRenderWidget();
     /**
@@ -33,6 +35,7 @@ public:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void repaint();
 
     /**
       @brief Setting zoom value.
