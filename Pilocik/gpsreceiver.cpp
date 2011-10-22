@@ -1,10 +1,18 @@
 #include "gpsreceiver.h"
 #include <cstdlib>
 
+
+
+/**
+ * @brief GPS data parser and it's container.
+ *
+ * @class GPSdata gpsreceiver.h "Pilocik/gpsreceiver.h"
+ */
 GPSdata::GPSdata()
 {
     lat=lon=alt=speed=angle=0;
-    tracedSat=active=0;
+    tracedSat=0;
+    active=false;
     satelitesPRN.clear();
     satelitesSNR.clear();
     rawOutput.clear();
@@ -30,7 +38,7 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
     if (!RMCa.isEmpty())
     {
         div_t cLat, cLon;
-        active = 1;
+        active = true;
         lat = RMCa.at(3).toDouble();
         int dir = (RMCa.at(4).compare("N")) ? -1 : 1;
         cLat = div(lat,100);

@@ -24,6 +24,7 @@ public:
 
 private slots:
     void on_menuButton_clicked();
+    void on_trackingButton_clicked();
     void on_routeButton_clicked();
     void on_optionsButton_clicked();
     void on_gpsButton_clicked();

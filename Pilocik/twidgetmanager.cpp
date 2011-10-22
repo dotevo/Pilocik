@@ -1,6 +1,8 @@
 #include "twidgetmanager.h"
+#include "settings.h"
 
 #include <QMapIterator>
+#include <iostream>
 
 TWidgetManager * TWidgetManager::instance=0;
 
@@ -8,6 +10,16 @@ TWidgetManager::TWidgetManager(){
 }
 
 TWidgetManager::~TWidgetManager(){
+    QMapIterator<QString, TMovableFrame*> i(widgets);
+     while (i.hasNext()) {
+         i.next();
+         QMap<QString, QString> settings;
+         settings.insert("enabled", i.value()->isVisible()?"false":"true");
+         settings.insert("posx",QString::number(i.value()->pos().x()));
+         settings.insert("posy",QString::number(i.value()->pos().y()));
+         Settings::getInstance()->modifyWidgetSettings(i.key(), settings);
+     }
+
 }
 
 TWidgetManager* TWidgetManager::getInstance(){
@@ -15,7 +27,6 @@ TWidgetManager* TWidgetManager::getInstance(){
         instance=new TWidgetManager();
     return instance;
 }
-
 
 TMovableFrame* TWidgetManager::getWidget(QString name){
     return widgets[name];
@@ -42,7 +53,15 @@ void TWidgetManager::setMode(TMovableFrame::TMOVABLEMODE mode){
 void TWidgetManager::addWidget(QString name, TMovableFrame* w){
     if(w!=0){
         widgets.insert(name,w);
+
+        //Configure widget from settings file
+        QMap<QString,QString> widgetSettings = Settings::getInstance()->getWidgetSettings(name);
+        QPoint position(widgetSettings["posx"].toInt(),widgetSettings["posy"].toInt());
+        w->move(position);
+        w->setVisible(widgetSettings["enabled"]=="true");
+
         w->setParent(parent);
+
     }
 }
 

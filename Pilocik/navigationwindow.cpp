@@ -5,9 +5,14 @@
 #include "twidgetmanager.h"
 #include "widgets/tclockwidget.h"
 #include "widgets/tspeedmeterwidget.h"
+#include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
 #include "gpsinfowindow.h"
+#include "settings.h"
+
+//to delete
+#include <iostream>
 
 NavigationWindow *NavigationWindow::main=0;
 
@@ -16,6 +21,9 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     ui(new Ui::NavigationWindow)
 {
     gps = new GPSreceiver();
+
+    Settings::getInstance()->loadSettings();
+    Settings::getInstance()->configureProfile("default");
 
     ui->setupUi(this);
     TWidgetManager::getInstance()->setParent(this);
@@ -30,10 +38,14 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 NavigationWindow::~NavigationWindow()
 {
     gps->disable();
+    delete ui->widget;
     delete ui;
     delete routeWin;
     delete optionsWin;
+    delete gpsInfoWin;
     delete TWidgetManager::getInstance();
+    Settings::getInstance()->saveSettings();
+    delete Settings::getInstance();
 }
 
 void NavigationWindow::addWidgets(){
@@ -56,9 +68,10 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     QSize size=this->size();
     QPoint point(0,size.height()-ui->menuButton->geometry().height());
     ui->menuButton->move(point);
-    QPoint point2(size.width()-ui->sliderButton->geometry().width(),size.height()-ui->sliderButton->geometry().height());
-    ui->sliderButton->move(point2);
-
+    QPoint point2(75,size.height()-ui->menuButton->geometry().height());
+    ui->trackingButton->move(point2);
+    QPoint point3(size.width()-ui->sliderButton->geometry().width(),size.height()-ui->sliderButton->geometry().height());
+    ui->sliderButton->move(point3);
 
     QSize menuPanelsize(size.width(),(size.height()>200)?100:size.height()/2);
     QRect rect=ui->menuPanel->geometry();
@@ -66,11 +79,18 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     ui->menuPanel->setGeometry(rect);
     ui->menuPanel->raise();
 
+    ui->widget->setSize(size);
+
     emit sizeChanged(this);
 }
 
 void NavigationWindow::on_menuButton_clicked(){
     ui->menuPanel->setVisible(!ui->menuPanel->isVisible());
+}
+
+void NavigationWindow::on_trackingButton_clicked(){
+    ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
+    ui->widget->setTracking(!ui->widget->getTracking());
 }
 
 void NavigationWindow::on_routeButton_clicked()

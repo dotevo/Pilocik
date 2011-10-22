@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QRect>
 #include <QString>
+#include <osmscout/MapPainterQt.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -28,7 +29,11 @@ public:
       @param rect rectangle using during rendering transformated map.
       */
     int DrawMap(QRect rect);
-
+    /**
+     * @brief
+     * @param
+     */
+    void DrawPartitions();
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
@@ -57,15 +62,33 @@ public:
       */
     void forceRepaint();
 
+    /**
+      @brief Enable or disable position tracking (auto map moving when position changes)
+      @param value If false tracking is disabled, when true enabled.
+      */
+    void setTracking(bool tracking);
+    /**
+      @brief Gets actual tracking value.
+      @return Actual tracking value.
+      */
+    bool getTracking();
+    /**
+      @brief Sets new size for rendering area.
+      @param size New size value.
+      */
+    void setSize(QSize size);
+
 private:
     GPSreceiver* gps;
     QString   map;
     QString   style;
     QString   output;
     size_t    width,height;
-    double    lon,lat,angle,zoom;
+    double    lon,lat,markerLon,markerLat,angle,zoom;
+    bool      tracking, debugPartitions;
 
     QPixmap pixmap;
+    osmscout::MapPainterQt partitionMapPainter;
 
     bool noPaint;
     bool gpsActive;

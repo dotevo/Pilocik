@@ -3,6 +3,7 @@
 
 #include "qmath.h"
 #include "gpsreceiver.h"
+#include "settings.h"
 
 #include <iostream>
 #include <iomanip>
@@ -27,7 +28,20 @@ MapRenderWidget::MapRenderWidget(QWidget* parent) :
     init();
 }
 
-MapRenderWidget::~MapRenderWidget() { }
+MapRenderWidget::~MapRenderWidget()
+{
+    Settings::getInstance()->modifyMapSettings(lat, lon, zoom);
+}
+
+void MapRenderWidget::setTracking(bool tracking)
+{
+    this->tracking = tracking;
+}
+
+bool MapRenderWidget::getTracking()
+{
+    return tracking;
+}
 
 void MapRenderWidget::init()
 {
@@ -35,44 +49,38 @@ void MapRenderWidget::init()
     scaling = false;
     noPaint = true;
     gpsActive = false;
+    tracking = true;
 
-    map = "";
-    style = "";
+//! Change value to true manually to enable partitions rendering
+    debugPartitions = false;
 
-#ifdef Q_OS_UNIX
-     map = "/home/bartek/osmscout-map/3poland/";
-    style = "/home/bartek/QtProjects/OSMNavi/styles/standard.oss2.xml";
-#endif
-
-#ifdef Q_OS_WIN
-    map = "c:/map/";
-    style = "c:/map/standard.oss.xml";
-#endif
-
-#ifdef WINCE
-    map = "/ResidentFlash/ZPI/map";
-    style = "/ResidentFlash/ZPI/standard.oss.xml";
-#endif
+    Settings* settings = Settings::getInstance();
+    lat = settings->getLat();
+    lon = settings->getLon();
+    zoom = settings->getZoom();
 
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
-    //width = 640;
-    //height = 480;
     width = 673;
     height = 378;
     angle = 0;
-    lat = 51.1;
-    lon = 17.03;
-    zoom = 2*2*2*2*1024;
 
     pixmap = QPixmap(width, height);
     pixmap.fill(QColor(200, 200, 200));
 
-
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
     gps = navi->gps;
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+}
+
+void MapRenderWidget::setSize(QSize size)
+{
+    width = size.width();
+    height = size.height();
+    this->resize(size);
+    pixmap = QPixmap(width, height);
+    pixmap.fill(QColor(200, 200, 200));
 }
 
 void MapRenderWidget::forceRepaint()
@@ -113,8 +121,11 @@ void MapRenderWidget::setFinishZoom(int value)
 
 void MapRenderWidget::paintEvent(QPaintEvent *e)
 {
-    if (!noPaint)
+    if (!noPaint){
         DrawMap(e->rect());
+        if(debugPartitions)
+            DrawPartitions();
+    }
 }
 
 void MapRenderWidget::mousePressEvent(QMouseEvent *e)
@@ -157,8 +168,12 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
 
 int MapRenderWidget::DrawMap(QRect rect)
 {
+    map = Settings::getInstance()->getMapPath();
+    style = Settings::getInstance()->getMapStylePath();
     // std::cerr << "DrawMapQt <map directory> <style-file> <width> <height> <lon> <lat> <zoom> <output>" << std::endl;
-//    std::cerr << "Default values!";
+    //    std::cerr << "Default values!";
+    if(map.size()==0)
+        return 1;
 
     if (moving)
     {
@@ -215,6 +230,8 @@ int MapRenderWidget::DrawMap(QRect rect)
 
             projection.Set(lon,
                            lat,
+                           markerLon,
+                           markerLat,
                            angle,
                            zoom,
                            width,
@@ -234,16 +251,12 @@ int MapRenderWidget::DrawMap(QRect rect)
                                 data.relationWays,
                                 data.relationAreas);
 
-            if (mapPainter.DrawMap(styleConfig,
+            mapPainter.DrawMap(styleConfig,
                                    projection,
                                    drawParameter,
                                    data,
                                    painter,
-                                   gpsActive)) {
- //               std::cerr << "Drawing!" << std::endl;
- //               std::cerr << "Zoom: " << zoom << std::endl;
-
-            }
+                                   gpsActive);
 
             delete painter;
 
@@ -256,10 +269,38 @@ int MapRenderWidget::DrawMap(QRect rect)
     }
 }
 
+void MapRenderWidget::DrawPartitions()
+{
+    osmscout::MercatorProjection  projection;
+
+    projection.Set(lon,
+                   lat,
+                   markerLon,
+                   markerLat,
+                   angle,
+                   zoom,
+                   width,
+                   height);
+
+    QPainter* painter = new QPainter(&pixmap);
+
+    partitionMapPainter.PreparePartitionData("H:\\Users\\Rafael\\Desktop\\partitionOut.txt");
+    partitionMapPainter.RenderPartitionResults(projection, painter);
+
+    delete painter;
+
+    QPainter *windowPainter = new QPainter(this);
+    windowPainter->drawPixmap(0, 0, pixmap);
+}
+
 void MapRenderWidget::positionUpdate(GPSdata gps_data)
 {
-    lat = gps_data.lat;
-    lon = gps_data.lon;
+    markerLat = gps_data.lat;
+    markerLon = gps_data.lon;
+    if(tracking){
+        lat=markerLat;
+        lon=markerLon;
+    }
     angle = gps_data.angle;
     gpsActive = (lat!=0 && lon!= 0);
     if(gpsActive)

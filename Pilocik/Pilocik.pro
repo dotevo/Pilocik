@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
  
-QT       += core gui
+QT       += core gui \
+            xml
 
 TARGET = ../../build/Pilocik
 TEMPLATE = app
@@ -73,7 +74,8 @@ SOURCES += main.cpp\
     tlineedit.cpp \
     gpsinfowindow.cpp \
     gpsreceiver.cpp \
-    widgets/tspeedmeterwidget.cpp
+    widgets/tspeedmeterwidget.cpp \
+    settings.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -93,7 +95,8 @@ HEADERS  +=  tmovableframe.h \
     tlineedit.h \
     gpsinfowindow.h \
     gpsreceiver.h \
-    widgets/tspeedmeterwidget.h
+    widgets/tspeedmeterwidget.h \
+    settings.h
 
 
 FORMS    += \
@@ -129,7 +132,11 @@ Debug:UI_DIR = ../build/debug/.ui
 RESOURCES += \
     icons.qrc
 
-OTHER_FILES +=
+OTHER_FILES += \
+    settings.xml
+
+
+
 
 
 
