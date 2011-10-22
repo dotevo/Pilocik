@@ -96,7 +96,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="gpxFolderLineEdit"/>
+       <widget class="TLineEdit" name="gpxFolderLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -178,6 +178,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>tlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

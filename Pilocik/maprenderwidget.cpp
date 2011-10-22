@@ -119,12 +119,22 @@ void MapRenderWidget::setFinishZoom(int value)
     forceRepaint();
 }
 
+void MapRenderWidget::repaint(){
+    widget::repaint();
+}
+
 void MapRenderWidget::paintEvent(QPaintEvent *e)
 {
     if (!noPaint){
         DrawMap(e->rect());
         if(debugPartitions)
             DrawPartitions();
+    }
+    else{
+        int x = translatePoint.x();
+        int y = translatePoint.y();
+        QPainter *windowPainter = new QPainter(this);
+        windowPainter->drawPixmap(x, y, pixmap);
     }
 }
 
