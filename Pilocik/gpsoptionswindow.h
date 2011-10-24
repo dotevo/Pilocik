@@ -22,6 +22,7 @@ private slots:
     void on_okButton_clicked();
     void on_startSimButton_clicked();
     void on_stopSimButton_clicked();
+    void simStatusUpdate(QString string);
 
 private:
     GPSreceiver* gps;

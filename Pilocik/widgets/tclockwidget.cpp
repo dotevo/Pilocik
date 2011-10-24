@@ -1,11 +1,12 @@
 #include "tclockwidget.h"
+#include <QGraphicsProxyWidget>
 #include "ui_tclockwidget.h"
 #include "QDebug"
 #include "QTimer"
 #include "QDateTime"
 
 TClockWidget::TClockWidget(QWidget *parent) :
-    TWidget(parent),
+    TMovableFrame(parent),
     ui(new Ui::TClockWidget)
 {
     ui->setupUi(this);
@@ -17,7 +18,7 @@ TClockWidget::TClockWidget(QWidget *parent) :
 
     qDebug() << "parent_width " << parent;
 
-    move(50, 25);
+    move(5, 5);
 }
 
 TClockWidget::~TClockWidget()

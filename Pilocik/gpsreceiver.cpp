@@ -1,13 +1,18 @@
 #include "gpsreceiver.h"
-#include <QThread>
-#include <QList>
-#include <QMetaType>
 #include <cstdlib>
 
+
+
+/**
+ * @brief GPS data parser and it's container.
+ *
+ * @class GPSdata gpsreceiver.h "Pilocik/gpsreceiver.h"
+ */
 GPSdata::GPSdata()
 {
     lat=lon=alt=speed=angle=0;
-    tracedSat=active=0;
+    tracedSat=0;
+    active=false;
     satelitesPRN.clear();
     satelitesSNR.clear();
     rawOutput.clear();
@@ -33,7 +38,7 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
     if (!RMCa.isEmpty())
     {
         div_t cLat, cLon;
-        active = 1;
+        active = true;
         lat = RMCa.at(3).toDouble();
         int dir = (RMCa.at(4).compare("N")) ? -1 : 1;
         cLat = div(lat,100);
@@ -74,15 +79,15 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
 
 GPSreceiver::GPSreceiver()
 {
+    setTerminationEnabled(true);
 }
 
 GPSreceiver::~GPSreceiver()
 {
     disable();
-    #ifdef Q_OS_WIN
+    #ifdef Q_OS_WINCE_STD
     CloseHandle(hInput);
     #endif
-    terminate();
 }
 
 void GPSreceiver::setSimPath(QString path)
@@ -92,63 +97,34 @@ void GPSreceiver::setSimPath(QString path)
 
 bool GPSreceiver::startSimulation()
 {
-#ifdef Q_OS_WIN
-    QString lBuffer;
+    QFile file(path);
 
-    hInput = CreateFile((LPCTSTR)path.utf16(),                // file to open
-               GENERIC_READ,           // open for reading
-               FILE_SHARE_READ,        // share for reading
-               NULL,                   // default security
-               OPEN_EXISTING,          // existing file only
-               FILE_ATTRIBUTE_NORMAL,   // overlapped operation
-               NULL);                  // no attr. template
-
-    if (hInput == INVALID_HANDLE_VALUE)
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        emit simStatusUpdate("Unable to open specified file.");
         return false;
     }
 
+    emit simStatusUpdate("Simulation started.");
     contiunue = true;
 
-    while( contiunue )
-    {
-        if(!lBuffer.startsWith('$'))
+    while (contiunue && !file.atEnd()) {
+        QByteArray line = file.readLine();
+        output.append(line);
+        if(line.contains("$GPRMC"))
         {
-            lBuffer.clear();
-        }
-        BYTE Byte;
-        DWORD dwBytesTransferred;
-        ReadFile (hInput,               // Port handle
-                        &Byte,              // Pointer to data to read
-                        1,                  // Number of bytes to read
-                        &dwBytesTransferred,// Pointer to number of bytes
-                                            // read
-                        NULL                // Must be NULL for Windows CE
-        );
-        lBuffer.append(Byte);
-        if(lBuffer.endsWith('\n'))
-        {
-            if(lBuffer.startsWith("$"))
-            {
-                output.append(lBuffer);
-                if(lBuffer.contains("$GPRMC"))
-                {
-                    GPSdata gps_data = GPSdata();
-                    gps_data.parseBuffer(&output);
-                    qRegisterMetaType<GPSdata>("GPSdata");
-                    emit positionUpdate(gps_data);
-                    Sleep(1000);
-                }
-                lBuffer.clear();
-            }
+            GPSdata gps_data = GPSdata();
+            gps_data.parseBuffer(&output);
+            qRegisterMetaType<GPSdata>("GPSdata");
+            emit positionUpdate(gps_data);
+            msleep(1000);
         }
     }
-#endif
 }
 
 int GPSreceiver::connectSerialPort()
 {
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WINCE_STD
     LPCWSTR serialPorts[] = {L"COM1:", L"COM2:", L"COM3:", L"COM4:", L"COM5:", L"COM6:", L"COM7:", L"COM8:", L"COM9:"};
     int serialPortIndex = 0;
     bool connected;
@@ -214,7 +190,7 @@ int GPSreceiver::connectSerialPort()
 
 bool GPSreceiver::testSerialPort()
 {
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WINCE_STD
     QString test;
     int i = 0;
     while(!test.contains("$") && i++<25)
@@ -236,7 +212,7 @@ bool GPSreceiver::testSerialPort()
 
 bool GPSreceiver::startRealGPS()
 {
-    #ifdef Q_OS_WIN
+    #ifdef Q_OS_WINCE_STD
     int port = connectSerialPort();
     serialPort = "COM" + QString::number(port);
     emit statusUpdate("Connected to "+serialPort);
@@ -269,9 +245,12 @@ bool GPSreceiver::startRealGPS()
         if(lBuffer.endsWith('\n')&&lBuffer.startsWith('$'))
         {
             output.append(lBuffer);
-            if(lBuffer.contains("$GPRMC"))
+            if(lBuffer.contains("RMC"))
             {
-                emit positionUpdate(GPSdata());
+                GPSdata gps_data = GPSdata();
+                gps_data.parseBuffer(&output);
+                qRegisterMetaType<GPSdata>("GPSdata");
+                emit positionUpdate(gps_data);
             }
             lBuffer.clear();
         }
@@ -307,10 +286,5 @@ void GPSreceiver::setMode(int m)
 void GPSreceiver::disable()
 {
     contiunue = false;
-}
-
-QStringList* GPSreceiver::getOutputBuffer()
-{
-    return &output;
 }
 

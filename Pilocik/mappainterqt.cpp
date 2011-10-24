@@ -8,6 +8,9 @@
 #include <iostream>
 #include <limits>
 
+#include <QFile>
+#include <QTime>
+
 #include <osmscout/util/Geometry.h>
 
 #include <osmscout/private/Math.h>
@@ -589,7 +592,8 @@ namespace osmscout {
                              const Projection& projection,
                              const MapParameter& parameter,
                              const MapData& data,
-                             QPainter* painter)
+                             QPainter* painter,
+                             bool showMarker)
   {
     this->painter=painter;
 
@@ -601,6 +605,158 @@ namespace osmscout {
          parameter,
          data);
 
+    if(showMarker)
+        DrawPositionMarker(projection);
+
     return true;
+  }
+
+  void MapPainterQt::DrawPositionMarker(const Projection& projection)
+  {
+    double x,y;
+    QPolygon marker;
+    QMatrix matrix, matrix2, result;
+
+    marker << QPoint(-10,8) << QPoint(10,8) << QPoint(0,-15);
+    projection.GeoToPixel(projection.GetMarkerLon(),projection.GetMarkerLat(), x, y);
+
+    matrix.rotate(projection.GetAngle());
+    matrix2.translate((int)x, (int)y);
+
+    result = matrix.operator *(matrix2);
+    marker = result.map(marker);
+
+    QPointF g1(0,-0.5);
+    QPointF g2(0,0.5);
+    matrix2.reset();
+    matrix2.translate(0.5,0.5);
+    result.reset();
+    result = matrix.operator *(matrix2);
+    g1 = result.map(g1);
+    g2 = result.map(g2);
+
+    QLinearGradient grad = QLinearGradient(g1,g2);
+    QGradientStops stops;
+    stops << QGradientStop(0, QColor::fromRgb(0x3b679e));
+    stops << QGradientStop(0.6, QColor::fromRgb(0x2b88d9));
+    stops << QGradientStop(0.61, QColor::fromRgb(0x207cca));
+    stops << QGradientStop(1, QColor::fromRgb(0x7db9e8));
+    grad.setStops(stops);
+    grad.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+    painter->setBrush(QBrush(grad));
+    painter->setPen(QPen(QColor::fromRgb(255,255,255,255)));
+    painter->drawPolygon(marker);
+  }
+
+  void MapPainterQt::PreparePartitionData(QString partitionOutPath)
+  {      
+
+    if(partitionOutPath==pDatasourcePath)
+        return;
+
+    this->pDatasourcePath=partitionOutPath;
+
+    QFile file(partitionOutPath);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QByteArray line;
+    while(line.startsWith("#") || line.startsWith("\n") || line.isNull())
+    line = file.readLine();
+    int nodes = QString(line).toInt();
+    int cells = QString(file.readLine()).toInt();
+    int ways  = QString(file.readLine()).toInt();
+    line = file.readLine();
+    // Process nodes
+    while (!file.atEnd() && !line.startsWith("\n")) {
+        QStringList pLine = QString(line).split(' ');
+        pNode newNode;
+        newNode.no = pLine.at(0).toInt();
+        newNode.lon = pLine.at(1).toDouble();
+        newNode.lat = pLine.at(2).toDouble();
+        newNode.cellNo = pLine.at(3).toDouble();
+        pNodes.append(newNode);
+        line = file.readLine();
+    }
+    line = file.readLine();
+    // Process ways
+    while (!file.atEnd()) {
+        QStringList pLine = QString(line).split(' ');
+        pWay newWay;
+        newWay.no = pLine.at(0).toInt();
+        newWay.nodesCount = pLine.at(1).toInt();
+        for(int i = 2; i < pLine.size(); i++){
+            newWay.nodes.append(pLine.at(i).toInt());
+        }
+        pWays.append(newWay);
+        line = file.readLine();
+    }
+
+    // Generate colors(one color for each cell)
+    for(int i = 0; i < cells; i++){
+        QColor myColor;
+        myColor = QColor::fromHsvF(1/(double)cells*i, 0.6, 0.95);
+        pColors.append(myColor);
+    }
+
+    // Mix colors in list
+    QTime midnight(0, 0, 0);
+    qsrand(midnight.secsTo(QTime::currentTime()));
+
+    for(int i = 0; i < 300; i++)
+    {
+      pColors.swap(qrand()%cells,qrand()%cells);
+    }
+
+//!   Display generated colors
+//    for(int i = 0; i < colors; i++){
+//      painter->setPen((new QColor())->fromRgb(255,255,255));
+//      painter->setBrush(colorTab.at(i));
+//      QRect rect = QRect(QPoint(i*10,0),QPoint(i*10+10,20));
+//      painter->drawRect(rect);
+//    }
+  }
+
+  void MapPainterQt::RenderPartitionResults(const Projection& projection, QPainter* painter)
+  {
+      this->painter = painter;
+
+      // Display nodes
+      foreach(pNode myNode, pNodes)
+      {
+          painter->setPen(pColors.at(myNode.cellNo));
+          painter->setBrush(pColors.at(myNode.cellNo));
+          double x, y;
+          projection.GeoToPixel(myNode.lon, myNode.lat, x, y);
+          painter->drawEllipse(QPointF(x,y),2,2);
+      }
+
+      // Display ways
+      foreach(pWay myWay, pWays)
+      {
+          for(int i = 0; i < myWay.nodesCount-1; i++)
+          {
+              pNode currNode = pNodes.at(myWay.nodes.at(i));
+              pNode nextNode = pNodes.at(myWay.nodes.at(i+1));
+
+              QPen pen;
+
+              pen.setColor(pColors.at(currNode.cellNo));
+              pen.setWidthF(2);
+              pen.setJoinStyle(Qt::RoundJoin);
+              pen.setCapStyle(Qt::RoundCap);
+              pen.setStyle(Qt::SolidLine);
+
+              painter->setPen(pen);
+              double x1, y1, x2, y2;
+              projection.GeoToPixel(currNode.lon, currNode.lat, x1, y1);
+              projection.GeoToPixel(nextNode.lon, nextNode.lat, x2, y2);
+              QPainterPath path(QPointF(x1,y1));
+              path.lineTo(x2,y2);
+              painter->setPen(pen);
+              painter->drawPath(path);
+          }
+      }
   }
 }

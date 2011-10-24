@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QRect>
 #include <QString>
+#include <osmscout/MapPainterQt.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -21,7 +22,13 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
+<<<<<<< HEAD
     explicit MapRenderWidget(int W = 0, int H = 0, QWidget *parent = 0, double latC = 0, double lonC = 0);
+=======
+    typedef QWidget widget;
+
+    explicit MapRenderWidget(QWidget *parent = 0);
+>>>>>>> 7bc3a07105d8c86776d07b9cf2833aa36141b482
     ~MapRenderWidget();
 
     /**
@@ -34,11 +41,16 @@ public:
       @param rect rectangle using during rendering transformated map.
       */
     int DrawMap(QRect rect);
-
+    /**
+     * @brief
+     * @param
+     */
+    void DrawPartitions();
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void repaint();
 
     /**
       @brief Settings coordinates.
@@ -68,17 +80,36 @@ public:
       */
     void forceRepaint();
 
+    /**
+      @brief Enable or disable position tracking (auto map moving when position changes)
+      @param value If false tracking is disabled, when true enabled.
+      */
+    void setTracking(bool tracking);
+    /**
+      @brief Gets actual tracking value.
+      @return Actual tracking value.
+      */
+    bool getTracking();
+    /**
+      @brief Sets new size for rendering area.
+      @param size New size value.
+      */
+    void setSize(QSize size);
+
 private:
     GPSreceiver* gps;
     QString   map;
     QString   style;
     QString   output;
     size_t    width,height;
-    double    lon,lat,zoom;
+    double    lon,lat,markerLon,markerLat,angle,zoom;
+    bool      tracking, debugPartitions;
 
     QPixmap pixmap;
+    osmscout::MapPainterQt partitionMapPainter;
 
     bool noPaint;
+    bool gpsActive;
 
     bool moving;
     QPoint startPoint;  // mouse is pressed

@@ -1,10 +1,11 @@
 #include <QEvent>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QGraphicsProxyWidget>
 #include "tmovableframe.h"
+#include <math.h>
 
-TMovableFrame::TMovableFrame(QWidget *a):QFrame(a)
-{
+TMovableFrame::TMovableFrame(QWidget *parent):QFrame(parent){
 }
 
 
@@ -17,10 +18,7 @@ void TMovableFrame::mousePressEvent(QMouseEvent* event)
 {
     if(mode==MOVING){
         event->accept(); // do not propagate
-        if (isWindow())
-            offset = event->globalPos() - pos();
-        else
-            offset = event->pos();
+        offset = event->pos();
     }
 }
 
@@ -28,10 +26,7 @@ void TMovableFrame::mouseMoveEvent(QMouseEvent* event)
 {
     if(mode==MOVING){
         event->accept(); // do not propagate
-        if (isWindow())
-            move(event->globalPos() - offset);
-        else
-           move(mapToParent(event->pos() - offset));
+        move(mapToParent(event->pos() - offset));
     }
 }
 

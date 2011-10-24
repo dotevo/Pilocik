@@ -13,7 +13,7 @@ GPSInfoWindow::GPSInfoWindow(NavigationWindow *parent) :
     ui->setupUi(this);
     sizeChanged((QWidget*)parent);
     clearInfo();
-    gps = &(parent->gps);
+    gps = parent->gps;
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(infoUpdate(GPSdata)));
     connect(gps, SIGNAL(statusUpdate(QString)), this, SLOT(statusUpdate(QString)));
 }

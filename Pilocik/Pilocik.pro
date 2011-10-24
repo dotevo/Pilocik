@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
  
-QT       += core gui
+QT       += core gui \
+            xml
 
 TARGET = ../../build/Pilocik
 TEMPLATE = app
@@ -72,13 +73,14 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitioning.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
     mappainterqt.cpp \
-    twidget.cpp \
+    tlineedit.cpp \
     gpsinfowindow.cpp \
-    gpsreceiver.cpp
+    gpsreceiver.cpp \
+    widgets/tspeedmeterwidget.cpp \
+    settings.cpp
 
 
 HEADERS  +=  tmovableframe.h \
-    twidget.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
@@ -92,9 +94,11 @@ HEADERS  +=  tmovableframe.h \
     gpsoptionswindow.h \
     keyboardwindow.h \
     qfullscreenframe.h \
+    tlineedit.h \
     gpsinfowindow.h \
-    gpsreceiver.h
-
+    gpsreceiver.h \
+    widgets/tspeedmeterwidget.h \
+    settings.h
 
 
 FORMS    += \
@@ -108,7 +112,8 @@ FORMS    += \
     useroptionswindow.ui \
     gpsoptionswindow.ui \
     keyboardwindow.ui \
-    gpsinfowindow.ui
+    gpsinfowindow.ui \
+    widgets/tspeedmeterwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -128,6 +133,31 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+OTHER_FILES += \
+    settings.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -56,7 +56,11 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
+<<<<<<< HEAD
       <number>1</number>
+=======
+      <number>0</number>
+>>>>>>> 7bc3a07105d8c86776d07b9cf2833aa36141b482
      </property>
      <widget class="QWidget" name="poiTab">
       <attribute name="title">
@@ -198,7 +202,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="nameLineEdit"/>
+           <widget class="TLineEdit" name="nameLineEdit"/>
           </item>
          </layout>
         </widget>
@@ -508,6 +512,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>tlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

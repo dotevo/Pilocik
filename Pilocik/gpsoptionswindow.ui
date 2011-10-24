@@ -96,7 +96,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="gpxFolderLineEdit"/>
+       <widget class="TLineEdit" name="gpxFolderLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -167,9 +167,9 @@
     </widget>
    </item>
    <item row="7" column="0" colspan="3">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="simStatus">
      <property name="text">
-      <string>Simulation status</string>
+      <string/>
      </property>
      <property name="margin">
       <number>6</number>
@@ -178,6 +178,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>tlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

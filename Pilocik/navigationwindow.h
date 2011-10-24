@@ -16,7 +16,7 @@ class NavigationWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    GPSreceiver gps;
+    GPSreceiver* gps;
     explicit NavigationWindow(QWidget *parent = 0);
     ~NavigationWindow();
     void    resizeEvent ( QResizeEvent * event );
@@ -24,6 +24,7 @@ public:
 
 private slots:
     void on_menuButton_clicked();
+    void on_trackingButton_clicked();
     void on_routeButton_clicked();
     void on_optionsButton_clicked();
     void on_gpsButton_clicked();
