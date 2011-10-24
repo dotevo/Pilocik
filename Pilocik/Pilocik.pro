@@ -69,6 +69,8 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/ost/ParserT.cpp \
     ../lib/sosmscout/src/osmscout/ost/ScannerT.cpp \
     ../lib/sosmscout/src/osmscout/MapPainter.cpp \
+    ../lib/sosmscout/src/osmscout/Partitioning.cpp \
+    ../lib/sosmscout/src/osmscout/Searching.cpp \
     mappainterqt.cpp \
     twidget.cpp \
     gpsinfowindow.cpp \
@@ -126,6 +128,24 @@ Debug:UI_DIR = ../build/debug/.ui
 
 RESOURCES += \
     icons.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

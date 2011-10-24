@@ -21,8 +21,14 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MapRenderWidget(QWidget *parent = 0);
+    explicit MapRenderWidget(int W = 0, int H = 0, QWidget *parent = 0, double latC = 0, double lonC = 0);
     ~MapRenderWidget();
+
+    /**
+      @brief Initializing variables depending of the operating system.
+      */
+    void init(int W = 0, int H = 0, double latC = 0, double lonC = 0);
+
     /**
       @brief Drawing map.
       @param rect rectangle using during rendering transformated map.
@@ -33,6 +39,11 @@ public:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+
+    /**
+      @brief Settings coordinates.
+      */
+    void setCoordinates(double lonPar, double latPar);
 
     /**
       @brief Setting zoom value.
@@ -79,11 +90,6 @@ private:
     double scalingLevel;
     int startZoom;  // mouse is pressed, 'catching' slider
     int finishZoom; // mouse is released, 'releasing' slider
-
-    /**
-      @brief Initializing variables depending of the operating system.
-      */
-    void init();
 
 private slots:
     void positionUpdate(GPSdata gps_data);

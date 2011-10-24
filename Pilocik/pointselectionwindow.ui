@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>272</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,7 +56,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="poiTab">
       <attribute name="title">
@@ -264,7 +264,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="countryLineEdit"/>
+           <widget class="QLineEdit" name="countryLineEdit">
+            <property name="text">
+             <string>Polska</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -390,7 +394,16 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
           <item>
-           <widget class="QListView" name="listView_2"/>
+           <widget class="QTreeWidget" name="treeWidget">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>

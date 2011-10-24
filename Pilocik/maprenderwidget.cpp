@@ -20,16 +20,17 @@
 #include <osmscout/StyleConfigLoader.h>
 #include <osmscout/Util.h>
 #include <osmscout/MapPainterQt.h>
+#include <osmscout/Node.h>
 
-MapRenderWidget::MapRenderWidget(QWidget* parent) :
-    QWidget(parent)
+MapRenderWidget::MapRenderWidget(int W, int H, QWidget *parent, double latC, double lonC)
+   : QWidget(parent)
 {
-    init();
+    init(W, H, latC, lonC);
 }
 
 MapRenderWidget::~MapRenderWidget() { }
 
-void MapRenderWidget::init()
+void MapRenderWidget::init(int W, int H, double latC, double lonC)
 {
     moving = false;
     scaling = false;
@@ -58,10 +59,10 @@ void MapRenderWidget::init()
 
     //width = 640;
     //height = 480;
-    width = 673;
-    height = 378;
-    lat = 51.1;
-    lon = 17.03;
+    width = W != 0 ? W : 673;
+    height = H != 0 ? H : 378;
+    lat = latC != 0 ? latC : 51.1;
+    lon = lonC != 0 ? lonC : 17.03;
     zoom = 2*2*2*2*1024;
 
     pixmap = QPixmap(width, height);
@@ -70,7 +71,7 @@ void MapRenderWidget::init()
 
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
     gps = &(navi->gps);
-    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+    //connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::forceRepaint()
@@ -78,6 +79,11 @@ void MapRenderWidget::forceRepaint()
     noPaint = false;
     repaint();
     noPaint = true;
+}
+void MapRenderWidget::setCoordinates(double latPar, double lonPar)
+{
+    lon = lonPar;
+    lat = latPar;
 }
 
 void MapRenderWidget::setZoom(int value)
@@ -111,8 +117,12 @@ void MapRenderWidget::setFinishZoom(int value)
 
 void MapRenderWidget::paintEvent(QPaintEvent *e)
 {
-    if (!noPaint)
+    if (!noPaint){
         DrawMap(e->rect());
+        //if(debugPartitions)
+        //    DrawPartitions();
+    }
+
 }
 
 void MapRenderWidget::mousePressEvent(QMouseEvent *e)
@@ -158,6 +168,7 @@ int MapRenderWidget::DrawMap(QRect rect)
     // std::cerr << "DrawMapQt <map directory> <style-file> <width> <height> <lon> <lat> <zoom> <output>" << std::endl;
 //    std::cerr << "Default values!";
 
+    std::cerr << lon << " | " << lat << std::endl;
     if (moving)
     {
         int x = translatePoint.x();
@@ -222,6 +233,7 @@ int MapRenderWidget::DrawMap(QRect rect)
                                 projection.GetLatMax(),
                                 projection.GetMagnification(),
                                 searchParameter,
+                                false,
                                 data.nodes,
                                 data.ways,
                                 data.areas,
@@ -242,6 +254,7 @@ int MapRenderWidget::DrawMap(QRect rect)
 
             QPainter *windowPainter = new QPainter(this);
             windowPainter->drawPixmap(0, 0, pixmap);
+
         }
         else {
             std::cout << "Cannot create QPainter" << std::endl;
