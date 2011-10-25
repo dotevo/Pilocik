@@ -22,13 +22,10 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
-<<<<<<< HEAD
     explicit MapRenderWidget(int W = 0, int H = 0, QWidget *parent = 0, double latC = 0, double lonC = 0);
-=======
     typedef QWidget widget;
 
     explicit MapRenderWidget(QWidget *parent = 0);
->>>>>>> 7bc3a07105d8c86776d07b9cf2833aa36141b482
     ~MapRenderWidget();
 
     /**
