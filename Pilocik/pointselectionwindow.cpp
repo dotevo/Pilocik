@@ -18,9 +18,6 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
 
     ui->treeWidget->setColumnCount(3);
     ui->treeWidget->hideColumn(0);
-    //ui->treeWidget->resizeColumnToContents(1);
-    ui->treeWidget->resizeColumnToContents(2);
-    //ui->treeWidget->adjustSize();
 
     QStringList headers;
     headers << "Id" << "Name" << "Info";
@@ -62,6 +59,8 @@ void PointSelectionWindow::on_cityLineEdit_textChanged(const QString &text)
             item->setText(0, QString::number(regions.at(i).reference.GetId()));
             item->setText(1, regions.at(i).name);
 
+            ui->treeWidget->resizeColumnToContents(1);
+
             ui->treeWidget->setCurrentItem(item);
         }
     }
@@ -85,37 +84,19 @@ void PointSelectionWindow::on_streetLineEdit_textChanged(const QString &text)
             item = new QTreeWidgetItem(ui->treeWidget, ui->treeWidget->currentItem());
         }
 
-        osmscout::ObjectRef loc = locations.at(i).reference.front();
+        osmscout::ObjectRef loc = locations.at(i).references.front();
         item->setText(0, QString::number(loc.GetId()));
         item->setText(1, locations.at(i).name.toUtf8());
         item->setText(2, "INFO");
+
+        ui->treeWidget->resizeColumnToContents(1);
 
     }
 }
 
 void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    if (column == 2) {
-        InfoWindow *infoWin = new InfoWindow(this);
-
-        osmscout::WayRef wayRef;
-
-        int id = item->text(0).toInt();
-        searching->searchWay(id, wayRef);
-
-        infoWin->setName(QString::fromStdString(wayRef.Get()->GetName()));
-
-        double lon;
-        double lat;
-        wayRef.Get()->GetCenter(lat, lon);
-
-        infoWin->setVisible(true);
-
-        infoWin->setCoordinates(lat, lon);
-        infoWin->setMapRender();
-
-    }
-    else {
+    if (column == 1) {
         // TODO:
         //ui->cityLineEdit->setText(item->text(column));
 
@@ -136,7 +117,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
             break;
 
         case STREET_SEARCH:
-            std::list<osmscout::ObjectRef> refer = locations.at(0).reference;
+            std::list<osmscout::ObjectRef> refer = locations.at(0).references;
 
             QVector<osmscout::Point> points;
 
@@ -179,5 +160,27 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
 
         ui->treeWidget->clear();
     }
+}
 
+void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == 2) {
+        InfoWindow *infoWin = new InfoWindow(this);
+
+        osmscout::WayRef wayRef;
+
+        int id = item->text(0).toInt();
+        searching->searchWay(id, wayRef);
+
+        infoWin->setName(QString::fromStdString(wayRef.Get()->GetName()));
+
+        double lon;
+        double lat;
+        wayRef.Get()->GetCenter(lat, lon);
+
+        infoWin->setVisible(true);
+
+        infoWin->setCoordinates(lat, lon);
+        infoWin->setMapRender();
+    }
 }

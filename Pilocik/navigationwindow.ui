@@ -441,9 +441,9 @@ border-top-right-radius: 10px;
     </widget>
    </widget>
    <zorder>sliderButton</zorder>
-   <zorder>menuPanel</zorder>
-   <zorder>widget</zorder>
    <zorder>menuButton</zorder>
+   <zorder>widget</zorder>
+   <zorder>menuPanel</zorder>
   </widget>
  </widget>
  <customwidgets>

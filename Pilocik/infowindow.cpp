@@ -27,6 +27,8 @@ void InfoWindow::setCoordinates(const double lat, const double lon)
 
     ui->lonText->setText(QString::number(lon));
     ui->latText->setText(QString::number(lat));
+
+    ui->mapWidget->setCoordinates(lat, lon);
 }
 
 void InfoWindow::setMapRender()
@@ -34,8 +36,8 @@ void InfoWindow::setMapRender()
     int width = ui->mapWidget->geometry().width();
     int height = ui->mapWidget->geometry().height();
 
-    ui->mapWidget = new MapRenderWidget(width, height, this, lon, lat);
-    ui->mapWidget->setCoordinates(lat, lon);
+    ui->mapWidget = new MapRenderWidget(width, height, this, lat, lon);
+    //ui->mapWidget->setCoordinates(lat, lon);
 
     ui->mapWidget->forceRepaint();
 }

@@ -105,7 +105,6 @@ FORMS    += \
     widgets/tclockwidget.ui \
     navigationwindow.ui \
     routewindow.ui \
-    pointselectionwindow.ui \
     infowindow.ui \
     optionswindow.ui \
     mapoptionswindow.ui \
@@ -113,7 +112,8 @@ FORMS    += \
     gpsoptionswindow.ui \
     keyboardwindow.ui \
     gpsinfowindow.ui \
-    widgets/tspeedmeterwidget.ui
+    widgets/tspeedmeterwidget.ui \
+    pointselectionwindow.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -136,6 +136,14 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
+
+
+
+
+
 
 
 

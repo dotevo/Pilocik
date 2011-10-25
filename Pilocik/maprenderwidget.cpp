@@ -48,7 +48,8 @@ void MapRenderWidget::init(int W, int H, double latC, double lonC)
 {
     moving = false;
     scaling = false;
-    noPaint = true;
+    noPaint = false;
+    isDrawn = false;
     gpsActive = false;
     tracking = true;
 
@@ -67,8 +68,8 @@ void MapRenderWidget::init(int W, int H, double latC, double lonC)
     //height = 480;
     width = W != 0 ? W : 673;
     height = H != 0 ? H : 378;
-    lat = latC != 0 ? latC : 51.1;
-    lon = lonC != 0 ? lonC : 17.03;
+    //lat = latC != 0 ? latC : 51.1;
+    //lon = lonC != 0 ? lonC : 17.03;
     zoom = 2*2*2*2*1024;
     angle = 0;
 
@@ -78,7 +79,7 @@ void MapRenderWidget::init(int W, int H, double latC, double lonC)
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
 
     gps = navi->gps;
-    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+    //connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::setSize(QSize size)
@@ -100,6 +101,8 @@ void MapRenderWidget::setCoordinates(double latPar, double lonPar)
 {
     lon = lonPar;
     lat = latPar;
+
+    forceRepaint();
 }
 
 void MapRenderWidget::setZoom(int value)
@@ -137,17 +140,23 @@ void MapRenderWidget::repaint(){
 
 void MapRenderWidget::paintEvent(QPaintEvent *e)
 {
-    if (!noPaint){
-        DrawMap(e->rect());
+    if (isDrawn) {
+        if (!noPaint){
+            DrawMap(e->rect());
 
-        if(debugPartitions)
-            DrawPartitions();
-    }
-    else{
-        int x = translatePoint.x();
-        int y = translatePoint.y();
-        QPainter *windowPainter = new QPainter(this);
-        windowPainter->drawPixmap(x, y, pixmap);
+            if(debugPartitions)
+                DrawPartitions();
+        }
+        else{
+            int x = translatePoint.x();
+            int y = translatePoint.y();
+            QPainter *windowPainter = new QPainter(this);
+            windowPainter->drawPixmap(x, y, pixmap);
+        }
+    } else {
+        DrawMap(e->rect());
+        isDrawn = true;
+        noPaint = true;
     }
 }
 
@@ -181,6 +190,7 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e)
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
 {
+    std::cerr << "Mouse move";
     if (moving)
     {
         translatePoint = e->globalPos() - startPoint;
@@ -195,8 +205,10 @@ int MapRenderWidget::DrawMap(QRect rect)
     style = Settings::getInstance()->getMapStylePath();
     // std::cerr << "DrawMapQt <map directory> <style-file> <width> <height> <lon> <lat> <zoom> <output>" << std::endl;
     //    std::cerr << "Default values!";
-    if(map.size()==0)
+    if(map.size()==0) {
         return 1;
+    }
+
 
     std::cerr << lon << " | " << lat << std::endl;
     if (moving)
@@ -229,7 +241,7 @@ int MapRenderWidget::DrawMap(QRect rect)
         osmscout::DatabaseParameter databaseParameter;
         osmscout::Database          database(databaseParameter);
 
-		if (!database.Open((const char*)map.toAscii())) {
+        if (!database.Open((const char*)map.toAscii())) {
             std::cerr << "Cannot open database" << std::endl;
             return 1;
         }
@@ -269,7 +281,6 @@ int MapRenderWidget::DrawMap(QRect rect)
                                 projection.GetLatMax(),
                                 projection.GetMagnification(),
                                 searchParameter,
-                                false,
                                 data.nodes,
                                 data.ways,
                                 data.areas,
