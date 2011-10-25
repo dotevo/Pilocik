@@ -36,7 +36,7 @@ void InfoWindow::setMapRender()
     int width = ui->mapWidget->geometry().width();
     int height = ui->mapWidget->geometry().height();
 
-    ui->mapWidget = new MapRenderWidget(width, height, this, lat, lon);
+    ui->mapWidget = new MapRenderWidget(this, width, height);
     //ui->mapWidget->setCoordinates(lat, lon);
 
     ui->mapWidget->forceRepaint();

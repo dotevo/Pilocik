@@ -23,10 +23,10 @@
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Node.h>
 
-MapRenderWidget::MapRenderWidget(int W, int H, QWidget *parent, double latC, double lonC)
+MapRenderWidget::MapRenderWidget(QWidget *parent, int W, int H)
    : QWidget(parent)
 {
-    init(W, H, latC, lonC);
+    init(W, H);
 }
 
 MapRenderWidget::~MapRenderWidget()
@@ -44,7 +44,7 @@ bool MapRenderWidget::getTracking()
     return tracking;
 }
 
-void MapRenderWidget::init(int W, int H, double latC, double lonC)
+void MapRenderWidget::init(int W, int H)
 {
     moving = false;
     scaling = false;
@@ -64,12 +64,9 @@ void MapRenderWidget::init(int W, int H, double latC, double lonC)
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
-    //width = 640;
-    //height = 480;
     width = W != 0 ? W : 673;
     height = H != 0 ? H : 378;
-    //lat = latC != 0 ? latC : 51.1;
-    //lon = lonC != 0 ? lonC : 17.03;
+
     zoom = 2*2*2*2*1024;
     angle = 0;
 
