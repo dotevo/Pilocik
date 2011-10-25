@@ -144,9 +144,18 @@ void Settings::configureProfile(QString profile)
     //Configure map settings
 
     QDomElement mapSettings = profileSettings.firstChildElement("map");
-    lat = mapSettings.firstChildElement("lat").text().toDouble();
-    lon = mapSettings.firstChildElement("lon").text().toDouble();
-    zoom = mapSettings.firstChildElement("zoom").text().toInt();
+    if(mapSettings.hasAttribute("lat"))
+        lat = mapSettings.firstChildElement("lat").text().toDouble();
+    else
+        lat =51.1;
+    if(mapSettings.hasAttribute("lon"))
+        lon = mapSettings.firstChildElement("lon").text().toDouble();
+    else
+        lon =17.03;
+    if(mapSettings.hasAttribute("zoom"))
+        zoom = mapSettings.firstChildElement("zoom").text().toInt();
+    else
+        zoom=16384;
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)
