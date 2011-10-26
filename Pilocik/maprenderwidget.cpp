@@ -64,11 +64,16 @@ void MapRenderWidget::init(int W, int H)
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
-    width = W != 0 ? W : 673;
-    height = H != 0 ? H : 378;
+    lat = 51.01;
+    lon = 17.04;
 
     zoom = 2*2*2*2*1024;
     angle = 0;
+
+    width = W != 0 ? W : 673;
+    height = H != 0 ? H : 378;
+
+    setSize(QSize(width, height));
 
     pixmap = QPixmap(width, height);
     pixmap.fill(QColor(200, 200, 200));
@@ -208,6 +213,7 @@ int MapRenderWidget::DrawMap(QRect rect)
 
 
     std::cerr << lon << " | " << lat << std::endl;
+    std::cerr << width << " | " << height << std::endl;
     if (moving)
     {
         int x = translatePoint.x();

@@ -22,6 +22,12 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
+    /**
+      @brief Creating map render widget.
+      @param parent Parent widget.
+      @param W Width of rendering area.
+      @param H Height of rendering area.
+      */
     explicit MapRenderWidget(QWidget *parent = 0, int W = 0, int H = 0);
     typedef QWidget widget;
 
@@ -37,6 +43,7 @@ public:
       @param rect rectangle using during rendering transformated map.
       */
     int DrawMap(QRect rect);
+
     /**
      * @brief
      * @param

@@ -2,11 +2,15 @@
 #define INFOWINDOW_H
 
 #include <QFrame>
+#include <QSize>
 
 namespace Ui {
     class InfoWindow;
 }
 
+/**
+  @brief It is window with information about a object.
+  */
 class InfoWindow : public QFrame
 {
     Q_OBJECT
@@ -15,12 +19,46 @@ public:
     explicit InfoWindow(QWidget *parent = 0);
     ~InfoWindow();
 
+    /**
+      @brief Settings coordinates for map render widget with preview of object.
+      @param lat The latitude.
+      @param lon The longitude.
+      */
     void setCoordinates(const double lat, const double lon);
+
+    /**
+      @brief Settings size of render map area.
+      @param size Size of map render widget in UI.
+      DOESN'T WORK NOW!!!! I don't know why :(
+      */
+    void setMapRenderAreaSize(QSize size);
+
+    /**
+      @brief Settings label text for object name.
+      @param name Name of object.
+      */
     void setName(const QString name);
 
+    /**
+      @brief Creating map render widget with preview of object.
+      */
     void setMapRender();
 
+    /**
+      @brief Gets size of map render widget.
+      @return Size of map render widget.
+      */
+    QSize getSize();
+
+    /**
+      @brief Forcing map render repaint.
+      */
+    void forceMapWidgetRepaint();
+
 private slots:
+    /**
+      @brief Back button clicked. Closing info window.
+      */
     void on_backButton_clicked();
 
 private:

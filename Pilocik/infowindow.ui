@@ -113,8 +113,11 @@
      </item>
      <item>
       <widget class="MapRenderWidget" name="mapWidget" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="styleSheet">
-        <string notr="true">font: 75 14pt &quot;Ubuntu&quot;;</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
