@@ -454,7 +454,7 @@ border-bottom-left-radius: 10px;
       <number>10</number>
      </property>
      <property name="maximum">
-      <number>10000</number>
+      <number>100000</number>
      </property>
      <property name="singleStep">
       <number>10</number>

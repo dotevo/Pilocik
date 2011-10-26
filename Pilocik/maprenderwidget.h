@@ -10,6 +10,9 @@
 #include <QRect>
 #include <QString>
 #include <osmscout/MapPainterQt.h>
+#include <osmscout/Database.h>
+#include <osmscout/StyleConfig.h>
+#include <osmscout/MapPainterQt.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -100,6 +103,12 @@ public:
     void setSize(QSize size);
 
 private:
+    osmscout::DatabaseParameter databaseParameter;
+    osmscout::Database          *database;
+    osmscout::StyleConfig       *styleConfig;
+
+    osmscout::MapPainterQt        *mapPainter;
+
     GPSreceiver* gps;
     QString   map;
     QString   style;

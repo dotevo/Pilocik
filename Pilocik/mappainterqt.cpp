@@ -24,6 +24,10 @@ namespace osmscout {
     for (size_t i=0; i<sin.size(); i++) {
       sin[i]=std::sin(M_PI/180*i/(sin.size()/360));
     }
+
+    images = new std::vector<QImage>();
+
+
   }
 
   MapPainterQt::~MapPainterQt()
@@ -56,34 +60,36 @@ namespace osmscout {
                              const MapParameter& parameter,
                              IconStyle& style)
   {
-    if (style.GetId()==std::numeric_limits<size_t>::max()) {
-      return false;
-    }
+      if (images->size() != 24) {
+        if (style.GetId()==std::numeric_limits<size_t>::max()) {
+          return false;
+        }
 
-    if (style.GetId()!=0) {
-      return true;
-    }
+        if (style.GetId()!=0) {
+          return true;
+        }
 
-    std::list<std::string> iconsPaths;
-    iconsPaths.push_back(":/png/images/icons/14x14/standard/");
+        std::list<std::string> iconsPaths;
+        iconsPaths.push_back(":/png/images/icons/14x14/standard/");
 
-    //for (std::list<std::string>::const_iterator path=parameter.GetIconPaths().begin();
-    for (std::list<std::string>::const_iterator path=iconsPaths.begin();
-         path!=iconsPaths.end();
-         ++path) {
+        //for (std::list<std::string>::const_iterator path=parameter.GetIconPaths().begin();
+        for (std::list<std::string>::const_iterator path=iconsPaths.begin();
+             path!=iconsPaths.end();
+             ++path) {
 
-      std::string filename=*path+style.GetIconName()+".png";
+          std::string filename=*path+style.GetIconName()+".png";
 
-      QImage image;
+          QImage image;
 
-      if (image.load(filename.c_str())) {
-        images.resize(images.size()+1,image);
-        style.SetId(images.size());
-        //std::cout << "Loaded image " << filename << " => id " << style.GetId() << std::endl;
+          if (image.load(filename.c_str())) {
+            images->resize(images->size()+1,image);
+            style.SetId(images->size());
+            //std::cout << "Loaded image " << filename << " => id " << style.GetId() << std::endl;
 
-        return true;
+            return true;
+          }
+        }
       }
-    }
 
     std::cerr << "ERROR while loading icon file '" << style.GetIconName() << "'" << std::endl;
     style.SetId(std::numeric_limits<size_t>::max());
@@ -118,9 +124,9 @@ namespace osmscout {
       QImage image;
 
       if (image.load(filename.c_str())) {
-        images.resize(images.size()+1,image);
-        style.SetPatternId(images.size());
-        patterns.resize(images.size());
+        images->resize(images->size()+1,image);
+        style.SetPatternId(images->size());
+        patterns.resize(images->size());
 
         patterns[patterns.size()-1].setTextureImage(image);
 
@@ -331,12 +337,20 @@ namespace osmscout {
   {
     assert(style->GetId()>0);
     assert(style->GetId()!=std::numeric_limits<size_t>::max());
-    assert(style->GetId()<=images.size());
-    assert(!images[style->GetId()-1].isNull());
+    assert(style->GetId()<=images->size());
 
-    painter->drawImage(QPointF(x-images[style->GetId()-1].width()/2,
+    //assert(!images[style->GetId()-1].isNull());
+    assert(!images->at(style->GetId()-1).isNull());
+
+
+/*
+painter->drawImage(QPointF(x-images[style->GetId()-1].width()/2,
                                y-images[style->GetId()-1].height()/2),
                        images[style->GetId()-1]);
+*/
+    painter->drawImage(QPointF(x-images->at(style->GetId()-1).width()/2,
+                                   y-images->at(style->GetId()-1).height()/2),
+                           images->at(style->GetId()-1));
   }
 
   void MapPainterQt::DrawSymbol(const SymbolStyle* style, double x, double y)
