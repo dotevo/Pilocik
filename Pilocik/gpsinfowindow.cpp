@@ -26,6 +26,7 @@ GPSInfoWindow::~GPSInfoWindow()
 void GPSInfoWindow::on_gpsInfoBackButton_clicked()
 {
     setVisible(false);
+    emit windowClosed();
 }
 
 void GPSInfoWindow::infoUpdate(GPSdata gps_data)

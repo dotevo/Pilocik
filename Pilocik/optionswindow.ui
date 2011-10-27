@@ -20,7 +20,7 @@
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="0" column="1">
     <widget class="QPushButton" name="mapButton">
      <property name="minimumSize">
       <size>
@@ -29,11 +29,11 @@
       </size>
      </property>
      <property name="text">
-      <string>Map</string>
+      <string>MAP OPTIONS</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="0" column="3">
     <widget class="QPushButton" name="GPSButton">
      <property name="minimumSize">
       <size>
@@ -46,7 +46,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
+   <item row="0" column="4">
     <widget class="QPushButton" name="userButton">
      <property name="minimumSize">
       <size>
@@ -55,11 +55,11 @@
       </size>
      </property>
      <property name="text">
-      <string>User</string>
+      <string>PROFILE OPTIONS</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -72,7 +72,7 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="0">
+   <item row="2" column="1">
     <widget class="QPushButton" name="backButton">
      <property name="minimumSize">
       <size>
@@ -81,7 +81,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Back</string>
+      <string>BACK</string>
      </property>
     </widget>
    </item>

@@ -24,6 +24,10 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
     ui->treeWidget->setHeaderLabels(headers);
     ui->treeWidget->header()->hide();
 
+    connect(ui->nameLineEdit, SIGNAL(tLineOpened()),
+            this, SLOT(hide()));
+    connect(ui->nameLineEdit, SIGNAL(tLineClosed()),
+            this, SLOT(show()));
     searching = new osmscout::Searching();
 }
 
@@ -183,4 +187,8 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         infoWin->setCoordinates(lat, lon);
         infoWin->setMapRender();
     }
+}
+
+void PointSelectionWindow::on_poiOkButton_clicked() {
+    emit ok_clicked();
 }

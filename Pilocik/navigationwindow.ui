@@ -10,6 +10,9 @@
     <height>378</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::PreventContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -19,16 +22,14 @@ QWidget &gt; QTabWidget{
 	background: #3c3c3c;
 }
 
-
 QFrame{
-	background:
-qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 #282828,
-                                 stop: 0.49 #464646,
-                                 stop: 0.5 #292929,
-                                 stop: 1 #3c3c3c);
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 rgba(42, 42, 42, 200),
+                                 stop: 0.49 rgba(74, 74, 74, 200),
+                                 stop: 0.5 rgba(16, 16, 16, 200),
+                                 stop: 1 rgba(42, 42, 42, 200));
    border-radius: 10px;
-   border: 2px solid rgb(70, 70, 70);
+    border: 1px solid rgba(106, 106, 106, 200);
 }
 
 QGraphicsView{
@@ -36,7 +37,6 @@ QGraphicsView{
    border-radius: 0px;
    border: 0px solid rgb(70, 70, 70);
 }
-
 
 QLabel {
 	color: #FFF;
@@ -54,26 +54,27 @@ QPushButton{
                                  stop: 1 rgba(42, 42, 42, 200));
     border-radius: 10px;
 	color: #FFF;
-    border: 1px solid rgba(96, 96, 96, 200);
+    border: 1px solid rgba(106, 106, 106, 200);
     width: 90px
 }
 
 QPushButton:hover{
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 rgba(48, 155, 0,150),
-                                 stop: 0.49 rgba(78,170, 37,150),
-                                 stop: 0.5 rgba(19,28, 10,150),
-                                 stop: 1 rgba(19,58, 0,150));
-    border: 1px solid rgba(66, 66, 66, 200);
+                                 stop: 0 rgba(62, 62, 82, 200),
+                                 stop: 0.49 rgba(94, 94, 164, 200),
+                                 stop: 0.5 rgba(26, 26, 46, 200),
+                                 stop: 1 rgba(62, 62, 82, 200));
+    border: 1px solid rgba(94, 94, 164, 200);
 	color: #BBB;
 }
 
 QPushButton:pressed{
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 rgba(42, 42, 102, 250),
-                                 stop: 0.49 rgba(74, 74, 184, 250),
-                                 stop: 0.5 rgba(16, 16, 56, 250),
-                                 stop: 1 rgba(42, 42, 102, 250));
+                                 stop: 0 rgba(42, 42, 102, 200),
+                                 stop: 0.49 rgba(74, 74, 184, 200),
+                                 stop: 0.5 rgba(16, 16, 56, 200),
+                                 stop: 1 rgba(42, 42, 102, 200));
+    border: 1px solid rgba(74, 74, 184, 200);
 	color: #DDD;
 }
 
@@ -88,18 +89,16 @@ QPushButton:disabled{
 }
 
 #menuPanel{
-background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+background: rgba(50,50,50,220);
+/* qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                  stop: 0 rgba(0, 0, 0, 230),
-                                 stop: 1 rgba(0, 0, 0, 100));
-border-top-left-radius: 0px;
-border-top-right-radius: 0px;
+                                 stop: 1 rgba(0, 0, 0, 100));*/
+border-bottom-left-radius: 0px;
+border-bottom-right-radius: 0px;
 }
 
-
-
-
 #routeFrame{
-	background: rgba(50,50,50,220);
+	background: rgba(50,50,50,200);
    border-radius: 0px;
 }
 
@@ -121,9 +120,9 @@ QListView{
 
 /*RADIOBUTTON*/
 QRadioButton{
-color: #DDD;
-font: bold ;
-font-size: 12px;
+	color: #DDD;
+	font: bold ;
+	font-size: 12px;
 }
 
  QRadioButton::indicator{
@@ -133,26 +132,52 @@ font-size: 12px;
  QRadioButton::indicator::checked {
 	background: qradialgradient(cx:0, cy:0, radius: 1,
                  fx:0.5, fy:0.5, stop:0 #f9f9f9, stop:1 #a3a3a3);
-   border-radius: 11px;  	
-   border: 1px solid rgb(40, 40,40 );
+	border-radius: 11px;
+    border: 1px solid rgba(106, 106, 106, 200);
  }
 
  QRadioButton::indicator::unchecked {
 	background: qradialgradient(cx:0, cy:0, radius: 1,
                  fx:0.3, fy:0.3, stop:0 #222, stop:1 #444);
-   border-radius: 11px;  	
-   border: 1px solid rgb(40, 40,40 );
+	border-radius: 11px;
+    border: 1px solid rgba(96, 96, 96, 200);
+ }
+/*=======================================*/
+
+/*CHECKBOX*/
+QCheckBox{
+	color: #DDD;
+	font: bold ;
+	font-size: 12px;
+}
+
+QCheckBox::indicator{
+	width: 20px;
+	height: 20px;
+}
+QCheckBox::indicator::checked {
+	background: qradialgradient(cx:0, cy:0, radius: 1,
+									fx:0.5, fy:0.5, stop:0 #f9f9f9, stop:1 #a3a3a3);
+	border-radius: 4px;
+    border: 1px solid rgba(96, 96, 96, 200);
+ }
+
+QCheckBox::indicator::unchecked {
+	background: qradialgradient(cx:0, cy:0, radius: 1,
+									fx:0.3, fy:0.3, stop:0 #222, stop:1 #444);
+	border-radius: 4px;
+    border: 1px solid rgba(96, 96, 96, 200);
  }
 /*=======================================*/
 
 QComboBox{
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 #d3d3d3,
-                                 stop: 1 #f9f9f9);
-   border-radius: 8px;  
-   border: 1px solid rgb(180, 180, 180 );
-font: bold ;
-font-size: 12px;
+									 stop: 0 #d3d3d3,
+									 stop: 1 #f9f9f9);
+	border-radius: 8px;  
+	border: 1px solid rgb(180, 180, 180 );
+	font: bold ;
+	font-size: 12px;
 }
 
 QComboBox:editable {
@@ -194,61 +219,321 @@ QComboBox QAbstractItemView {
                                  stop: 0 #d3d3d3,
                                  stop: 1 #f9f9f9);
    border-radius: 0px;  
-
  }
-
-/*TABWIDGET*/
-QTabWidget{     border: 1px solid #000;}
- QTabWidget::pane {border-top: 0px solid #000;}
- QTabWidget::tab-bar {left: 5px;}
-
-
- QTabBar::tab {
-	background: rgba(0,0,0,0);
-     border: 1px solid #EEE;
-     border-top: 0px solid #000;
-     border-bottom: 0px solid #000;
-     min-width: 100px;
-     padding: 4px;
-     color: white;
-	font-weight: bold;
- }
-
-
- QTabBar::tab:selected {
-	font-size: 16px;
- }
-
 
 
 /*SPECYFIC!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 /*RouteWindow*/
-#toButton,#fromButton,#toClrButton,#fromClrButton,#nearestButton,#nearestClrButton{
+#toButton,#fromButton,#nearestButton{
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 #d3d3d3,
-                                 stop: 1 #f9f9f9);
-   border-radius: 8px;  
-   border: 1px solid rgb(180, 180, 180 );
-   color:#000;
+									stop: 0 #d3d3d3,
+									stop: 1 #f9f9f9);
+	border-radius: 8px;  
+	border: 1px solid rgb(180, 180, 180 );
+	color:#000;
 }
 
-#toButton:pressed,#fromButton:pressed,#toClrButton:pressed,#fromClrButton:pressed,#nearestButton:pressed,#nearestClrButton:pressed{
+#toButton:pressed,#fromButton:pressed,#nearestButton:pressed,#nearestClrButton:pressed{
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                 stop: 0 #a3a3a3,
-                                 stop: 1 #c9c9c9);
+									stop: 0 #a3a3a3,
+									stop: 1 #c9c9c9);
 }
 QFullScreenFrame{
 	background: rgba(50,50,50,200);
-   border-radius: 0px;
+	border-radius: 0px;
 }
+
+/*SLIDER*/
+QSlider::groove:vertical {
+	width: 4px;
+	margin: 6px;
+	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+									stop: 0 #d3d3d3,
+									stop: 1 #f9f9f9);
+	border-radius: 2px;  
+	border: 1px solid rgb(180, 180, 180 );
+ }
+
+ QSlider::handle:vertical {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #d3d3d3,
+                                 stop: 1 #f9f9f9);
+   border-radius: 4px;  
+   border: 1px solid rgb(180, 180, 180 );
+   	color:#000;
+     height:8px;
+     margin: 0 -6px; /* expand outside the groove */
+ }
+/*=============================================================*/
+
+/*TABWIDGET*/
+#tabWidget {
+	background: rgba(255,0,0,200);
+}
+QTabWidget {     
+	background: rgba(255,0,0,200);
+}
+QTabWidget::pane {
+	background: rgba(255,0,0,200);
+}
+ QTabWidget::tab-bar {
+	background: rgba(255,0,0,200);
+	left: 5px;
+ }
+ QTabBar::tab {
+	background: rgba(0,0,0,0);
+	border: 1px solid #EEE;
+	border-top: 0px solid #000;
+	border-bottom: 0px solid #000;
+	min-width: 100px;
+	padding: 4px;
+	color: white;
+	font-weight: bold;
+ }
+ QTabBar::tab:selected {
+	font-size: 16px;
+ }
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="menuButton">
+   <widget class="MapRenderWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>330</y>
+      <y>0</y>
+      <width>673</width>
+      <height>378</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="trackingButton">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>130</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#trackingButton{
+border-top-left-radius: 10px;
+border-bottom-left-radius: 0px;
+border-bottom-right-radius: 0px;
+border-top-right-radius: 10px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Disable tracking</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="menuPanel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>661</width>
+      <height>88</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="routeButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/png/images/icons/64x64/routing_ico.png</normaloff>:/png/images/icons/64x64/routing_ico.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeatInterval">
+        <number>100</number>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="8">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Minimum</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>15</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="gpsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/png/images/icons/64x64/gps_ico.png</normaloff>:/png/images/icons/64x64/gps_ico.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="optionsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/png/images/icons/64x64/settings_ico.png</normaloff>:/png/images/icons/64x64/settings_ico.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="creditsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/png/images/icons/64x64/user_ico.png</normaloff>:/png/images/icons/64x64/user_ico.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="7">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="sliderButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>130</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#sliderButton{
+border-radius: 0px;
+border-top-left-radius: 10px;
+border-bottom-left-radius: 0px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>&lt;-&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="menuButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -266,184 +551,6 @@ border-top-right-radius: 10px;
      <string>Menu</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="sliderButton">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>330</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#sliderButton{
-border-radius: 0px;
-border-top-left-radius: 10px;
-border-bottom-left-radius: 10px;
-}
-</string>
-    </property>
-    <property name="text">
-     <string>&lt;-&gt;</string>
-    </property>
-   </widget>
-   <widget class="QFrame" name="menuPanel">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>421</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="routeButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Route</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="gpsButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>GPS</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="optionsButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Options</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="creditsButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Credits</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Exit</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
-   <widget class="MapRenderWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>673</width>
-      <height>378</height>
-     </rect>
-    </property>
-    <widget class="QSlider" name="zoomSlider">
-     <property name="geometry">
-      <rect>
-       <x>530</x>
-       <y>10</y>
-       <width>21</width>
-       <height>341</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>10</number>
-     </property>
-     <property name="maximum">
-      <number>10000</number>
-     </property>
-     <property name="singleStep">
-      <number>10</number>
-     </property>
-     <property name="value">
-      <number>10000</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="trackingButton">
-     <property name="geometry">
-      <rect>
-       <x>76</x>
-       <y>330</y>
-       <width>91</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#trackingButton{
-border-top-left-radius: 10px;
-border-bottom-left-radius: 0px;
-border-bottom-right-radius: 0px;
-border-top-right-radius: 10px;
-}
-</string>
-     </property>
-     <property name="text">
-      <string>Disable tracking</string>
-     </property>
-    </widget>
-   </widget>
-   <zorder>sliderButton</zorder>
-   <zorder>menuButton</zorder>
-   <zorder>widget</zorder>
-   <zorder>menuPanel</zorder>
   </widget>
  </widget>
  <customwidgets>
@@ -454,23 +561,8 @@ border-top-right-radius: 10px;
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
- <connections>
-  <connection>
-   <sender>pushButton_4</sender>
-   <signal>clicked()</signal>
-   <receiver>NavigationWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>350</x>
-     <y>55</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>336</x>
-     <y>188</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
+ <connections/>
 </ui>

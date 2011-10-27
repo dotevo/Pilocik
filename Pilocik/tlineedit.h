@@ -39,8 +39,13 @@ public:
     void setVisibleWidget(QWidget*widget);
 private:
     QWidget *visWidget; /**< TODO */
+
 public slots:
     void keyboardClosed(KeyboardWindow*win);
+
+signals:
+    void tLineOpened();
+    void tLineClosed();
 
 };
 

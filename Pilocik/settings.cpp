@@ -31,7 +31,7 @@ void Settings::loadSettings()
 
 void Settings::saveSettings()
 {
-    QFile file("settings.xml");
+    QFile file("../settings.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
@@ -71,6 +71,11 @@ void Settings::resetDefaultSettings()
             "           <widget name=\"SpeedMeter\">\n"
             "               <enabled>true</enabled>\n"
             "               <posx>5</posx>\n"
+            "               <posy>45</posy>\n"
+            "           </widget>\n"
+            "           <widget name=\"SliderMeter\">\n"
+            "               <enabled>true</enabled>\n"
+            "               <posx>400</posx>\n"
             "               <posy>45</posy>\n"
             "           </widget>\n"
             "       </widgets>\n"

@@ -62,6 +62,13 @@ public:
      * @param mode
      */
     void setMode(TMovableFrame::TMOVABLEMODE mode);
+    /**
+     * @brief
+     *
+     * @fn getMode
+     * @return mode
+     */
+    TMovableFrame::TMOVABLEMODE getMode();
 private:
     TMOVABLEMODE mode; /**< TODO */
     QPoint offset; /**< TODO */

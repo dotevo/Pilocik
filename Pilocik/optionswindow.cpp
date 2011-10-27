@@ -31,6 +31,7 @@ OptionsWindow::~OptionsWindow(){
 
 void OptionsWindow::on_backButton_clicked(){
     setVisible(false);
+    emit windowClosed();
 }
 
 void OptionsWindow::on_mapButton_clicked(){

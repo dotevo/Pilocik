@@ -28,6 +28,9 @@ private slots:
 
     void on_userButton_clicked();
 
+signals:
+    void windowClosed();
+
 private:
     Ui::OptionsWindow *ui;
     MapOptionsWindow * moWin;

@@ -13,6 +13,9 @@ void TMovableFrame::setMode(TMovableFrame::TMOVABLEMODE mode){
     this->blockSignals(true);
     this->mode=mode;
 }
+TMovableFrame::TMOVABLEMODE TMovableFrame::getMode() {
+    return mode;
+}
 
 void TMovableFrame::mousePressEvent(QMouseEvent* event)
 {

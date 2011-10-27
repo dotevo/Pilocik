@@ -67,7 +67,7 @@ void MapRenderWidget::init(int W, int H)
     width = W != 0 ? W : 673;
     height = H != 0 ? H : 378;
 
-    zoom = 2*2*2*2*1024;
+    //zoom = 2*2*2*2*1024;
     angle = 0;
 
     pixmap = QPixmap(width, height);
@@ -115,6 +115,11 @@ void MapRenderWidget::setZoom(int value)
 
     scaling = false;
     noPaint = true;
+}
+
+int MapRenderWidget::getZoom()
+{
+    return zoom;
 }
 
 void MapRenderWidget::setStartZoom(int value)

@@ -16,7 +16,7 @@ TClockWidget::TClockWidget(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
     timer->start(1000);
 
-    qDebug() << "parent_width " << parent;
+    //qDebug() << "parent_width " << parent;
 
     move(5, 5);
 }
