@@ -31,7 +31,7 @@ void Settings::loadSettings()
 
 void Settings::saveSettings()
 {
-    QFile file("../settings.xml");
+    QFile file("settings.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
     }
@@ -59,6 +59,7 @@ void Settings::resetDefaultSettings()
             "   <coreSettings>\n"
             "       <mapPath></mapPath>\n"
             "       <mapStylePath></mapStylePath>\n"
+            "       <layoutStylePath></layoutStylePath>\n"
             "       <simulationPath></simulationPath>\n"
             "   </coreSettings>\n"
             "   <profile name=\"default\">\n"
@@ -108,6 +109,7 @@ void Settings::configureProfile(QString profile)
     QDomElement coreSettingsNode = doc->firstChildElement("settings").firstChildElement("coreSettings");
     mapPath = coreSettingsNode.firstChildElement("mapPath").text();
     mapStylePath = coreSettingsNode.firstChildElement("mapStylePath").text();
+    layoutStylePath = coreSettingsNode.firstChildElement("layoutStylePath").text();
     simulationPath = coreSettingsNode.firstChildElement("simulationPath").text();
 
     //Loading profile settings from xml to local variables

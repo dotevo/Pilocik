@@ -27,6 +27,14 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     Settings::getInstance()->configureProfile("tc");
 
     ui->setupUi(this);
+
+    QFile layoutStyleFile(Settings::getInstance()->getLayoutStylePath());
+    if (!layoutStyleFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QString layoutStyle = layoutStyleFile.readAll();
+    this->setStyleSheet(layoutStyle);
+
     mapRenderer = ui->widget;
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
