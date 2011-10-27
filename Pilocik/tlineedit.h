@@ -44,8 +44,8 @@ public slots:
     void keyboardClosed(KeyboardWindow*win);
 
 signals:
-    void tLineOpened();
-    void tLineClosed();
+    void opened();
+    void closed();
 
 };
 

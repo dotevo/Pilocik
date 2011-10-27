@@ -18,6 +18,9 @@ public:
 private slots:
     void on_okButton_clicked();
 
+signals:
+    void closed();
+
 private:
     Ui::UserOptionsWindow *ui;
 };

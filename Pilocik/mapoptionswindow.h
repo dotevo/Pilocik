@@ -20,6 +20,9 @@ private slots:
 
     void on_backButton_clicked();
 
+signals:
+    void closed();
+
 private:
     Ui::MapOptionsWindow *ui;
 };

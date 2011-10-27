@@ -25,9 +25,7 @@ namespace osmscout {
       sin[i]=std::sin(M_PI/180*i/(sin.size()/360));
     }
 
-    images = new std::vector<QImage>();
-
-
+    images.clear();// = new std::vector<QImage>();
   }
 
   MapPainterQt::~MapPainterQt()
@@ -60,7 +58,7 @@ namespace osmscout {
                              const MapParameter& parameter,
                              IconStyle& style)
   {
-      if (images->size() != 24) {
+      if (images.size() != 24) {
         if (style.GetId()==std::numeric_limits<size_t>::max()) {
           return false;
         }
@@ -82,8 +80,8 @@ namespace osmscout {
           QImage image;
 
           if (image.load(filename.c_str())) {
-            images->resize(images->size()+1,image);
-            style.SetId(images->size());
+            images.resize(images.size()+1,image);
+            style.SetId(images.size());
             //std::cout << "Loaded image " << filename << " => id " << style.GetId() << std::endl;
 
             return true;
@@ -124,9 +122,9 @@ namespace osmscout {
       QImage image;
 
       if (image.load(filename.c_str())) {
-        images->resize(images->size()+1,image);
-        style.SetPatternId(images->size());
-        patterns.resize(images->size());
+        images.resize(images.size()+1,image);
+        style.SetPatternId(images.size());
+        patterns.resize(images.size());
 
         patterns[patterns.size()-1].setTextureImage(image);
 
@@ -337,10 +335,10 @@ namespace osmscout {
   {
     assert(style->GetId()>0);
     assert(style->GetId()!=std::numeric_limits<size_t>::max());
-    assert(style->GetId()<=images->size());
+    assert(style->GetId()<=images.size());
 
     //assert(!images[style->GetId()-1].isNull());
-    assert(!images->at(style->GetId()-1).isNull());
+    assert(!images.at(style->GetId()-1).isNull());
 
 
 /*
@@ -348,9 +346,9 @@ painter->drawImage(QPointF(x-images[style->GetId()-1].width()/2,
                                y-images[style->GetId()-1].height()/2),
                        images[style->GetId()-1]);
 */
-    painter->drawImage(QPointF(x-images->at(style->GetId()-1).width()/2,
-                                   y-images->at(style->GetId()-1).height()/2),
-                           images->at(style->GetId()-1));
+    painter->drawImage(QPointF(x-images.at(style->GetId()-1).width()/2,
+                                   y-images.at(style->GetId()-1).height()/2),
+                           images.at(style->GetId()-1));
   }
 
   void MapPainterQt::DrawSymbol(const SymbolStyle* style, double x, double y)

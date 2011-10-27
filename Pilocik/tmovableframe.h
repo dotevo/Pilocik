@@ -26,12 +26,12 @@ public:
         MOVING = 1
     };
 
-/**
- * @brief
- *
- * @fn TMovableFrame
- * @param scene
- */
+    /**
+     * @brief
+     *
+     * @fn TMovableFrame
+     * @param scene
+     */
     TMovableFrame(QWidget*parent);
 
     /**
@@ -67,8 +67,9 @@ public:
      *
      * @fn getMode
      * @return mode
-     */
+     */    
     TMovableFrame::TMOVABLEMODE getMode();
+    virtual void modeChanged(TMovableFrame::TMOVABLEMODE &mode){}
 private:
     TMOVABLEMODE mode; /**< TODO */
     QPoint offset; /**< TODO */

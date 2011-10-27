@@ -23,6 +23,7 @@ GPSOptionsWindow::~GPSOptionsWindow()
 void GPSOptionsWindow::on_okButton_clicked()
 {
     setVisible(false);
+    emit closed();
 }
 
 void GPSOptionsWindow::on_startSimButton_clicked()

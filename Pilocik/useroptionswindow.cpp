@@ -16,4 +16,5 @@ UserOptionsWindow::~UserOptionsWindow(){
 
 void UserOptionsWindow::on_okButton_clicked(){
     setVisible(false);
+    emit closed();
 }

@@ -25,9 +25,9 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
     ui->treeWidget->setHeaderLabels(headers);
     ui->treeWidget->header()->hide();
 
-    connect(ui->nameLineEdit, SIGNAL(tLineOpened()),
+    connect(ui->nameLineEdit, SIGNAL(opened()),
             this, SLOT(hide()));
-    connect(ui->nameLineEdit, SIGNAL(tLineClosed()),
+    connect(ui->nameLineEdit, SIGNAL(closed()),
             this, SLOT(show()));
     searching = new osmscout::Searching();
 }

@@ -14,12 +14,13 @@ class TSliderWidget : public TMovableFrame
 public:
     explicit TSliderWidget(QWidget *parent = 0);
     ~TSliderWidget();
+    typedef TMovableFrame frame;
+    void setMode(TMovableFrame::TMOVABLEMODE mode);
+    void modeChanged(TMovableFrame::TMOVABLEMODE& mode);
 
 private slots:
     void on_verticalSlider_valueChanged(int value);
-
     void on_verticalSlider_sliderPressed();
-
     void on_verticalSlider_sliderReleased();
 
 private:

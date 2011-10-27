@@ -19,7 +19,7 @@ void TLineEdit::focusInEvent ( QFocusEvent * e ){
                 this, SLOT(keyboardClosed(KeyboardWindow*)));
         connect(kb->textEdit,SIGNAL(textChanged (const QString)),
                 this, SLOT(setText(const QString)));
-        emit tLineOpened();
+        emit opened();
     }
 //#endif
 }
@@ -30,5 +30,5 @@ void TLineEdit::setVisibleWidget(QWidget*widget){
 
 void TLineEdit::keyboardClosed(KeyboardWindow*win){
     delete win;
-    emit tLineClosed();
+    emit closed();
 }

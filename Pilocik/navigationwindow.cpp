@@ -148,4 +148,5 @@ void NavigationWindow::menuClosedSlot() {
 
 void NavigationWindow::on_sliderButton_clicked() {
     TWidgetManager::getInstance()->changeMode();
+    ui->sliderButton->setText(ui->sliderButton->text().compare("<--->") ? "<--->" : "<>");
 }
