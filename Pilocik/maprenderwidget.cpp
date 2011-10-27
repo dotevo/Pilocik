@@ -46,6 +46,27 @@ bool MapRenderWidget::getTracking()
 
 void MapRenderWidget::init(int W, int H)
 {
+    map = Settings::getInstance()->getMapPath();
+    style = Settings::getInstance()->getMapStylePath();
+
+    if(map.size()==0) {
+        std::cerr << "It's not a map, it's a shit!" << std::endl;
+    }
+
+    database = new osmscout::Database(databaseParameter);
+
+    if (!database->Open((const char*)map.toAscii())) {
+        std::cerr << "Cannot open database" << std::endl;
+    }
+
+    styleConfig = new osmscout::StyleConfig(database->GetTypeConfig());
+
+    if (!osmscout::LoadStyleConfig((const char*)style.toAscii(),*(styleConfig))) {
+        std::cerr << "Cannot open style" << std::endl;
+    }
+
+    mapPainter = new osmscout::MapPainterQt();
+
     moving = false;
     scaling = false;
     noPaint = false;
@@ -64,11 +85,16 @@ void MapRenderWidget::init(int W, int H)
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
-    width = W != 0 ? W : 673;
-    height = H != 0 ? H : 378;
+    lat = 51.1;
+    lon = 17.03;
 
     //zoom = 2*2*2*2*1024;
     angle = 0;
+
+    width = W != 0 ? W : 673;
+    height = H != 0 ? H : 378;
+
+    setSize(QSize(width, height));
 
     pixmap = QPixmap(width, height);
     pixmap.fill(QColor(200, 200, 200));
@@ -203,16 +229,8 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
 
 int MapRenderWidget::DrawMap(QRect rect)
 {
-    map = Settings::getInstance()->getMapPath();
-    style = Settings::getInstance()->getMapStylePath();
-    // std::cerr << "DrawMapQt <map directory> <style-file> <width> <height> <lon> <lat> <zoom> <output>" << std::endl;
-    //    std::cerr << "Default values!";
-    if(map.size()==0) {
-        return 1;
-    }
-
-
     std::cerr << lon << " | " << lat << std::endl;
+    std::cerr << width << " | " << height << std::endl;
     if (moving)
     {
         int x = translatePoint.x();
@@ -240,20 +258,6 @@ int MapRenderWidget::DrawMap(QRect rect)
 
     else
     {
-        osmscout::DatabaseParameter databaseParameter;
-        osmscout::Database          database(databaseParameter);
-
-        if (!database.Open((const char*)map.toAscii())) {
-            std::cerr << "Cannot open database" << std::endl;
-            return 1;
-        }
-
-        osmscout::StyleConfig styleConfig(database.GetTypeConfig());
-
-        if (!osmscout::LoadStyleConfig((const char*)style.toAscii(),styleConfig)) {
-            std::cerr << "Cannot open style" << std::endl;
-        }
-
         QPainter* painter = new QPainter(&pixmap);
 
         if (painter!=NULL) {
@@ -261,7 +265,6 @@ int MapRenderWidget::DrawMap(QRect rect)
             osmscout::MapParameter        drawParameter;
             osmscout::AreaSearchParameter searchParameter;
             osmscout::MapData             data;
-            osmscout::MapPainterQt        mapPainter;
 
             drawParameter.SetOptimizeAreaNodes(true);
             drawParameter.SetOptimizeWayNodes(true);
@@ -276,7 +279,7 @@ int MapRenderWidget::DrawMap(QRect rect)
                            height);
 
 
-            database.GetObjects(styleConfig,
+            database->GetObjects(*(styleConfig),
                                 projection.GetLonMin(),
                                 projection.GetLatMin(),
                                 projection.GetLonMax(),
@@ -289,7 +292,7 @@ int MapRenderWidget::DrawMap(QRect rect)
                                 data.relationWays,
                                 data.relationAreas);
 
-            mapPainter.DrawMap(styleConfig,
+            mapPainter->DrawMap(*(styleConfig),
                                    projection,
                                    drawParameter,
                                    data,

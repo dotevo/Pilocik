@@ -1,6 +1,8 @@
 #include "infowindow.h"
 #include "ui_infowindow.h"
 
+#include <QDebug>
+
 InfoWindow::InfoWindow(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::InfoWindow)
@@ -31,14 +33,27 @@ void InfoWindow::setCoordinates(const double lat, const double lon)
     ui->mapWidget->setCoordinates(lat, lon);
 }
 
+void InfoWindow::setMapRenderAreaSize(QSize size)
+{
+    ui->mapWidget->setSize(size);
+}
+
 void InfoWindow::setMapRender()
 {
-    int width = ui->mapWidget->geometry().width();
-    int height = ui->mapWidget->geometry().height();
+    ui->mapWidget = new MapRenderWidget(this, getSize().width(), getSize().height());
+    qDebug() << getSize().width();
+    setMapRenderAreaSize(QSize(500, 500));
 
-    ui->mapWidget = new MapRenderWidget(this, width, height);
-    //ui->mapWidget->setCoordinates(lat, lon);
+    ui->mapWidget->forceRepaint();
+}
 
+QSize InfoWindow::getSize()
+{
+    return QSize(ui->mapWidget->geometry().width(), ui->mapWidget->geometry().height());
+}
+
+void InfoWindow::forceMapWidgetRepaint()
+{
     ui->mapWidget->forceRepaint();
 }
 

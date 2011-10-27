@@ -7,6 +7,7 @@
 #include <QAbstractItemView>
 #include <QInputDialog>
 
+#include <QDebug>
 #include <osmscout/Searching.h>
 
 PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
@@ -16,8 +17,8 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
     ui->setupUi(this);
     sizeChanged(NavigationWindow::main);
 
-    ui->treeWidget->setColumnCount(3);
-    ui->treeWidget->hideColumn(0);
+    ui->treeWidget->setColumnCount(COLUMNS_COUNT);
+    ui->treeWidget->hideColumn(ID_COLUMN);
 
     QStringList headers;
     headers << "Id" << "Name" << "Info";
@@ -41,6 +42,8 @@ void PointSelectionWindow::on_okButton_clicked(){
 
 void PointSelectionWindow::on_cityLineEdit_textChanged(const QString &text)
 {
+    osmscout::NodeRef n;
+
     searchingType = REGION_SEARCH;
 
     ui->treeWidget->clear();
@@ -49,24 +52,42 @@ void PointSelectionWindow::on_cityLineEdit_textChanged(const QString &text)
     {
         regions = searching->searchRegion(text);
 
+        int preceding = -1;
+
         for (int i = 0; i < regions.size(); i++)
         {
             QTreeWidgetItem *item;
 
             if (i == 0) {
+                if (regions.at(i).name.startsWith(text, Qt::CaseInsensitive)) {
+                    preceding = i;
+                }
                 item = new QTreeWidgetItem(ui->treeWidget);
-                //ui->treeWidget->setCurrentItem();
             } else {
-                item = new QTreeWidgetItem(ui->treeWidget, ui->treeWidget->currentItem());
+                if (regions.at(i).name.startsWith(text, Qt::CaseInsensitive)) {
+                    item = new QTreeWidgetItem(ui->treeWidget, ui->treeWidget->topLevelItem(preceding));
+                    preceding++;
+                } else {
+                    item = new QTreeWidgetItem(ui->treeWidget);
+                }
             }
 
-            item->setText(0, QString::number(regions.at(i).reference.GetId()));
-            item->setText(1, regions.at(i).name);
+            item->setText(ID_COLUMN, QString::number(regions.at(i).reference.GetId()));
+            item->setText(NAME_COLUMN, regions.at(i).name);
+            QString path = "-";
+            if (regions.at(i).path.size() > 0) {
+                path = QString::fromUtf8(regions.at(i).path.front().c_str());
+            }
+            item->setText(PATH_COLUMN, path);
+            item->setText(INFO_COLUMN, "INFO");
 
-            ui->treeWidget->resizeColumnToContents(1);
+            ui->treeWidget->resizeColumnToContents(NAME_COLUMN);
+            ui->treeWidget->resizeColumnToContents(PATH_COLUMN);
 
-            ui->treeWidget->setCurrentItem(item);
+            //ui->treeWidget->setCurrentItem(item);
         }
+
+        ui->treeWidget->setCurrentItem(ui->treeWidget->topLevelItem(0));
     }
 }
 
@@ -76,31 +97,54 @@ void PointSelectionWindow::on_streetLineEdit_textChanged(const QString &text)
 
     ui->treeWidget->clear();
 
-    locations = searching->searchLocation(text, region);
-
-    for (int i = 0; i < locations.size(); i++)
+    if (text.length() > 2)
     {
-        QTreeWidgetItem *item;
 
-        if (i == 0) {
-            item = new QTreeWidgetItem(ui->treeWidget);
-        } else {
-            item = new QTreeWidgetItem(ui->treeWidget, ui->treeWidget->currentItem());
+        locations = searching->searchLocation(text, region);
+
+        int preceding = 0;
+
+        for (int i = 0; i < locations.size(); i++)
+        {
+            QTreeWidgetItem *item;
+
+            if (i == 0) {
+                if (locations.at(i).name.startsWith(text, Qt::CaseInsensitive)) {
+                    preceding = i;
+                }
+                item = new QTreeWidgetItem(ui->treeWidget);
+            } else {
+                if (locations.at(i).name.startsWith(text, Qt::CaseInsensitive)) {
+                    item = new QTreeWidgetItem(ui->treeWidget, ui->treeWidget->topLevelItem(preceding));
+                    preceding++;
+                } else {
+                    item = new QTreeWidgetItem(ui->treeWidget);
+                }
+            }
+
+            osmscout::ObjectRef loc = locations.at(i).references.front();
+            item->setText(ID_COLUMN, QString::number(loc.GetId()));
+            item->setText(NAME_COLUMN, locations.at(i).name);
+            QString path = "-";
+            if (locations.at(i).path.size() > 0) {
+                path = locations.at(i).path.front();
+            }
+            item->setText(PATH_COLUMN, path);
+            item->setText(INFO_COLUMN, "INFO");
+
+            ui->treeWidget->resizeColumnToContents(NAME_COLUMN);
+            ui->treeWidget->resizeColumnToContents(PATH_COLUMN);
+
+            //ui->treeWidget->setCurrentItem(ui->treeWidget->topLevelItem(i));
         }
 
-        osmscout::ObjectRef loc = locations.at(i).references.front();
-        item->setText(0, QString::number(loc.GetId()));
-        item->setText(1, locations.at(i).name.toUtf8());
-        item->setText(2, "INFO");
-
-        ui->treeWidget->resizeColumnToContents(1);
-
+        ui->treeWidget->setCurrentItem(ui->treeWidget->topLevelItem(0));
     }
 }
 
 void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    if (column == 1) {
+    if (column == NAME_COLUMN || column == PATH_COLUMN) {
         // TODO:
         //ui->cityLineEdit->setText(item->text(column));
 
@@ -137,8 +181,9 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
 
             for (int i = 0; i < points.size(); i++)
             {
-                std::cout << points.at(i).GetId() << std::endl;
+                //std::cout << points.at(i).GetId() << std::endl;
                 osmscout::NodeRef node;
+
                 searching->searchNode(points.at(i).GetId(), node);
                 if (node.Valid())
                     std::cerr << "\t" << node.Get()->GetType() << std::endl;
@@ -168,24 +213,49 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
 
 void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
-    if (column == 2) {
+    if (column == INFO_COLUMN) {
         InfoWindow *infoWin = new InfoWindow(this);
 
-        osmscout::WayRef wayRef;
+        infoWin->setName(region.name);
 
-        int id = item->text(0).toInt();
-        searching->searchWay(id, wayRef);
-
-        infoWin->setName(QString::fromStdString(wayRef.Get()->GetName()));
-
-        double lon;
         double lat;
-        wayRef.Get()->GetCenter(lat, lon);
+        double lon;
 
-        infoWin->setVisible(true);
+        switch (searchingType) {
+        case REGION_SEARCH:
+            infoWin = new InfoWindow(this);
 
-        infoWin->setCoordinates(lat, lon);
-        infoWin->setMapRender();
+            infoWin->setName(region.name);
+
+            infoWin->setVisible(true);
+
+            //osmscout::NodeRef node;
+            //searching->database->GetNode(region.reference.GetId(), node);
+            //infoWin->setCoordinates();
+
+        break;
+
+        case STREET_SEARCH:
+            infoWin = new InfoWindow(this);
+
+            osmscout::WayRef wayRef;
+
+            int id = item->text(0).toInt();
+            searching->searchWay(id, wayRef);
+
+            infoWin->setName(QString::fromUtf8(wayRef.Get()->GetName().c_str()));
+
+            wayRef.Get()->GetCenter(lat, lon);
+
+            infoWin->setVisible(true);
+
+            infoWin->setCoordinates(lat, lon);
+            //infoWin->setMapRenderAreaSize(infoWin->getSize());
+            infoWin->setMapRender();
+            //infoWin->forceMapWidgetRepaint();
+            break;
+        }
+
     }
 }
 

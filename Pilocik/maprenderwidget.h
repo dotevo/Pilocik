@@ -10,6 +10,9 @@
 #include <QRect>
 #include <QString>
 #include <osmscout/MapPainterQt.h>
+#include <osmscout/Database.h>
+#include <osmscout/StyleConfig.h>
+#include <osmscout/MapPainterQt.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -22,6 +25,12 @@ class MapRenderWidget : public QWidget
     Q_OBJECT
 
 public:
+    /**
+      @brief Creating map render widget.
+      @param parent Parent widget.
+      @param W Width of rendering area.
+      @param H Height of rendering area.
+      */
     explicit MapRenderWidget(QWidget *parent = 0, int W = 0, int H = 0);
     typedef QWidget widget;
 
@@ -37,6 +46,7 @@ public:
       @param rect rectangle using during rendering transformated map.
       */
     int DrawMap(QRect rect);
+
     /**
      * @brief
      * @param
@@ -99,6 +109,12 @@ public:
     void setSize(QSize size);
 
 private:
+    osmscout::DatabaseParameter databaseParameter;
+    osmscout::Database          *database;
+    osmscout::StyleConfig       *styleConfig;
+
+    osmscout::MapPainterQt        *mapPainter;
+
     GPSreceiver* gps;
     QString   map;
     QString   style;
