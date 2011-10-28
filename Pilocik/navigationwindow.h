@@ -30,13 +30,16 @@ private slots:
     void on_routeButton_clicked();
     void on_optionsButton_clicked();
     void on_gpsButton_clicked();
-    void on_pushButton_4_clicked();
+    void on_exitButton_clicked();
+    /**
+     * @brief Shows all widgets after exiting from options.
+     */
     void menuClosedSlot();
-
     void on_sliderButton_clicked();
 
 signals:
     void sizeChanged(QWidget *widget);
+
 private:
     Ui::NavigationWindow *ui;
     void addWidgets();

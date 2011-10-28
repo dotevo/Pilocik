@@ -192,7 +192,7 @@ border-top-right-radius: 10px;
       </widget>
      </item>
      <item row="0" column="5">
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="exitButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -200,7 +200,17 @@ border-top-right-radius: 10px;
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Exit</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icons.qrc">
+         <normaloff>:/png/images/icons/64x64/exit_ico.png</normaloff>:/png/images/icons/64x64/exit_ico.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -250,7 +260,7 @@ border-bottom-left-radius: 0px;
 </string>
     </property>
     <property name="text">
-     <string>&lt;-&gt;</string>
+     <string>&lt;&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="menuButton">

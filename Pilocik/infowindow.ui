@@ -23,9 +23,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>8</y>
+     <y>38</y>
      <width>381</width>
-     <height>241</height>
+     <height>211</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -107,7 +107,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -153,6 +153,22 @@
      </spacer>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>11</y>
+     <width>381</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>INFO</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <customwidgets>

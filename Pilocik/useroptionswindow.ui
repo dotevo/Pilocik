@@ -20,7 +20,7 @@
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
+   <item row="0" column="0" colspan="4">
     <widget class="QLabel" name="userOptionsLabel">
      <property name="text">
       <string>USER OPTIONS</string>

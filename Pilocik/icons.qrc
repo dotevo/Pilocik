@@ -11,6 +11,7 @@
         <file>images/icons/64x64/routing_ico.png</file>
         <file>images/icons/64x64/settings_ico.png</file>
         <file>images/icons/64x64/user_ico.png</file>
+        <file>images/icons/64x64/exit_ico.png</file>
     </qresource>
     <qresource prefix="/svg">
         <file>images/icons/svg/standard/bus_stop.svg</file>

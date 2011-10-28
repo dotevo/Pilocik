@@ -143,7 +143,7 @@ void NavigationWindow::on_gpsButton_clicked() {
     connect(gpsInfoWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
 }
 
-void NavigationWindow::on_pushButton_4_clicked() {
+void NavigationWindow::on_exitButton_clicked() {
     this->close();
 }
 
@@ -152,6 +152,7 @@ void NavigationWindow::menuClosedSlot() {
     ui->menuButton->setVisible(true);
     ui->trackingButton->setVisible(true);
     ui->sliderButton->setVisible(true);
+    ui->menuPanel->setVisible(true);
 }
 
 void NavigationWindow::on_sliderButton_clicked() {
