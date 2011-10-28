@@ -144,6 +144,7 @@ void NavigationWindow::on_gpsButton_clicked() {
 }
 
 void NavigationWindow::on_exitButton_clicked() {
+    setVisible(false);
     this->close();
 }
 

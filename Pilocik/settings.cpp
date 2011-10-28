@@ -74,7 +74,7 @@ void Settings::resetDefaultSettings()
             "               <posx>5</posx>\n"
             "               <posy>45</posy>\n"
             "           </widget>\n"
-            "           <widget name=\"SliderMeter\">\n"
+            "           <widget name=\"Slider\">\n"
             "               <enabled>true</enabled>\n"
             "               <posx>400</posx>\n"
             "               <posy>45</posy>\n"
