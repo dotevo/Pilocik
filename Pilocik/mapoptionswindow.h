@@ -18,6 +18,11 @@ public:
 private slots:
     void on_okButton_clicked();
 
+    void on_backButton_clicked();
+
+signals:
+    void closed();
+
 private:
     Ui::MapOptionsWindow *ui;
 };

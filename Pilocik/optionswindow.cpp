@@ -22,31 +22,43 @@ OptionsWindow::OptionsWindow(NavigationWindow *parent) :
     userWin->setVisible(false);
 }
 
-OptionsWindow::~OptionsWindow(){
+OptionsWindow::~OptionsWindow() {
     delete ui;
     delete moWin;
     delete gpsWin;
     delete userWin;
 }
 
-void OptionsWindow::on_backButton_clicked(){
+void OptionsWindow::on_backButton_clicked() {
+    setVisible(false);
+    emit windowClosed();
+}
+
+void OptionsWindow::on_mapButton_clicked() {
+    moWin->setVisible(true);
+    moWin->raise();
+    connect(moWin, SIGNAL(closed()),
+            this, SLOT(optionWindowClosed()));
+    setVisible(false);
+
+}
+
+void OptionsWindow::on_GPSButton_clicked() {
+    gpsWin->setVisible(true);
+    gpsWin->raise();
+    connect(gpsWin, SIGNAL(closed()),
+            this, SLOT(optionWindowClosed()));
     setVisible(false);
 }
 
-void OptionsWindow::on_mapButton_clicked(){
-    moWin->setVisible(true);
-    moWin->raise();
-
-}
-
-void OptionsWindow::on_GPSButton_clicked()
-{
-    gpsWin->setVisible(true);
-    gpsWin->raise();
-}
-
-void OptionsWindow::on_userButton_clicked()
-{
+void OptionsWindow::on_userButton_clicked() {
     userWin->setVisible(true);
     userWin->raise();
+    connect(userWin, SIGNAL(closed()),
+            this, SLOT(optionWindowClosed()));
+    setVisible(false);
+}
+
+void OptionsWindow::optionWindowClosed() {
+    setVisible(true);
 }

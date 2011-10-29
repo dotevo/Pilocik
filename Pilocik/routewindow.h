@@ -21,6 +21,9 @@ private slots:
     void on_routeBackButton_clicked();
     void pswClosed();
 
+signals:
+    void windowClosed();
+
 private:
     Ui::RouteWindow *ui;
     PointSelectionWindow* psw;

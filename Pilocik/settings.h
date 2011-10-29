@@ -15,6 +15,7 @@ private:
     //coreSettings
     QString mapPath,
             mapStylePath,
+            layoutStylePath,
             simulationPath;
 
     //profileSettings
@@ -48,6 +49,11 @@ public:
     QString getMapStylePath()
     {
         return mapStylePath;
+    }
+
+    QString getLayoutStylePath()
+    {
+        return layoutStylePath;
     }
 
     QString getSimulationPath()

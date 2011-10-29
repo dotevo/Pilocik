@@ -28,6 +28,15 @@ private slots:
 
     void on_userButton_clicked();
 
+    /**
+     * @brief Shows options window after closing it's child window. (mapOptions, gpsOptions or userOptions)
+     *
+     */
+    void optionWindowClosed();
+
+signals:
+    void windowClosed();
+
 private:
     Ui::OptionsWindow *ui;
     MapOptionsWindow * moWin;

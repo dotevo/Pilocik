@@ -77,7 +77,8 @@ SOURCES += main.cpp\
     gpsinfowindow.cpp \
     gpsreceiver.cpp \
     widgets/tspeedmeterwidget.cpp \
-    settings.cpp
+    settings.cpp \
+    widgets/tsliderwidget.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -98,7 +99,8 @@ HEADERS  +=  tmovableframe.h \
     gpsinfowindow.h \
     gpsreceiver.h \
     widgets/tspeedmeterwidget.h \
-    settings.h
+    settings.h \
+    widgets/tsliderwidget.h
 
 
 FORMS    += \
@@ -113,7 +115,8 @@ FORMS    += \
     keyboardwindow.ui \
     gpsinfowindow.ui \
     widgets/tspeedmeterwidget.ui \
-    pointselectionwindow.ui
+    pointselectionwindow.ui \
+    widgets/tsliderwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -136,143 +139,3 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

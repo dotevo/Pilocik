@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <gpsreceiver.h>
+#include "maprenderwidget.h"
 
 namespace Ui {
     class NavigationWindow;
@@ -21,6 +22,7 @@ public:
     ~NavigationWindow();
     void    resizeEvent ( QResizeEvent * event );
     static NavigationWindow *main;
+    MapRenderWidget *mapRenderer;
 
 private slots:
     void on_menuButton_clicked();
@@ -28,14 +30,16 @@ private slots:
     void on_routeButton_clicked();
     void on_optionsButton_clicked();
     void on_gpsButton_clicked();
-
-    void on_zoomSlider_valueChanged(int value);
-    void on_zoomSlider_sliderPressed();
-    void on_zoomSlider_sliderReleased();
-    void on_pushButton_4_clicked();
+    void on_exitButton_clicked();
+    /**
+     * @brief Shows all widgets after exiting from options.
+     */
+    void menuClosedSlot();
+    void on_sliderButton_clicked();
 
 signals:
     void sizeChanged(QWidget *widget);
+
 private:
     Ui::NavigationWindow *ui;
     void addWidgets();

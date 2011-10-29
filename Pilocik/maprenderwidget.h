@@ -70,6 +70,12 @@ public:
     void setZoom(int value);
 
     /**
+      @brief Getting zoom value.
+      @return zoom value.
+      */
+    int getZoom();
+
+    /**
       @brief Memorizing start zoom value, when zoom level is changed.
       @param value zoom value
       */

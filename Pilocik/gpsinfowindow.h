@@ -24,6 +24,9 @@ private slots:
     void statusUpdate(QString status);
     void clearInfo();
 
+signals:
+    void windowClosed();
+
 private:
     QString status;
     GPSreceiver* gps;

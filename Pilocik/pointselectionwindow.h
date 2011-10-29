@@ -55,6 +55,8 @@ private slots:
       */
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_poiOkButton_clicked();
+
 signals:
     void ok_clicked();
 

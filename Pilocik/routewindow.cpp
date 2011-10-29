@@ -20,13 +20,16 @@ void RouteWindow::on_toButton_clicked(){
     psw=new PointSelectionWindow(NavigationWindow::main);
     psw->setVisible(true);
     connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    setVisible(false);
 }
 
 void RouteWindow::on_routeBackButton_clicked(){
     setVisible(false);
+    emit windowClosed();
 }
 
 void RouteWindow::pswClosed(){
     delete psw;
     psw=0;
+    setVisible(true);
 }

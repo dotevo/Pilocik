@@ -22,4 +22,11 @@ void MapOptionsWindow::on_okButton_clicked(){
     setVisible(false);
     Settings::getInstance()->modifyCoreSettings("mapPath", ui->mapFile->text());
     Settings::getInstance()->modifyCoreSettings("mapStylePath", ui->mapStylePath->text());
+    emit closed();
+}
+
+void MapOptionsWindow::on_backButton_clicked()
+{
+    setVisible(false);
+    emit closed();
 }

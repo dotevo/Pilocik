@@ -59,6 +59,7 @@ void Settings::resetDefaultSettings()
             "   <coreSettings>\n"
             "       <mapPath></mapPath>\n"
             "       <mapStylePath></mapStylePath>\n"
+            "       <layoutStylePath></layoutStylePath>\n"
             "       <simulationPath></simulationPath>\n"
             "   </coreSettings>\n"
             "   <profile name=\"default\">\n"
@@ -71,6 +72,11 @@ void Settings::resetDefaultSettings()
             "           <widget name=\"SpeedMeter\">\n"
             "               <enabled>true</enabled>\n"
             "               <posx>5</posx>\n"
+            "               <posy>45</posy>\n"
+            "           </widget>\n"
+            "           <widget name=\"Slider\">\n"
+            "               <enabled>true</enabled>\n"
+            "               <posx>400</posx>\n"
             "               <posy>45</posy>\n"
             "           </widget>\n"
             "       </widgets>\n"
@@ -103,6 +109,7 @@ void Settings::configureProfile(QString profile)
     QDomElement coreSettingsNode = doc->firstChildElement("settings").firstChildElement("coreSettings");
     mapPath = coreSettingsNode.firstChildElement("mapPath").text();
     mapStylePath = coreSettingsNode.firstChildElement("mapStylePath").text();
+    layoutStylePath = coreSettingsNode.firstChildElement("layoutStylePath").text();
     simulationPath = coreSettingsNode.firstChildElement("simulationPath").text();
 
     //Loading profile settings from xml to local variables

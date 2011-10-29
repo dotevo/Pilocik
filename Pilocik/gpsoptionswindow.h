@@ -24,6 +24,9 @@ private slots:
     void on_stopSimButton_clicked();
     void simStatusUpdate(QString string);
 
+signals:
+    void closed();
+
 private:
     GPSreceiver* gps;
     Ui::GPSOptionsWindow *ui;

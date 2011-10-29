@@ -36,12 +36,12 @@ public:
      * @fn getInstance
      */
     static TWidgetManager* getInstance();
-/**
- * @brief
- *
- * @fn TWidgetManager
- * @param
- */
+    /**
+     * @brief
+     *
+     * @fn TWidgetManager
+     * @param
+     */
     TWidgetManager(TWidgetManager const&);              // Don't Implement
     /**
      * @brief
@@ -87,6 +87,12 @@ public:
      */
     void addWidget(QString name, TMovableFrame* w);
     /**
+     * @brief Set mode to the opposite one. (from Moving to Stand or from Stand to Moving)
+     *
+     * @fn changeMode
+     */
+    void changeMode();
+    /**
      * @brief Set mode. (Moving,Standing)
      *
      * @fn setMode
@@ -100,6 +106,16 @@ public:
      * @param w
      */
     void setParent(QWidget *w);
+    /**
+     * @brief Sets all widgets in widget manager not to be visible.
+     *
+     */
+    void hideAllWidgets();
+    /**
+     * @brief Sets all widgets in widget manager to be visible.
+     *
+     */
+    void showAllWidgets();
 };
 
 #endif // TWIDGETMANAGER_H

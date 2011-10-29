@@ -88,7 +88,7 @@ void MapRenderWidget::init(int W, int H)
     lat = 51.1;
     lon = 17.03;
 
-    zoom = 2*2*2*2*1024;
+    //zoom = 2*2*2*2*1024;
     angle = 0;
 
     width = W != 0 ? W : 673;
@@ -141,6 +141,11 @@ void MapRenderWidget::setZoom(int value)
 
     scaling = false;
     noPaint = true;
+}
+
+int MapRenderWidget::getZoom()
+{
+    return zoom;
 }
 
 void MapRenderWidget::setStartZoom(int value)

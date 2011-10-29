@@ -26,8 +26,6 @@ namespace osmscout {
     }
 
     images = new std::vector<QImage>();
-
-
   }
 
   MapPainterQt::~MapPainterQt()

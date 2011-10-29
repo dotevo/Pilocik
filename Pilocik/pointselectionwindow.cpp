@@ -26,6 +26,10 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
     ui->treeWidget->setHeaderLabels(headers);
     ui->treeWidget->header()->hide();
 
+    connect(ui->nameLineEdit, SIGNAL(opened()),
+            this, SLOT(hide()));
+    connect(ui->nameLineEdit, SIGNAL(closed()),
+            this, SLOT(show()));
     searching = new osmscout::Searching();
 }
 
@@ -371,4 +375,8 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         }
 
     }
+}
+
+void PointSelectionWindow::on_poiOkButton_clicked() {
+    emit ok_clicked();
 }
