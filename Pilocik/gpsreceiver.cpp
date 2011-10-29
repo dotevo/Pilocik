@@ -117,7 +117,7 @@ bool GPSreceiver::startSimulation()
             gps_data.parseBuffer(&output);
             qRegisterMetaType<GPSdata>("GPSdata");
             emit positionUpdate(gps_data);
-            msleep(1000);
+            msleep(500);
         }
     }
 }

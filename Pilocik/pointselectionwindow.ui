@@ -274,7 +274,7 @@ QTreeWidgetItem{
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="countryLineEdit">
+           <widget class="TLineEdit" name="countryLineEdit">
             <property name="text">
              <string>Polska</string>
             </property>
@@ -315,7 +315,7 @@ QTreeWidgetItem{
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="cityLineEdit"/>
+           <widget class="TLineEdit" name="cityLineEdit"/>
           </item>
          </layout>
         </widget>
@@ -352,7 +352,7 @@ QTreeWidgetItem{
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="streetLineEdit"/>
+           <widget class="TLineEdit" name="streetLineEdit"/>
           </item>
          </layout>
         </widget>
@@ -389,7 +389,7 @@ QTreeWidgetItem{
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="noLineEdit"/>
+           <widget class="TLineEdit" name="noLineEdit"/>
           </item>
          </layout>
         </widget>

@@ -27,11 +27,10 @@ public:
     void setCoordinates(const double lat, const double lon);
 
     /**
-      @brief Settings size of render map area.
-      @param size Size of map render widget in UI.
-      DOESN'T WORK NOW!!!! I don't know why :(
+      @brief Settings zoom for map widget.
+      @param zoom Zoom.
       */
-    void setMapRenderAreaSize(QSize size);
+    void setZoom(const int zoom);
 
     /**
       @brief Settings label text for object name.
