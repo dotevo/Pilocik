@@ -309,6 +309,7 @@ int MapRenderWidget::DrawMap(QRect rect)
             std::cout << "Cannot create QPainter" << std::endl;
         }
     }
+	return 1;
 }
 
 void MapRenderWidget::DrawPartitions()
