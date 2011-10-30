@@ -225,7 +225,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     std::vector<osmscout::RelationRef> relationWays;
                     std::vector<osmscout::RelationRef> relationAreas;
 
-                    searching->searchObjects(lonMin, latMin, lonMax, latMax, nodes, ways, areas, relationWays, relationAreas);
+                    //searching->searchObjects(lonMin, latMin, lonMax, latMax, nodes, ways, areas, relationWays, relationAreas);
 /*
                     qDebug() << "Nodes: " << nodes.size();
                     qDebug() << "Ways: " << ways.size();

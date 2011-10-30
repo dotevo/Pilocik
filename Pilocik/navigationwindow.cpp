@@ -28,13 +28,6 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    QFile layoutStyleFile(Settings::getInstance()->getLayoutStylePath());
-    if (!layoutStyleFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
-    }
-    QString layoutStyle = layoutStyleFile.readAll();
-    this->setStyleSheet(layoutStyle);
-
     mapRenderer = ui->widget;
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
@@ -44,6 +37,13 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     ui->widget->setVisible(true);
     ui->widget->lower();
     ui->menuPanel->raise();
+
+    QFile layoutStyleFile(Settings::getInstance()->getLayoutStylePath());
+    if (!layoutStyleFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QString layoutStyle = layoutStyleFile.readAll();
+    this->setStyleSheet(layoutStyle);
 }
 
 NavigationWindow::~NavigationWindow()
@@ -93,7 +93,7 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     ui->menuPanel->move(point4);
     ui->menuPanel->raise();
 
-    ui->widget->setSize(size);
+    //ui->widget->setSize(size);
 
     emit sizeChanged(this);
 }
@@ -106,8 +106,8 @@ void NavigationWindow::on_menuButton_clicked(){
 }
 
 void NavigationWindow::on_trackingButton_clicked(){
-    ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
-    ui->widget->setTracking(!ui->widget->getTracking());
+    //ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
+    //ui->widget->setTracking(!ui->widget->getTracking());
 }
 
 void NavigationWindow::on_routeButton_clicked() {
