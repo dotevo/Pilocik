@@ -33,17 +33,14 @@ void InfoWindow::setCoordinates(const double lat, const double lon)
     ui->mapWidget->setCoordinates(lat, lon);
 }
 
-void InfoWindow::setMapRenderAreaSize(QSize size)
+void InfoWindow::setZoom(const int zoom)
 {
-    ui->mapWidget->setSize(size);
+    ui->mapWidget->setFinishZoom(zoom);
 }
 
 void InfoWindow::setMapRender()
 {
     ui->mapWidget = new MapRenderWidget(this, getSize().width(), getSize().height());
-    qDebug() << getSize().width();
-    setMapRenderAreaSize(QSize(500, 500));
-
     ui->mapWidget->forceRepaint();
 }
 

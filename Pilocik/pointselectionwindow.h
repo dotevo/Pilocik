@@ -76,6 +76,18 @@ private:
     osmscout::Searching* searching;
 
     /**
+      @brief Searching region in <i>regions</i> with specified id.
+      @param id Region id.
+      */
+    osmscout::AdminRegion searchRegion(const int id);
+
+    /**
+      @brieg Searching location in <i>locations</i> with specified name.
+      @param name Location name.
+      */
+    osmscout::Location searchLocation(const QString locationName);
+
+    /**
       @brief Searching type. It defines what object type is searching now.
       */
     int searchingType;

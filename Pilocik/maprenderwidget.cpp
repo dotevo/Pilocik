@@ -218,7 +218,7 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e)
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
 {
-    std::cerr << "Mouse move";
+    //std::cerr << "Mouse move";
     if (moving)
     {
         translatePoint = e->globalPos() - startPoint;
@@ -229,8 +229,8 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
 
 int MapRenderWidget::DrawMap(QRect rect)
 {
-    std::cerr << lon << " | " << lat << std::endl;
-    std::cerr << width << " | " << height << std::endl;
+    //std::cerr << lon << " | " << lat << std::endl;
+    //std::cerr << width << " | " << height << std::endl;
     if (moving)
     {
         int x = translatePoint.x();
@@ -309,6 +309,7 @@ int MapRenderWidget::DrawMap(QRect rect)
             std::cout << "Cannot create QPainter" << std::endl;
         }
     }
+	return 1;
 }
 
 void MapRenderWidget::DrawPartitions()
