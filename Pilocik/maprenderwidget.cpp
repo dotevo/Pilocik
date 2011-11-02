@@ -102,7 +102,7 @@ void MapRenderWidget::init(int W, int H)
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
 
     gps = navi->gps;
-    //connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::setSize(QSize size)
