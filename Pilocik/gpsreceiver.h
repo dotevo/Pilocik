@@ -62,7 +62,7 @@ private:
     HANDLE hInput;
 #endif
     QStringList output;
-    QString path;
+    QString path, serialPort;
     QFile file;
     int mode;
     bool contiunue;
