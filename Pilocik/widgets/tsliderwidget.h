@@ -1,7 +1,7 @@
 #ifndef TSLIDERWIDGET_H
 #define TSLIDERWIDGET_H
 
-#include "../TMovableFrame.h"
+#include "../tmovableframe.h"
 
 namespace Ui {
     class TSliderWidget;

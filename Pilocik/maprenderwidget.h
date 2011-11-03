@@ -64,6 +64,12 @@ public:
     void setCoordinates(double lonPar, double latPar);
 
     /**
+      @brief Gettings coordinates.
+      @return Actual coordinates.
+      */
+    QPoint getCoordinates();
+
+    /**
       @brief Setting zoom value.
       @param zoom value.
       */

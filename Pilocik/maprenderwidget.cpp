@@ -120,12 +120,20 @@ void MapRenderWidget::forceRepaint()
     repaint();
     noPaint = true;
 }
+
 void MapRenderWidget::setCoordinates(double latPar, double lonPar)
 {
     lon = lonPar;
     lat = latPar;
 
     forceRepaint();
+}
+
+QPoint MapRenderWidget::getCoordinates()
+{
+    QPoint point(lon, lat);
+
+    return point;
 }
 
 void MapRenderWidget::setZoom(int value)

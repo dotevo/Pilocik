@@ -198,7 +198,13 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_10">
           <item>
-           <widget class="QListView" name="listView"/>
+           <widget class="QTreeWidget" name="poiTreeWidget">
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>

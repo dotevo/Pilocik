@@ -11,12 +11,17 @@
 #include "osmscout/Searching.h"
 #include "osmscout/Relation.h"
 
-PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
+PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double currentLocationX, double currentLocationY) :
     ui(new Ui::PointSelectionWindow),
     QFullScreenFrame(parent)
 {
+    searching = new osmscout::Searching();
+
     ui->setupUi(this);
     sizeChanged(NavigationWindow::main);
+
+    ui->typeComboBox->addItems(searching->getPOIS().values());
+    ui->typeComboBox->setCurrentIndex(0);
 
     ui->treeWidget->setColumnCount(COLUMNS_COUNT);
     ui->treeWidget->hideColumn(ID_COLUMN);
@@ -26,11 +31,18 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent) :
     ui->treeWidget->setHeaderLabels(headers);
     ui->treeWidget->header()->hide();
 
+    ui->poiTreeWidget->setColumnCount(COLUMNS_COUNT);
+    ui->poiTreeWidget->hideColumn(ID_COLUMN);
+    ui->poiTreeWidget->header()->hide();
+
+    if (currentLocationX != 0 && currentLocationY != 0) {
+        currentLocation = QPointF(currentLocationX, currentLocationY);
+    }
+
     connect(ui->nameLineEdit, SIGNAL(opened()),
             this, SLOT(hide()));
     connect(ui->nameLineEdit, SIGNAL(closed()),
             this, SLOT(show()));
-    searching = new osmscout::Searching();
 }
 
 PointSelectionWindow::~PointSelectionWindow(){
@@ -255,6 +267,16 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                                     //    qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
                                }
 
+                                osmscout::WayRef waj;
+                                searching->searchWay(point.GetId(), waj);
+
+                                if (waj.Valid()) {
+                                    for (int j = 0; j < waj.Get()->GetTagCount(); j++)
+                                        qDebug() << waj.Get()->GetTagKey(j) << " / " << QString::fromStdString(waj.Get()->GetTagValue(j));
+                                    if (waj.Get()->GetTagCount() > 0)
+                                        qDebug() << "\n";
+                                }
+
                             }
 
                         }
@@ -264,11 +286,6 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     for (int i = 0; i < ways.size(); i++) {
                         osmscout::WayRef way = ways.at(i);
                         osmscout::WayRef way2;
-
-                        for (int j = 0; j < way.Get()->GetTagCount(); j++)
-                        //    qDebug() << way.Get()->GetTagKey(j) << " / " << QString::fromStdString(way.Get()->GetTagValue(j));
-                        if (way.Get()->GetTagCount() > 0)
-                            qDebug() << "\n";
 
                         searching->searchWay(way.Get()->GetId(), way2);
                         //qDebug() << QString::fromStdString(way2.Get()->GetTagValue(0));
@@ -284,13 +301,14 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                                 osmscout::WayRef way3;
                                 searching->searchWay(point.GetId(), way3);
 
-                                if (way3.Valid())
+                                if (way3.Valid()) {
                                 //   qDebug() << QString::fromStdString(way3.Get()->GetTagValue(0));
+                                }
 
                                 if (pointRef.Valid()) {
 
-                                   // if (pointRef.Get()->GetTagCount() > 0)
-                                    //    qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
+                                    if (pointRef.Get()->GetTagCount() > 0)
+                                        qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
                                }
 
                             }
@@ -377,6 +395,43 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
     }
 }
 
+void PointSelectionWindow::fillPOIWidget(QString type)
+{
+    QVector<osmscout::NodeRef> poiRef;
+
+    double cx = currentLocation.x();
+    double cy = currentLocation.y();
+
+    searching->searchPoi(cx, cy, 0, type, poiRef);
+
+    QTreeWidgetItem *item;
+
+    for (int i = 0; i < poiRef.size(); i++) {
+        item = new QTreeWidgetItem(ui->poiTreeWidget);
+
+        osmscout::NodeRef node = poiRef.at(i);
+
+        QString name = "";
+
+        if (node.Get()->GetTagCount() > 1) {
+            name = QString::fromStdString(node.Get()->GetTagValue(1));
+        }
+
+        double distance = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
+
+        item->setText(ID_COLUMN, QString::number(node.Get()->GetId()));
+        item->setText(NAME_COLUMN, name);
+        item->setText(PATH_COLUMN, QString::number(distance));
+        item->setText(INFO_COLUMN, "INFO");
+    }
+}
+
 void PointSelectionWindow::on_poiOkButton_clicked() {
     emit ok_clicked();
+}
+
+void PointSelectionWindow::on_typeComboBox_currentIndexChanged(const QString &type)
+{
+    QString typeId = searching->getPOIS().key(type);
+    fillPOIWidget(typeId);
 }
