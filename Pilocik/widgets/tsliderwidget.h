@@ -3,6 +3,8 @@
 
 #include "../tmovableframe.h"
 
+#include <QList>
+
 namespace Ui {
     class TSliderWidget;
 }
@@ -22,6 +24,10 @@ private slots:
     void on_verticalSlider_valueChanged(int value);
     void on_verticalSlider_sliderPressed();
     void on_verticalSlider_sliderReleased();
+
+    void on_plusButton_clicked();
+
+    void on_minusButton_clicked();
 
 private:
     Ui::TSliderWidget *ui;

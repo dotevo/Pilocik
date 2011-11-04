@@ -12,9 +12,10 @@ TSliderWidget::TSliderWidget(QWidget *parent) :
     ui->setupUi(this);
 
     Settings* settings = Settings::getInstance();
-    //ui->verticalSlider->setValue(settings->getZoom());
+    //ui->verticalSlider->setValue(NavigationWindow::main->mapRenderer->getZoom());
 
     move(5, 5);
+
 }
 
 TSliderWidget::~TSliderWidget() {
@@ -43,4 +44,14 @@ void TSliderWidget::on_verticalSlider_sliderReleased() {
 void TSliderWidget::modeChanged(TMovableFrame::TMOVABLEMODE& mode){//Tutaj poprawic wg uznania :P przydal by sie inny styl jak sie zmieni na enabled=false
     //ui->verticalSlider->setVisible(mode==TMovableFrame::MOVING?false:true);
     ui->verticalSlider->setEnabled(mode==TMovableFrame::MOVING?false:true);
+}
+
+void TSliderWidget::on_plusButton_clicked()
+{
+
+}
+
+void TSliderWidget::on_minusButton_clicked()
+{
+
 }

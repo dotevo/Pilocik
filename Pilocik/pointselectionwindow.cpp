@@ -474,3 +474,8 @@ void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, i
         infoPoiWin->setVisible(true);
     }
 }
+
+void PointSelectionWindow::on_poiTreeWidget_clicked(const QModelIndex &index)
+{
+
+}

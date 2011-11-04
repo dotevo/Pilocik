@@ -38,7 +38,8 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     mapRenderer = ui->widget;
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
-    TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
+    //TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
+    TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
     addFrames();
     ui->widget->setVisible(true);

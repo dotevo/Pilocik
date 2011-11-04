@@ -83,7 +83,7 @@ void Settings::resetDefaultSettings()
             "       <map>\n"
             "           <lat>51.1</lat>\n"
             "           <lon>17.03</lon>\n"
-            "           <zoom>16384</zoom>\n"
+            "           <zoom>8</zoom>\n"
             "       </map>\n"
             "   </profile>\n"
             "</settings>\n";
