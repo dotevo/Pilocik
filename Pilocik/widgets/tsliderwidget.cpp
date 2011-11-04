@@ -11,15 +11,16 @@ TSliderWidget::TSliderWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Settings* settings = Settings::getInstance();
-    //ui->verticalSlider->setValue(NavigationWindow::main->mapRenderer->getZoom());
-
     move(5, 5);
-
 }
 
 TSliderWidget::~TSliderWidget() {
     delete ui;
+}
+
+void TSliderWidget::initZoom(int value)
+{
+    ui->verticalSlider->setValue(value);
 }
 
 void TSliderWidget::setMode(TMovableFrame::TMOVABLEMODE mode) {
@@ -29,7 +30,8 @@ void TSliderWidget::setMode(TMovableFrame::TMOVABLEMODE mode) {
 }
 
 void TSliderWidget::on_verticalSlider_valueChanged(int value) {
-    NavigationWindow::main->mapRenderer->setZoom(value);
+    if(NavigationWindow::main != NULL)
+        NavigationWindow::main->mapRenderer->setZoom(value);
 }
 
 void TSliderWidget::on_verticalSlider_sliderPressed() {
@@ -48,10 +50,14 @@ void TSliderWidget::modeChanged(TMovableFrame::TMOVABLEMODE& mode){//Tutaj popra
 
 void TSliderWidget::on_plusButton_clicked()
 {
-
+    NavigationWindow::main->mapRenderer->setStartZoom(ui->verticalSlider->value());
+    initZoom(ui->verticalSlider->value()+10000);
+    NavigationWindow::main->mapRenderer->setFinishZoom(ui->verticalSlider->value());
 }
 
 void TSliderWidget::on_minusButton_clicked()
 {
-
+    NavigationWindow::main->mapRenderer->setStartZoom(ui->verticalSlider->value());
+    initZoom(ui->verticalSlider->value()-10000);
+    NavigationWindow::main->mapRenderer->setFinishZoom(ui->verticalSlider->value());
 }
