@@ -620,6 +620,19 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="pcSimBtn">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>PC simulation</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
