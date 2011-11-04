@@ -32,6 +32,9 @@ private slots:
 
 private:
     Ui::TSliderWidget *ui;
+
+    QList<int> zoomLevels;
+    int getZoomLevelIndex(int zoom);
 };
 
 #endif // TSLIDERWIDGET_H

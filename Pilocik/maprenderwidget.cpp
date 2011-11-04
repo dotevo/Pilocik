@@ -11,6 +11,8 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QDebug>
+
 #include <QMouseEvent>
 #include <QLineF>
 

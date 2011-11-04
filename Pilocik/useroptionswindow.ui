@@ -106,7 +106,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="weightLineEdit"/>
+       <widget class="TLineEdit" name="weightLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -143,7 +143,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="heightLineEdit"/>
+       <widget class="TLineEdit" name="heightLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -176,6 +176,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>tlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

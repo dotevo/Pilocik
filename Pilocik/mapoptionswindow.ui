@@ -52,7 +52,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="mapStylePath"/>
+       <widget class="TLineEdit" name="mapStylePath"/>
       </item>
      </layout>
     </widget>
@@ -93,7 +93,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="mapFile"/>
+       <widget class="TLineEdit" name="mapFile"/>
       </item>
      </layout>
     </widget>
@@ -163,6 +163,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>tlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

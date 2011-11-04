@@ -469,7 +469,7 @@ void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, i
         infoPoiWin->setName(name);
         infoPoiWin->setCoordinates(lat, lon);
 
-        infoPoiWin->setZoom(osmscout::magVeryClose);
+        infoPoiWin->setZoom(osmscout::magBuilding);
 
         infoPoiWin->setVisible(true);
     }
