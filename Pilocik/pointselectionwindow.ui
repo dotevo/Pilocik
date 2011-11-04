@@ -498,7 +498,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="beforeLineEdit"/>
+           <widget class="TLineEdit" name="beforeLineEdit"/>
           </item>
          </layout>
         </widget>

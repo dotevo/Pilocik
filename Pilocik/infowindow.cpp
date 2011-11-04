@@ -8,6 +8,8 @@ InfoWindow::InfoWindow(QFrame *parent) :
     ui(new Ui::InfoWindow)
 {
     ui->setupUi(this);
+
+    ui->mapWidget->setSize(getSize());
 }
 
 InfoWindow::~InfoWindow()

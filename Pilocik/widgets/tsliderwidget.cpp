@@ -16,6 +16,20 @@ TSliderWidget::TSliderWidget(QWidget *parent) :
 
     move(5, 5);
 
+    zoomLevels.append(osmscout::magContinent);
+    zoomLevels.append(osmscout::magState);
+    zoomLevels.append(osmscout::magStateOver);
+    zoomLevels.append(osmscout::magCounty);
+    zoomLevels.append(osmscout::magRegion);
+    zoomLevels.append(osmscout::magProximity);
+    zoomLevels.append(osmscout::magCityOver);
+    zoomLevels.append(osmscout::magCity);
+    zoomLevels.append(osmscout::magSuburb);
+    zoomLevels.append(osmscout::magDetail);
+    zoomLevels.append(osmscout::magClose);
+    zoomLevels.append(osmscout::magVeryClose);
+    zoomLevels.append(osmscout::magStreet);
+    zoomLevels.append(osmscout::magBuilding);
 }
 
 TSliderWidget::~TSliderWidget() {
@@ -48,10 +62,43 @@ void TSliderWidget::modeChanged(TMovableFrame::TMOVABLEMODE& mode){//Tutaj popra
 
 void TSliderWidget::on_plusButton_clicked()
 {
+    int index = getZoomLevelIndex(NavigationWindow::main->mapRenderer->getZoom());
 
+    if (index + 1 < zoomLevels.size()) {
+        int zoom = zoomLevels.at(index + 1);
+
+        if (zoom > 0 && zoom < ui->verticalSlider->maximum()) {
+            ui->verticalSlider->setValue(zoom);
+            NavigationWindow::main->mapRenderer->setZoom(zoom);
+            NavigationWindow::main->mapRenderer->forceRepaint();
+        }
+    }
 }
 
 void TSliderWidget::on_minusButton_clicked()
 {
+    int index = getZoomLevelIndex(NavigationWindow::main->mapRenderer->getZoom());
 
+    if (index - 1 >= 0) {
+        int zoom = zoomLevels.at(index - 1);
+
+        if (zoom < 0) {
+            zoom = 10;
+        }
+
+        if (zoom > 0 && zoom < ui->verticalSlider->maximum()) {
+            ui->verticalSlider->setValue(zoom);
+            NavigationWindow::main->mapRenderer->setZoom(zoom);
+            NavigationWindow::main->mapRenderer->forceRepaint();
+        }
+    }
+}
+
+int TSliderWidget::getZoomLevelIndex(int zoom)
+{
+    for (int i = 0; i < zoomLevels.size(); i++)
+        if (zoomLevels.at(i) >= zoom)
+            return i;
+
+    return zoomLevels.size();
 }
