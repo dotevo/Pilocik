@@ -64,6 +64,7 @@ void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
     TWidgetManager::getInstance()->addWidget("Slider", new TSliderWidget(this));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
+    TWidgetManager::getInstance()->showAllWidgets();
 }
 
 void NavigationWindow::addFrames(){

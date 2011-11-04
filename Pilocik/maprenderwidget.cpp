@@ -88,7 +88,8 @@ void MapRenderWidget::init(int W, int H)
     lat = 51.1;
     lon = 17.03;
 
-    //zoom = 2*2*2*2*1024;
+    zoom = 2*2*2*2*1024;
+
     angle = 0;
 
     width = W != 0 ? W : 673;
@@ -102,7 +103,7 @@ void MapRenderWidget::init(int W, int H)
     NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
 
     gps = navi->gps;
-    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+//    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
 }
 
 void MapRenderWidget::setSize(QSize size)
@@ -129,9 +130,9 @@ void MapRenderWidget::setCoordinates(double latPar, double lonPar)
     forceRepaint();
 }
 
-QPoint MapRenderWidget::getCoordinates()
+QPointF MapRenderWidget::getCoordinates()
 {
-    QPoint point(lon, lat);
+    QPointF point(lon, lat);
 
     return point;
 }

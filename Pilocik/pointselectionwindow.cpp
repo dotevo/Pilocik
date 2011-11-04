@@ -404,24 +404,42 @@ void PointSelectionWindow::fillPOIWidget(QString type)
 
     searching->searchPoi(cx, cy, 0, type, poiRef);
 
-    QTreeWidgetItem *item;
+    QVector<double> distances;
+    QVector<osmscout::NodeRef> poiRefSorted;
 
     for (int i = 0; i < poiRef.size(); i++) {
+        osmscout::NodeRef node = poiRef.at(i);
+
+        double dist = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
+
+        int j = 0;
+        for (; j < distances.size(); j++) {
+            if (dist < distances.at(j))
+                break;
+        }
+
+        distances.insert(j, dist);
+        poiRefSorted.insert(j, node);
+    }
+
+    QTreeWidgetItem *item;
+
+    for (int i = 0; i < poiRefSorted.size(); i++) {
         item = new QTreeWidgetItem(ui->poiTreeWidget);
 
-        osmscout::NodeRef node = poiRef.at(i);
+        osmscout::NodeRef node = poiRefSorted.at(i);
 
         QString name = "";
 
         if (node.Get()->GetTagCount() > 1) {
-            name = QString::fromStdString(node.Get()->GetTagValue(1));
+            name = QString::fromUtf8(node.Get()->GetTagValue(1).c_str());
         }
 
-        double distance = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
+        //double distance = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
 
         item->setText(ID_COLUMN, QString::number(node.Get()->GetId()));
         item->setText(NAME_COLUMN, name);
-        item->setText(PATH_COLUMN, QString::number(distance));
+        item->setText(PATH_COLUMN, QString::number(distances.at(i)) + " km");
         item->setText(INFO_COLUMN, "INFO");
     }
 }
@@ -434,4 +452,25 @@ void PointSelectionWindow::on_typeComboBox_currentIndexChanged(const QString &ty
 {
     QString typeId = searching->getPOIS().key(type);
     fillPOIWidget(typeId);
+}
+
+void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == INFO_COLUMN) {
+        InfoWindow *infoPoiWin = new InfoWindow(this);
+
+        osmscout::NodeRef node;
+        searching->searchNode(item->text(0).toInt(), node);
+
+        double lat = node.Get()->GetLat();
+        double lon = node.Get()->GetLon();
+        QString name = item->text(NAME_COLUMN);
+
+        infoPoiWin->setName(name);
+        infoPoiWin->setCoordinates(lat, lon);
+
+        infoPoiWin->setZoom(osmscout::magVeryClose);
+
+        infoPoiWin->setVisible(true);
+    }
 }

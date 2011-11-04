@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-InfoWindow::InfoWindow(QWidget *parent) :
+InfoWindow::InfoWindow(QFrame *parent) :
     QFrame(parent),
     ui(new Ui::InfoWindow)
 {
@@ -35,7 +35,8 @@ void InfoWindow::setCoordinates(const double lat, const double lon)
 
 void InfoWindow::setZoom(const int zoom)
 {
-    ui->mapWidget->setFinishZoom(zoom);
+    //ui->mapWidget->setFinishZoom(zoom);
+    ui->mapWidget->setZoom(zoom);
 }
 
 void InfoWindow::setMapRender()

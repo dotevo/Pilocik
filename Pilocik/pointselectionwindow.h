@@ -59,6 +59,10 @@ private slots:
 
     void on_typeComboBox_currentIndexChanged(const QString &arg1);
 
+    void on_poiTreeWidget_clicked(const QModelIndex &index);
+
+    void on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
 signals:
     void ok_clicked();
 
