@@ -12,7 +12,7 @@ TSliderWidget::TSliderWidget(QWidget *parent) :
     ui->setupUi(this);
 
     Settings* settings = Settings::getInstance();
-    //ui->verticalSlider->setValue(settings->getZoom());
+    ui->verticalSlider->setValue(settings->getZoom());
 
     move(5, 5);
 }
@@ -28,15 +28,16 @@ void TSliderWidget::setMode(TMovableFrame::TMOVABLEMODE mode) {
 }
 
 void TSliderWidget::on_verticalSlider_valueChanged(int value) {
-    //NavigationWindow::main->mapRenderer->setZoom(value);
+    if(NavigationWindow::main!=0&&NavigationWindow::main->mapRenderer!=0)
+        NavigationWindow::main->mapRenderer->setZoom(value);
 }
 
 void TSliderWidget::on_verticalSlider_sliderPressed() {
-    //NavigationWindow::main->mapRenderer->setStartZoom(ui->verticalSlider->value());
+    NavigationWindow::main->mapRenderer->setStartZoom(ui->verticalSlider->value());
 }
 
 void TSliderWidget::on_verticalSlider_sliderReleased() {
-    //NavigationWindow::main->mapRenderer->setFinishZoom(ui->verticalSlider->value());
+    NavigationWindow::main->mapRenderer->setFinishZoom(ui->verticalSlider->value());
 }
 
 

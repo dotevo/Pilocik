@@ -2,7 +2,6 @@
 #include "navigationwindow.h"
 
 #include "qmath.h"
-#include "gpsreceiver.h"
 #include "settings.h"
 
 #include <iostream>
@@ -29,6 +28,7 @@ osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
 MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(parent){
     cachePixmapSize=5;
+    delta=0.5;
     mouseDown=false;
     //Database loading
     if(database==0){
@@ -53,7 +53,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
     lat = 51.1;
     lon = 17.03;
-    zoom = 2*2*2*1024;
+    zoom = 2*2*1024;
 
     //Set projection
     projection.Set(lon, lat, lon, lat, 0, zoom, 1000, 1000);
@@ -61,37 +61,38 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
     rendererThread=new MapPixmapRenderer();
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
-    connect(rendererThread, SIGNAL(pixmapRendered(QPixmap,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QPixmap,osmscout::MercatorProjection)));
+    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection)));
     testPixmap();
 }
 
-void MapRenderWidget::testPixmap(){
+void MapRenderWidget::testPixmap(bool force){
     //qDebug()<<"111";
     bool needDraw=false;
 
-    if(pixmap.isNull())needDraw=true;
-    else if(projection.GetLonMin()<projectionRendered.GetLonMin()||
-            projection.GetLonMax()>projectionRendered.GetLonMax()||
-            projection.GetLatMin()<projectionRendered.GetLatMin()||
-            projection.GetLatMax()>projectionRendered.GetLatMax()){
-                needDraw=true;
-                qDebug()<<"[][]["<<projection.GetHeight();
-                qDebug()<<"NEEDED!!";
-               /* qDebug()<<projection.GetLonMin()<<":"<<projectionRendered.GetLonMin()<<";\n"<<
-                          projection.GetLonMax()<<":"<<projectionRendered.GetLonMax()<<";\n"<<
-                          projection.GetLatMin()<<":"<<projectionRendered.GetLatMin()<<";\n"<<
-                          projection.GetLatMax()<<":"<<projectionRendered.GetLatMax();
 
-                          */
+    if(image.isNull())needDraw=true;
+    else{
+        double W=(projectionRendered.GetLonMax()-projectionRendered.GetLonMin())*delta/2;
+        double H=(projectionRendered.GetLatMax()-projectionRendered.GetLatMin())*delta/2;
+        if(projection.GetLonMin()<projectionRendered.GetLonMin()+W||
+            projection.GetLonMax()>projectionRendered.GetLonMax()-W||
+            projection.GetLatMin()<projectionRendered.GetLatMin()+H||
+            projection.GetLatMax()>projectionRendered.GetLatMax()-H||
+                force)
+        {
+            qDebug()<<projection.GetMagnification()<<"::::"<<projectionRendered.GetMagnification();
+                needDraw=true;
+                qDebug()<<"NEEDED!!";
+        }
     }
 
     //qDebug()<<"222";
     if(needDraw){
             QSize s=this->size();
             projectionRendered1=projection;
-            projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, zoom/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
+            projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, projection.GetMagnification()/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
             //qDebug()<<projectionRendered1.GetWidth()<<"{}"<<s.width();
-            this->rendererThread->init((*(&database)),&projectionRendered1,(*(&styleConfig)));
+            this->rendererThread->init((*(&database)),&projectionRendered1,(*(&styleConfig)),(float)cachePixmapSize);
             this->rendererThread->start();
     }
 }
@@ -102,111 +103,129 @@ void MapRenderWidget::paintEvent(QPaintEvent *e){
     QSize s=this->size();
     projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),projection.GetAngle(),projection.GetMagnification(),s.width(),s.height());
     testPixmap();
-    if(!pixmap.isNull()){
+    if(!image.isNull()){
          QPainter *painter=new QPainter(this);
+
+         double XMin,YMin;
+         double XMax,YMax;
+
+         projectionRendered.GeoToPixel(projection.GetLonMin(),projection.GetLatMin(),XMin,YMin);
+         projectionRendered.GeoToPixel(projection.GetLonMax(),projection.GetLatMax(),XMax,YMax);
+
+
          double X,Y;
          projectionRendered.GeoToPixel(projection.GetLon(),projection.GetLat(),X,Y);
-         //qDebug()<<X<<"[]"<<Y;
-         painter->drawPixmap(projection.GetWidth()/2-X,projection.GetHeight()/2-Y,pixmap.width(),pixmap.height(),pixmap);
-         //qDebug()<<projection.GetWidth()/2-X<<":"<<projection.GetHeight()/2-Y<<":"<<pixmap.width()<<":"<<pixmap.height();
+
+         //qDebug()<<"MIN LON:"<<projection.GetLonMin()<<"["<<XMin<<"]"<<"  MAX LON:"<<projection.GetLonMax()<<"["<<XMax<<"]"<<" CENTER:"<<projection.GetLon()<<"["<<X<<"]"<<"\n"<<
+         //          "MIN LAT:"<<projection.GetLatMin()<<"["<<YMin<<"]"<<"  MAX LAT:"<<projection.GetLatMax()<<"["<<XMax<<"]"<<" CENTER:"<<projection.GetLat()<<"["<<Y<<"]\n";
+
+         QRectF source(XMin, YMax,XMax-XMin,YMin-YMax);
+         //qDebug()<<XMin<<":"<<YMin<<":"<<XMax-XMin<<":"<<YMax-YMin;
+
+         QRectF target(0,0,projection.GetWidth(),projection.GetHeight());
+         //qDebug()<<"P"<<projection.GetWidth()<<":"<<projection.GetHeight();
+
+         painter->drawImage ( target, image, source, Qt::AutoColor );
+
+         //painter->drawImage(target,image);
+         DrawPositionMarker(projection,painter);
+         //qDebug()<<projection.GetWidth()/2-X<<":"<<projection.GetHeight()/2-Y<<":"<<pixmap.width()<<":"<<pixmap.height();;
          delete painter;
     }
 }
 
-//TODO: REALNE PRZESUWANIE!!! Na projekcji
 
 void MapRenderWidget::mousePressEvent(QMouseEvent *e){
-
+    mouseDown=true;
+    lon1=e->posF().x();
+    lat1=projection.GetHeight()-e->posF().y();
 }
 
 void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
-    double lon1,lat1;
-    projection.PixelToGeo(e->posF().x(),projection.GetHeight()-e->posF().y(),lon1,lat1);
-    qDebug()<<"PROJ"<<projection.GetWidth()<<"PIXELTOGEO:"<<e->posF().x()<<":"<<e->posF().y()<<":"<<lon1<<":"<<lat1<<"KK"<<projection.GetLon()<<":"<<projection.GetLat();
-
-    projection.Set(lon1,lat1,lon1,lat1,0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
-    testPixmap();
-    repaint();
+    mouseDown=false;
 }
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
-}
-////////////////////////////////
+    if(mouseDown){
 
-void MapRenderWidget::newPixmapRendered(QPixmap pixmap,osmscout::MercatorProjection projection){
-    qDebug()<<"AAA";
-    projectionRendered=projection;
-    this->pixmap=pixmap;
+        double lon2,lat2,lon3,lat3,latR,lonR;
+
+        projection.PixelToGeo(lon1,lat1,lon3,lat3);
+        projection.PixelToGeo(e->posF().x(),projection.GetHeight()-e->posF().y(),lon2,lat2);
+        lonR=lon3-lon2;
+        latR=lat3-lat2;
+        lon1=e->posF().x();
+        lat1=projection.GetHeight()-e->posF().y();
+        lonR+=projection.GetLon();
+        latR+=projection.GetLat();
+
+        projection.Set(lonR,latR,lonR,latR,0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
+        testPixmap();
+        repaint();
+    }
+}
+
+void MapRenderWidget::setCoordinates(double lonPar, double latPar){
+    projection.Set(lonPar,latPar,projection.GetLon(),projection.GetLat(),0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
     repaint();
 }
 
-//////////////////////////////////////////////////////////////
+void MapRenderWidget::setMyCoordinates(double lonPar, double latPar,double angle){
+    myLon=lonPar;
+    myLat=latPar;
+    myAngle=angle;
 
-MapPixmapRenderer::MapPixmapRenderer(){
-    mapPainter=new osmscout::MapPainterQt();
-    started=false;
+    if(tracking){
+        setCoordinates(lonPar, latPar);
+        this->update();
+    }
 }
 
-void MapPixmapRenderer::getPixmap(){
-
+void MapRenderWidget::setZoom(int value){
+    qDebug()<<"SETZOOM";
+    projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),0,value,projection.GetWidth(),projection.GetHeight());
+    repaint();
 }
 
-void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style){
-    this->database=database;
-    this->projection=projection;
-    styleConfig=style;
-}
-
-void MapPixmapRenderer::run(){
-    //while(){
-        //render pixmap
-    if(started)return;
-    started=true;
-        QPixmap *pixmap=new QPixmap(projection->GetWidth(),projection->GetHeight());
-        qDebug()<<"LL"<<projection->GetWidth();
-        osmscout::MapData             data;
-        osmscout::MapParameter        drawParameter;
-        osmscout::AreaSearchParameter searchParameter;
-        QPainter *painter=new QPainter(pixmap);
-        drawParameter.SetOptimizeAreaNodes(true);
-        drawParameter.SetOptimizeWayNodes(true);
-        database->GetObjects(*(styleConfig),
-                            projection->GetLonMin(),
-                            projection->GetLatMin(),
-                            projection->GetLonMax(),
-                            projection->GetLatMax(),
-                            projection->GetMagnification(),
-                            searchParameter,
-                            data.nodes,
-                            data.ways,
-                            data.areas,
-                            data.relationWays,
-                            data.relationAreas);
-        mapPainter->DrawMap(*(styleConfig),
-                               (*projection),
-                               drawParameter,
-                               data,
-                               painter );
-        osmscout::MercatorProjection p=(*projection);
-        pixmapRendered(*(pixmap),p);
-        delete painter;
-    started=false;
+int MapRenderWidget::getZoom(){
+    return projection.GetMagnification();
 }
 
 
-/*
+void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection){
+    projectionRendered=projection;
+    this->image=pixmap;
+    repaint();
+}
 
-void DrawPositionMarker(const Projection& projection);
-void MapPainterQt::DrawPositionMarker(const Projection& projection)
+void MapRenderWidget::setStartZoom(int value){
+}
+
+void MapRenderWidget::setFinishZoom(int value){
+    //projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),0,value,projection.GetWidth(),projection.GetHeight());
+    testPixmap(true);
+    //repaint();
+}
+
+
+void MapRenderWidget::setTracking(bool tracking){
+    this->tracking = tracking;
+}
+
+bool MapRenderWidget::getTracking(){
+    return tracking;
+}
+
+void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter)
 {
   double x,y;
   QPolygon marker;
   QMatrix matrix, matrix2, result;
 
   marker << QPoint(-10,8) << QPoint(10,8) << QPoint(0,-15);
-  projection.GeoToPixel(projection.GetMarkerLon(),projection.GetMarkerLat(), x, y);
+  projection.GeoToPixel(myLon,myLat, x, y);
 
-  matrix.rotate(projection.GetAngle());
+  matrix.rotate(myAngle);
   matrix2.translate((int)x, (int)y);
 
   result = matrix.operator *(matrix2);
@@ -235,4 +254,62 @@ void MapPainterQt::DrawPositionMarker(const Projection& projection)
   painter->drawPolygon(marker);
 }
 
-*/
+
+
+//////////////////////////////////////////////////////////////
+
+MapPixmapRenderer::MapPixmapRenderer(){
+    mapPainter=new osmscout::MapPainterQt();
+    started=false;
+}
+
+void MapPixmapRenderer::getPixmap(){
+
+}
+
+void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d){
+    this->database=database;
+    this->projection=projection;
+    this->d=d;
+    styleConfig=style;
+}
+
+void MapPixmapRenderer::run(){
+    //while(){
+        //render pixmap
+    if(started)return;
+    started=true;
+        QSize size(projection->GetWidth(),projection->GetHeight());
+        //TODO: TEST FORMATS
+        QImage pixmap(size,QImage::Format_RGB16);
+        qDebug()<<"LL"<<projection->GetWidth();
+        osmscout::MapData             data;
+        osmscout::MapParameter        drawParameter;
+        osmscout::AreaSearchParameter searchParameter;
+        QPainter *painter=new QPainter(&pixmap);
+        drawParameter.SetOptimizeAreaNodes(true);
+        drawParameter.SetOptimizeWayNodes(true);
+        database->GetObjects(*(styleConfig),
+                            projection->GetLonMin(),
+                            projection->GetLatMin(),
+                            projection->GetLonMax(),
+                            projection->GetLatMax(),
+                            projection->GetMagnification()*d,
+                            searchParameter,
+                            data.nodes,
+                            data.ways,
+                            data.areas,
+                            data.relationWays,
+                            data.relationAreas);
+        mapPainter->DrawMap(*(styleConfig),
+                               (*projection),
+                               drawParameter,
+                               data,
+                               painter );
+        osmscout::MercatorProjection p=(*projection);
+        pixmapRendered(pixmap,p);
+        delete painter;
+    started=false;
+}
+
+

@@ -535,7 +535,7 @@ painter->drawImage(QPointF(x-images[style->GetId()-1].width()/2,
     SetBrush(parameter,
              *area.fillStyle);
 
-    //painter->drawPolygon(polygon);
+    painter->drawPolygon(polygon);
   }
 
   void MapPainterQt::DrawArea(const FillStyle& style,

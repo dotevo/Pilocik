@@ -21,6 +21,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NavigationWindow)
 {
+    mapRenderer =0;
     gps = new GPSreceiver();
 
     Settings::getInstance()->loadSettings();
@@ -64,6 +65,7 @@ void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
     TWidgetManager::getInstance()->addWidget("Slider", new TSliderWidget(this));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
 }
 
 void NavigationWindow::addFrames(){
@@ -106,8 +108,8 @@ void NavigationWindow::on_menuButton_clicked(){
 }
 
 void NavigationWindow::on_trackingButton_clicked(){
-    //ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
-    //ui->widget->setTracking(!ui->widget->getTracking());
+    ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
+    ui->widget->setTracking(!ui->widget->getTracking());
 }
 
 void NavigationWindow::on_routeButton_clicked() {
@@ -160,3 +162,8 @@ void NavigationWindow::on_sliderButton_clicked() {
     TWidgetManager::getInstance()->changeMode();
     ui->sliderButton->setText(ui->sliderButton->text().compare("<--->") ? "<--->" : "<>");
 }
+
+void NavigationWindow::positionUpdated(GPSdata gps_data){
+    ui->widget->setMyCoordinates(gps_data.lon,gps_data.lat,gps_data.angle);
+}
+
