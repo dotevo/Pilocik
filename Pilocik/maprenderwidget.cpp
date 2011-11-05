@@ -59,7 +59,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
     projection.Set(lon, lat, lon, lat, 0, zoom, 1000, 1000);
 
 
-    rendererThread=new MapPixmapRenderer();
+    rendererThread=new MapPixmapRenderer(this);
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
     connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection)));
     testPixmap();
@@ -80,18 +80,14 @@ void MapRenderWidget::testPixmap(bool force){
             projection.GetLatMax()>projectionRendered.GetLatMax()-H||
                 force)
         {
-            qDebug()<<projection.GetMagnification()<<"::::"<<projectionRendered.GetMagnification();
                 needDraw=true;
-                qDebug()<<"NEEDED!!";
         }
     }
 
-    //qDebug()<<"222";
-    if(needDraw){
+    if(needDraw&&!rendererThread->isWorking()){
             QSize s=this->size();
             projectionRendered1=projection;
             projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, projection.GetMagnification()/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
-            //qDebug()<<projectionRendered1.GetWidth()<<"{}"<<s.width();
             this->rendererThread->init((*(&database)),&projectionRendered1,(*(&styleConfig)),(float)cachePixmapSize);
             this->rendererThread->start();
     }
@@ -258,7 +254,7 @@ void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,
 
 //////////////////////////////////////////////////////////////
 
-MapPixmapRenderer::MapPixmapRenderer(){
+MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
     mapPainter=new osmscout::MapPainterQt();
     started=false;
 }
@@ -277,8 +273,8 @@ void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProj
 void MapPixmapRenderer::run(){
     //while(){
         //render pixmap
-    if(started)return;
     started=true;
+    qDebug()<<"tak";
         QSize size(projection->GetWidth(),projection->GetHeight());
         //TODO: TEST FORMATS
         QImage pixmap(size,QImage::Format_RGB16);
@@ -313,3 +309,6 @@ void MapPixmapRenderer::run(){
 }
 
 
+bool MapPixmapRenderer::isWorking(){
+    return started;
+}

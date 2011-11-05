@@ -24,7 +24,7 @@ namespace Ui {
 class MapPixmapRenderer: public QThread{
     Q_OBJECT
 public:
-    MapPixmapRenderer();
+    MapPixmapRenderer(QObject *parent = 0);
     void getPixmap();
     void run();
     /**
@@ -35,6 +35,7 @@ public:
       @param magnification ratio
       */
     void init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d);
+    bool isWorking();
 private:
     float d;
     bool started;
