@@ -57,7 +57,7 @@
       <item>
        <widget class="QLabel" name="profileLabel">
         <property name="text">
-         <string>Profile</string>
+         <string>Profile:</string>
         </property>
        </widget>
       </item>
@@ -101,7 +101,7 @@
       <item>
        <widget class="QLabel" name="weightLabel">
         <property name="text">
-         <string>Weight</string>
+         <string>Weight:</string>
         </property>
        </widget>
       </item>
@@ -138,7 +138,7 @@
       <item>
        <widget class="QLabel" name="heightLabel">
         <property name="text">
-         <string>Height</string>
+         <string>Height:</string>
         </property>
        </widget>
       </item>

@@ -15,6 +15,8 @@ public:
     explicit MapOptionsWindow(NavigationWindow *parent);
     ~MapOptionsWindow();
 
+    void setStartFocus();
+
 private slots:
     void on_okButton_clicked();
 

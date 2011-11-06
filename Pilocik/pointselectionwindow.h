@@ -63,6 +63,8 @@ private slots:
 
     void on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_tabWidget_currentChanged(int index);
+
 signals:
     void ok_clicked();
 

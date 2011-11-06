@@ -17,7 +17,6 @@ MapOptionsWindow::~MapOptionsWindow()
     delete ui;
 }
 
-
 void MapOptionsWindow::on_okButton_clicked(){
     setVisible(false);
     Settings::getInstance()->modifyCoreSettings("mapPath", ui->mapFile->text());
@@ -29,4 +28,9 @@ void MapOptionsWindow::on_backButton_clicked()
 {
     setVisible(false);
     emit closed();
+}
+
+void MapOptionsWindow::setStartFocus()
+{
+    ui->mapOptionsLabel->setFocus();
 }

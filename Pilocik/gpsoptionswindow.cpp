@@ -12,6 +12,8 @@ GPSOptionsWindow::GPSOptionsWindow(NavigationWindow *parent) :
     ui->gpxFolderLineEdit->setText(Settings::getInstance()->getSimulationPath()); //setText("\\ResidentFlash\\ZPI\\bielany.gps");
     gps = parent->gps;
     connect(gps, SIGNAL(simStatusUpdate(QString)), this, SLOT(simStatusUpdate(QString)));
+
+    ui->deviceLabel->setFocus();
 }
 
 GPSOptionsWindow::~GPSOptionsWindow()
@@ -41,4 +43,9 @@ void GPSOptionsWindow::on_stopSimButton_clicked()
 void GPSOptionsWindow::simStatusUpdate(QString status)
 {
     ui->simStatus->setText(status);
+}
+
+void GPSOptionsWindow::setStartFocus()
+{
+    ui->label_2->setFocus();
 }

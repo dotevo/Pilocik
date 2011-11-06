@@ -35,6 +35,9 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
     ui->poiTreeWidget->hideColumn(ID_COLUMN);
     ui->poiTreeWidget->header()->hide();
 
+    ui->typeLabel->setGeometry(0, 0, 10, 10);
+    ui->typeComboBox->setGeometry(10, 10, 100, 100);
+
     if (currentLocationX != 0 && currentLocationY != 0) {
         currentLocation = QPointF(currentLocationX, currentLocationY);
     }
@@ -441,6 +444,9 @@ void PointSelectionWindow::fillPOIWidget(QString type)
         item->setText(NAME_COLUMN, name);
         item->setText(PATH_COLUMN, QString::number(distances.at(i)) + " km");
         item->setText(INFO_COLUMN, "INFO");
+
+        ui->poiTreeWidget->resizeColumnToContents(NAME_COLUMN);
+        ui->poiTreeWidget->resizeColumnToContents(PATH_COLUMN);
     }
 }
 
@@ -478,4 +484,9 @@ void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, i
 void PointSelectionWindow::on_poiTreeWidget_clicked(const QModelIndex &index)
 {
 
+}
+
+void PointSelectionWindow::on_tabWidget_currentChanged(int index)
+{
+    ui->poiTab->setFocus();
 }

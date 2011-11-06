@@ -107,43 +107,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QFrame" name="typeFrame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="spacing">
-           <number>3</number>
-          </property>
-          <property name="leftMargin">
-           <number>6</number>
-          </property>
-          <property name="topMargin">
-           <number>5</number>
-          </property>
-          <property name="rightMargin">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>5</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="typeLabel">
-            <property name="text">
-             <string>Type:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="typeComboBox"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="1" column="0" colspan="2">
         <widget class="QFrame" name="nameFrame">
          <property name="frameShape">
@@ -199,6 +162,13 @@
          <layout class="QHBoxLayout" name="horizontalLayout_10">
           <item>
            <widget class="QTreeWidget" name="poiTreeWidget">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <column>
              <property name="text">
               <string notr="true">1</string>
@@ -239,6 +209,65 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="2">
+        <widget class="QFrame" name="typeFrame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="typeLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Type:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="typeComboBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="addressTab">
@@ -273,7 +302,7 @@
           <item>
            <widget class="QLabel" name="countryLabel">
             <property name="text">
-             <string>Country</string>
+             <string>Country:</string>
             </property>
            </widget>
           </item>
@@ -314,7 +343,7 @@
           <item>
            <widget class="QLabel" name="cityLabel">
             <property name="text">
-             <string>City</string>
+             <string>City:</string>
             </property>
            </widget>
           </item>
@@ -351,7 +380,7 @@
           <item>
            <widget class="QLabel" name="streetLabel">
             <property name="text">
-             <string>Street</string>
+             <string>Street:</string>
             </property>
            </widget>
           </item>
@@ -388,7 +417,7 @@
           <item>
            <widget class="QLabel" name="noLabel">
             <property name="text">
-             <string>No</string>
+             <string>No:</string>
             </property>
            </widget>
           </item>
@@ -441,7 +470,7 @@
            <widget class="QTreeWidget" name="treeWidget">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>11</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -493,7 +522,7 @@
           <item>
            <widget class="QLabel" name="beforeLabel">
             <property name="text">
-             <string>Before</string>
+             <string>Before:</string>
             </property>
            </widget>
           </item>

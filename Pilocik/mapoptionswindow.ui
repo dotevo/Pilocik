@@ -47,7 +47,7 @@
       <item>
        <widget class="QLabel" name="nearestLabel">
         <property name="text">
-         <string>Map style</string>
+         <string>Map style:</string>
         </property>
        </widget>
       </item>
@@ -81,7 +81,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="nearestLabel_2">
         <property name="text">
-         <string>Map file</string>
+         <string>Map file:</string>
         </property>
        </widget>
       </item>

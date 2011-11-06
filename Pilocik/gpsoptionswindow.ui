@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>442</width>
     <height>300</height>
    </rect>
   </property>
@@ -53,7 +53,7 @@
       <item>
        <widget class="QLabel" name="gpxFolderLabel">
         <property name="text">
-         <string>GPX Folder</string>
+         <string>GPX Folder:</string>
         </property>
        </widget>
       </item>
@@ -114,20 +114,20 @@
        <rect>
         <x>7</x>
         <y>6</y>
-        <width>54</width>
+        <width>71</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>GPS Device</string>
+       <string>GPS Device:</string>
       </property>
      </widget>
      <widget class="QComboBox" name="deviceComboBox">
       <property name="geometry">
        <rect>
-        <x>67</x>
+        <x>77</x>
         <y>6</y>
-        <width>301</width>
+        <width>291</width>
         <height>20</height>
        </rect>
       </property>
@@ -169,7 +169,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Simulation</string>
+      <string>Simulation:</string>
      </property>
     </widget>
    </item>

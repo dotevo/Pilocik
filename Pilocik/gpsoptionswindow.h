@@ -18,6 +18,8 @@ public:
     explicit GPSOptionsWindow(NavigationWindow *parent);
     ~GPSOptionsWindow();
 
+    void setStartFocus();
+
 private slots:
     void on_okButton_clicked();
     void on_startSimButton_clicked();

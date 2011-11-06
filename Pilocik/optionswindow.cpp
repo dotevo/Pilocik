@@ -37,6 +37,7 @@ void OptionsWindow::on_backButton_clicked() {
 void OptionsWindow::on_mapButton_clicked() {
     moWin->setVisible(true);
     moWin->raise();
+    moWin->setStartFocus();
     connect(moWin, SIGNAL(closed()),
             this, SLOT(optionWindowClosed()));
     setVisible(false);
@@ -46,6 +47,7 @@ void OptionsWindow::on_mapButton_clicked() {
 void OptionsWindow::on_GPSButton_clicked() {
     gpsWin->setVisible(true);
     gpsWin->raise();
+    gpsWin->setStartFocus();
     connect(gpsWin, SIGNAL(closed()),
             this, SLOT(optionWindowClosed()));
     setVisible(false);
