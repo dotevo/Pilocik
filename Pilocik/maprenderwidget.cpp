@@ -29,8 +29,8 @@ osmscout::Database *MapRenderWidget::database=0;
 osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
 MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(parent){
-    cachePixmapSize=5;
-    delta=0.5;
+    cachePixmapSize=2;
+    delta=0.0;
     mouseDown=false;
     //Database loading
     if(database==0){
@@ -52,19 +52,23 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
         std::cerr << "Cannot open style" << std::endl;
     }
 
-
-    lat = 51.1;
-    lon = 17.03;
-    zoom = 2*2*1024;
-
-    //Set projection
-    projection.Set(lon, lat, lon, lat, 0, zoom, 1000, 1000);
-
+    Settings* settings = Settings::getInstance();
+    lat = settings->getLat();
+    lon = settings->getLon();
+    zoom = settings->getZoom();
+    qDebug()<<lon<<":"<<lat<<":"<<zoom;
+    projection.Set(lon,lat,lon,lat,0,zoom,0,0);
 
     rendererThread=new MapPixmapRenderer(this);
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
     connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection)));
-    testPixmap();
+    //testPixmap();
+}
+
+
+MapRenderWidget::~MapRenderWidget(){
+    qDebug()<<"Save Maprenderer settings";
+    Settings::getInstance()->modifyMapSettings(projection.GetLat(), projection.GetLon(), projection.GetMagnification());
 }
 
 void MapRenderWidget::testPixmap(bool force){
@@ -180,8 +184,8 @@ QPointF MapRenderWidget::getCoordinates(){
 }
 
 void MapRenderWidget::setZoom(int value){
-    qDebug()<<"SETZOOM";
     projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),0,value,projection.GetWidth(),projection.GetHeight());
+    testPixmap(true);
     repaint();
 }
 
@@ -191,8 +195,9 @@ int MapRenderWidget::getZoom(){
 
 
 void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection){
-    projectionRendered=projection;
+    projectionRendered=projection;    
     this->image=pixmap;
+    testPixmap();
     repaint();
 }
 

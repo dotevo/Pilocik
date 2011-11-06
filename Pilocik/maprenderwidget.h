@@ -60,6 +60,7 @@ class MapRenderWidget : public QWidget
 
 public:
     MapRenderWidget(QWidget *parent=0,int width=0,int height=0);
+    ~MapRenderWidget();
     void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);

@@ -50,7 +50,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 NavigationWindow::~NavigationWindow()
 {
     gps->disable();
-    delete ui->widget;
+    //delete ui->widget;
     delete ui;
     delete routeWin;
     delete optionsWin;
