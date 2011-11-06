@@ -7,11 +7,6 @@
         <file>images/icons/14x14/standard/parking.png</file>
         <file>images/icons/14x14/standard/pharmacy.png</file>
         <file>images/icons/14x14/standard/scrub.png</file>
-        <file>images/icons/64x64/gps_ico.png</file>
-        <file>images/icons/64x64/routing_ico.png</file>
-        <file>images/icons/64x64/settings_ico.png</file>
-        <file>images/icons/64x64/user_ico.png</file>
-        <file>images/icons/64x64/exit_ico.png</file>
     </qresource>
     <qresource prefix="/svg">
         <file>images/icons/svg/standard/bus_stop.svg</file>
@@ -21,5 +16,13 @@
         <file>images/icons/svg/standard/parking.svg</file>
         <file>images/icons/svg/standard/pharmacy.svg</file>
         <file>images/icons/svg/standard/scrub.svg</file>
+    </qresource>
+    <qresource prefix="/gif">
+        <file>images/icons/64x64/exit_ico.gif</file>
+        <file>images/icons/64x64/gps_ico.gif</file>
+        <file>images/icons/64x64/map_ico.gif</file>
+        <file>images/icons/64x64/routing_ico.gif</file>
+        <file>images/icons/64x64/settings_ico.gif</file>
+        <file>images/icons/64x64/user_ico.gif</file>
     </qresource>
 </RCC>

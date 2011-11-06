@@ -10,6 +10,8 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <QDebug>
+
 #include <QMouseEvent>
 #include <QLineF>
 #include <QDebug>
@@ -108,12 +110,8 @@ void MapRenderWidget::paintEvent(QPaintEvent *e){
          projectionRendered.GeoToPixel(projection.GetLonMin(),projection.GetLatMin(),XMin,YMin);
          projectionRendered.GeoToPixel(projection.GetLonMax(),projection.GetLatMax(),XMax,YMax);
 
-
          double X,Y;
          projectionRendered.GeoToPixel(projection.GetLon(),projection.GetLat(),X,Y);
-
-         //qDebug()<<"MIN LON:"<<projection.GetLonMin()<<"["<<XMin<<"]"<<"  MAX LON:"<<projection.GetLonMax()<<"["<<XMax<<"]"<<" CENTER:"<<projection.GetLon()<<"["<<X<<"]"<<"\n"<<
-         //          "MIN LAT:"<<projection.GetLatMin()<<"["<<YMin<<"]"<<"  MAX LAT:"<<projection.GetLatMax()<<"["<<XMax<<"]"<<" CENTER:"<<projection.GetLat()<<"["<<Y<<"]\n";
 
          QRectF source(XMin, YMax,XMax-XMin,YMin-YMax);
          //qDebug()<<XMin<<":"<<YMin<<":"<<XMax-XMin<<":"<<YMax-YMin;
@@ -175,6 +173,10 @@ void MapRenderWidget::setMyCoordinates(double lonPar, double latPar,double angle
         setCoordinates(lonPar, latPar);
         this->update();
     }
+}
+
+QPointF MapRenderWidget::getCoordinates(){
+    return QPointF(projection.GetLon(),projection.GetLat());
 }
 
 void MapRenderWidget::setZoom(int value){
@@ -257,6 +259,7 @@ void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,
 MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
     mapPainter=new osmscout::MapPainterQt();
     started=false;
+
 }
 
 void MapPixmapRenderer::getPixmap(){

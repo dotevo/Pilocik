@@ -16,6 +16,9 @@ GPSInfoWindow::GPSInfoWindow(NavigationWindow *parent) :
     gps = parent->gps;
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(infoUpdate(GPSdata)));
     connect(gps, SIGNAL(statusUpdate(QString)), this, SLOT(statusUpdate(QString)));
+#ifdef Q_OS_WINCE
+    ui->pcSimBtn->setVisible(false);
+#endif
 }
 
 GPSInfoWindow::~GPSInfoWindow()
@@ -84,6 +87,12 @@ void GPSInfoWindow::on_stopGPSButton_clicked()
 {
     gps->disable();
     clearInfo();
+}
+
+void GPSInfoWindow::on_pcSimBtn_clicked()
+{
+    gps->setMode(GPSreceiver::PC_SIMULATION_MODE);
+    gps->start();
 }
 
 void GPSInfoWindow::statusUpdate(QString status)

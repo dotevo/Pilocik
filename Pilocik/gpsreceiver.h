@@ -9,8 +9,10 @@
 #include <QList>
 #include <QFile>
 #include <QTimer>
-#ifdef Q_OS_WINCE_STD
-    #include <windows.h>
+#include <QBuffer>
+#include <QSharedMemory>
+#ifdef Q_OS_WINCE
+    #include <windows.h>    
 #endif
 
 
@@ -62,19 +64,22 @@ private:
     HANDLE hInput;
 #endif
     QStringList output;
-    QString path;
+    QString path, serialPort;
     QFile file;
+    QSharedMemory sharedMem;
     int mode;
     bool contiunue;
 
     int connectSerialPort();
     bool testSerialPort();
     bool startSimulation();
+    bool startPcSimulation();
     bool startRealGPS();
 
 public:
     const static int GPS_MODE = 1;          //!< Representation of gps mode value for mode selector
     const static int SIMULATION_MODE = 2;   //!< Representation of simulation mode value for mode selector
+    const static int PC_SIMULATION_MODE = 3;//!< Representation of PC simulation mode via shared memory for mode selector
 
     GPSreceiver();
     ~GPSreceiver();

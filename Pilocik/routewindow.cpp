@@ -17,7 +17,9 @@ RouteWindow::~RouteWindow(){
 void RouteWindow::on_toButton_clicked(){
     if(psw)
         delete psw;
-    psw=new PointSelectionWindow(NavigationWindow::main);
+    psw=new PointSelectionWindow(NavigationWindow::main,
+                                 NavigationWindow::main->mapRenderer->getCoordinates().x(),
+                                 NavigationWindow::main->mapRenderer->getCoordinates().y());
     psw->setVisible(true);
     connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
     setVisible(false);

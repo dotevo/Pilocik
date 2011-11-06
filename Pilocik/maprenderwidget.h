@@ -5,7 +5,7 @@
 #include <QWidget>
 #include <QList>
 #include <QPainter>
-#include <QPoint>
+#include <QPointF>
 #include <QPixmap>
 #include <QRect>
 #include <QString>
@@ -74,6 +74,12 @@ public:
       @brief Settings coordinates of actual position.
       */
     void setMyCoordinates(double lonPar, double latPar,double angle);
+
+    /**
+      @brief Gettings coordinates.
+      @return Actual coordinates.
+      */
+    QPointF getCoordinates();
 
     /**
       @brief Setting zoom value.

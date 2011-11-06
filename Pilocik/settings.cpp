@@ -83,7 +83,7 @@ void Settings::resetDefaultSettings()
             "       <map>\n"
             "           <lat>51.1</lat>\n"
             "           <lon>17.03</lon>\n"
-            "           <zoom>16384</zoom>\n"
+            "           <zoom>8</zoom>\n"
             "       </map>\n"
             "   </profile>\n"
             "</settings>\n";
@@ -140,8 +140,6 @@ void Settings::configureProfile(QString profile)
         while(!widgetNode.isNull())
         {
             widgetAttributes.insert(widgetNode.nodeName(),widgetNode.text());
-            //debug
-            //std::cerr << widgetName.toStdString() << "," << widgetNode.nodeName().toStdString() << "," << widgetNode.text().toStdString() << std::endl;
             widgetNode = widgetNode.nextSiblingElement();
         }
         widgetsSettings.insert(widgetName, widgetAttributes);
@@ -151,18 +149,9 @@ void Settings::configureProfile(QString profile)
     //Configure map settings
 
     QDomElement mapSettings = profileSettings.firstChildElement("map");
-    if(mapSettings.hasAttribute("lat"))
-        lat = mapSettings.firstChildElement("lat").text().toDouble();
-    else
-        lat =51.1;
-    if(mapSettings.hasAttribute("lon"))
-        lon = mapSettings.firstChildElement("lon").text().toDouble();
-    else
-        lon =17.03;
-    if(mapSettings.hasAttribute("zoom"))
-        zoom = mapSettings.firstChildElement("zoom").text().toInt();
-    else
-        zoom=16384;
+    lat = mapSettings.firstChildElement("lat").text().toDouble();
+    lon = mapSettings.firstChildElement("lon").text().toDouble();
+    zoom = mapSettings.firstChildElement("zoom").text().toInt();
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)

@@ -77,7 +77,7 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
 }
 
 
-GPSreceiver::GPSreceiver()
+GPSreceiver::GPSreceiver() : sharedMem("GPSDATA")
 {
     setTerminationEnabled(true);
 }
@@ -117,9 +117,48 @@ bool GPSreceiver::startSimulation()
             gps_data.parseBuffer(&output);
             qRegisterMetaType<GPSdata>("GPSdata");
             emit positionUpdate(gps_data);
-            msleep(500);
+            msleep(1000);
         }
     }
+}
+
+bool GPSreceiver::startPcSimulation()
+{
+#ifndef Q_OS_WINCE
+    emit simStatusUpdate("Simulation started.");
+    contiunue = true;
+
+    while (contiunue) {
+        if (!sharedMem.attach())
+        {
+            //If an attempt of reading from the shared memory before data is written
+            contiunue;
+        }
+
+        QBuffer buffer;
+        QDataStream in(&buffer);
+        QString text;
+
+        sharedMem.lock();
+        buffer.setData((char*)sharedMem.constData(), sharedMem.size());
+        buffer.open(QBuffer::ReadOnly);
+        in >> text;
+        sharedMem.unlock();
+
+        output.append(text.split('\n'));
+
+        // As this is the last process attached to the shared memory segment
+        // the shared memory segment is released, destroying its contents
+        sharedMem.detach();
+
+        GPSdata gps_data = GPSdata();
+        gps_data.parseBuffer(&output);
+        qRegisterMetaType<GPSdata>("GPSdata");
+        emit positionUpdate(gps_data);
+        msleep(1000);
+    }
+#endif
+	return true;
 }
 
 int GPSreceiver::connectSerialPort()
@@ -268,6 +307,9 @@ void GPSreceiver::run()
         break;
     case 2:
         startSimulation();
+        break;
+    case 3:
+        startPcSimulation();
         break;
     }
 }

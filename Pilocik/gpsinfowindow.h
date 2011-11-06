@@ -20,6 +20,7 @@ private slots:
     void on_gpsInfoBackButton_clicked();
     void on_startGPSButton_clicked();
     void on_stopGPSButton_clicked();
+    void on_pcSimBtn_clicked();
     void infoUpdate(GPSdata gps_data);
     void statusUpdate(QString status);
     void clearInfo();

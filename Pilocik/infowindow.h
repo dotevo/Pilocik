@@ -16,7 +16,7 @@ class InfoWindow : public QFrame
     Q_OBJECT
 
 public:
-    explicit InfoWindow(QWidget *parent = 0);
+    explicit InfoWindow(QFrame *parent = 0);
     ~InfoWindow();
 
     /**

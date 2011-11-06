@@ -20,7 +20,7 @@ class PointSelectionWindow : public QFullScreenFrame
     Q_OBJECT
 
 public:
-    explicit PointSelectionWindow(NavigationWindow *parent = 0);
+    explicit PointSelectionWindow(NavigationWindow *parent = 0, double currentLocationX = 0, double currentLocationY = 0);
     ~PointSelectionWindow();
 
 private slots:
@@ -57,6 +57,12 @@ private slots:
 
     void on_poiOkButton_clicked();
 
+    void on_typeComboBox_currentIndexChanged(const QString &arg1);
+
+    void on_poiTreeWidget_clicked(const QModelIndex &index);
+
+    void on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
 signals:
     void ok_clicked();
 
@@ -72,6 +78,11 @@ private:
     static const int INFO_COLUMN = 3;
     static const int COLUMNS_COUNT = 4;
 
+    /**
+      @brief Coordinates of current location.
+      */
+    QPointF currentLocation;
+
     Ui::PointSelectionWindow *ui;
     osmscout::Searching* searching;
 
@@ -86,6 +97,12 @@ private:
       @param name Location name.
       */
     osmscout::Location searchLocation(const QString locationName);
+
+    /**
+      @brief Sets POIs in widget with specified type.
+      @param type Type of POIs.
+      */
+    void fillPOIWidget(QString type);
 
     /**
       @brief Searching type. It defines what object type is searching now.
