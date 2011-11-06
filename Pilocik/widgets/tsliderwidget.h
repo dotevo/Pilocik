@@ -17,6 +17,7 @@ public:
     explicit TSliderWidget(QWidget *parent = 0);
     ~TSliderWidget();
     typedef TMovableFrame frame;
+    void initZoom(int value);
     void setMode(TMovableFrame::TMOVABLEMODE mode);
     void modeChanged(TMovableFrame::TMOVABLEMODE& mode);
 

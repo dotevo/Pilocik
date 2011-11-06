@@ -158,6 +158,7 @@ bool GPSreceiver::startPcSimulation()
         msleep(1000);
     }
 #endif
+	return true;
 }
 
 int GPSreceiver::connectSerialPort()

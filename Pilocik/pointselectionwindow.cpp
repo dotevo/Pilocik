@@ -275,7 +275,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
 
                                 if (waj.Valid()) {
                                     for (int j = 0; j < waj.Get()->GetTagCount(); j++)
-                                        qDebug() << waj.Get()->GetTagKey(j) << " / " << QString::fromStdString(waj.Get()->GetTagValue(j));
+                                        qDebug() << waj.Get()->GetTagKey(j) << " / " << QString(waj.Get()->GetTagValue(j).c_str());
                                     if (waj.Get()->GetTagCount() > 0)
                                         qDebug() << "\n";
                                 }
@@ -311,7 +311,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                                 if (pointRef.Valid()) {
 
                                     if (pointRef.Get()->GetTagCount() > 0)
-                                        qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
+                                        qDebug() << pointRef.Get()->GetId() << " | " << QString(pointRef.Get()->GetTagValue(0).c_str());
                                }
 
                             }

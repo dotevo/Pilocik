@@ -87,11 +87,6 @@ void MapRenderWidget::init(int W, int H)
     translatePoint = QPoint(0, 0);
     lastPoint = QPoint(0, 0);
 
-    lat = 51.1;
-    lon = 17.03;
-
-    zoom = 2*2*2*2*1024;
-
     angle = 0;
 
     width = W != 0 ? W : 673;

@@ -1,7 +1,6 @@
 #include "navigationwindow.h"
 #include "ui_navigationwindow.h"
 #include <QResizeEvent>
-#include <QDebug>
 #include "twidgetmanager.h"
 #include "widgets/tclockwidget.h"
 #include "widgets/tspeedmeterwidget.h"
@@ -24,7 +23,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     gps = new GPSreceiver();
 
     Settings::getInstance()->loadSettings();
-    Settings::getInstance()->configureProfile("tc");
+    Settings::getInstance()->configureProfile("default");
 
     ui->setupUi(this);
 
@@ -38,8 +37,8 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     mapRenderer = ui->widget;
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
-    //TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
-    TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
+    TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
+    //TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
     ui->menuPanel->setVisible(false);
     addFrames();
     ui->widget->setVisible(true);
@@ -63,7 +62,10 @@ NavigationWindow::~NavigationWindow()
 void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
-    TWidgetManager::getInstance()->addWidget("Slider", new TSliderWidget(this));
+    TSliderWidget* slider = new TSliderWidget(this);
+    slider->initZoom(Settings::getInstance()->getZoom());
+    TWidgetManager::getInstance()->addWidget("Slider", slider);
+
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     TWidgetManager::getInstance()->showAllWidgets();
 }
