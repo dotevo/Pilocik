@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
  
-QT       += core gui \
+QT       += core gui sql \
             xml
 
 TARGET = ../../build/Pilocik
@@ -71,6 +71,7 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/ost/ScannerT.cpp \
     ../lib/sosmscout/src/osmscout/MapPainter.cpp \
     ../lib/sosmscout/src/osmscout/Partitioning.cpp \
+    ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \

@@ -9,59 +9,72 @@
 #include <QPixmap>
 #include <QRect>
 #include <QString>
+#include <QThread>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
 
+
 namespace Ui {
     class MapRenderWidget;
 }
+
+
+class MapPixmapRenderer: public QThread{
+    Q_OBJECT
+public:
+    MapPixmapRenderer(QObject *parent = 0);
+    void getPixmap();
+    void run();
+    /**
+      @brief Init
+      @param database
+      @param projection
+      @param style
+      @param magnification ratio
+      */
+    void init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d);
+    bool isWorking();
+private:
+    float d;
+    bool started;
+    osmscout::Database *database;
+    osmscout::MapPainterQt        *mapPainter;
+    osmscout::MercatorProjection  *projection;
+    osmscout::StyleConfig  *styleConfig;
+signals:
+    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection);
+
+
+};
+
+
 /**
   @brief The widget with rendered map.
   */
+
 class MapRenderWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    /**
-      @brief Creating map render widget.
-      @param parent Parent widget.
-      @param W Width of rendering area.
-      @param H Height of rendering area.
-      */
-    explicit MapRenderWidget(QWidget *parent = 0, int W = 0, int H = 0);
-    typedef QWidget widget;
-
+    MapRenderWidget(QWidget *parent=0,int width=0,int height=0);
     ~MapRenderWidget();
-
-    /**
-      @brief Initializing variables depending of the operating system.
-      */
-    void init(int W = 0, int H = 0);
-
-    /**
-      @brief Drawing map.
-      @param rect rectangle using during rendering transformated map.
-      */
-    int DrawMap(QRect rect);
-
-    /**
-     * @brief
-     * @param
-     */
-    void DrawPartitions();
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void repaint();
+    void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
 
     /**
       @brief Settings coordinates.
       */
     void setCoordinates(double lonPar, double latPar);
+
+    /**
+      @brief Settings coordinates of actual position.
+      */
+    void setMyCoordinates(double lonPar, double latPar,double angle);
 
     /**
       @brief Gettings coordinates.
@@ -80,11 +93,10 @@ public:
       @return zoom value.
       */
     int getZoom();
-
     /**
-      @brief Memorizing start zoom value, when zoom level is changed.
-      @param value zoom value
-      */
+         @brief Memorizing start zoom value, when zoom level is changed.
+         @param value zoom value
+     */
     void setStartZoom(int value);
 
     /**
@@ -94,13 +106,8 @@ public:
     void setFinishZoom(int value);
 
     /**
-      @brief Forcing repaint.
-      */
-    void forceRepaint();
-
-    /**
-      @brief Enable or disable position tracking (auto map moving when position changes)
-      @param value If false tracking is disabled, when true enabled.
+         @brief Enable or disable position tracking (auto map moving when setMyCoordinates changed)
+         @param value If false tracking is disabled, when true enabled.
       */
     void setTracking(bool tracking);
     /**
@@ -108,47 +115,36 @@ public:
       @return Actual tracking value.
       */
     bool getTracking();
-    /**
-      @brief Sets new size for rendering area.
-      @param size New size value.
-      */
-    void setSize(QSize size);
 
 private:
-    osmscout::DatabaseParameter databaseParameter;
-    osmscout::Database          *database;
-    osmscout::StyleConfig       *styleConfig;
+    bool tracking;
+    double myLon,myLat,myAngle;
 
-    osmscout::MapPainterQt        *mapPainter;
+    bool mouseDown;
+    //Dodatkowy rozmiar w cache
+    int lat,lon,zoom;
+    //Pressed
+    double lon1,lat1;
 
-    GPSreceiver* gps;
-    QString   map;
-    QString   style;
-    QString   output;
-    size_t    width,height;
-    double    lon,lat,markerLon,markerLat,angle,zoom;
-    bool      tracking, debugPartitions;
+    int cachePixmapSize;
+    double delta;
+    static osmscout::DatabaseParameter databaseParameter;
+    static osmscout::Database *database;
+    osmscout::StyleConfig     *styleConfig;
+    osmscout::MercatorProjection  projection;
+    osmscout::MercatorProjection  projectionRendered;
+    osmscout::MercatorProjection  projectionRendered1;
 
-    QPixmap pixmap;
-    osmscout::MapPainterQt partitionMapPainter;
+    MapPixmapRenderer *rendererThread;
+    QImage image;
+    void testPixmap(bool force=false);
+    void DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter);
 
-    bool noPaint;
-    bool isDrawn;
-    bool gpsActive;
+public slots:
 
-    bool moving;
-    QPoint startPoint;  // mouse is pressed
-    QPoint finishPoint; // mouse is released
-    QPoint lastPoint;   // last position of mouse
-    QPoint translatePoint;  // translation point
-
-    bool scaling;
-    double scalingLevel;
-    int startZoom;  // mouse is pressed, 'catching' slider
-    int finishZoom; // mouse is released, 'releasing' slider
-
-private slots:
-    void positionUpdate(GPSdata gps_data);
+    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
 };
+
+
 
 #endif // MAPRENDERWIDGET_H

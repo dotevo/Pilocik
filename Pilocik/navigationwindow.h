@@ -36,7 +36,7 @@ private slots:
      */
     void menuClosedSlot();
     void on_sliderButton_clicked();
-
+    void positionUpdated(GPSdata gps_data);
 signals:
     void sizeChanged(QWidget *widget);
 

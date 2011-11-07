@@ -2,7 +2,6 @@
 #include "navigationwindow.h"
 
 #include "qmath.h"
-#include "gpsreceiver.h"
 #include "settings.h"
 
 #include <iostream>
@@ -15,6 +14,7 @@
 
 #include <QMouseEvent>
 #include <QLineF>
+#include <QDebug>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
@@ -25,333 +25,298 @@
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Node.h>
 
-MapRenderWidget::MapRenderWidget(QWidget *parent, int W, int H)
-   : QWidget(parent)
-{
-    init(W, H);
-}
+osmscout::Database *MapRenderWidget::database=0;
+osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
-MapRenderWidget::~MapRenderWidget()
-{
-    Settings::getInstance()->modifyMapSettings(lat, lon, zoom);
-}
+MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(parent){
+    cachePixmapSize=2;
+    delta=0.0;
+    mouseDown=false;
+    //Database loading
+    if(database==0){
+        QString map = Settings::getInstance()->getMapPath();
+        if(map.size()==0) {
+            std::cerr << "It's not a map, it's a shit!" << std::endl;
+        }
 
-void MapRenderWidget::setTracking(bool tracking)
-{
-    this->tracking = tracking;
-}
+        database = new osmscout::Database(databaseParameter);
+        if (!database->Open((const char*)map.toAscii())) {
+            std::cerr << "Fatal error: Cannot open database" << std::endl;
+        }
 
-bool MapRenderWidget::getTracking()
-{
-    return tracking;
-}
-
-void MapRenderWidget::init(int W, int H)
-{
-    map = Settings::getInstance()->getMapPath();
-    style = Settings::getInstance()->getMapStylePath();
-
-    if(map.size()==0) {
-        std::cerr << "It's not a map, it's a shit!" << std::endl;
     }
 
-    database = new osmscout::Database(databaseParameter);
-
-    if (!database->Open((const char*)map.toAscii())) {
-        std::cerr << "Cannot open database" << std::endl;
-    }
-
+    QString style = Settings::getInstance()->getMapStylePath();
     styleConfig = new osmscout::StyleConfig(database->GetTypeConfig());
-
     if (!osmscout::LoadStyleConfig((const char*)style.toAscii(),*(styleConfig))) {
         std::cerr << "Cannot open style" << std::endl;
     }
-
-    mapPainter = new osmscout::MapPainterQt();
-
-    moving = false;
-    scaling = false;
-    noPaint = false;
-    isDrawn = false;
-    gpsActive = false;
-    tracking = true;
-
-//! Change value to true manually to enable partitions rendering
-    debugPartitions = false;
 
     Settings* settings = Settings::getInstance();
     lat = settings->getLat();
     lon = settings->getLon();
     zoom = settings->getZoom();
+    qDebug()<<lon<<":"<<lat<<":"<<zoom;
+    projection.Set(lon,lat,lon,lat,0,zoom,0,0);
 
-    translatePoint = QPoint(0, 0);
-    lastPoint = QPoint(0, 0);
-
-    angle = 0;
-
-    width = W != 0 ? W : 673;
-    height = H != 0 ? H : 378;
-
-    setSize(QSize(width, height));
-
-    pixmap = QPixmap(width, height);
-    pixmap.fill(QColor(200, 200, 200));
-
-    NavigationWindow* navi = (NavigationWindow*)(this->parent()->parent());
-
-    gps = navi->gps;
-//    connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdate(GPSdata)));
+    rendererThread=new MapPixmapRenderer(this);
+    qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
+    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection)));
+    //testPixmap();
 }
 
-void MapRenderWidget::setSize(QSize size)
-{
-    width = size.width();
-    height = size.height();
-    this->resize(size);
-    pixmap = QPixmap(width, height);
-    pixmap.fill(QColor(200, 200, 200));
+
+MapRenderWidget::~MapRenderWidget(){
+    qDebug()<<"Save Maprenderer settings";
+    Settings::getInstance()->modifyMapSettings(projection.GetLat(), projection.GetLon(), projection.GetMagnification());
 }
 
-void MapRenderWidget::forceRepaint()
-{
-    noPaint = false;
-    repaint();
-    noPaint = true;
-}
+void MapRenderWidget::testPixmap(bool force){
+    //qDebug()<<"111";
+    bool needDraw=false;
 
-void MapRenderWidget::setCoordinates(double latPar, double lonPar)
-{
-    lon = lonPar;
-    lat = latPar;
 
-    forceRepaint();
-}
-
-QPointF MapRenderWidget::getCoordinates()
-{
-    QPointF point(lon, lat);
-
-    return point;
-}
-
-void MapRenderWidget::setZoom(int value)
-{
-    noPaint = false;
-
-    scaling = true;
-
-    zoom = value;
-    scalingLevel = zoom / startZoom;
-
-    repaint();
-
-    scaling = false;
-    noPaint = true;
-}
-
-int MapRenderWidget::getZoom()
-{
-    return zoom;
-}
-
-void MapRenderWidget::setStartZoom(int value)
-{
-    startZoom = value;
-}
-
-void MapRenderWidget::setFinishZoom(int value)
-{
-    finishZoom = value;
-
-    scaling = false;
-
-    forceRepaint();
-}
-
-void MapRenderWidget::repaint(){
-    widget::repaint();
-}
-
-void MapRenderWidget::paintEvent(QPaintEvent *e)
-{
-    if (isDrawn) {
-        if (!noPaint){
-            DrawMap(e->rect());
-
-            if(debugPartitions)
-                DrawPartitions();
+    if(image.isNull())needDraw=true;
+    else{
+        double W=(projectionRendered.GetLonMax()-projectionRendered.GetLonMin())*delta/2;
+        double H=(projectionRendered.GetLatMax()-projectionRendered.GetLatMin())*delta/2;
+        if(projection.GetLonMin()<projectionRendered.GetLonMin()+W||
+            projection.GetLonMax()>projectionRendered.GetLonMax()-W||
+            projection.GetLatMin()<projectionRendered.GetLatMin()+H||
+            projection.GetLatMax()>projectionRendered.GetLatMax()-H||
+                force)
+        {
+                needDraw=true;
         }
-        else{
-            int x = translatePoint.x();
-            int y = translatePoint.y();
-            QPainter *windowPainter = new QPainter(this);
-            windowPainter->drawPixmap(x, y, pixmap);
-        }
-    } else {
-        DrawMap(e->rect());
-        isDrawn = true;
-        noPaint = true;
+    }
+
+    if(needDraw&&!rendererThread->isWorking()){
+            QSize s=this->size();
+            projectionRendered1=projection;
+            projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, projection.GetMagnification()/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
+            this->rendererThread->init((*(&database)),&projectionRendered1,(*(&styleConfig)),(float)cachePixmapSize);
+            this->rendererThread->start();
     }
 }
 
-void MapRenderWidget::mousePressEvent(QMouseEvent *e)
-{
-    noPaint = false;
-    moving = true;
-    startPoint = e->globalPos();
-    lastPoint = e->globalPos();
+
+
+void MapRenderWidget::paintEvent(QPaintEvent *e){
+    QSize s=this->size();
+    projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),projection.GetAngle(),projection.GetMagnification(),s.width(),s.height());
+    testPixmap();
+    if(!image.isNull()){
+         QPainter *painter=new QPainter(this);
+
+         double XMin,YMin;
+         double XMax,YMax;
+
+         projectionRendered.GeoToPixel(projection.GetLonMin(),projection.GetLatMin(),XMin,YMin);
+         projectionRendered.GeoToPixel(projection.GetLonMax(),projection.GetLatMax(),XMax,YMax);
+
+         double X,Y;
+         projectionRendered.GeoToPixel(projection.GetLon(),projection.GetLat(),X,Y);
+
+         QRectF source(XMin, YMax,XMax-XMin,YMin-YMax);
+         //qDebug()<<XMin<<":"<<YMin<<":"<<XMax-XMin<<":"<<YMax-YMin;
+
+         QRectF target(0,0,projection.GetWidth(),projection.GetHeight());
+         //qDebug()<<"P"<<projection.GetWidth()<<":"<<projection.GetHeight();
+
+         painter->drawImage ( target, image, source, Qt::AutoColor );
+
+         //painter->drawImage(target,image);
+         DrawPositionMarker(projection,painter);
+         //qDebug()<<projection.GetWidth()/2-X<<":"<<projection.GetHeight()/2-Y<<":"<<pixmap.width()<<":"<<pixmap.height();;
+         delete painter;
+    }
 }
 
-void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-    moving = false;
 
-    finishPoint = e->globalPos();
-    QLineF line(startPoint, finishPoint);
-
-    double dx = line.dx();
-    double dy = line.dy();
-
-    lon -= dx/(2*zoom);
-    lat += dy/(2*zoom);
-
-    translatePoint = QPoint(0, 0);
-    startPoint = QPoint(0, 0);
-
-    repaint();
-    noPaint = true;
+void MapRenderWidget::mousePressEvent(QMouseEvent *e){
+    mouseDown=true;
+    lon1=e->posF().x();
+    lat1=projection.GetHeight()-e->posF().y();
 }
 
-void MapRenderWidget::mouseMoveEvent(QMouseEvent *e)
-{
-    //std::cerr << "Mouse move";
-    if (moving)
-    {
-        translatePoint = e->globalPos() - startPoint;
+void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
+    mouseDown=false;
+}
 
+void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
+    if(mouseDown){
+
+        double lon2,lat2,lon3,lat3,latR,lonR;
+
+        projection.PixelToGeo(lon1,lat1,lon3,lat3);
+        projection.PixelToGeo(e->posF().x(),projection.GetHeight()-e->posF().y(),lon2,lat2);
+        lonR=lon3-lon2;
+        latR=lat3-lat2;
+        lon1=e->posF().x();
+        lat1=projection.GetHeight()-e->posF().y();
+        lonR+=projection.GetLon();
+        latR+=projection.GetLat();
+
+        projection.Set(lonR,latR,lonR,latR,0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
+        testPixmap();
         repaint();
     }
 }
 
-int MapRenderWidget::DrawMap(QRect rect)
-{
-    //std::cerr << lon << " | " << lat << std::endl;
-    //std::cerr << width << " | " << height << std::endl;
-    if (moving)
-    {
-        int x = translatePoint.x();
-        int y = translatePoint.y();
-
-        QPainter *windowPainter = new QPainter(this);
-        windowPainter->drawPixmap(x, y, pixmap);
-    }
-
-    else if (scaling)
-    {
-        QPainter *windowPainter = new QPainter(this);
-
-        double distX = width/2 * (double)(1 - scalingLevel);
-        double distY = height/2 * (double)(1 - scalingLevel);
-
-        windowPainter->translate(distX, distY);
-        windowPainter->scale(scalingLevel, scalingLevel);
-
-        QRect expose = windowPainter->matrix().inverted().mapRect(rect).adjusted(-1, -1, 1, 1);
-
-        windowPainter->drawPixmap(expose, pixmap, expose);
-        //windowPainter->drawPixmap(0, 0, pixmap);
-    }
-
-    else
-    {
-        QPainter* painter = new QPainter(&pixmap);
-
-        if (painter!=NULL) {
-            osmscout::MercatorProjection  projection;
-            osmscout::MapParameter        drawParameter;
-            osmscout::AreaSearchParameter searchParameter;
-            osmscout::MapData             data;
-
-            drawParameter.SetOptimizeAreaNodes(true);
-            drawParameter.SetOptimizeWayNodes(true);
-
-            projection.Set(lon,
-                           lat,
-                           markerLon,
-                           markerLat,
-                           angle,
-                           zoom,
-                           width,
-                           height);
-
-
-            database->GetObjects(*(styleConfig),
-                                projection.GetLonMin(),
-                                projection.GetLatMin(),
-                                projection.GetLonMax(),
-                                projection.GetLatMax(),
-                                projection.GetMagnification(),
-                                searchParameter,
-                                data.nodes,
-                                data.ways,
-                                data.areas,
-                                data.relationWays,
-                                data.relationAreas);
-
-            mapPainter->DrawMap(*(styleConfig),
-                                   projection,
-                                   drawParameter,
-                                   data,
-                                   painter,
-                                   gpsActive);
-
-            delete painter;
-
-            QPainter *windowPainter = new QPainter(this);
-            windowPainter->drawPixmap(0, 0, pixmap);
-
-        }
-        else {
-            std::cout << "Cannot create QPainter" << std::endl;
-        }
-    }
-	return 1;
+void MapRenderWidget::setCoordinates(double lonPar, double latPar){
+    projection.Set(lonPar,latPar,projection.GetLon(),projection.GetLat(),0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
+    repaint();
 }
 
-void MapRenderWidget::DrawPartitions()
-{
-    osmscout::MercatorProjection  projection;
+void MapRenderWidget::setMyCoordinates(double lonPar, double latPar,double angle){
+    myLon=lonPar;
+    myLat=latPar;
+    myAngle=angle;
 
-    projection.Set(lon,
-                   lat,
-                   markerLon,
-                   markerLat,
-                   angle,
-                   zoom,
-                   width,
-                   height);
-
-    QPainter* painter = new QPainter(&pixmap);
-
-    partitionMapPainter.PreparePartitionData("H:\\Users\\Rafael\\Desktop\\partitionOut.txt");
-    partitionMapPainter.RenderPartitionResults(projection, painter);
-
-    delete painter;
-
-    QPainter *windowPainter = new QPainter(this);
-    windowPainter->drawPixmap(0, 0, pixmap);
-}
-
-void MapRenderWidget::positionUpdate(GPSdata gps_data)
-{
-    markerLat = gps_data.lat;
-    markerLon = gps_data.lon;
     if(tracking){
-        lat=markerLat;
-        lon=markerLon;
+        setCoordinates(lonPar, latPar);
+        this->update();
     }
-    angle = gps_data.angle;
-    gpsActive = (lat!=0 && lon!= 0);
-    if(gpsActive)
-        forceRepaint();
+}
+
+QPointF MapRenderWidget::getCoordinates(){
+    return QPointF(projection.GetLon(),projection.GetLat());
+}
+
+void MapRenderWidget::setZoom(int value){
+    projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),0,value,projection.GetWidth(),projection.GetHeight());
+    testPixmap(true);
+    repaint();
+}
+
+int MapRenderWidget::getZoom(){
+    return projection.GetMagnification();
+}
+
+
+void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection){
+    projectionRendered=projection;    
+    this->image=pixmap;
+    testPixmap();
+    repaint();
+}
+
+void MapRenderWidget::setStartZoom(int value){
+}
+
+void MapRenderWidget::setFinishZoom(int value){
+    //projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),0,value,projection.GetWidth(),projection.GetHeight());
+    testPixmap(true);
+    //repaint();
+}
+
+
+void MapRenderWidget::setTracking(bool tracking){
+    this->tracking = tracking;
+}
+
+bool MapRenderWidget::getTracking(){
+    return tracking;
+}
+
+void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter)
+{
+  double x,y;
+  QPolygon marker;
+  QMatrix matrix, matrix2, result;
+
+  marker << QPoint(-10,8) << QPoint(10,8) << QPoint(0,-15);
+  projection.GeoToPixel(myLon,myLat, x, y);
+
+  matrix.rotate(myAngle);
+  matrix2.translate((int)x, (int)y);
+
+  result = matrix.operator *(matrix2);
+  marker = result.map(marker);
+
+  QPointF g1(0,-0.5);
+  QPointF g2(0,0.5);
+  matrix2.reset();
+  matrix2.translate(0.5,0.5);
+  result.reset();
+  result = matrix.operator *(matrix2);
+  g1 = result.map(g1);
+  g2 = result.map(g2);
+
+  QLinearGradient grad = QLinearGradient(g1,g2);
+  QGradientStops stops;
+  stops << QGradientStop(0, QColor::fromRgb(0x3b679e));
+  stops << QGradientStop(0.6, QColor::fromRgb(0x2b88d9));
+  stops << QGradientStop(0.61, QColor::fromRgb(0x207cca));
+  stops << QGradientStop(1, QColor::fromRgb(0x7db9e8));
+  grad.setStops(stops);
+  grad.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+  painter->setBrush(QBrush(grad));
+  painter->setPen(QPen(QColor::fromRgb(255,255,255,255)));
+  painter->drawPolygon(marker);
+}
+
+
+
+//////////////////////////////////////////////////////////////
+
+MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
+    mapPainter=new osmscout::MapPainterQt();
+    started=false;
+
+}
+
+void MapPixmapRenderer::getPixmap(){
+
+}
+
+void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d){
+    this->database=database;
+    this->projection=projection;
+    this->d=d;
+    styleConfig=style;
+}
+
+void MapPixmapRenderer::run(){
+    //while(){
+        //render pixmap
+    started=true;
+    qDebug()<<"tak";
+        QSize size(projection->GetWidth(),projection->GetHeight());
+        //TODO: TEST FORMATS
+        QImage pixmap(size,QImage::Format_RGB16);
+        qDebug()<<"LL"<<projection->GetWidth();
+        osmscout::MapData             data;
+        osmscout::MapParameter        drawParameter;
+        osmscout::AreaSearchParameter searchParameter;
+        QPainter *painter=new QPainter(&pixmap);
+        drawParameter.SetOptimizeAreaNodes(true);
+        drawParameter.SetOptimizeWayNodes(true);
+        database->GetObjects(*(styleConfig),
+                            projection->GetLonMin(),
+                            projection->GetLatMin(),
+                            projection->GetLonMax(),
+                            projection->GetLatMax(),
+                            projection->GetMagnification()*d,
+                            searchParameter,
+                            data.nodes,
+                            data.ways,
+                            data.areas,
+                            data.relationWays,
+                            data.relationAreas);
+        mapPainter->DrawMap(*(styleConfig),
+                               (*projection),
+                               drawParameter,
+                               data,
+                               painter );
+        osmscout::MercatorProjection p=(*projection);
+        pixmapRendered(pixmap,p);
+        delete painter;
+    started=false;
+}
+
+
+bool MapPixmapRenderer::isWorking(){
+    return started;
 }

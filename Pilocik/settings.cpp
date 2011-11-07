@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include "settings.h"
 #include <iostream>
+#include <QDebug>
 
 
 Settings * Settings::instance=0;
@@ -200,7 +201,10 @@ void Settings::modifyCoreSettings(QString name, QString value)
 
 void Settings::modifyMapSettings(double lat, double lon, int zoom)
 {
-    QDomElement mapSettings = profileSettingsXMLNode.firstChildElement("map");
+    this->lat=lat;
+    this->lon=lon;
+    this->zoom=zoom;
+    QDomElement mapSettings = doc->firstChildElement("settings").firstChildElement("map");
     mapSettings.firstChildElement("lat").firstChild().toText().setData(QString::number(lat));
     mapSettings.firstChildElement("lon").firstChild().toText().setData(QString::number(lon));
     mapSettings.firstChildElement("zoom").firstChild().toText().setData(QString::number(zoom));

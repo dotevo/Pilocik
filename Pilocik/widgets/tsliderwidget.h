@@ -2,7 +2,6 @@
 #define TSLIDERWIDGET_H
 
 #include "../tmovableframe.h"
-
 #include <QList>
 
 namespace Ui {

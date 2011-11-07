@@ -12,8 +12,6 @@ TSliderWidget::TSliderWidget(QWidget *parent) :
     ui->setupUi(this);
 
     Settings* settings = Settings::getInstance();
-    //ui->verticalSlider->setValue(NavigationWindow::main->mapRenderer->getZoom());
-
     move(5, 5);
 
     zoomLevels.append(osmscout::magContinent);
@@ -76,7 +74,6 @@ void TSliderWidget::on_plusButton_clicked()
         if (zoom > 0 && zoom < ui->verticalSlider->maximum()) {
             ui->verticalSlider->setValue(zoom);
             NavigationWindow::main->mapRenderer->setZoom(zoom);
-            NavigationWindow::main->mapRenderer->forceRepaint();
         }
     }
 }
@@ -95,7 +92,6 @@ void TSliderWidget::on_minusButton_clicked()
         if (zoom > 0 && zoom < ui->verticalSlider->maximum()) {
             ui->verticalSlider->setValue(zoom);
             NavigationWindow::main->mapRenderer->setZoom(zoom);
-            NavigationWindow::main->mapRenderer->forceRepaint();
         }
     }
 }
