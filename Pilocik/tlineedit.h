@@ -28,7 +28,7 @@ public:
      * @fn focusInEvent
      * @param e
      */
-    void focusInEvent ( QFocusEvent * e );
+    void mousePressEvent(QMouseEvent *);
 
     /**
      * @brief Set it up to show widget on KeyboardWindow

@@ -46,6 +46,11 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
             this, SLOT(hide()));
     connect(ui->nameLineEdit, SIGNAL(closed()),
             this, SLOT(show()));
+
+//    osmscout::LookupPOI lookup;
+
+//    lookup.search("/home/bartek/osmscout-map/5poland/", 51.01, 16.95, 51.2, 17.05, "shop");
+
 }
 
 PointSelectionWindow::~PointSelectionWindow(){
@@ -364,6 +369,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
             lon = cityRef.Get()->GetLon();
 
             infoWin->setCoordinates(lat, lon);
+            infoWin->setZoom(osmscout::magCity);
             infoWin->setVisible(true);
             //infoWin->setZoom(osmscout::magWorld);
 
@@ -386,11 +392,13 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
 
             wayRef.Get()->GetCenter(lat, lon);
 
+            infoWin->setCoordinates(lat, lon);
+            infoWin->setZoom(osmscout::magStreet);
+
             infoWin->setVisible(true);
 
-            infoWin->setCoordinates(lat, lon);
             //infoWin->setMapRenderAreaSize(infoWin->getSize());
-            infoWin->setMapRender();
+            //infoWin->setMapRender();
             //infoWin->forceMapWidgetRepaint();
             break;
         }

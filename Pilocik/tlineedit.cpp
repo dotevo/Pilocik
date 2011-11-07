@@ -8,8 +8,8 @@ TLineEdit::TLineEdit(QWidget *parent) :
 {
 }
 
-void TLineEdit::focusInEvent ( QFocusEvent * e ){
-//#ifdef Q_OS_WINCE_STD
+void TLineEdit::mousePressEvent(QMouseEvent *){
+#ifdef Q_OS_WINCE_STD
     if(KeyboardWindow::opened==false){
         KeyboardWindow *kb=new KeyboardWindow(NavigationWindow::main,visWidget);
         kb->sizeChanged(NavigationWindow::main);
@@ -21,7 +21,7 @@ void TLineEdit::focusInEvent ( QFocusEvent * e ){
                 this, SLOT(setText(const QString)));
         emit opened();
     }
-//#endif
+#endif
 }
 
 void TLineEdit::setVisibleWidget(QWidget*widget){

@@ -103,9 +103,13 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
 }
 
 void NavigationWindow::on_menuButton_clicked(){
+    TWidgetManager::getInstance()->hideAllWidgets();
     ui->menuPanel->raise();
     ui->menuButton->raise();
     ui->menuPanel->setVisible(!ui->menuPanel->isVisible());
+    if (!ui->menuPanel->isVisible()) {
+        TWidgetManager::getInstance()->showAllWidgets();
+    }
     ui->widget->repaint();
 }
 
@@ -153,7 +157,6 @@ void NavigationWindow::on_exitButton_clicked() {
 }
 
 void NavigationWindow::menuClosedSlot() {
-    TWidgetManager::getInstance()->showAllWidgets();
     ui->menuButton->setVisible(true);
     ui->trackingButton->setVisible(true);
     ui->sliderButton->setVisible(true);

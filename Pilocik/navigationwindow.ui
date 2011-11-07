@@ -285,6 +285,11 @@ border-top-right-radius: 10px;
      <string>Menu</string>
     </property>
    </widget>
+   <zorder>widget</zorder>
+   <zorder>trackingButton</zorder>
+   <zorder>sliderButton</zorder>
+   <zorder>menuButton</zorder>
+   <zorder>menuPanel</zorder>
   </widget>
  </widget>
  <customwidgets>
