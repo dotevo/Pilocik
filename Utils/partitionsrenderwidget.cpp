@@ -13,6 +13,7 @@ void PartitionsRenderWidget::init(QString dbPath)
 
     showNodes = true;
     showWays = true;
+    showBoundary = true;
     mapDrag = false;
 
     pixmap = QPixmap(width, height);
@@ -37,7 +38,7 @@ void PartitionsRenderWidget::init(QString dbPath)
         pNodes.insert(query.value(0).toInt(), newNode);
     }
 
-    query.prepare("SELECT id, prio_car FROM ways");
+    query.prepare("SELECT id, prio_car FROM innerWays");
     query.exec();
     while (query.next()) {
         pWay newWay;
@@ -49,6 +50,16 @@ void PartitionsRenderWidget::init(QString dbPath)
     query.exec();
     while (query.next()) {
         pWays[query.value(0).toInt()].nodes.append(query.value(1).toInt());
+    }
+
+    query.prepare("SELECT node1, node2, wayId FROM boundaryEdges");
+    query.exec();
+    while (query.next()) {
+        pBoundary pb;
+        pb.node1 = query.value(0).toInt();
+        pb.node2 = query.value(1).toInt();
+        pb.way = query.value(2).toInt();
+        pBoundaryWays.append(pb);
     }
 
     db.close();
@@ -170,7 +181,7 @@ void PartitionsRenderWidget::renderPartitions()
     QPainter *painter = new QPainter(&pixmap);
     painter->fillRect(0,0,width,height,QColor(255,255,255));
     //Define size
-    double size = magnification/120;
+    double size = magnification/240;
     // Display nodes
     if(showNodes)
     foreach(pNode myNode, pNodes.values())
@@ -180,7 +191,7 @@ void PartitionsRenderWidget::renderPartitions()
         painter->setBrush(pColors.at(myNode.cellNo%50));
         double x, y;
         geoToPixel(myNode.lon, myNode.lat, x, y);
-        painter->drawEllipse(QPointF(x,y),size,size);
+        painter->drawEllipse(QPointF(x,y),2,2);
     }
 
     // Display ways
@@ -210,6 +221,30 @@ void PartitionsRenderWidget::renderPartitions()
             painter->drawPath(path);
         }
     }
+
+    if(showBoundary)
+    foreach(pBoundary myBoundary, pBoundaryWays){
+        pNode node1 = pNodes[myBoundary.node1];
+        pNode node2 = pNodes[myBoundary.node2];
+
+        QPen pen;
+
+        pen.setColor(QColor(0,0,0));
+        pen.setWidthF(1);
+        pen.setJoinStyle(Qt::RoundJoin);
+        pen.setCapStyle(Qt::RoundCap);
+        pen.setStyle(Qt::DotLine);
+
+        painter->setPen(pen);
+        double x1, y1, x2, y2;
+        geoToPixel(node1.lon, node1.lat, x1, y1);
+        geoToPixel(node2.lon, node2.lat, x2, y2);
+        QPainterPath path(QPointF(x1,y1));
+        path.lineTo(x2,y2);
+        painter->setPen(pen);
+        painter->drawPath(path);
+    }
+
     delete painter;
 }
 
@@ -228,6 +263,12 @@ void PartitionsRenderWidget::showWaysChange(int b)
 void PartitionsRenderWidget::showNodesChange(int b)
 {
     showNodes = b==2;
+    repaint();
+}
+
+void PartitionsRenderWidget::showBoundaryEdges(int b)
+{
+    showBoundary = b==2;
     repaint();
 }
 

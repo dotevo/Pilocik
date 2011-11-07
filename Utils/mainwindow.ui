@@ -21,7 +21,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="mapConversion">
        <attribute name="title">
@@ -309,7 +309,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="partGenBtn">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -341,7 +341,7 @@
         <item>
          <widget class="QLabel" name="partGenStatus">
           <property name="text">
-           <string> </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -418,7 +418,7 @@
             <number>10</number>
            </property>
            <property name="maximum">
-            <number>360</number>
+            <number>10000</number>
            </property>
            <property name="value">
             <number>30</number>
@@ -470,6 +470,22 @@
            </property>
            <property name="text">
             <string>Show ways</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="showBoundaryEdges">
+           <property name="geometry">
+            <rect>
+             <x>230</x>
+             <y>0</y>
+             <width>141</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Show boundary edges</string>
            </property>
            <property name="checked">
             <bool>true</bool>

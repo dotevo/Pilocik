@@ -3,6 +3,9 @@
 #include <iostream>
 #include <QTime>
 
+#include <osmscout/Partitioning.h>
+#include <osmscout/Partitionmodel.h>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->zoom, SIGNAL(valueChanged(int)), ui->widget, SLOT(changeZoom(int)));
     connect(ui->showNodes, SIGNAL(stateChanged(int)), ui->widget, SLOT(showNodesChange(int)));
     connect(ui->showWays, SIGNAL(stateChanged(int)),ui->widget, SLOT(showWaysChange(int)));
+    connect(ui->showBoundaryEdges, SIGNAL(stateChanged(int)), ui->widget, SLOT(showBoundaryEdges(int)));
 
     connect(gps, SIGNAL(dataSend(QString)), ui->simOutput, SLOT(setText(QString)));
     connect(gps, SIGNAL(progressUpdate(int)), ui->simSlider, SLOT(setValue(int)));
@@ -59,4 +63,14 @@ void MainWindow::on_simStopBtn_clicked()
 void MainWindow::on_simPauseBtn_clicked()
 {
     gps->pause();
+}
+
+void MainWindow::on_partGenBtn_clicked()
+{
+    osmscout::Partitioning part(ui->partGenMapPath->text(), ui->partGenMapStylePath->text() );
+    //part.TestAlgorithm();
+
+    osmscout::Partitioning::DatabasePartition dbPart=part.FindPartition();
+
+    part.saveToDatabase(ui->partGenOutputPath->text(),dbPart);
 }

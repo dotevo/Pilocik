@@ -31,6 +31,12 @@ class PartitionsRenderWidget : public QWidget
         QList<int> nodes;
     };
 
+    struct pBoundary{
+        int way;
+        int node1;
+        int node2;
+    };
+
     static const double gradtorad=2*M_PI/360;
 
 public:
@@ -52,6 +58,7 @@ private:
     QMap<int, pNode> pNodes;
     QMap<int, pWay > pWays;
     QList<QColor> pColors;
+    QList<pBoundary> pBoundaryWays;
 
     //! Map render variables
     double  lat,
@@ -74,7 +81,8 @@ private:
 
      bool   mapDrag,
             showWays,
-            showNodes;
+            showNodes,
+            showBoundary;
 
      QPoint dragStart,
             dragMove,
@@ -88,6 +96,7 @@ public slots:
      void changeZoom(int zoom);
      void showNodesChange(int b);
      void showWaysChange(int b);
+     void showBoundaryEdges(int b);
 
 };
 
