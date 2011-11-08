@@ -17,6 +17,7 @@ SOURCES += src/pilibocik.cpp \
     src/point.cpp \
     src/poi.cpp \
     src/preparedata.cpp
+    src/boundarybox.cpp
 
 INCLUDEPATH +=include
 
@@ -25,6 +26,7 @@ HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/point.h \
     include/pilibocik/poi.h \
     include/pilibocik/preparedata.h
+    include/pilibocik/boundarybox.h
 
 
 unix:!symbian {
@@ -36,8 +38,10 @@ unix:!symbian {
     INSTALLS += target
 }
 
-OTHER_FILES += \
-    poiConfig.xml
+
+
+
+
 
 
 
