@@ -17,7 +17,7 @@ namespace PiLibocik{
     class Poi:public Point
     {
     private:
-        static QMap <int,QString> types; /**< TODO */
+        QMap <int,QString> types; /**< TODO */
 
         QString         name; /**< TODO */
         int             type; /**< TODO */
@@ -60,14 +60,14 @@ namespace PiLibocik{
          */
         int getType() const;
 
-        /**
+        void setTypes(QMap <int,QString> typs);
          * @brief
          *
          * @fn setTypes
          * @param QMap<int
          * @param types
          */
-        static void setTypes(QMap <int,QString> types);
+        void setTypes(QMap <int,QString> types);
         /**
          * @brief
          *
