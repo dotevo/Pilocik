@@ -3,11 +3,11 @@
 # Project created by QtCreator 2011-11-08T13:01:11
 #
 #-------------------------------------------------
-
-QT       -= gui sql xml
+QT      -= gui
+QT       += sql xml
 
 TARGET = PiLibocik
-TEMPLATE = lib
+TEMPLATE = app
 CONFIG += staticlib
 
 DEFINES += PiLibocik_WRITE_MODE
@@ -18,7 +18,8 @@ SOURCES += src/pilibocik.cpp \
     src/poi.cpp \
     src/preparedata.cpp \
     src/boundarybox.cpp \
-    src/poifileppoi.cpp
+    src/poifileppoi.cpp \
+    main.cpp
 
 INCLUDEPATH +=include
 
@@ -39,6 +40,7 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
 
 
 

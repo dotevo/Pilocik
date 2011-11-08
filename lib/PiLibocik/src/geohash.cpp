@@ -1,14 +1,77 @@
 #include <pilibocik/geohash.h>
 
+uint qHash(PiLibocik::Geohash &key){
+    return qHash( key.toString() );
+}
+
 namespace PiLibocik{
     const QString Geohash::char_map =  "0123456789bcdefghjkmnpqrstuvwxyz";
 
-    Geohash::Geohash()
-    {
+    Geohash::Geohash(int size):geohashSize(size){
+        geohashValue=new char[size];
     }
 
-    QString Geohash::next(QString Geohash){
-        return QString("TODO");
+    QString Geohash::toString(){
+        QString ret;
+        for(int i=0;i<geohashSize;i++){
+            ret+=char_map[geohashValue[i]];
+        }
+        return ret;
+    }
+
+    void Geohash::operator++(int){
+        for(int i=geohashSize-1;i>=0;i--){
+            geohashValue[i]++;
+            if(geohashValue[i]>31&&i>0){
+                geohashValue[i]=0;
+            }else if(geohashValue[i]>31&&i==0){
+                geohashValue[i]=0;
+            }else{
+                break;
+            }
+        }
+    }
+
+    void Geohash::operator--(int){
+        for(int i=geohashSize-1;i>=0;i--){
+            geohashValue[i]--;
+            if(geohashValue[i]==-1&&i>0){
+                geohashValue[i]=31;
+            }else if(geohashValue[i]==-1&&i==0){
+                geohashValue[i]=31;
+            }else{
+                break;
+            }
+        }
+    }
+
+    bool Geohash::operator>(Geohash &q){
+        for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
+            if(geohashValue[i]>q.geohashValue[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Geohash::operator<(Geohash &q){
+        for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
+            if(geohashValue[i]<q.geohashValue[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Geohash::operator==(Geohash &q){
+        if(geohashSize!=q.geohashSize)
+            return false;
+        for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
+            if(geohashValue[i]!=q.geohashValue[i]){
+                return false;
+            }
+        }
+        return true;
     }
 
     QString Geohash::generateGeohash(double lng, double lat, int precision)

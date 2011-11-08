@@ -1,5 +1,7 @@
 #include <pilibocik/poifileppoi.h>
+#include <pilibocik/geohash.h>
 #include <QVector>
+
 
 namespace PiLibocik{
 PoiFilePPOI::PoiFilePPOI()
@@ -16,6 +18,7 @@ QList<Poi> PoiFilePPOI::loadFromFile(BoundaryBox bbox){
 
 #ifdef PiLibocik_WRITE_MODE
 void PoiFilePPOI::saveToFile(QList<Poi>&pois){
+    QMap <Geohash,int> map;
     file.open(QIODevice::WriteOnly);
     QMap <QString, QVector<Poi*>* > geoHashedPOIs;
     QListIterator <Poi> iter(pois);
@@ -32,6 +35,10 @@ void PoiFilePPOI::saveToFile(QList<Poi>&pois){
             geoHashedPOIs.insert(geo,dupa);
         }
     }
+    //TODO: GET MIN geohash
+    //TODO: GET MAX geohash
+    //TODO: FOR FROM MIN to MAX get from QMAP to Vector
+    //TODO: SAVE Vector
 
     //TODO SAVE DATA
     QDataStream out(&file);
