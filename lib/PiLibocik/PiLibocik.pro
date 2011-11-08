@@ -10,11 +10,17 @@ TARGET = PiLibocik
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += src/pilibocik.cpp
+SOURCES += src/pilibocik.cpp \
+    src/geohash.cpp \
+    src/point.cpp \
+    src/poi.cpp
 
 INCLUDEPATH +=include
 
-HEADERS += include/pilibocik/pilibocik.h
+HEADERS += include/pilibocik/pilibocik.h \
+    include/pilibocik/geohash.h \
+    include/pilibocik/point.h \
+    include/pilibocik/poi.h
 
 
 unix:!symbian {
@@ -25,3 +31,13 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
+
+
+
+
+
+
