@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT       -= gui sql xml
 
 TARGET = PiLibocik
 TEMPLATE = lib
@@ -16,8 +16,7 @@ SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \
     src/point.cpp \
     src/poi.cpp \
-    src/preparedata.cpp \
-    src/poitypes.cpp
+    src/preparedata.cpp
 
 INCLUDEPATH +=include
 
@@ -25,8 +24,7 @@ HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/geohash.h \
     include/pilibocik/point.h \
     include/pilibocik/poi.h \
-    include/pilibocik/preparedata.h \
-    include/pilibocik/poitypes.h
+    include/pilibocik/preparedata.h
 
 
 unix:!symbian {
@@ -37,6 +35,12 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+OTHER_FILES += \
+    poiConfig.xml
+
+
+
 
 
 

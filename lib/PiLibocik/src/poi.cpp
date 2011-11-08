@@ -19,12 +19,12 @@ int Poi::getType() const{
 }
 
 void Poi::setTypes(QMap <int,QString> typs){
-    types=typs;
+    this->types=typs;
 
 }
 
 QString Poi::getTypeName(int type){
-    return types.value(type,QString());
+    return this->types.value(type,QString());
 }
 
 
