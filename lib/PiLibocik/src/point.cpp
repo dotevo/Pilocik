@@ -2,19 +2,14 @@
 
 namespace PiLibocik{
 
-    Point::Point(double lon, double lat)
-    {
-        this->lon = lon;
-        this->lat = lat;
+    Point::Point(double lon, double lat):lon(lon),lat(lat){
     }
 
-    double Point::getLon()
-    {
+    double Point::getLon(){
         return lon;
     }
 
-    double Point::getLat()
-    {
+    double Point::getLat(){
         return lat;
     }
 
