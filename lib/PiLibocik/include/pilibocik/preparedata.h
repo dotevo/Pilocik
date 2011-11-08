@@ -32,12 +32,14 @@ namespace PiLibocik{
 
         void loadXMLconfig(QString XMLpath);
         void generateData();
+        void saveToDatabase();
+        void loadFromDatabase();
         Point shapeToPoint(QList<Point> shape);
-        //TODO
-        //bool createTables();
+        void createTables();
 
     public:
-        PrepareData(QString dbPath, QString XMLconfigPath);
+        PrepareData(QString dbMapPath, QString dbOutPath, QString XMLconfigPath);
+        PrepareData(QString dbLoadPath);
 
         QList<Poi> getPoiList();
         QMap<int,QString> getPoiTypeNames();

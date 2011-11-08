@@ -22,9 +22,9 @@ namespace PiLibocik{
         QString         name; /**< TODO */
         int             type; /**< TODO */
         QList < QPair <QString, QString> >    tags; /**< TODO */
-#ifdef PiLibocik_WRITE_MODE
+//#ifdef PiLibocik_WRITE_MODE
         QString         geohash; /**< TODO */
-#endif
+//#endif
     public:
 /**
  * @brief
@@ -76,7 +76,7 @@ namespace PiLibocik{
         QString getTypeName(int type);
 
 
-#ifdef PiLibocik_WRITE_MODE
+//#ifdef PiLibocik_WRITE_MODE
 /**
  * @brief
  *
@@ -96,7 +96,7 @@ namespace PiLibocik{
          * @fn getGeohash
          */
         QString getGeohash();
-#endif
+//#endif
     };
 }
 

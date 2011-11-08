@@ -29,8 +29,7 @@ QString Poi::getTypeName(int type){
 
 
 
-
-#ifdef PiLibocik_WRITE_MODE
+//#ifdef PiLibocik_WRITE_MODE
 Poi::Poi(double lon,double lat,QString name,int type, QList < QPair <QString, QString> > tags, QString geohash)
     :Point(lon,lat),name(name),type(type),tags(tags),geohash(geohash){
 }
@@ -38,6 +37,7 @@ Poi::Poi(double lon,double lat,QString name,int type, QList < QPair <QString, QS
 QString Poi::getGeohash(){
     return geohash;
 }
-#endif
+//#endif
+
 
 }
