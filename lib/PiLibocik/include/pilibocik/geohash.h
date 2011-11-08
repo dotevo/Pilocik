@@ -9,7 +9,7 @@ namespace PiLibocik{
     {
     public:
         Geohash();
-        QString generateGeohash(double lon, double lat, int precision);
+        static QString generateGeohash(double lon, double lat, int precision);
     };
 }
 

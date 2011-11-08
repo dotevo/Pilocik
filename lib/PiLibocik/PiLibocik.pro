@@ -10,6 +10,8 @@ TARGET = PiLibocik
 TEMPLATE = lib
 CONFIG += staticlib
 
+DEFINES += PiLibocik_WRITE_MODE
+
 SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \
     src/point.cpp \
@@ -31,6 +33,10 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
 
 
 
