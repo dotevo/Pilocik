@@ -59,8 +59,7 @@ namespace PiLibocik{
          * @return type Id
          */
         int getType() const;
-
-        void setTypes(QMap <int,QString> typs);
+        /**
          * @brief
          *
          * @fn setTypes

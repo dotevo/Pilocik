@@ -16,7 +16,7 @@ SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \
     src/point.cpp \
     src/poi.cpp \
-    src/preparedata.cpp
+    src/preparedata.cpp \
     src/boundarybox.cpp \
     src/poifileppoi.cpp
 
@@ -26,7 +26,7 @@ HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/geohash.h \
     include/pilibocik/point.h \
     include/pilibocik/poi.h \
-    include/pilibocik/preparedata.h
+    include/pilibocik/preparedata.h \
     include/pilibocik/boundarybox.h \
     include/pilibocik/poifileppoi.h
 
