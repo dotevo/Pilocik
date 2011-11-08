@@ -9,29 +9,93 @@
 
 namespace PiLibocik{
 
+    /**
+     * @brief
+     *
+     * @class Poi poi.h <pilibocik/poi.h>
+     */
     class Poi:public Point
     {
     private:
-        static QMap <int,QString> types;
+        static QMap <int,QString> types; /**< TODO */
 
-        const QString         name;
-        const int             type;
-        const QList < QPair <QString, QString> >    tags;
+        const QString         name; /**< TODO */
+        const int             type; /**< TODO */
+        const QList < QPair <QString, QString> >    tags; /**< TODO */
 #ifdef PiLibocik_WRITE_MODE
-        const QString         geohash;
+        const QString         geohash; /**< TODO */
 #endif
     public:
+/**
+ * @brief
+ *
+ * @fn Poi
+ * @param lon
+ * @param lat
+ * @param name
+ * @param type
+ * @param QList<QPair<QString
+ * @param tags
+ */
         Poi(double lon,double lat,QString name, int type, QList < QPair <QString, QString> > tags);
+        /**
+         * @brief
+         *
+         * @fn getName
+         * @return QString with name of POI
+         */
         QString getName() const;
+        /**
+         * @brief
+         *
+         * @fn getTags
+         * @return all tags at POI
+         */
         QList < QPair <QString, QString> > getTags() const;
+        /**
+         * @brief
+         *
+         * @fn getType
+         * @return type Id
+         */
         int getType() const;
 
+        /**
+         * @brief
+         *
+         * @fn setTypes
+         * @param QMap<int
+         * @param types
+         */
         static void setTypes(QMap <int,QString> types);
+        /**
+         * @brief
+         *
+         * @fn getTypeName
+         * @param type
+         */
         QString getTypeName(int type);
 
 
 #ifdef PiLibocik_WRITE_MODE
+/**
+ * @brief
+ *
+ * @fn Poi
+ * @param lon
+ * @param lat
+ * @param name
+ * @param type
+ * @param QList<QPair<QString
+ * @param tags
+ * @param geohash
+ */
         Poi(double lon,double lat,QString name, int type, QList < QPair <QString, QString> > tags, QString geohash);
+        /**
+         * @brief
+         *
+         * @fn getGeohash
+         */
         QString getGeohash();
 #endif
     };
