@@ -2,16 +2,15 @@
 #define POIFILE_H
 
 #include <QString>
+#include <QFile>
 #include <pilibocik/boundarybox.h>
 #include <pilibocik/poi.h>
 
 namespace PiLibocik{
 
 class PoiFile{
-private:
-    QString fileName;
 public:
-    void openFile(QString name);
+    virtual void openFile(QString string)=0;
     virtual QList<Poi> loadFromFile(BoundaryBox bbox)=0;
 
     #ifdef PiLibocik_WRITE_MODE
