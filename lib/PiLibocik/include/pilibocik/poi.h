@@ -19,11 +19,11 @@ namespace PiLibocik{
     private:
         static QMap <int,QString> types; /**< TODO */
 
-        const QString         name; /**< TODO */
-        const int             type; /**< TODO */
-        const QList < QPair <QString, QString> >    tags; /**< TODO */
+        QString         name; /**< TODO */
+        int             type; /**< TODO */
+        QList < QPair <QString, QString> >    tags; /**< TODO */
 #ifdef PiLibocik_WRITE_MODE
-        const QString         geohash; /**< TODO */
+        QString         geohash; /**< TODO */
 #endif
     public:
 /**

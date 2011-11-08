@@ -1,14 +1,18 @@
 #include <pilibocik/geohash.h>
 
 namespace PiLibocik{
+    const QString Geohash::char_map =  "0123456789bcdefghjkmnpqrstuvwxyz";
 
     Geohash::Geohash()
     {
     }
 
+    QString Geohash::next(QString Geohash){
+        return QString("TODO");
+    }
+
     QString Geohash::generateGeohash(double lng, double lat, int precision)
     {
-        static QString char_map =  "0123456789bcdefghjkmnpqrstuvwxyz";
 
         QChar hash[precision+1];
 
