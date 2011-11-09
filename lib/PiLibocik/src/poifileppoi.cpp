@@ -20,14 +20,13 @@ void PoiFilePPOI::saveToFile(QFile &file,QList<Poi>&pois){
     file.open(QIODevice::WriteOnly);
     QMap <Geohash, QVector<Poi*>* > geoHashedPOIs;
     QListIterator <Poi> iter(pois);
-
     //Convert List to hashed map
     while(iter.hasNext()){
         Poi poi=iter.next();
         QString geo=poi.getGeohash();
-        Geohash geoH(geo.left(5));
+        Geohash geoH(geo.left(3));
         if(geoHashedPOIs.contains(geoH)){
-            geoHashedPOIs.take(geoH)->push_back(&poi);
+            geoHashedPOIs.value(geoH)->push_back(&poi);
         }else{
             QVector <Poi*>* dupa=new QVector<Poi*>();
             dupa->push_back(&poi);
@@ -36,28 +35,47 @@ void PoiFilePPOI::saveToFile(QFile &file,QList<Poi>&pois){
     }
 
     QMapIterator <Geohash ,QVector<Poi*> *> mIter(geoHashedPOIs);
-    if(mIter.hasNext()){
-        mIter.next();
-        Geohash min=mIter.key();
-        Geohash max=mIter.key();
-        while(mIter.hasNext()){
-            mIter.next();
-            Geohash geoHl=mIter.key();
-            if(min>geoHl)
-                min=geoHl;
-            if(max<geoHl)
-                max=geoHl;
-        }
-        qDebug()<<"Min geohash:"<<min.toString()<<" Max geohash:"<<max.toString();
-        qDebug()<<(max-min);
-
-    }else{
+    if(!mIter.hasNext()){
+        //TODO CLEAR GOTO: ?
         qDebug()<<"Something wrong, NO POIs to SAVE";
+        return;
     }
 
 
-    //TODO: FOR FROM MIN to MAX get from QMAP to Vector
-    //TODO: SAVE Vector
+    QList<Geohash> geokeys=geoHashedPOIs.keys();
+    qSort(geokeys);
+    QListIterator<Geohash> listIterator(geokeys);
+
+
+    QByteArray fileIndex,fileData;
+    int size=3;
+    //------------Index init-----------
+    //Geohash size in bajts
+    unsigned long long number=0;
+    Geohash geo1(0),geo2(0);
+    unsigned int index;
+    unsigned int empty=0;
+    while(listIterator.hasNext()){
+        if(number==0){
+            geo2=listIterator.next();
+            QString n=geo2.toQString();
+            //geohash size
+            fileIndex.append((char)(n.length()));
+            //First geohash
+            fileIndex.append(n.toAscii());
+            //TODO
+            fileIndex.append(index);
+        }
+        geo1=geo2;
+        geo2=listIterator.next();
+        for(;geo1<geo2;geo1++){
+
+            fileIndex.append(empty);
+        }
+        //TODO
+        fileIndex.append(index);
+    }
+
 
     //TODO SAVE DATA
     //QDataStream out(&file);
@@ -66,8 +84,6 @@ void PoiFilePPOI::saveToFile(QFile &file,QList<Poi>&pois){
 
     //Clear
     //TODO Remove Vectors
-
-    //file.close();
 }
 #endif
 

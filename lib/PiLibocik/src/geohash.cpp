@@ -2,7 +2,7 @@
 #include <QDebug>
 
 uint qHash(PiLibocik::Geohash &key){
-    return qHash( key.toString() );
+    return qHash( key.toQString() );
 }
 
 namespace PiLibocik{
@@ -21,6 +21,7 @@ namespace PiLibocik{
         init(sl);
     }
 
+
     void Geohash::init(QString gh){
         geohashSize=gh.length();
         geohashValue=new char[geohashSize];
@@ -34,13 +35,14 @@ namespace PiLibocik{
 
     }
 
-    QString Geohash::toString(){
+    QString Geohash::toQString(){
         QString ret;
         for(int i=0;i<geohashSize;i++){
             ret+=char_map[geohashValue[i]];
         }
         return ret;
     }
+
 
     void Geohash::operator++(int){
         for(int i=geohashSize-1;i>=0;i--){
@@ -99,8 +101,10 @@ namespace PiLibocik{
 
 
     bool Geohash::operator==(Geohash &q){
-        if(geohashSize!=q.geohashSize)
+        if(geohashSize!=q.geohashSize){
             return false;
+            qDebug()<<"WTF";
+        }
         for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
             if(geohashValue[i]!=q.geohashValue[i]){
                 return false;
