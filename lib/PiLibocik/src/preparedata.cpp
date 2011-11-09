@@ -286,5 +286,9 @@ namespace PiLibocik{
         return Point(sumLon/shape.size(),sumLat/shape.size());
     }
 
+    QList<Poi> PrepareData::getPoiList(){
+        return this->poiList;
+    }
+
 }
 

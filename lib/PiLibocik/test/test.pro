@@ -9,6 +9,8 @@ QT       += core gui sql xml
 TARGET = test
 TEMPLATE = app
 
+DEFINES += PiLibocik_WRITE_MODE
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -16,6 +18,7 @@ SOURCES += main.cpp\
     ../src/point.cpp \
     ../src/poi.cpp \
     ../src/pilibocik.cpp \
+    ../src/poifileppoi.cpp \
     ../src/geohash.cpp
 
 HEADERS  += mainwindow.h \

@@ -1,4 +1,5 @@
 #include <pilibocik/geohash.h>
+#include <QDebug>
 
 uint qHash(PiLibocik::Geohash &key){
     return qHash( key.toString() );
@@ -9,6 +10,28 @@ namespace PiLibocik{
 
     Geohash::Geohash(int size):geohashSize(size){
         geohashValue=new char[size];
+    }
+
+    Geohash::Geohash(QString gh){
+        init(gh);
+    }
+
+    Geohash::Geohash(double lon,double lat,int s){
+        QString sl=generateGeohash(lon,lat,s);
+        init(sl);
+    }
+
+    void Geohash::init(QString gh){
+        geohashSize=gh.length();
+        geohashValue=new char[geohashSize];
+        for(int i=0;i<geohashSize;i++)
+            for(int j=0;j<32;j++){
+                if(gh.at(i)==char_map[j]){
+                    geohashValue[i]=j;
+                    j=32;
+                }
+            }
+
     }
 
     QString Geohash::toString(){
@@ -47,21 +70,33 @@ namespace PiLibocik{
 
     bool Geohash::operator>(Geohash &q){
         for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
-            if(geohashValue[i]>q.geohashValue[i]){
+            if((short)geohashValue[i]>(short)q.geohashValue[i]){
                 return true;
-            }
+            }else if((short)geohashValue[i]<(short)q.geohashValue[i])
+                return false;
         }
         return false;
     }
 
     bool Geohash::operator<(Geohash &q){
         for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
-            if(geohashValue[i]<q.geohashValue[i]){
+            if((short)geohashValue[i]<(short)q.geohashValue[i]){
                 return true;
-            }
+            }else if((short)geohashValue[i]>(short)q.geohashValue[i])
+                return false;
         }
         return false;
     }
+
+    unsigned long long Geohash::operator-(Geohash &q){
+        if(q.geohashSize!=geohashSize)return -1;
+        long long ret=0;
+        for(int i=geohashSize-1;i>=0;i--){
+            ret+=(geohashValue[i]-q.geohashValue[i])<<(5*(geohashSize-1-i));
+        }
+        return ret;
+    }
+
 
     bool Geohash::operator==(Geohash &q){
         if(geohashSize!=q.geohashSize)

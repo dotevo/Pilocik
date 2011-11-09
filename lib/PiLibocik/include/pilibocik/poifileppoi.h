@@ -8,15 +8,12 @@ namespace PiLibocik{
 
 class PoiFilePPOI:public PoiFile
 {
-private:
-    QFile file;
 public:
     PoiFilePPOI();
-    void openFile(QString string);
-    QList<Poi> loadFromFile(BoundaryBox bbox);
+    QList<Poi> loadFromFile(QFile &file,BoundaryBox &bbox);
 
     #ifdef PiLibocik_WRITE_MODE
-    void saveToFile(QList<Poi>&pois);
+    void saveToFile(QFile&file,QList<Poi>&pois);
     #endif
 
 };
