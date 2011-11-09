@@ -290,5 +290,9 @@ namespace PiLibocik{
         return this->poiList;
     }
 
+    QMap<int,QString> PrepareData::getPoiTypeNames(){
+        return this->poiTypeNames;
+    }
+
 }
 

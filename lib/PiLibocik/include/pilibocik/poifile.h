@@ -13,7 +13,7 @@ public:
     virtual QList<Poi> loadFromFile(QFile &file,BoundaryBox &bbox)=0;
 
     #ifdef PiLibocik_WRITE_MODE
-    virtual void saveToFile(QFile &file,QList<Poi>&pois)=0;
+    virtual void saveToFile(QFile &file,QList<Poi>&pois,QMap<int,QString> &Types)=0;
     #endif
 };
 
