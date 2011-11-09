@@ -12,14 +12,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db", "g:/poi.db", "../../PiLibocik/poiConfig.xml");
+
     PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
     QList<PiLibocik::Poi> pois=pd->getPoiList();
+    /*for(int i=0;i<pois.count();i++){
+        PiLibocik::Poi p=pois.at(i);
+        qDebug()<<p.getLat();
+    }*/
+
     QMap<int,QString> types=pd->getPoiTypeNames();
     PiLibocik::PoiFilePPOI n;
-    QFile file("test.DAT");
-    file.open(QIODevice::WriteOnly);
-    n.saveToFile(file,pois,types);
-    file.close();
+    n.saveToFile("c:/map/mojepoi2",pois,types);
+
+    //PiLibocik::PoiFilePPOI n;
+    //QList<PiLibocik::Poi> pois=n.loadFromFile("c:/map/mojepoi",poi)
 
 }
 
