@@ -14,14 +14,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db", "g:/poi.db", "../../PiLibocik/poiConfig.xml");
 
+    //------------SAVE-----------------
     /*PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
     QList<PiLibocik::Poi> pois=pd->getPoiList();
     QMap<int,QString> types=pd->getPoiTypeNames();*/
-    PiLibocik::PoiFilePPOI n;
+    //PiLibocik::PoiFilePPOI n;
     //n.saveToFile("c:/map/mojepoi2",pois,types);
 
-    //PiLibocik::PoiFilePPOI n;
-    PiLibocik::BoundaryBox b(PiLibocik::Point(10,10),PiLibocik::Point(100,100));
+    //----------------------------------
+
+
+    //-------------LOAD------------------
+    PiLibocik::PoiFilePPOI n;
+    PiLibocik::BoundaryBox b(PiLibocik::Point(18.6285,54.2666),PiLibocik::Point(18.9,55));
     QList <PiLibocik::Poi> p=n.loadPOIsFromFile("c:/map/mojepoi2",b,-1);
     QListIterator <PiLibocik::Poi> iter(p);
     while(iter.hasNext()){
@@ -34,6 +39,18 @@ MainWindow::MainWindow(QWidget *parent) :
             qDebug()<<n.first<<"="<<n.second;
         }
     }
+    //-----------------------------------
+
+
+    //-----BBox to geohashes------------
+    /*
+    PiLibocik::BoundaryBox b(PiLibocik::Point(40,40),PiLibocik::Point(50,50));
+    QList <PiLibocik::Geohash> geoH=b.getGeohashesIn(2);
+    QListIterator <PiLibocik::Geohash> iter(geoH);
+    while(iter.hasNext()){
+        PiLibocik::Geohash g=iter.next();
+        qDebug()<<g.toQString();
+    }*/
 
 }
 

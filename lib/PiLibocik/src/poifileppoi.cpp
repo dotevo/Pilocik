@@ -59,17 +59,8 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     Geohash geoFirst(s);
     delete firstGeo;
 
-    //TODO bbox to geohash!
-    //in.skipRawData((downloadRegion-geoFirst)*4);
-    Geohash downloadRegion=geoFirst;
-    qint64 index;
-    in >> index;
-    //If empty
-    qDebug()<<index;
-    if(index==0)
-        return ret;
 
-    //LOAD DATA----------------------
+    //LOAD BASIC DATA----------------------
     QFile qfileData(file+".ppoi");
     qfileData.open(QIODevice::ReadOnly);
     QDataStream inData(&qfileData);
@@ -80,10 +71,30 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
         qDebug()<<"No type number!";
         return ret;
     }
+    //------------------------------------
 
+    int positionINX=in.device()->pos();
+
+    QList<Geohash> geohashes=bbox.getGeohashesIn(geoHashSize);
+    QVector<qint64> indexes;
+
+    for(int i=0;i<geohashes.size();i++){
+        Geohash gg=geohashes.at(i);
+        qint64 n=gg-geoFirst;
+        if(n>0&&n<geoHashsCount){
+            in.device()->seek(positionINX+n*sizeof(qint64));
+            qint64 ind;
+            in >> ind;
+            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n;
+            //if empty
+            if(ind!=0)
+                indexes.push_back(ind);
+        }
+    }
 
     //------load bloack
-    ret.append(loadBlock(inData,index,poiType,typesC));
+    for(int i=0;i<indexes.size();i++)
+        ret.append(loadBlock(inData,indexes.at(i),poiType,typesC));
 
     return ret;
 }
