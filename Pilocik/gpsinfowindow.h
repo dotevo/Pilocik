@@ -32,6 +32,8 @@ private:
     QString status;
     GPSreceiver* gps;
     Ui::GPSInfoWindow *ui;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // GPSINFOWINDOW_H

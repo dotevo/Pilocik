@@ -32,6 +32,8 @@ signals:
 private:
     GPSreceiver* gps;
     Ui::GPSOptionsWindow *ui;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // GPSOPTIONSWINDOW_H

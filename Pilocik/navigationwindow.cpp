@@ -23,9 +23,6 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     mapRenderer =0;
     gps = new GPSreceiver();
 
-    Settings::getInstance()->loadSettings();
-    Settings::getInstance()->configureProfile("default");
-
     ui->setupUi(this);
 
     mapRenderer = ui->widget;
@@ -48,7 +45,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
 }
 
 NavigationWindow::~NavigationWindow()
-{
+{    
     gps->disable();
     //delete ui->widget;
     delete ui;
@@ -174,3 +171,20 @@ void NavigationWindow::positionUpdated(GPSdata gps_data){
     ui->widget->setMyCoordinates(gps_data.lon,gps_data.lat,gps_data.angle);
 }
 
+void NavigationWindow::retranslate()
+{
+    ui->retranslateUi(this);
+
+}
+
+void NavigationWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

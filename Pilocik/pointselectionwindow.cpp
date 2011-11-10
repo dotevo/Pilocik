@@ -498,3 +498,15 @@ void PointSelectionWindow::on_tabWidget_currentChanged(int index)
 {
     ui->poiTab->setFocus();
 }
+
+void PointSelectionWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

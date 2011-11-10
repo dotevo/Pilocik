@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
+    <width>445</width>
     <height>300</height>
    </rect>
   </property>
@@ -114,7 +114,7 @@
        <rect>
         <x>7</x>
         <y>6</y>
-        <width>71</width>
+        <width>91</width>
         <height>16</height>
        </rect>
       </property>
@@ -125,7 +125,7 @@
      <widget class="QComboBox" name="deviceComboBox">
       <property name="geometry">
        <rect>
-        <x>77</x>
+        <x>110</x>
         <y>6</y>
         <width>291</width>
         <height>20</height>

@@ -27,6 +27,8 @@ signals:
 
 private:
     Ui::MapOptionsWindow *ui;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // MAPOPTIONSWINDOW_H

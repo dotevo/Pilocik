@@ -49,3 +49,15 @@ void GPSOptionsWindow::setStartFocus()
 {
     ui->label_2->setFocus();
 }
+
+void GPSOptionsWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

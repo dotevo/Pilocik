@@ -60,3 +60,15 @@ void InfoWindow::on_backButton_clicked()
 {
     this->close();
 }
+
+void InfoWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

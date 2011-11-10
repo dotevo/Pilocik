@@ -130,6 +130,8 @@ private:
       @brief Selected location.
       */
     osmscout::Location location;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // POINTSELECTIONWINDOW_H
