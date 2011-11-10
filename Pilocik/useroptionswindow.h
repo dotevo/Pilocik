@@ -18,11 +18,15 @@ public:
 private slots:
     void on_okButton_clicked();
 
+    void on_languageComboBox_currentIndexChanged(const QString &arg1);
+
 signals:
     void closed();
 
 private:
     Ui::UserOptionsWindow *ui;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // USEROPTIONSWINDOW_H

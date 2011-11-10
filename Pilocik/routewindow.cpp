@@ -8,6 +8,8 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
 {
     ui->setupUi(this);
     psw=0;
+
+    ui->label->setText(tr("ROUTE PLANNING"));
 }
 
 RouteWindow::~RouteWindow(){
@@ -34,4 +36,16 @@ void RouteWindow::pswClosed(){
     delete psw;
     psw=0;
     setVisible(true);
+}
+
+void RouteWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
 }

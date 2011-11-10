@@ -35,6 +35,9 @@ public:
 private:
     Ui::KeyboardWindow *ui; /**< Ui object */
     QSignalMapper signalMapper; /**< TODO */
+
+    void changeEvent(QEvent *);
+
 private slots:
     /**
      * @brief Alfanumerical button has clicked.

@@ -24,6 +24,8 @@ public:
     static NavigationWindow *main;
     MapRenderWidget *mapRenderer;
 
+    void retranslate();
+
 private slots:
     void on_menuButton_clicked();
     void on_trackingButton_clicked();
@@ -48,6 +50,8 @@ private:
     RouteWindow *routeWin;
     OptionsWindow *optionsWin;
     GPSInfoWindow *gpsInfoWin;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // NAVIGATIONWINDOW_H

@@ -42,6 +42,8 @@ private:
     MapOptionsWindow * moWin;
     GPSOptionsWindow *gpsWin;
     UserOptionsWindow *userWin;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // OPTIONSWINDOW_H

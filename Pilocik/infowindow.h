@@ -66,6 +66,8 @@ private:
     QString name;
     double lon;
     double lat;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // INFOWINDOW_H

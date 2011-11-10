@@ -4,12 +4,16 @@
 #include "settings.h"
 #include <iostream>
 #include <QDebug>
-
+#include <QFile>
+#include <QTranslator>
 
 Settings * Settings::instance=0;
 
-Settings::Settings()
+Settings::Settings(QApplication* a)
 {
+    app = a;
+
+    addLanguages();
 }
 
 Settings::~Settings()
@@ -32,6 +36,8 @@ void Settings::loadSettings()
 
 void Settings::saveSettings()
 {
+    modifyLanguageSettings();
+
     QFile file("settings.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
@@ -45,10 +51,10 @@ void Settings::saveSettings()
     file.close();
 }
 
-Settings* Settings::getInstance()
+Settings* Settings::getInstance(QApplication* a)
 {
     if(instance==0)
-        instance=new Settings();
+        instance=new Settings(a);
     return instance;
 }
 
@@ -86,6 +92,9 @@ void Settings::resetDefaultSettings()
             "           <lon>17.03</lon>\n"
             "           <zoom>8</zoom>\n"
             "       </map>\n"
+            "       <language>\n"
+            "           <active>system</active>\n"
+            "       </language>\n"
             "   </profile>\n"
             "</settings>\n";
 
@@ -153,6 +162,9 @@ void Settings::configureProfile(QString profile)
     lat = mapSettings.firstChildElement("lat").text().toDouble();
     lon = mapSettings.firstChildElement("lon").text().toDouble();
     zoom = mapSettings.firstChildElement("zoom").text().toInt();
+
+    QDomElement langSettings = profileSettings.firstChildElement("language");
+    language = langSettings.firstChildElement("active").text();
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)
@@ -196,7 +208,8 @@ void Settings::modifyCoreSettings(QString name, QString value)
     {
         setting.firstChild().toText().setData(value);
     }
-    configureProfile(profileSettingsXMLNode.attributeNode("name").value());
+
+    //configureProfile(profileSettingsXMLNode.attributeNode("name").value());
 }
 
 void Settings::modifyMapSettings(double lat, double lon, int zoom)
@@ -204,10 +217,65 @@ void Settings::modifyMapSettings(double lat, double lon, int zoom)
     this->lat=lat;
     this->lon=lon;
     this->zoom=zoom;
-    QDomElement mapSettings = doc->firstChildElement("settings").firstChildElement("map");
+    //QDomElement mapSettings = doc->firstChildElement("settings").firstChildElement("map");
+    QDomElement mapSettings = profileSettingsXMLNode.firstChildElement("map");
     mapSettings.firstChildElement("lat").firstChild().toText().setData(QString::number(lat));
     mapSettings.firstChildElement("lon").firstChild().toText().setData(QString::number(lon));
     mapSettings.firstChildElement("zoom").firstChild().toText().setData(QString::number(zoom));
+}
+
+void Settings::modifyLanguageSettings()
+{
+    QDomElement langSettings = profileSettingsXMLNode.firstChildElement("language");
+
+    langSettings.firstChild().toText().setData(language);
+}
+
+void Settings::setLanguage(QString lang)
+{
+    language = lang;
+}
+
+QString Settings::getLanguage()
+{
+    QString langSymbol = languages.value(language);
+
+    return langSymbol;
+}
+
+QString Settings::getLocale(QString lang)
+{
+    return languages.value(lang);
+}
+
+QTranslator* Settings::reloadTranslation()
+{
+    QString langSymbol;
+
+    if (language.isEmpty() || language.compare("system", Qt::CaseInsensitive) == 0
+            || language.compare("systemowy", Qt::CaseInsensitive) == 0) {
+
+        langSymbol = QLocale::system().name();
+
+    } else {
+        langSymbol = languages.value(language);
+    }
+
+    QString filename = "lang/" + langSymbol + ".tr";
+
+    if (!QFile::exists(filename + ".qm")) {
+        qDebug() << "File with translating doesn't exists!";
+    }
+
+    app->removeTranslator(translator);
+    translator = new QTranslator;
+    translator->load(filename + ".qm");
+
+    qDebug() << "Language is settings: " << langSymbol;
+
+    app->installTranslator(translator);
+
+    return translator;
 }
 
 

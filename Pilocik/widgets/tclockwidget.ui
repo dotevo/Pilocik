@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="timeLabel">
      <property name="text">
-      <string>GODZINA</string>
+      <string>TIME</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

@@ -27,6 +27,8 @@ signals:
 private:
     Ui::RouteWindow *ui;
     PointSelectionWindow* psw;
+
+    void changeEvent(QEvent *);
 };
 
 #endif // ROUTEWINDOW_H

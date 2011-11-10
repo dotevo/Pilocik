@@ -10,6 +10,9 @@ QT       += core gui sql \
 TARGET = ../../build/Pilocik
 TEMPLATE = app
 
+TRANSLATIONS = lang/pl_PL.tr \
+        lang/en_EN.tr
+
 
 SOURCES += main.cpp\
     tmovableframe.cpp \

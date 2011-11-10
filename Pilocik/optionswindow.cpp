@@ -64,3 +64,15 @@ void OptionsWindow::on_userButton_clicked() {
 void OptionsWindow::optionWindowClosed() {
     setVisible(true);
 }
+
+void OptionsWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

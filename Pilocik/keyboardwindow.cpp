@@ -146,3 +146,15 @@ void KeyboardWindow::on_back_button_clicked()
         ui->textLineEdit->setCursorPosition(curs-1);
     }
 }
+
+void KeyboardWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}

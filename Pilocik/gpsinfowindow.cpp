@@ -99,3 +99,15 @@ void GPSInfoWindow::statusUpdate(QString status)
 {
     ui->status->setText("("+status+")");
 }
+
+void GPSInfoWindow::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
