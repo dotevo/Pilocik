@@ -20,8 +20,28 @@ PoiFilePPOI::PoiFilePPOI()
 {
 }
 
+QMap< int,QString > PoiFilePPOI::loadPOIsTypesFromFile(QString file){
+    QFile qfileData(file+".ppoi");
+    qfileData.open(QIODevice::ReadOnly);
+    QDataStream inData(&qfileData);
+    //load data types
+    quint8 typesC;
+    inData>>typesC;
+    QMap <int,QString> types;
+    for(int i=0;i<typesC;i++){
+        quint8 size=0;
+        inData>>size;
+        char n[size];
+        inData.readRawData((char*)&n,(int)size);
+        QString name(n);
+        name.resize(size);
+        qDebug()<<name.length();
+        types.insert(i,name);
+    }
+    return types;
+}
 
-QList<Poi> PoiFilePPOI::loadFromFile(QString file,BoundaryBox& bbox){
+QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poiType){
     QList <Poi> ret;
     //Load index File
     QFile qfileIndex(file+".pidx");
@@ -53,25 +73,50 @@ QList<Poi> PoiFilePPOI::loadFromFile(QString file,BoundaryBox& bbox){
     QFile qfileData(file+".ppoi");
     qfileData.open(QIODevice::ReadOnly);
     QDataStream inData(&qfileData);
-    //load data types
+    //------load data typesC
     quint8 typesC;
     inData>>typesC;
-    QMap <int,QString> types;
-    for(int i=0;i<typesC;i++){
-        quint8 size=0;
-        inData>>size;
-        char n[size];
-        inData.readRawData((char*)&n,(int)size);
-        QString name(n);
-        name.resize(size);
-        qDebug()<<name.length();
-        types.insert(i,name);
+    if(poiType>=typesC||poiType<-1){
+        qDebug()<<"No type number!";
+        return ret;
     }
-    //load bloack
-    inData.skipRawData(index-inData.device()->pos());
-    //TODO TYPES INDEX
-        //SKIP TYPES
-    inData.skipRawData(typesC*sizeof(quint16));
+
+
+    //------load bloack
+    ret.append(loadBlock(inData,index,poiType,typesC));
+
+    return ret;
+}
+
+QList<Poi> PoiFilePPOI::loadBlock(QDataStream &inData,int position,int poiType,int typeSize){
+    QList<Poi> ret;
+
+    if(poiType==-1){
+        QVector <quint16> kolejeczka;
+        for(int i=0;i<typeSize;i++){
+            inData.device()->seek(position+i*sizeof(quint16));
+            quint16 typeIndex;
+            inData>>typeIndex;
+            kolejeczka.push_back(typeIndex);
+        }
+        for(int i=0;i<kolejeczka.size();i++){
+            if(kolejeczka.at(i)!=0)
+                ret.append(loadPoisInType(inData,position+kolejeczka.at(i),i));
+        }
+    }else{
+        inData.device()->seek(position+poiType*sizeof(quint16));
+        quint16 typeIndex;
+        inData>>typeIndex;
+        if(typeIndex!=0)
+            ret.append(loadPoisInType(inData,position+typeIndex,poiType));
+    }
+
+    return ret;
+}
+
+QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type){
+    QList<Poi> ret;
+    inData.device()->seek(position);
 
     //POIs Count
     quint16 pois_C;
@@ -103,14 +148,12 @@ QList<Poi> PoiFilePPOI::loadFromFile(QString file,BoundaryBox& bbox){
                 tags.append(dupa);
             }
         }
-        Poi poi(lon,lat,name,0,tags);
+        Poi poi(lon,lat,name,type,tags);
         ret.append(poi);
     }
-
-
-
     return ret;
 }
+
 
 #ifdef PiLibocik_WRITE_MODE
 void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &types){

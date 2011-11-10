@@ -10,7 +10,8 @@ namespace PiLibocik{
 
 class PoiFile{
 public:
-    virtual QList<Poi> loadFromFile(QString file,BoundaryBox &bbox)=0;
+    virtual QMap< int,QString > loadPOIsTypesFromFile(QString file)=0;
+    virtual QList<Poi> loadPOIsFromFile(QString file,BoundaryBox &bbox,int PoiType)=0;
 
     #ifdef PiLibocik_WRITE_MODE
     virtual void saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &Types)=0;
