@@ -19,6 +19,7 @@ SOURCES += main.cpp\
     ../src/poi.cpp \
     ../src/pilibocik.cpp \
     ../src/poifileppoi.cpp \
+    ../src/boundarybox.cpp \
     ../src/geohash.cpp
 
 HEADERS  += mainwindow.h \

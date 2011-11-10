@@ -3,6 +3,7 @@
 #include <pilibocik/preparedata.h>
 #include <pilibocik/poi.h>
 #include <pilibocik/poifileppoi.h>
+#include <pilibocik/boundarybox.h>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,17 +16,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
     QList<PiLibocik::Poi> pois=pd->getPoiList();
-    /*for(int i=0;i<pois.count();i++){
-        PiLibocik::Poi p=pois.at(i);
-        qDebug()<<p.getLat();
-    }*/
-
     QMap<int,QString> types=pd->getPoiTypeNames();
     PiLibocik::PoiFilePPOI n;
     n.saveToFile("c:/map/mojepoi2",pois,types);
 
     //PiLibocik::PoiFilePPOI n;
-    //QList<PiLibocik::Poi> pois=n.loadFromFile("c:/map/mojepoi",poi)
+    PiLibocik::BoundaryBox b(PiLibocik::Point(10,10),PiLibocik::Point(100,100));
+    QList <PiLibocik::Poi> p=n.loadFromFile("c:/map/mojepoi2",b);
+    QListIterator <PiLibocik::Poi> iter(p);
+    while(iter.hasNext()){
+        PiLibocik::Poi poi=iter.next();
+        qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName();
+        QList < QPair <QString,QString > > l= poi.getTags();
+        QListIterator <QPair <QString,QString > > iter2(l);
+        while(iter2.hasNext()){
+            QPair <QString,QString > n=iter2.next();
+            qDebug()<<n.first<<"="<<n.second;
+        }
+    }
 
 }
 

@@ -10,11 +10,11 @@ class PoiFilePPOI:public PoiFile
 {
 public:
     PoiFilePPOI();
-    QList<Poi> loadFromFile(QFile &file,BoundaryBox &bbox);
+    QList<Poi> loadFromFile(QString file,BoundaryBox &bbox);
 
     #ifdef PiLibocik_WRITE_MODE
     void saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &types);
-    QByteArray makeBlock(QVector<Poi*>*data,int types);
+    void makeBlock(QDataStream &stream,QVector<Poi*>*data,int types);
     #endif
 
 };
