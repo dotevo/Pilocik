@@ -3,6 +3,7 @@
 #include "navigationwindow.h"
 #include "settings.h"
 #include <QDebug>
+#include <QDir>
 
 UserOptionsWindow::UserOptionsWindow(NavigationWindow *parent) :
     QFullScreenFrame(parent),
@@ -11,28 +12,26 @@ UserOptionsWindow::UserOptionsWindow(NavigationWindow *parent) :
     ui->setupUi(this);
     sizeChanged((QWidget*)parent);
 
-    QStringList languages;
+    QDir dir(QDir::currentPath() + "/lang");
+    qDebug() << dir.path();
+    QStringList filter;
+    filter << "*.qm";
+    dir.setNameFilters(filter);
+    QFileInfoList list = dir.entryInfoList();
 
-    languages.append("System");
-    languages.append("English");
-    languages.append("Polish");
-
-    QString langLocale = Settings::getInstance()->getLanguage();
-
-    int index = 0;
-    if (!langLocale.isEmpty()) {
-        for (int i = 0; i < languages.length(); i++)
-        {
-            if (langLocale.compare(Settings::getInstance()->getLocale(languages.at(i)), Qt::CaseInsensitive) == 0) {
-                index = i;
-                break;
-            }
-        }
+    ui->languageComboBox->addItem(tr("System"));
+    for (int i = 0; i < list.size(); ++i) {
+        QString a=list.at(i).fileName().split(".").at(0);
+        ui->languageComboBox->addItem(Settings::getInstance()->getLanguageFromLocale(a));
     }
 
-    ui->languageComboBox->addItems(languages);
-    ui->languageComboBox->setCurrentIndex(index);
-    //ui->languageComboBox->insertSeparator(1);
+    QString lang = Settings::getInstance()->getLanguage();
+
+    if(lang.isNull())
+        ui->languageComboBox->setCurrentIndex(0);
+    //Selected language
+    else
+        ui->languageComboBox->setCurrentIndex(ui->languageComboBox->findText(lang));
 }
 
 UserOptionsWindow::~UserOptionsWindow(){

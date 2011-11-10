@@ -243,6 +243,11 @@ QString Settings::getLanguage()
     return langSymbol;
 }
 
+QString Settings::getLanguageFromLocale(QString loc)
+{
+    return languages.key(loc);
+}
+
 QString Settings::getLocale(QString lang)
 {
     return languages.value(lang);
@@ -252,9 +257,8 @@ QTranslator* Settings::reloadTranslation()
 {
     QString langSymbol;
 
-    if (language.isEmpty() || language.compare("system", Qt::CaseInsensitive) == 0
-            || language.compare("systemowy", Qt::CaseInsensitive) == 0) {
-
+    if (language.isEmpty() || language.compare("system", Qt::CaseInsensitive) == 0)
+    {
         langSymbol = QLocale::system().name();
 
     } else {

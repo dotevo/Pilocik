@@ -35,18 +35,18 @@ private:
     QMap<QString, QString> languages;
 
     void addLanguages() {
-        languages.insert("System", "system");
-        languages.insert("Systemowy", "system");
-        languages.insert("Polish", "pl_PL");
+        languages.insert("System", "System");
+        //languages.insert("Systemowy", "system");
+        //languages.insert("Polish", "pl_PL");
         languages.insert("Polski", "pl_PL");
         languages.insert("English", "en_EN");
-        languages.insert("Angielski", "en_EN");
-        languages.insert("system", "system");
-        languages.insert("systemowy", "system");
-        languages.insert("polish", "pl_PL");
-        languages.insert("polski", "pl_PL");
-        languages.insert("english", "en_EN");
-        languages.insert("angielski", "en_EN");
+        //languages.insert("Angielski", "en_EN");
+        //languages.insert("system", "system");
+        //languages.insert("systemowy", "system");
+        //languages.insert("polish", "pl_PL");
+        //languages.insert("polski", "pl_PL");
+        //languages.insert("english", "en_EN");
+        //languages.insert("angielski", "en_EN");
     }
 
 public:
@@ -58,6 +58,7 @@ public:
 
     void setLanguage(QString lang);
     QString getLanguage();
+    QString getLanguageFromLocale(QString loc);
     QString getLocale(QString lang);
 
     void resetDefaultSettings();
