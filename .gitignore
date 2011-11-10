@@ -38,9 +38,5 @@ build/*
 */debug/*
 
 #Docs
-/html/*
-/latex/*
-/Pilocik/html/*
-/Pilocik/latex/*
-/Pilocik/Doxygen*
-Doxyfile*
+*/html/*
+*/latex/*

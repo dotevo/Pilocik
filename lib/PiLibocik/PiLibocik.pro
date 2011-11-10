@@ -3,24 +3,33 @@
 # Project created by QtCreator 2011-11-08T13:01:11
 #
 #-------------------------------------------------
-
-QT       -= gui
+QT      -= gui
+QT       += sql xml
 
 TARGET = PiLibocik
-TEMPLATE = lib
+TEMPLATE = app
 CONFIG += staticlib
+
+DEFINES += PiLibocik_WRITE_MODE
 
 SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \
     src/point.cpp \
-    src/poi.cpp
+    src/poi.cpp \
+    src/preparedata.cpp \
+    src/boundarybox.cpp \
+    src/poifileppoi.cpp \
+    main.cpp
 
 INCLUDEPATH +=include
 
 HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/geohash.h \
     include/pilibocik/point.h \
-    include/pilibocik/poi.h
+    include/pilibocik/poi.h \
+    include/pilibocik/preparedata.h \
+    include/pilibocik/boundarybox.h \
+    include/pilibocik/poifileppoi.h
 
 
 unix:!symbian {
@@ -31,6 +40,21 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
