@@ -40,3 +40,6 @@ build/*
 #Docs
 */html/*
 */latex/*
+
+#Compiled translation files
+*.qm
