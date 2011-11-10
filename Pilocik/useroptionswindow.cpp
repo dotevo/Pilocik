@@ -19,12 +19,14 @@ UserOptionsWindow::UserOptionsWindow(NavigationWindow *parent) :
 
     QString langLocale = Settings::getInstance()->getLanguage();
 
-    int index = -1;
-    for (int i = 0; i < languages.length(); i++)
-    {
-        if (langLocale.compare(Settings::getInstance()->getLocale(languages.at(i)), Qt::CaseInsensitive) == 0) {
-            index = i;
-            break;
+    int index = 0;
+    if (!langLocale.isEmpty()) {
+        for (int i = 0; i < languages.length(); i++)
+        {
+            if (langLocale.compare(Settings::getInstance()->getLocale(languages.at(i)), Qt::CaseInsensitive) == 0) {
+                index = i;
+                break;
+            }
         }
     }
 
