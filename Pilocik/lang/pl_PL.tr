@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="tr_TR">
+<context>
+    <name>GPSInfoWindow</name>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="77"/>
+        <source>GPS position</source>
+        <translation>Pozycja GPS</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="97"/>
+        <source>Latitude:</source>
+        <translation>Szerokość:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="110"/>
+        <location filename="../gpsinfowindow.ui" line="156"/>
+        <source>0.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="123"/>
+        <source>Satelites:</source>
+        <translation>Satelity:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="130"/>
+        <location filename="../gpsinfowindow.ui" line="202"/>
+        <location filename="../gpsinfowindow.ui" line="222"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="143"/>
+        <source>Longitude:</source>
+        <translation>Długość:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="169"/>
+        <source>Speed:</source>
+        <translation>Prędkość:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="176"/>
+        <source>0 km/h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="189"/>
+        <source>Altitude:</source>
+        <translation>Wysokość:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="215"/>
+        <source>Angle:</source>
+        <translation>Kąt:</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="268"/>
+        <location filename="../gpsinfowindow.ui" line="291"/>
+        <location filename="../gpsinfowindow.ui" line="314"/>
+        <location filename="../gpsinfowindow.ui" line="337"/>
+        <location filename="../gpsinfowindow.ui" line="360"/>
+        <location filename="../gpsinfowindow.ui" line="383"/>
+        <location filename="../gpsinfowindow.ui" line="406"/>
+        <location filename="../gpsinfowindow.ui" line="429"/>
+        <location filename="../gpsinfowindow.ui" line="452"/>
+        <location filename="../gpsinfowindow.ui" line="475"/>
+        <location filename="../gpsinfowindow.ui" line="498"/>
+        <location filename="../gpsinfowindow.ui" line="521"/>
+        <source>--</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="559"/>
+        <source>Disable GPS</source>
+        <translation>Zablokuj GPS</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="578"/>
+        <source>Enable GPS</source>
+        <translation>Odblokuj GPS</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="597"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="616"/>
+        <source>GPS INFO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsinfowindow.ui" line="632"/>
+        <source>PC simulation</source>
+        <translation>Symulacja PC</translation>
+    </message>
+</context>
+<context>
+    <name>GPSOptionsWindow</name>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="56"/>
+        <source>GPX Folder:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="122"/>
+        <source>GPS Device:</source>
+        <translation>Urządzenie:</translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="152"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="165"/>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="172"/>
+        <source>Simulation:</source>
+        <translation>Symulacja:</translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="179"/>
+        <source>Auto save</source>
+        <translation>Autozapis</translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="198"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gpsoptionswindow.ui" line="205"/>
+        <source>GPS OPTIONS</source>
+        <translation>OPCJE GPS</translation>
+    </message>
+</context>
+<context>
+    <name>InfoWindow</name>
+    <message>
+        <location filename="../infowindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="44"/>
+        <source>NAME:</source>
+        <translation>NAZWA:</translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="57"/>
+        <source>COORDINATES:</source>
+        <translation>WSPÓŁRZĘDNE:</translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="70"/>
+        <location filename="../infowindow.ui" line="83"/>
+        <location filename="../infowindow.ui" line="96"/>
+        <source>TextLabel</source>
+        <translation>-</translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="138"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="167"/>
+        <source>INFO</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KeyboardWindow</name>
+    <message>
+        <location filename="../keyboardwindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="41"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="60"/>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="79"/>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="98"/>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="117"/>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="136"/>
+        <source>6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="155"/>
+        <source>7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="174"/>
+        <source>8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="193"/>
+        <source>9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="212"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="231"/>
+        <source>q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="250"/>
+        <source>w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="269"/>
+        <source>e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="288"/>
+        <source>r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="307"/>
+        <source>t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="326"/>
+        <source>y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="345"/>
+        <source>u</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="364"/>
+        <source>i</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="383"/>
+        <source>o</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="402"/>
+        <source>p</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="421"/>
+        <source>a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="440"/>
+        <source>s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="459"/>
+        <source>d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="478"/>
+        <source>f</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="497"/>
+        <source>g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="516"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="535"/>
+        <source>j</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="554"/>
+        <source>k</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="573"/>
+        <source>l</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="592"/>
+        <source>&lt;-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="611"/>
+        <source>Alt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="630"/>
+        <source>z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="649"/>
+        <source>c</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="668"/>
+        <source>x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="681"/>
+        <source>v</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="700"/>
+        <source>b</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="719"/>
+        <source>n</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="738"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="757"/>
+        <source>,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="776"/>
+        <source>.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="795"/>
+        <source>Ctrl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="814"/>
+        <source>Space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="833"/>
+        <source>/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="852"/>
+        <source>Spec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="868"/>
+        <source>Text:</source>
+        <translation>Tekst:</translation>
+    </message>
+    <message>
+        <location filename="../keyboardwindow.ui" line="925"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MapOptionsWindow</name>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="50"/>
+        <source>Map style:</source>
+        <translation>Styl mapy:</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="84"/>
+        <source>Map file:</source>
+        <translation>Plik z mapą:</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="91"/>
+        <source>Version:</source>
+        <translation>Wersja:</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="117"/>
+        <source>Show only opened stores</source>
+        <translation>Pokaż tylko otwarte sklepy</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="124"/>
+        <source>ShowPOI</source>
+        <translation>Pokaż POI</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="137"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="150"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
+    </message>
+    <message>
+        <location filename="../mapoptionswindow.ui" line="157"/>
+        <source>MAP OPTIONS</source>
+        <translation>OPCJE MAPY</translation>
+    </message>
+</context>
+<context>
+    <name>NavigationWindow</name>
+    <message>
+        <location filename="../navigationwindow.ui" line="17"/>
+        <source>MainWindow</source>
+        <translation>Główne okno</translation>
+    </message>
+    <message>
+        <location filename="../navigationwindow.ui" line="52"/>
+        <source>Disable tracking</source>
+        <translation>Zablokuj śledzenie</translation>
+    </message>
+    <message>
+        <location filename="../navigationwindow.ui" line="263"/>
+        <source>&lt;&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../navigationwindow.ui" line="285"/>
+        <source>Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OptionsWindow</name>
+    <message>
+        <location filename="../optionswindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../optionswindow.ui" line="114"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
+    </message>
+</context>
+<context>
+    <name>PointSelectionWindow</name>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="41"/>
+        <source>POI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="71"/>
+        <source>Nearest:</source>
+        <translation>W pobliżu:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="90"/>
+        <source>Current position</source>
+        <translation>Aktualna lokalizacja</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="106"/>
+        <source>Clear</source>
+        <translation>Wyczyść</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="137"/>
+        <source>Name:</source>
+        <translation>Nazwa:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="150"/>
+        <source>Show only opened stores</source>
+        <translation>Pokaż tylko otwarte sklepy</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="206"/>
+        <location filename="../pointselectionwindow.ui" line="454"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="254"/>
+        <source>Type:</source>
+        <translation>Typ:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="275"/>
+        <source>ADDRESS</source>
+        <translation>ADRES</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="305"/>
+        <source>Country:</source>
+        <translation>Kraj:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="312"/>
+        <source>Polska</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="346"/>
+        <source>City:</source>
+        <translation>Miasto:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="383"/>
+        <source>Street:</source>
+        <translation>Ulica:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="420"/>
+        <source>No:</source>
+        <translation>Numer:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="495"/>
+        <source>HISTORY</source>
+        <translation>HISTORIA</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="525"/>
+        <source>Before:</source>
+        <translation>Przed:</translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="554"/>
+        <source>FAVORITE</source>
+        <translation>ULUBIONE</translation>
+    </message>
+</context>
+<context>
+    <name>RouteWindow</name>
+    <message>
+        <location filename="../routewindow.ui" line="14"/>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="20"/>
+        <location filename="../routewindow.cpp" line="12"/>
+        <source>ROUTE PLANNING</source>
+        <translation>PLANOWANIE TRASY</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="66"/>
+        <source>FROM:</source>
+        <translation>Z:</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="85"/>
+        <location filename="../routewindow.ui" line="201"/>
+        <source>Current position</source>
+        <translation>Aktualna lokalizacja</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="95"/>
+        <source>Fastest</source>
+        <translation>Najszybsza</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="182"/>
+        <source>TO:</source>
+        <translation>DO:</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="217"/>
+        <location filename="../routewindow.ui" line="236"/>
+        <source>CLEAR</source>
+        <translation>WYCZYŚĆ</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="243"/>
+        <source>THROUGH:</source>
+        <translation>PRZEZ:</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="274"/>
+        <source>ADD</source>
+        <translation>DODAJ</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="282"/>
+        <source>Car</source>
+        <translation>Samochód</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="287"/>
+        <source>Bike</source>
+        <translation>Rower</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="307"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="320"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../routewindow.ui" line="327"/>
+        <source>Shortest</source>
+        <translation>Najkrótsza</translation>
+    </message>
+    <message>
+        <source>Quickest</source>
+        <translation type="obsolete">Najkrótsza</translation>
+    </message>
+</context>
+<context>
+    <name>TClockWidget</name>
+    <message>
+        <location filename="../widgets/tclockwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <location filename="../widgets/tclockwidget.ui" line="20"/>
+        <source>TIME</source>
+        <translation>GODZINA</translation>
+    </message>
+    <message>
+        <source>GODZINA</source>
+        <translation type="obsolete">GODZINA</translation>
+    </message>
+</context>
+<context>
+    <name>TSliderWidget</name>
+    <message>
+        <location filename="../widgets/tsliderwidget.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../widgets/tsliderwidget.ui" line="58"/>
+        <source>+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/tsliderwidget.ui" line="106"/>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TSpeedMeterWidget</name>
+    <message>
+        <location filename="../widgets/tspeedmeterwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <location filename="../widgets/tspeedmeterwidget.ui" line="37"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/tspeedmeterwidget.ui" line="58"/>
+        <source>km</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/tspeedmeterwidget.ui" line="76"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserOptionsWindow</name>
+    <message>
+        <location filename="../useroptionswindow.ui" line="20"/>
+        <source>Frame</source>
+        <translation>Ramka</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="32"/>
+        <source>USER OPTIONS</source>
+        <translation>OPCJE UŻYTKOWNIKA</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="66"/>
+        <source>Profile:</source>
+        <translation>Profil:</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="110"/>
+        <source>Weight:</source>
+        <translation>Waga:</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="147"/>
+        <source>Height:</source>
+        <translation>Wzrost:</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="166"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.ui" line="197"/>
+        <source>Language:</source>
+        <translation>Język:</translation>
+    </message>
+</context>
+</TS>
