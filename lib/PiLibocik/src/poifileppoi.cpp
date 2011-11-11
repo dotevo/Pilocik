@@ -31,7 +31,7 @@ QMap< int,QString > PoiFilePPOI::loadPOIsTypesFromFile(QString file){
     for(int i=0;i<typesC;i++){
         quint8 size=0;
         inData>>size;
-        char n[size];
+        char* n = new char[size];
         inData.readRawData((char*)&n,(int)size);
         QString name(n);
         name.resize(size);
@@ -137,7 +137,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
         double lon,lat;
         quint8 nameS;
         inData>>lon>>lat>>nameS;
-        char n[nameS];
+        char* n = new char[nameS];
         inData.readRawData((char*)&n,(int)nameS);
         QString name(n);
         name.resize(nameS);
@@ -149,7 +149,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
         for(int j=0;j<tagsC;j++){
             quint8 tagSize;
             inData>>tagSize;
-            char tagChar[tagSize];
+            char* tagChar = new char[tagSize];
             inData.readRawData((char*)&tagChar,(int)tagSize);
             QString tag(tagChar);
             tag.resize(tagSize);
@@ -280,7 +280,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
 
 
     //---------Convert POI to table[type]=QVector<Poi*>*
-    QVector<Poi*>*  table[types];
+    QVector<Poi*>**  table = new QVector<Poi*>*[types];
     for(int i=0;i<types;i++){
         table[i]=new QVector<Poi*>();
     }
@@ -340,7 +340,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
     }
 
     out.device()->seek(0);
-    char n[out.device()->size()];
+    char* n = new char[out.device()->size()];
     out.readRawData(n,out.device()->size());
     stream.writeRawData(n,out.device()->size());
 }

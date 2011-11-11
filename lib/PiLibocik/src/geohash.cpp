@@ -116,7 +116,7 @@ namespace PiLibocik{
     QString Geohash::generateGeohash(double lng, double lat, int precision)
     {
 
-        QChar hash[precision+1];
+        QChar* hash = new QChar[precision+1];
 
         if(lat <= 90.0 && lat >= -90.0 && lng <= 180.0 && lng >= -180.0) {
 
