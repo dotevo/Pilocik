@@ -19,6 +19,7 @@ namespace PiLibocik{
         Geohash(int precision);
         Geohash(QString geohash);
         Geohash(double lon,double lat,int precision);
+        ~Geohash();
 
 
         QString toQString();

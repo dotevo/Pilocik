@@ -21,6 +21,12 @@ namespace PiLibocik{
         init(sl);
     }
 
+    Geohash::~Geohash(){
+        qDebug()<<"remove";
+        delete [] geohashValue;
+    }
+
+
 
     void Geohash::init(QString gh){
         geohashSize=gh.length();
@@ -158,6 +164,8 @@ namespace PiLibocik{
                 is_even = !is_even;
             }
         }
-        return QString(hash,precision);
+        QString s(hash,precision);
+        delete []hash;
+        return s;
     }
 }
