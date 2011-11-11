@@ -6,13 +6,33 @@
 #include <QStringList>
 #include <QBuffer>
 
-/*Index file format
-  geohash size 1byte(n)     -quint8
-  geohash size 8byte(p)     -unsigned long long
-  firstgeohash 1byte*(n)    -Asci
-  index        4byte*p      -int
-  */
+/*Index file format:
+  geohash size (n)      -quint8
+  geohash count(p)      -quint64
+  firstgeohash          -char(Latin)*n
+  index                 -qint64     *p
 
+  Data file format:
+  types         (t)     -quint8
+  ------------- *t -------------
+    typeLength      (r)     -int
+    name                    -char(Latin)*r
+  ---BLOCK *p-------------------
+    typeIndex               -quint16*t
+    ---TYPE *t------------------
+        poisCount   (z)     -quint16
+        ---POI *z---------------
+            lon             -double(8byte)
+            lat             -double(8byte)
+            nameSize    (x) -quint8
+            name            -char*x
+            tagsCount   (w) -quint8
+            ---TAG *w-----------
+                tagSize (i) -quint8
+                tag         -char*i
+  ------------------------------
+
+  */
 
 
 namespace PiLibocik{
@@ -240,7 +260,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
                 quint64 l=last-geo2;
                 outIndex << l;
                 //First geohash
-                outIndex << n.toAscii();
+                outIndex << n.toLatin1();
 
 
                 //Data (first block)
@@ -298,7 +318,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
     for(int i=0;i<types;i++){
         //POIs in type
         if(table[i]->size()>0){
-            quint16 In=types*sizeof(short)+poisData.size();
+            quint16 In=types*sizeof(quint16)+poisData.size();
             stream<<In;
             //POI in type
             quint16 poisCC=table[i]->size();
@@ -345,6 +365,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
     char* n = new char[out.device()->size()];
     out.readRawData(n,out.device()->size());
     stream.writeRawData(n,out.device()->size());
+    delete []n;
 }
 
 #endif

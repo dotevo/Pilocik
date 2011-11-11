@@ -22,8 +22,7 @@ namespace PiLibocik{
     }
 
     Geohash::~Geohash(){
-        qDebug()<<"remove";
-        delete [] geohashValue;
+      //  delete [] geohashValue;
     }
 
 
@@ -75,6 +74,7 @@ namespace PiLibocik{
             }
         }
     }
+
 
     bool Geohash::operator>(Geohash &q){
         for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
