@@ -138,8 +138,9 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
         quint8 nameS;
         inData>>lon>>lat>>nameS;
         char* n = new char[nameS];
-        inData.readRawData((char*)&n,(int)nameS);
+        inData.readRawData(n,(int)nameS);
         QString name(n);
+        delete []n;
         name.resize(nameS);
 
         //Tags
@@ -150,8 +151,9 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
             quint8 tagSize;
             inData>>tagSize;
             char* tagChar = new char[tagSize];
-            inData.readRawData((char*)&tagChar,(int)tagSize);
-            QString tag(tagChar);
+            int sizeL=inData.readRawData(tagChar,(int)tagSize);
+            QString tag=QString::fromLatin1(tagChar,sizeL);
+            delete []tagChar;
             tag.resize(tagSize);
             QStringList tagList=tag.split('=');
             if(tagList.count()==2){
@@ -348,3 +350,5 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
 #endif
 
 }
+
+
