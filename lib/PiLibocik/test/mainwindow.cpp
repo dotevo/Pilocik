@@ -12,20 +12,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     //PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db", "g:/poi.db", "../../PiLibocik/poiConfig.xml");
 
     //------------SAVE-----------------
-    /*PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
     QList<PiLibocik::Poi> pois=pd->getPoiList();
-    QMap<int,QString> types=pd->getPoiTypeNames();*/
-    //PiLibocik::PoiFilePPOI n;
-    //n.saveToFile("c:/map/mojepoi2",pois,types);
+    QMap<int,QString> types=pd->getPoiTypeNames();
+    PiLibocik::PoiFilePPOI n;
+    n.saveToFile("c:/map/mojepoi2",pois,types);
 
     //----------------------------------
 
 
     //-------------LOAD------------------
-    PiLibocik::PoiFilePPOI n;
+    //PiLibocik::PoiFilePPOI n;
     PiLibocik::BoundaryBox b(PiLibocik::Point(18.6285,54.2666),PiLibocik::Point(18.9,55));
     QList <PiLibocik::Poi> p=n.loadPOIsFromFile("c:/map/mojepoi2",b,-1);
     QListIterator <PiLibocik::Poi> iter(p);

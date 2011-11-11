@@ -8,6 +8,10 @@ uint qHash(PiLibocik::Geohash &key){
 namespace PiLibocik{
     const QString Geohash::char_map =  "0123456789bcdefghjkmnpqrstuvwxyz";
 
+    Geohash::Geohash(){
+        geohashValue=new char[0];
+    }
+
     Geohash::Geohash(int size):geohashSize(size){
         geohashValue=new char[size];
     }
@@ -21,8 +25,22 @@ namespace PiLibocik{
         init(sl);
     }
 
+    Geohash::Geohash(char *n,int size):geohashSize(size){
+        geohashValue=new char[geohashSize];
+        for(int i=0;i<geohashSize;i++)
+            geohashValue[i]=n[i];
+    }
+
+    Geohash::Geohash(const Geohash &geohash){
+        geohashSize=geohash.geohashSize;
+
+        geohashValue=new char[geohashSize];
+        for(int i=0;i<geohashSize;i++)
+            geohashValue[i]=geohash.geohashValue[i];
+    }
+
     Geohash::~Geohash(){
-      //  delete [] geohashValue;
+        delete [] geohashValue;
     }
 
 
@@ -96,6 +114,16 @@ namespace PiLibocik{
         return false;
     }
 
+    bool Geohash::operator<(const Geohash &q){
+        for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
+            if((short)geohashValue[i]<(short)q.geohashValue[i]){
+                return true;
+            }else if((short)geohashValue[i]>(short)q.geohashValue[i])
+                return false;
+        }
+        return false;
+    }
+
     unsigned long long Geohash::operator-(Geohash &q){
         if(q.geohashSize!=geohashSize)return -1;
         long long ret=0;
@@ -117,6 +145,28 @@ namespace PiLibocik{
             }
         }
         return true;
+    }
+
+    Geohash &Geohash::operator=(Geohash &q){
+        if (this != &q){
+            geohashSize=q.geohashSize;
+            char *new_geohashValue = new char[q.geohashSize];
+            std::copy(q.geohashValue, q.geohashValue + q.geohashSize, new_geohashValue);
+            delete []geohashValue;
+            geohashValue=new_geohashValue;
+        }
+        return *this;
+    }
+
+    Geohash &Geohash::operator=(const Geohash &q){
+        if (this != &q){
+            geohashSize=q.geohashSize;
+            char *new_geohashValue = new char[q.geohashSize];
+            std::copy(q.geohashValue, q.geohashValue + q.geohashSize, new_geohashValue);
+            delete []geohashValue;
+            geohashValue=new_geohashValue;
+        }
+        return *this;
     }
 
     QString Geohash::generateGeohash(double lng, double lat, int precision)
