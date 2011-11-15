@@ -5,6 +5,7 @@
 #include "widgets/tclockwidget.h"
 #include "widgets/tspeedmeterwidget.h"
 #include "widgets/tsliderwidget.h"
+#include "widgets/thintwidget.h"
 #include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
@@ -48,16 +49,19 @@ NavigationWindow::~NavigationWindow()
 {    
     gps->disable();
     //delete ui->widget;
-    delete ui;
+    //delete ui;
     delete routeWin;
     delete optionsWin;
     delete gpsInfoWin;
+    //delete mapRenderer;
+    //delete ui->widget;
     delete TWidgetManager::getInstance();
     Settings::getInstance()->saveSettings();
     delete Settings::getInstance();
 }
 
 void NavigationWindow::addWidgets(){
+    TWidgetManager::getInstance()->addWidget("Hint", new THintWidget(this));
     TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
     TSliderWidget* slider = new TSliderWidget(this);
@@ -174,7 +178,13 @@ void NavigationWindow::positionUpdated(GPSdata gps_data){
 void NavigationWindow::retranslate()
 {
     ui->retranslateUi(this);
+}
 
+void NavigationWindow::setRoute(QVector<osmscout::Routing::RouteNode> route)
+{
+    mapRenderer->setRoute(route);
+    mapRenderer->setRouting(true);
+    mapRenderer->setMyCoordinates(route.at(0).lon, route.at(0).lat, 45);
 }
 
 void NavigationWindow::changeEvent(QEvent *e)

@@ -4,6 +4,8 @@
 #include <QFrame>
 #include <QSize>
 
+#include "qfullscreenframe.h"
+
 namespace Ui {
     class InfoWindow;
 }
@@ -11,12 +13,12 @@ namespace Ui {
 /**
   @brief It is window with information about a object.
   */
-class InfoWindow : public QFrame
+class InfoWindow : public QFullScreenFrame
 {
     Q_OBJECT
 
 public:
-    explicit InfoWindow(QFrame *parent = 0);
+    explicit InfoWindow(NavigationWindow *parent = 0);
     ~InfoWindow();
 
     /**

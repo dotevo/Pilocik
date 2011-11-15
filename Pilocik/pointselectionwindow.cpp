@@ -6,10 +6,12 @@
 #include <QStandardItemModel>
 #include <QAbstractItemView>
 #include <QInputDialog>
+#include <QVector>
 
 #include <QDebug>
 #include "osmscout/Searching.h"
 #include "osmscout/Relation.h"
+#include "osmscout/Routing.h"
 
 PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double currentLocationX, double currentLocationY) :
     ui(new Ui::PointSelectionWindow),
@@ -88,7 +90,7 @@ osmscout::Location PointSelectionWindow::searchLocation(const QString locationNa
 }
 
 void PointSelectionWindow::on_okButton_clicked(){
-    emit ok_clicked();
+//    emit ok_clicked();
 }
 
 void PointSelectionWindow::on_cityLineEdit_textChanged(const QString &text)
@@ -350,7 +352,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
     }
 
     if (column == INFO_COLUMN) {
-        InfoWindow *infoWin = new InfoWindow(this);
+        InfoWindow *infoWin = new InfoWindow(NavigationWindow::main);
 
         double lat;
         double lon;
@@ -359,7 +361,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
 
         switch (searchingType) {
         case REGION_SEARCH:
-            infoWin = new InfoWindow(this);
+            infoWin = new InfoWindow(NavigationWindow::main);
 
             infoWin->setName(region.name);
 
@@ -380,7 +382,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         break;
 
         case STREET_SEARCH:
-            infoWin = new InfoWindow(this);
+            infoWin = new InfoWindow(NavigationWindow::main);
 
             osmscout::WayRef wayRef;
 
@@ -421,7 +423,7 @@ void PointSelectionWindow::fillPOIWidget(QString type)
     for (int i = 0; i < poiRef.size(); i++) {
         osmscout::NodeRef node = poiRef.at(i);
 
-        double dist = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
+        double dist = searching->CalculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
 
         int j = 0;
         for (; j < distances.size(); j++) {
@@ -459,22 +461,90 @@ void PointSelectionWindow::fillPOIWidget(QString type)
 }
 
 void PointSelectionWindow::on_poiOkButton_clicked() {
+    //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
+
+    std::vector<osmscout::Routing::RouteNode> route;
+
+    double lons[12];
+    double lats[12];
+    double ids[12];
+    bool cross[12];
+    for (int i = 0; i < 12; i++)
+        cross[i] = false;
+
+    ids[0] = 163019177;
+    ids[1] = 163019169;
+    ids[2] = 700335113;
+    ids[3] = 354688468;
+    ids[4] = 163019162;
+    ids[5] = 361263007;
+    ids[6] = 163019154;
+    ids[7] = 357534549;
+    ids[8] = 354688480;
+    ids[9] = 354688470;
+    ids[10] = 173358982;
+    ids[11] = 1354742039;
+
+    lons[0] = 17.0200428;
+    lons[1] = 17.0173305;
+    lons[2] = 17.0173006;
+    lons[3] = 17.0172331;
+    lons[4] = 17.016984;
+    lons[5] = 17.0168671;
+    lons[6] = 17.0163112;
+    lons[7] = 17.0162949;
+    lons[8] = 17.0162113;
+    lons[9] = 17.0160545;
+    lons[10] = 17.0154863;
+    lons[11] = 17.0152651;
+
+    lats[0] = 51.0934354;
+    lats[1] = 51.0911184;
+    lats[2] = 51.0911032;
+    lats[3] = 51.0910688;
+    lats[4] = 51.0910281;
+    lats[5] = 51.0910583;
+    lats[6] = 51.0910981;
+    lats[7] = 51.0911919;
+    lats[8] = 51.0915246;
+    lats[9] = 51.0921023;
+    lats[10] = 51.0943413;
+    lats[11] = 51.0951559;
+
+    cross[6] = true;
+    cross[8] = true;
+    cross[9] = true;
+    cross[10] = true;
+    cross[11] = true;
+
+    for (int i = 0; i < 12; i++) {
+        osmscout::Routing::RouteNode node;
+        node.id = ids[i];
+        node.lat = lats[i];
+        node.lon = lons[i];
+        node.crossing = cross[i];
+
+        route.push_back(node);
+    }
+
+    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
+    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));
+
     emit ok_clicked();
 }
 
 void PointSelectionWindow::on_typeComboBox_currentIndexChanged(const QString &type)
 {
     QString typeId = searching->getPOIS().key(type);
-    fillPOIWidget(typeId);
 }
 
 void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     if (column == INFO_COLUMN) {
-        InfoWindow *infoPoiWin = new InfoWindow(this);
+        InfoWindow *infoPoiWin = new InfoWindow(NavigationWindow::main);
 
         osmscout::NodeRef node;
-        searching->searchNode(item->text(0).toInt(), node);
+        searching->searchNode(item->text(ID_COLUMN).toInt(), node);
 
         double lat = node.Get()->GetLat();
         double lon = node.Get()->GetLon();

@@ -14,6 +14,8 @@ Settings::Settings(QApplication* a)
     app = a;
 
     addLanguages();
+
+    startLanguage = "";
 }
 
 Settings::~Settings()
@@ -85,6 +87,11 @@ void Settings::resetDefaultSettings()
             "               <enabled>true</enabled>\n"
             "               <posx>400</posx>\n"
             "               <posy>45</posy>\n"
+            "           </widget>\n"
+            "           <qidget name=\"Hint\">\n"
+            "               <enabled>true</enabled>\n"
+            "               <posx>10</posx>\n"
+            "               <posy>10</posy>\n"
             "           </widget>\n"
             "       </widgets>\n"
             "       <map>\n"
@@ -165,6 +172,7 @@ void Settings::configureProfile(QString profile)
 
     QDomElement langSettings = profileSettings.firstChildElement("language");
     language = langSettings.firstChildElement("active").text();
+    startLanguage = language.compare("System", Qt::CaseInsensitive) == 0 ? "" : language;
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)
@@ -228,7 +236,7 @@ void Settings::modifyLanguageSettings()
 {
     QDomElement langSettings = profileSettingsXMLNode.firstChildElement("language");
 
-    langSettings.firstChild().toText().setData(language);
+    langSettings.firstChildElement("active").firstChild().toText().setData(language);
 }
 
 void Settings::setLanguage(QString lang)
@@ -243,6 +251,11 @@ QString Settings::getLanguage()
     return langSymbol;
 }
 
+QString Settings::getStartLanguage()
+{
+    return startLanguage;
+}
+
 QString Settings::getLanguageFromLocale(QString loc)
 {
     return languages.key(loc);
@@ -253,16 +266,18 @@ QString Settings::getLocale(QString lang)
     return languages.value(lang);
 }
 
-QTranslator* Settings::reloadTranslation()
+QTranslator* Settings::reloadTranslation(QString lang)
 {
     QString langSymbol;
 
-    if (language.isEmpty() || language.compare("system", Qt::CaseInsensitive) == 0)
-    {
-        langSymbol = QLocale::system().name();
-
+    if (lang.isEmpty()) {
+        if (language.isEmpty() || language.compare("system", Qt::CaseInsensitive) == 0) {
+            langSymbol = QLocale::system().name();
+        } else {
+            langSymbol = languages.value(language);
+        }
     } else {
-        langSymbol = languages.value(language);
+        langSymbol = languages.value(lang);
     }
 
     QString filename = "lang/" + langSymbol + ".tr";

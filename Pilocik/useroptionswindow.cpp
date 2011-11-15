@@ -25,7 +25,7 @@ UserOptionsWindow::UserOptionsWindow(NavigationWindow *parent) :
         ui->languageComboBox->addItem(Settings::getInstance()->getLanguageFromLocale(a));
     }
 
-    QString lang = Settings::getInstance()->getLanguage();
+    QString lang = Settings::getInstance()->getStartLanguage();
 
     if(lang.isNull())
         ui->languageComboBox->setCurrentIndex(0);

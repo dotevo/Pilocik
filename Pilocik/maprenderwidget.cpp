@@ -15,20 +15,30 @@
 #include <QMouseEvent>
 #include <QLineF>
 #include <QDebug>
+#include <QPointF>
+#include <QPen>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
+
+#include "twidgetmanager.h"
+#include "widgets/thintwidget.h"
 
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfigLoader.h>
 #include <osmscout/Util.h>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Node.h>
+#include <osmscout/Searching.h>
 
 osmscout::Database *MapRenderWidget::database=0;
 osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
 MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(parent){
+    manualSimulation = false;
+    movingPosition = false;
+    lastNodeIndex = -1;
+
     cachePixmapSize=2;
     delta=0.0;
     mouseDown=false;
@@ -67,7 +77,6 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
 
 MapRenderWidget::~MapRenderWidget(){
-    qDebug()<<"Save Maprenderer settings";
     Settings::getInstance()->modifyMapSettings(projection.GetLat(), projection.GetLon(), projection.GetMagnification());
 }
 
@@ -99,8 +108,6 @@ void MapRenderWidget::testPixmap(bool force){
     }
 }
 
-
-
 void MapRenderWidget::paintEvent(QPaintEvent *e){
     QSize s=this->size();
     projection.Set(projection.GetLon(),projection.GetLat(),projection.GetLon(),projection.GetLat(),projection.GetAngle(),projection.GetMagnification(),s.width(),s.height());
@@ -128,6 +135,10 @@ void MapRenderWidget::paintEvent(QPaintEvent *e){
          //painter->drawImage(target,image);
          DrawPositionMarker(projection,painter);
          //qDebug()<<projection.GetWidth()/2-X<<":"<<projection.GetHeight()/2-Y<<":"<<pixmap.width()<<":"<<pixmap.height();;
+
+         if (routing) {
+             DrawRoute(projection, painter);
+         }
          delete painter;
     }
 }
@@ -137,29 +148,45 @@ void MapRenderWidget::mousePressEvent(QMouseEvent *e){
     mouseDown=true;
     lon1=e->posF().x();
     lat1=projection.GetHeight()-e->posF().y();
+
+    double myX, myY;
+
+    projection.GeoToPixel(myLon, myLat, myX, myY);
+    if (manualSimulation && e->x() > myX - 10 && e->x() < myX + 10 && e->y() > myY - 10 && e->y() < myY + 10) {
+        movingPosition = true;
+    }
 }
 
 void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
     mouseDown=false;
+    movingPosition = false;
 }
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
     if(mouseDown){
 
-        double lon2,lat2,lon3,lat3,latR,lonR;
+        if (movingPosition) {
+            //qDebug() << "Bedzie zmiana: " << e->x() << " " << e->y();
+            projection.PixelToGeo(e->x(), projection.GetHeight() - e->y(), myLon, myLat);
 
-        projection.PixelToGeo(lon1,lat1,lon3,lat3);
-        projection.PixelToGeo(e->posF().x(),projection.GetHeight()-e->posF().y(),lon2,lat2);
-        lonR=lon3-lon2;
-        latR=lat3-lat2;
-        lon1=e->posF().x();
-        lat1=projection.GetHeight()-e->posF().y();
-        lonR+=projection.GetLon();
-        latR+=projection.GetLat();
+            repaint();
+        } else {
 
-        projection.Set(lonR,latR,lonR,latR,0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
-        testPixmap();
-        repaint();
+            double lon2,lat2,lon3,lat3,latR,lonR;
+
+            projection.PixelToGeo(lon1,lat1,lon3,lat3);
+            projection.PixelToGeo(e->posF().x(),projection.GetHeight()-e->posF().y(),lon2,lat2);
+            lonR=lon3-lon2;
+            latR=lat3-lat2;
+            lon1=e->posF().x();
+            lat1=projection.GetHeight()-e->posF().y();
+            lonR+=projection.GetLon();
+            latR+=projection.GetLat();
+
+            projection.Set(lonR,latR,lonR,latR,0,projection.GetMagnification(),projection.GetWidth(),projection.GetHeight());
+            testPixmap();
+            repaint();
+        }
     }
 }
 
@@ -193,6 +220,15 @@ int MapRenderWidget::getZoom(){
     return projection.GetMagnification();
 }
 
+void MapRenderWidget::setRoute(QVector<osmscout::Routing::RouteNode> route)
+{
+    this->route = route;
+}
+
+QVector<osmscout::Routing::RouteNode> MapRenderWidget::getRoute()
+{
+    return route;
+}
 
 void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection){
     projectionRendered=projection;    
@@ -210,13 +246,127 @@ void MapRenderWidget::setFinishZoom(int value){
     //repaint();
 }
 
-
 void MapRenderWidget::setTracking(bool tracking){
     this->tracking = tracking;
 }
 
 bool MapRenderWidget::getTracking(){
     return tracking;
+}
+
+void MapRenderWidget::setRouting(bool routing)
+{
+    this->routing = routing;
+}
+
+bool MapRenderWidget::getRouting()
+{
+    return routing;
+}
+
+void MapRenderWidget::updateHint()
+{
+    // first update
+    if (lastNodeIndex == -1) {
+        lastNodeIndex = 0;
+    }
+
+    // next cross searching
+    int nextCross = -1;
+    for (int i = lastNodeIndex + 1; i < route.size(); i++) {
+        if (route.at(i).crossing) {
+            nextCross = i;
+            break;
+        }
+    }
+
+    // if is some cross on the route
+    if (nextCross != -1) {
+
+        // distance is a sum of all distances beetwen all nodes from lastNodeIndex to nextCross
+        // probably move calculateDistance to other class
+        //osmscout::Searching search;
+        double distance = 0;
+
+        // from actual position to lastNodeIndex + 1
+        osmscout::Routing::RouteNode actNode;
+        actNode.lat = myLat;
+        actNode.lon = myLon;
+        actNode.crossing = false;
+
+        if (!osmscout::Searching::IsBetweenNodes(actNode, route.at(lastNodeIndex), route.at(lastNodeIndex + 1))) {
+            for (int i = 0; i < route.size() - 1; i++) {
+                if (osmscout::Searching::IsBetweenNodes(actNode, route.at(i), route.at(i + 1))) {
+                    lastNodeIndex = i;
+                    break;
+                }
+            }
+        }
+
+        //qDebug() << "Actual point is between: " << lastNodeIndex << " and " << lastNodeIndex + 1;
+
+        distance += osmscout::Searching::CalculateDistance(actNode.lat, actNode.lon,
+                                                           route.at(lastNodeIndex + 1).lat,
+                                                           route.at(lastNodeIndex + 1).lon);
+
+        // we are sure that lastNodeIndex < nextCross && nextCross < route.size
+        for (int i = lastNodeIndex + 1; i < nextCross; i++) {
+            distance += osmscout::Searching::CalculateDistance(route.at(i).lat,
+                                                 route.at(i).lon,
+                                                 route.at(i + 1).lat,
+                                                 route.at(i + 1).lon);
+        }
+
+        distance = floor(1000 * distance);
+
+        THintWidget *hint = dynamic_cast<THintWidget*>(TWidgetManager::getInstance()->getWidget("Hint"));
+        hint->setDistance(QString::number(distance));
+    }
+
+}
+
+void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter *painter)
+{
+    manualSimulation = true;
+
+    for (int i = 0; i < route.size() - 1; i++) {
+        osmscout::Routing::RouteNode node = route.at(i);
+        osmscout::Routing::RouteNode nextNode = route.at(i + 1);
+
+        double x, x2, y, y2;
+        projection.GeoToPixel(node.lon, node.lat, x, y);
+        projection.GeoToPixel(nextNode.lon, nextNode.lat, x2, y2);
+
+        //qDebug() << x << " " << y;
+
+        QPointF p1(x, y);
+        QPointF p2(x2, y2);
+
+        QPen pen;
+        pen.setColor(QColor(0, 0, 255, 127));
+        pen.setWidthF(5);
+        pen.setStyle(Qt::SolidLine);
+        pen.setCapStyle(Qt::RoundCap);
+        pen.setJoinStyle(Qt::RoundJoin);
+        pen.setCosmetic(true);
+
+        painter->setPen(pen);
+        painter->drawLine(p1, p2);
+
+        // TEMP
+        if (i == 0) {
+            painter->setBrush(QBrush(Qt::red));
+           //painter->drawEllipse(x-7, y-7, 15, 15);
+
+            //setMyCoordinates(node.lon, node.lat, 90);
+            //myLon = node.lon;
+            //myLat = node.lat;
+
+            //lastNodeIndex = i;
+
+            updateHint();
+        }
+    }
 }
 
 void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter)

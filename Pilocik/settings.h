@@ -28,6 +28,7 @@ private:
     QDomElement profileSettingsXMLNode;
     QMap<QString, QMap<QString, QString> > widgetsSettings;
     QString language;
+    QString startLanguage;
     double  lat,
             lon;
     int     zoom;
@@ -69,9 +70,11 @@ public:
     void modifyMapSettings(double lat, double lon, int zoom);
     void modifyLanguageSettings();
 
-    QTranslator* reloadTranslation();
+    QTranslator* reloadTranslation(QString lang = "");
 
     QMap<QString,QString> getWidgetSettings(QString name);
+
+    QString getStartLanguage();
 
     QString getMapPath()
     {

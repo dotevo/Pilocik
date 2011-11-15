@@ -700,6 +700,34 @@
     </message>
 </context>
 <context>
+    <name>THintWidget</name>
+    <message>
+        <location filename="../widgets/thintwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Forma</translation>
+    </message>
+    <message>
+        <location filename="../widgets/thintwidget.ui" line="20"/>
+        <source>Za</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thintwidget.ui" line="27"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../widgets/thintwidget.ui" line="34"/>
+        <source>metrów</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../widgets/thintwidget.ui" line="41"/>
+        <source>skręć w lewo</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TSliderWidget</name>
     <message>
         <location filename="../widgets/tsliderwidget.ui" line="14"/>
@@ -776,6 +804,11 @@
         <location filename="../useroptionswindow.ui" line="197"/>
         <source>Language:</source>
         <translation>Język:</translation>
+    </message>
+    <message>
+        <location filename="../useroptionswindow.cpp" line="22"/>
+        <source>System</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
