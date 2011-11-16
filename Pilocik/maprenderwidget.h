@@ -177,6 +177,9 @@ private:
 public slots:
 
     void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
+
+signals:
+    void leftRoute(double actLon, double actLat, double destLon, double destLat);
 };
 
 
