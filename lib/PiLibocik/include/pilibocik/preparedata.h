@@ -25,24 +25,28 @@ namespace PiLibocik{
         QSqlDatabase db;
         QStringList queriesBuffer;
         QList<Poi> poiList;
-        QMap<int,QPair<QString,QString> > poiTypes;
+        QList<Poi> poiFromNodesList;
+        QMap<int, QList<QPair<QString,QString> > > poiTypes;
         QMap<int,QString> poiTypeNames;
         QMap<int,QList<QString> > poiTypeSubtags;
         QMap<int,QList<Point> > wayNodes;
 
-        void loadXMLconfig(QString XMLpath);
-        void generateData();
-        void saveToDatabase();
-        void loadFromDatabase();
         Point shapeToPoint(QList<Point> shape);
+        void removePoiDuplicates();
         void createTables();
 
     public:
         PrepareData(QString dbMapPath, QString dbOutPath, QString XMLconfigPath);
+        PrepareData(QString dbMapPath, QString XMLconfigPath);
         PrepareData(QString dbLoadPath);
 
         QList<Poi> getPoiList();
         QMap<int,QString> getPoiTypeNames();
+
+        void generateData();
+        void saveToDatabase();
+        void loadXMLconfig(QString XMLpath);
+        void loadFromDatabase(QString dbLoadPath);
 
     };
 }

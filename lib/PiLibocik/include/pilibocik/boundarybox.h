@@ -4,6 +4,8 @@
 #include <pilibocik/point.h>
 #include <pilibocik/geohash.h>
 #include <QList>
+#include <QPair>
+#include <QMap>
 
 namespace PiLibocik{
 
@@ -12,6 +14,7 @@ class BoundaryBox{
 private:
     Point p1;
     Point p2;
+    QMap<int, QPair<double,double> > spatialError;
 public:
     BoundaryBox(Point p1,Point p2);
     QList <Geohash> getGeohashesIn(int precision);

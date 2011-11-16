@@ -1,0 +1,82 @@
+<poi>
+    <type id="0" name="Fuel" key="amenity" value="fuel">
+        <tag key="operator" />
+        <tag key="payment" />
+        <tag key="fuel" />
+    </type>
+    <type id="1" name="Parking" key="amenity" value="parking">
+        <tag key="access" />
+        <tag key="parking" />
+        <tag key="fee" />
+    </type>
+    <type id="1" name="Parking" key="amenity" value="parking_space">
+        <tag key="capacity" />
+    </type>
+    <type id="2" name="Car wash" key="amenity" value="car_wash">
+    </type>
+    <type id="3" name="Cashmashine" key="amenity" value="atm">
+        <tag key="operator" />
+    </type>
+    <type id="4" name="Bank" key="amenity" value="bank">
+        <tag key="operator" />
+    </type>
+    <type id="5" name="Pharmacy" key="amenity" value="pharmacy">
+        <tag key="operator" />
+    </type>
+    <type id="5" name="Pharmacy" key="shop" value="chemist">
+    </type>
+    <type id="6" name="Hospital" key="amenity" value="hospital">
+        <tag key="emergency" />
+    </type>
+    <type id="7" name="Cinema" key="amenity" value="cinema">
+    </type>
+    <type id="8" name="Nightclub" key="amenity" value="nightclub">
+    </type>
+    <type id="9" name="Theatre" key="amenity" value="theatre">
+    </type>
+    <type id="10" name="Embassy" key="amenity" value="embassy">
+        <tag key="country" />
+    </type>
+    <type id="11" name="Fire station" key="amenity" value="fire_station">
+    </type>
+    <type id="12" name="Police station" key="amenity" value="police">
+    </type>
+    <type id="13" name="Post office" key="amenity" value="post_office">
+    </type>
+    <type id="14" name="Shelter" key="amenity" value="shelter">
+        <tag key="shelter_type" />
+    </type>
+    <type id="15" name="Toilets" key="amenity" value="toilets">
+        <tag key="fee" />
+        <tag key="supervised" />
+        <tag key="male" />
+        <tag key="female" />
+    </type>
+    <type id="16" name="Townhall" key="amenity" value="townhall">
+    </type>
+    <type id="17" name="Exchange office" key="amenity" value="bureau_de_change">
+        <tag key="currency" />
+    </type>
+    <type id="18" name="Shop" key="shop" value="">
+        <tag key="brand" />
+        <tag key="is_in" />
+        <tag key="addr" />
+        <tag key="operator" />
+        <tag key="contact" />
+    </type>
+    <type id="19" name="Food" key="amenity" value="restaurant">
+        <tag key="cuisine" />
+    </type>
+    <type id="19" name="Food" key="amenity" value="fast_food">
+        <tag key="cuisine" />
+    </type>
+    <type id="20" name="Bar" key="amenity" value="pub">
+    </type>
+    <type id="20" name="Bar" key="amenity" value="bar">
+    </type>
+    <type id="21" name="Cafe" key="amenity" value="cafe">
+        <tag key="operator" />
+        <tag key="cuisine" />
+        <tag key="diet" />
+    </type>
+</poi>
