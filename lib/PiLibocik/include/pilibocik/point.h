@@ -1,6 +1,8 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include <pilibocik/geohash.h>
+
 namespace PiLibocik{
     /**
      * @brief
@@ -13,13 +15,13 @@ namespace PiLibocik{
         double lon, /**< TODO */
                lat; /**< TODO */
     public:
-/**
- * @brief
- *
- * @fn Point
- * @param lon
- * @param lat
- */
+        /**
+          * @brief
+          *
+          * @fn Point
+          * @param lon
+          * @param lat
+          */
         Point(double lon, double lat);
 
         /**
@@ -34,6 +36,12 @@ namespace PiLibocik{
          * @fn getLat
          */
         double getLat();
+        /**
+         * @brief
+         *
+         * @fn getGeohash
+         */
+        Geohash getGeohash(int p);
     };
 }
 

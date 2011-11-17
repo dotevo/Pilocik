@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include <QStringList>
 #include <QPair>
 #include <QMap>
 #include <pilibocik/point.h>
@@ -19,7 +20,7 @@ namespace PiLibocik{
     private:
         QMap <int,QString> types; /**< TODO */
 
-        QString         name; /**< TODO */
+        QStringList         name; /**< TODO */
         int             type; /**< TODO */
         QList < QPair <QString, QString> >    tags; /**< TODO */
 //#ifdef PiLibocik_WRITE_MODE

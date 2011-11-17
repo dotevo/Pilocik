@@ -19,7 +19,12 @@ SOURCES += src/pilibocik.cpp \
     src/preparedata.cpp \
     src/boundarybox.cpp \
     src/poifileppoi.cpp \
-    main.cpp
+    main.cpp \
+    src/partition/edge.cpp \
+    src/partition/node.cpp \
+    src/partition/partitionfile.cpp \
+    src/partition/restriction.cpp \
+    src/partition/way.cpp
 
 INCLUDEPATH +=include
 
@@ -29,7 +34,12 @@ HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/poi.h \
     include/pilibocik/preparedata.h \
     include/pilibocik/boundarybox.h \
-    include/pilibocik/poifileppoi.h
+    include/pilibocik/poifileppoi.h \
+    include/pilibocik/partition/edge.h \
+    include/pilibocik/partition/node.h \
+    include/pilibocik/partition/partitionfile.h \
+    include/pilibocik/partition/restriction.h \
+    include/pilibocik/partition/way.h
 
 
 unix:!symbian {
@@ -40,6 +50,24 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

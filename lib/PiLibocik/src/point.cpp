@@ -13,5 +13,9 @@ namespace PiLibocik{
         return lat;
     }
 
+    Geohash Point::getGeohash(int p){
+        return Geohash::generateGeohash(lon,lat,p);
+    }
+
 }
 

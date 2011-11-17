@@ -207,7 +207,6 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
     }
 
 
-
     QMapIterator <Geohash ,QVector<Poi*> *> mIter(geoHashedPOIs);
     if(!mIter.hasNext()){
         goto clear;
