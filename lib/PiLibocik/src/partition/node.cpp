@@ -2,11 +2,11 @@
 
 namespace PiLibocik{namespace Partition{
 
-Node::Node():Point(0,0){
+Node::Node():Position(0,0){
     id=-1;
 }
 
-Node::Node(int id,double lon,double lat):Point(lon,lat){
+Node::Node(int id,double lon,double lat):Position(lon,lat){
     this->id=id;
 }
 

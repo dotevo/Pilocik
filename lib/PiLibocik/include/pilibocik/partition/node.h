@@ -2,7 +2,7 @@
 #define NODE_H
 
 #include <QVector>
-#include <pilibocik/point.h>
+#include <pilibocik/position.h>
 #include <pilibocik/partition/edge.h>
 #include <pilibocik/partition/way.h>
 
@@ -11,7 +11,7 @@ class Edge;
 class Way;
 
 
-class Node: public Point{
+class Node: public Position{
 private:
     int id;
     QVector<qint64> ways;
