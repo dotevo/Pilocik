@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include <QStringList>
 #include <QPair>
 #include <QMap>
 #include <QDate>
