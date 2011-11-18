@@ -72,12 +72,20 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     quint8 geoHashSize=0;
     quint64 geoHashsCount=0;
     in >> geoHashSize;
-    char *firstGeo;
+    char *firstGeo=new char[geoHashSize];
     in >> geoHashsCount;
-    in.readBytes(firstGeo,(uint&)geoHashSize);
+    qDebug()<<in.device()->pos();
+    int a=0;
+    a+=geoHashSize;
+    qDebug()<<a;
+    in.readRawData(firstGeo,a);
+    qDebug()<<in.device()->pos()<<":"<<a;
+    qDebug()<<firstGeo;
     QString s(firstGeo);
+    s=s.left(a);
     Geohash geoFirst(s);
-    delete firstGeo;
+    //TODO WYCIEK!!!
+    //delete firstGeo;
 
 
     //LOAD BASIC DATA----------------------
@@ -93,19 +101,27 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     }
     //------------------------------------
 
-    int positionINX=in.device()->pos();
+    qint64 positionINX=in.device()->pos();
+
 
     QList<Geohash> geohashes=bbox.getGeohashesIn(geoHashSize);
-    QVector<qint64> indexes;
+    Geohash geo0("u2g");
+    Geohash geo1("u2z");
+    for(;geo0<geo1;geo0++){
+        geohashes.append(geo0);
+    }
+
+    QVector<qint64> indexes;    
+
 
     for(int i=0;i<geohashes.size();i++){
         Geohash gg=geohashes.at(i);
         qint64 n=gg-geoFirst;
-        if(n>0&&n<geoHashsCount){
+        if(n>=0&&n<geoHashsCount){
             in.device()->seek(positionINX+n*sizeof(qint64));
             qint64 ind;
             in >> ind;
-            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n;
+            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
             //if empty
             if(ind!=0)
                 indexes.push_back(ind);
@@ -246,7 +262,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
         QListIterator<Geohash> listIterator(geokeys);
         short number=0;
         Geohash geo1(0),geo2(0);
-        unsigned int empty=0;
+        qint64 empty=0;
         while(listIterator.hasNext()){            
             if(number==0){
                 geo2=listIterator.next();
@@ -257,14 +273,17 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
                 quint64 l=last-geo2;
+
                 outIndex << l;
+
                 //First geohash
-                outIndex << n.toLatin1();
+                outIndex.writeRawData(n.toLatin1(),n.length());
+
 
 
                 //Data (first block)
                 outIndex<< outData.device()->pos() ;
-                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+outData.device()->pos()+" INDEX:"+outIndex.device()->pos();
+                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
                 makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
 
 

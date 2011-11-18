@@ -20,7 +20,7 @@ namespace PiLibocik{
     private:
         QMap <int,QString> types; /**< TODO */
 
-        QStringList         name; /**< TODO */
+        QString         name; /**< TODO */
         int             type; /**< TODO */
         QList < QPair <QString, QString> >    tags; /**< TODO */
 //#ifdef PiLibocik_WRITE_MODE
