@@ -2,10 +2,12 @@
 
 namespace PiLibocik{namespace Partition{
 
-Edge::Edge(){
+Edge::Edge(){}
+
+Edge::Edge(qint64 second,double prio):second(second),prio(prio){
 }
 
-quint64 Edge::getPair(){
+qint64 Edge::getPair(){
     return second;
 }
 

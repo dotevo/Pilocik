@@ -41,11 +41,16 @@ private:
     NodeFile        *nodeFile;
     WayFile         *wayFile;
     PrioritetsFile  *prioritetsFile;
+#ifdef PiLibocik_WRITE_MODE
+    void addIndex(QDataStream &stream,qint64 pos,int type);
+    void addWayToFile(QDataStream &waystream,QDataStream &wayStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType);
+#endif
 public:
     PartitionFile(QString path, QString priotype,  QFile::OpenMode flag);
+    ~PartitionFile();
     QVector <Node> getNodesFromBoundaryBox(BoundaryBox &bbox);
 #ifdef PiLibocik_WRITE_MODE
-    void savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int prec);
+    void savePartition( QList<Way> &ways, QList<Node> &nodes, int prec,int sizeType);
 #endif
 };
 

@@ -264,6 +264,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
 
                 //Data (first block)
                 outIndex<< outData.device()->pos() ;
+                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+outData.device()->pos()+" INDEX:"+outIndex.device()->pos();
                 makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
 
 
@@ -271,10 +272,12 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
             }
             geo1=geo2;
             geo2=listIterator.next();
-            for(;geo1<geo2;geo1++){
+            for(geo1++;geo1<geo2;geo1++){
                 outIndex << empty;
+                qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
             }
             outIndex << outData.device()->pos();
+            qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
             makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
 
         }

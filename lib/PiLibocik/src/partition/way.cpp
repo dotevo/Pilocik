@@ -5,7 +5,7 @@ namespace PiLibocik{namespace Partition{
 Way::Way(){
 }
 
-Way::Way(int id,qint8 oneway){
+Way::Way(int id,double prio,qint8 oneway):id(id),prio(prio),oneway(oneway){
 }
 
 bool Way::isEmpty(){
@@ -19,6 +19,10 @@ int Way::getId(){
 
 void Way::addNode(qint64 node){
     nodes.append(node);
+}
+
+double Way::getPrioritet(){
+    return prio;
 }
 
 QVector<qint64> Way::getNodes(){

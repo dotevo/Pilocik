@@ -8,11 +8,12 @@ class Node;
 
 class Edge{
 private:
-    quint64 second;
+    qint64 second;
     double prio;
 public:
     Edge();
-    quint64 getPair();
+    Edge(qint64 second,double prio);
+    qint64 getPair();
     Node getPairObj();
     double getPrioritet();
 };

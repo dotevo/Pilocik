@@ -12,14 +12,16 @@ class Restriction;
 class Way{
 private:
     int id;
+    double prio;
     QVector<qint64> nodes;
     QVector<Restriction> restriction;
     qint8 oneway;
 public:
     Way();
-    Way(int id,qint8);
+    Way(int id,double prio,qint8 oneway);
     bool isEmpty();
     int getId();
+    double getPrioritet();
     void addNode(qint64 node);
     QVector<qint64> getNodes();
     QVector<Node> getNodesObj();

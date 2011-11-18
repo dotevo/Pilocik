@@ -1,6 +1,7 @@
 #include <pilibocik\partition\partitionfile.h>
 #include <pilibocik/partition/edge.h>
 #include <QMap>
+#include <QDebug>
 #include <QListIterator>
 
 namespace PiLibocik{namespace Partition{
@@ -97,6 +98,18 @@ PartitionFile::PartitionFile(QString path, QString prioType,QFile::OpenMode flag
     prioritetsFile->open(flag);
 }
 
+PartitionFile::~PartitionFile(){
+    //Close files
+    indexNodeFile->close();
+    nodeFile->close();
+    wayFile->close();
+    prioritetsFile->close();
+    delete indexNodeFile;
+    delete nodeFile;
+    delete wayFile;
+    delete prioritetsFile;
+}
+
 QVector <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
     //TODO
     QVector <Node> ret;
@@ -104,7 +117,21 @@ QVector <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
 }
 
 #ifdef PiLibocik_WRITE_MODE
-void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int prec){
+void PartitionFile::addIndex(QDataStream &stream,qint64 pos,int type){
+    //8byte
+    if(type==0){
+        stream<<pos;
+    }
+    //4 byte
+    else if(type==1){
+        qint32 p=pos;
+        stream<<p;
+    }
+}
+
+
+void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int prec, int sizeType){
+    qDebug()<<"Do zapisania:"+QString::number(ways.size())+"dróg,"+QString::number(nodes.size())+"node";
     //DataStream
     QDataStream indexNodeStream (indexNodeFile);
     QDataStream nodeStream      (nodeFile);
@@ -126,10 +153,13 @@ void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int 
         }
     }
 
+    qDebug()<<"Bloków geohashedNodes:"+QString::number(geoHashedNodes.size());
+
     //SAVE NODES---------------------------------------------
         //Helper values (remeber position in file)
         QMap<Geohash,qint64 > geoBlocks;
         QMap<int,qint64 > nodesIndex;
+        QMap<int,qint64 > waysIndex;
 
         //To change (replace values)
         QList<QPair <int,qint64> > waysToReplace;
@@ -141,15 +171,17 @@ void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int 
             return;
         }
 
+        QList<Geohash> geokeys=geoHashedNodes.keys();
+        qSort(geokeys);
+
         {
             qint64 emptyIndex=0;
-            QList<Geohash> geokeys=geoHashedNodes.keys();
-            qSort(geokeys);
             QListIterator<Geohash> listIterator(geokeys);
             Geohash geo(0);
             while(listIterator.hasNext()){
                 geo=listIterator.next();
                 if(geoHashedNodes.contains(geo)){
+                    qDebug()<<"Dodaje";
                     //Dodawanie danych dla indexu
                     geoBlocks.insert(geo,nodeStream.device()->pos());
                     QVector<Node*>* dupa=geoHashedNodes.value(geo);
@@ -158,6 +190,7 @@ void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int 
                     nodeStream << nodes_block;
                     for(int i=0;i<dupa->size();i++){
                         Node *n=dupa->at(i);
+                        qDebug()<<"V:"+QString::number(n->getId())+" pos:"+QString::number(nodeStream.device()->pos());
                         //Dodaj node dla indexu
                         nodesIndex.insert(n->getId(),nodeStream.device()->pos());
                         //Dodaj dane w node
@@ -167,38 +200,38 @@ void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int 
                         /****WAYS****/
                         //Kiedy zapisywane to w ways sa ID
                         QVector <qint64> node_ways=n->getWays();
-                        nodeStream<<node_ways.size();
+                        nodeStream<<(quint8)node_ways.size();
                         for(int j=0;j<node_ways.size();j++){
                             //Dodaj wpis oznaczajacy podmianê
                             waysToReplace.append(QPair<int,qint64>(node_ways.at(j),nodeStream.device()->pos()) );
                             //Dodaj pusty index
-                            nodeStream<<emptyIndex;
+                            addIndex(nodeStream,emptyIndex,sizeType);
                         }
                         /****BOUNDARY_EDGES****/
                         QVector <Edge> node_bound=n->getBoundaryEdges();
-                        nodeStream<<node_bound.size();
+                        nodeStream<<(quint8)node_bound.size();
                         for(int j=0;j<node_bound.size();j++){
                             //Dodaj wpis oznazcajacy podmiane node
                             Edge e=node_bound.at(j);
                             nodesToReplace.append(QPair<int,qint64>(e.getPair(),nodeStream.device()->pos()) );
                             //Dodaj pusty index
-                            nodeStream<<emptyIndex;
+                            addIndex(nodeStream,emptyIndex,sizeType);
                             //Dodaj priorytet index
-                            nodeStream<<prioritetsStream.device()->pos();
-                            prioritetsStream<<e.getPrioritet();
+                            addIndex(nodeStream,prioritetsStream.device()->pos(),sizeType);
+                            prioritetsStream<<(double)e.getPrioritet();
                         }
                         /****ROUTING_EDGES****/
                         QVector <Edge> node_route=n->getRoutingEdges();
-                        nodeStream<<node_route.size();
+                        nodeStream<<(quint8)node_route.size();
                         for(int j=0;j<node_route.size();j++){
                             //Dodaj wpis oznazcajacy podmiane node
                             Edge e=node_route.at(j);
                             nodesToReplace.append(QPair<int,qint64>(e.getPair(),nodeStream.device()->pos()) );
                             //Dodaj pusty index
-                            nodeStream<<emptyIndex;
+                            addIndex(nodeStream,emptyIndex,sizeType);
                             //Dodaj priorytet index
-                            nodeStream<<prioritetsStream.device()->pos();
-                            prioritetsStream<<e.getPrioritet();
+                            addIndex(nodeStream,prioritetsStream.device()->pos(),sizeType);
+                            prioritetsStream<<(double)e.getPrioritet();
                         }
                     }
                 }
@@ -209,12 +242,137 @@ void PartitionFile::savePartition( QMap<int,Way> &ways, QList<Node> &nodes, int 
                 QPair <int,qint64> L=uzupelniacz.next();
                 //Ustaw na pozycje
                 nodeStream.device()->seek(L.second);
-                nodeStream<< nodesIndex.value(L.first);
+                addIndex(nodeStream,nodesIndex.value(L.first),sizeType) ;
+            }
+
+
+        }
+    //SAVE WAYS----------------------------------------------
+        //Dzielenie na 3 grupy (oneway=0;1;-1)
+        QVector <Way*> oneway0;
+        QVector <Way*> oneway1;
+        QVector <Way*> oneway_1;
+        QList<QPair <int,qint64> > waysToReplaceInWays;
+
+        QListIterator <Way> waysIterator(ways);
+        while(waysIterator.hasNext()){
+            Way *w=(Way*)&waysIterator.next();
+            if(w->getOneway()==0)
+                oneway0.push_back(w);
+            else if(w->getOneway()==-1)
+                oneway_1.push_back(w);
+            else if(w->getOneway()==1)
+                oneway1.push_back(w);
+        }
+        //oneway 1 pos
+        addIndex(wayStream,0,sizeType) ;
+        //oneway -1 pos
+        addIndex(wayStream,0,sizeType) ;
+        for(int i=0;i<oneway0.size();i++){
+            Way *w=oneway0.at(i);
+            addWayToFile(wayStream,prioritetsStream,w,waysIndex,nodesIndex,waysToReplaceInWays,sizeType);
+        }
+        qint64 wo_1=wayStream.device()->pos();
+        for(int i=0;i<oneway1.size();i++){
+            Way *w=oneway1.at(i);
+            addWayToFile(wayStream,prioritetsStream, w,waysIndex,nodesIndex,waysToReplaceInWays,sizeType);
+        }
+        qint64 wo_0=wayStream.device()->pos();
+        for(int i=0;i<oneway_1.size();i++){
+            Way *w=oneway_1.at(i);
+            addWayToFile(wayStream,prioritetsStream,w,waysIndex,nodesIndex,waysToReplaceInWays,sizeType);
+        }
+
+        //Uzupe³nianie brakujacych w way
+        QListIterator<QPair <int,qint64> > uzupelniaczWayInWay(waysToReplaceInWays);
+        while(uzupelniaczWayInWay.hasNext()){
+            QPair <int,qint64> L=uzupelniaczWayInWay.next();
+            //Ustaw na pozycje
+            wayStream.device()->seek(L.second);
+            addIndex(wayStream,waysIndex.value(L.first),sizeType) ;
+        }
+        wayStream.device()->seek(0);
+        addIndex(wayStream,wo_1,sizeType) ;
+        addIndex(wayStream,wo_0,sizeType) ;
+    //-------------------------------------------------------
+        //Uzupe³nij waysInNodes
+        QListIterator<QPair <int,qint64> > uzupelniaczWayInNodes(waysToReplace);
+        while(uzupelniaczWayInNodes.hasNext()){
+            QPair <int,qint64> L=uzupelniaczWayInNodes.next();
+            //Ustaw na pozycje
+            nodeStream.device()->seek(L.second);
+            addIndex(nodeStream,waysIndex.value(L.first),sizeType) ;
+        }
+
+    //---Budowanie indexów------------------------------------
+        QListIterator<Geohash> geoIterator(geokeys);
+        //Geohash size
+        indexNodeStream<<(quint8)prec;
+
+        bool was=false;
+        Geohash geo2(0);
+        while(geoIterator.hasNext()){
+            Geohash geo=geoIterator.next();
+            if(!was){
+                //geohash size
+                Geohash last=geokeys.at(geokeys.size()-1);
+                qDebug()<<geo.toQString();
+                qDebug()<<last.toQString();
+                quint64 l=last-geo;
+                qDebug()<<l;
+                //Geohash size
+                indexNodeStream<<l;
+
+                QString n=geo.toQString();
+                indexNodeStream << n.toLatin1();
+
+                //Dodaj pierwszy
+                addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
+                geo2=geo;
+                geo=geoIterator.next();
+                was=true;
+
+            }
+            for(;geo2<geo;geo2++){
+                addIndex(indexNodeStream,0,sizeType);
+            }
+
+            if(geoBlocks.contains(geo)){
+                addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
+            }else{
+                //empty
+                addIndex(indexNodeStream,0,sizeType);
             }
         }
-    //-------------------------------------------------------
+
 
 }
+
+
+void PartitionFile::addWayToFile(QDataStream &wayStream,QDataStream &prioritetsStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays, int sizeType){
+    waysIndex.insert(w->getId(),wayStream.device()->pos());
+    wayStream<<(quint32)w->getId();
+    //Nodes
+    QVector <qint64> l= w->getNodes();
+    wayStream<<(quint16)l.size();
+    for(int j=0;j<l.size();j++){
+        wayStream<<nodesIndex.value(l.at(j));
+    }
+    //Prioritet
+    addIndex(wayStream,prioritetsStream.device()->pos(),sizeType);
+    prioritetsStream<<(double)w->getPrioritet();
+    //Restriction
+    QVector <Restriction> r=w->getRestrictions();
+    wayStream<<(quint8)r.size();
+    for(int j=0;j<r.size();j++){
+        Restriction rest=r.at(j);
+        wayStream<<(nodesIndex.value(rest.getVia()));
+        waysToReplaceInWays.append(QPair<int,qint64>(rest.getWayTo(),wayStream.device()->pos()) );
+        wayStream<<(qint64)0;
+        wayStream<<(quint8)(rest.getType());
+    }
+}
+
 #endif
 
 
