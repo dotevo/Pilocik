@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     NavigationWindow::main=&w;
     w.show();
 
+    Settings::getInstance()->reloadTranslation(Settings::getInstance()->getStartLanguage());
+
     //Dla windowsa CE fullscreen
     #ifdef Q_OS_WINCE_STD
         w.showFullScreen();

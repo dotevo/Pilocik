@@ -1,6 +1,8 @@
 #ifndef ROUTEWINDOW_H
 #define ROUTEWINDOW_H
 
+#include <QVector>
+
 #include "qfullscreenframe.h"
 #include "pointselectionwindow.h"
 

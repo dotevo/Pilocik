@@ -2,8 +2,10 @@
 #define NAVIGATIONWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
 #include <gpsreceiver.h>
 #include "maprenderwidget.h"
+#include "osmscout/Routing.h"
 
 namespace Ui {
     class NavigationWindow;
@@ -25,6 +27,7 @@ public:
     MapRenderWidget *mapRenderer;
 
     void retranslate();
+    void setRoute(QVector<osmscout::Routing::RouteNode> route);
 
 private slots:
     void on_menuButton_clicked();
