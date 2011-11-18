@@ -19,12 +19,14 @@ public:
 class NodeFile: public QFile{
 public:
     NodeFile(QString filename);
-    Node getNode(quint64 pos);
+    Node getNode(qint64& pos);
+    QList<Node> getBlock(qint64 pos);
 };
 
 class IndexNodeFile:public QFile{
 public:
     IndexNodeFile(QString filename);
+    int getPrecision();
     qint64 getNodesBlock(Geohash geo);
 };
 
@@ -45,10 +47,11 @@ private:
     void addIndex(QDataStream &stream,qint64 pos,int type);
     void addWayToFile(QDataStream &waystream,QDataStream &wayStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType);
 #endif
+
 public:
     PartitionFile(QString path, QString priotype,  QFile::OpenMode flag);
     ~PartitionFile();
-    QVector <Node> getNodesFromBoundaryBox(BoundaryBox &bbox);
+    QList <Node> getNodesFromBoundaryBox(BoundaryBox &bbox);
 #ifdef PiLibocik_WRITE_MODE
     void savePartition( QList<Way> &ways, QList<Node> &nodes, int prec,int sizeType);
 #endif

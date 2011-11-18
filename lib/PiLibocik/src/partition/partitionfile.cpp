@@ -18,13 +18,34 @@ Way WayFile::getWay(quint64 pos){
 NodeFile::NodeFile(QString filename):QFile(filename){
 }
 
-Node NodeFile::getNode(quint64 pos){
+Node NodeFile::getNode(qint64& pos){
     //TODO
     Node node;
     return node;
 }
 
+QList<Node> NodeFile::getBlock(qint64 pos){
+    QDataStream ds(this);
+    quint32 nodesCount;
+    ds.device()->seek(pos);
+    ds>>nodesCount;
+    for(quint32 i=0;i<nodesCount;i++){
+        Node n=getNode(pos);
+    }
+
+
+}
+
+
 IndexNodeFile::IndexNodeFile(QString filename):QFile(filename){
+}
+
+int IndexNodeFile::getPrecision(){
+    QDataStream dataStream(this);
+    quint8 value=0;
+    dataStream>>value;
+    qDebug()<<(int)value;
+    return (int)value;
 }
 
 qint64 IndexNodeFile::getNodesBlock(Geohash geo){
@@ -110,9 +131,20 @@ PartitionFile::~PartitionFile(){
     delete prioritetsFile;
 }
 
-QVector <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
-    //TODO
-    QVector <Node> ret;
+QList <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
+    QList <Node> ret;
+
+    if(!indexNodeFile->isOpen())
+        return ret;
+
+    QList <Geohash> geohashes=bbox.getGeohashesIn(indexNodeFile->getPrecision());
+    QListIterator <Geohash> iter(geohashes);
+    while(iter.hasNext()){
+        Geohash g=iter.next();
+        qint64 index=indexNodeFile->getNodesBlock(g);
+        ret.append( nodeFile->getBlock(index)  );
+    }
+
     return ret;
 }
 

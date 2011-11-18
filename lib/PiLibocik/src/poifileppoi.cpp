@@ -105,11 +105,6 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
 
 
     QList<Geohash> geohashes=bbox.getGeohashesIn(geoHashSize);
-    Geohash geo0("u2g");
-    Geohash geo1("u2z");
-    for(;geo0<geo1;geo0++){
-        geohashes.append(geo0);
-    }
 
     QVector<qint64> indexes;    
 
