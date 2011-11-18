@@ -1,5 +1,5 @@
-#ifndef BOUNDARYBOX_H
-#define BOUNDARYBOX_H
+#ifndef PILIBOCIK_BOUNDARYBOX_H
+#define PILIBOCIK_BOUNDARYBOX_H
 
 #include <pilibocik/point.h>
 #include <pilibocik/geohash.h>

@@ -2,7 +2,7 @@
 
 namespace PiLibocik{namespace Partition{
 
-Restriction::Restriction(){
+Restriction::Restriction():to(0),via(0),type(0){
 }
 
 Restriction::Restriction(quint64 to, quint64 via, int type):to(to),via(via),type(type){

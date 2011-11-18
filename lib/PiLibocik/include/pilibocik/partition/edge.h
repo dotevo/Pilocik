@@ -1,5 +1,5 @@
-#ifndef EDGE_H
-#define EDGE_H
+#ifndef PILIBOCIK_EDGE_H
+#define PILIBOCIK_EDGE_H
 
 #include <pilibocik/partition/node.h>
 

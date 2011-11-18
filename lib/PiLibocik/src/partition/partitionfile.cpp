@@ -16,24 +16,74 @@ Way WayFile::getWay(quint64 pos){
 }
 
 NodeFile::NodeFile(QString filename):QFile(filename){
+    stream=new QDataStream(this);
+    prioFile=0;
 }
 
-Node NodeFile::getNode(qint64& pos){
-    //TODO
-    Node node;
+void NodeFile::setPrioritetsFile(PrioritetsFile *prio){
+    prioFile=prio;
+}
+
+Node NodeFile::getNode(qint64 pos){
+    if(pos!=-1)
+        stream->device()->seek(pos);
+
+    quint32 id;
+    double lon,lat;
+    quint8 waysCount,boundCount,routeCount;
+    stream->operator >>(id);
+    stream->operator >>(lon);
+    stream->operator >>(lat);
+    qDebug()<<id<<":"<<lon<<":"<<lat;
+    Node node(id,lon,lat);
+    stream->operator >>(waysCount);
+    for(quint8 i=0;i<waysCount;i++){
+        quint64 w;
+        stream->operator >>(w);
+        node.addWay(w);
+    }
+    if(prioFile==0){
+        qDebug()<<"NodeFile: PrioritetFile needs set.";
+        return node;
+    }
+
+    stream->operator >>(boundCount);
+    for(quint8 i=0;i<boundCount;i++){
+        qint64 nInd,prioInd;
+        stream->operator >>(nInd);
+        stream->operator >>(prioInd);
+        double value=prioFile->getPrioritet(prioInd);
+        Edge e(nInd,value);
+        node.addBoundaryEdge(e);
+    }
+    stream->operator >>(routeCount);
+    for(quint8 i=0;i<routeCount;i++){
+        qint64 nInd,prioInd;
+        stream->operator >>(nInd);
+        stream->operator >>(prioInd);
+        double value=prioFile->getPrioritet(prioInd);
+        Edge e(nInd,value);
+        node.addBoundaryEdge(e);
+    }
     return node;
 }
 
+
 QList<Node> NodeFile::getBlock(qint64 pos){
+    QList<Node> n;
+    if(!isOpen())
+        return n;
+
     QDataStream ds(this);
     quint32 nodesCount;
     ds.device()->seek(pos);
     ds>>nodesCount;
     for(quint32 i=0;i<nodesCount;i++){
-        Node n=getNode(pos);
+        //-1 czyli nie zmieniaj wartosci (czytaj kolejno)
+        Node node=getNode(-1);
+        n.append(node);
     }
-
-
+    return n;
 }
 
 
@@ -54,11 +104,14 @@ qint64 IndexNodeFile::getNodesBlock(Geohash geo){
 }
 
 PrioritetsFile::PrioritetsFile(QString filename):QFile(filename){
+    stream=new QDataStream(this);
 }
 
 double PrioritetsFile::getPrioritet(qint64 pos){
-    //TODO
-    return 0.2;
+    stream->device()->seek(pos);
+    double value;
+    stream->operator >>(value);
+    return value;
 }
 
 /*INDEX(GEOHASH):------------------------------
@@ -108,10 +161,12 @@ double PrioritetsFile::getPrioritet(qint64 pos){
 
 PartitionFile::PartitionFile(QString path, QString prioType,QFile::OpenMode flag){
     //Create new qFiles object
-    indexNodeFile   = new IndexNodeFile(path+".idx");
-    nodeFile        = new NodeFile(path+".node");
-    wayFile         = new WayFile(path+".way");
     prioritetsFile  = new PrioritetsFile(path+"_"+prioType+".prio");
+    indexNodeFile   = new IndexNodeFile(path+".idx");    
+    nodeFile        = new NodeFile(path+".node");
+    nodeFile->setPrioritetsFile(prioritetsFile);
+    wayFile         = new WayFile(path+".way");
+
     //Open files
     indexNodeFile->open(flag);
     nodeFile->open(flag);

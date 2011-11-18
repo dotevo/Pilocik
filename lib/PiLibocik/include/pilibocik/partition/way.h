@@ -1,5 +1,5 @@
-#ifndef WAY_H
-#define WAY_H
+#ifndef PILIBOCIK_WAY_H
+#define PILIBOCIK_WAY_H
 
 #include <QVector>
 #include <pilibocik/partition/restriction.h>

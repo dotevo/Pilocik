@@ -1,5 +1,5 @@
-#ifndef PARTITIONFILE_H
-#define PARTITIONFILE_H
+#ifndef PILIBOCIK_PARTITIONFILE_H
+#define PILIBOCIK_PARTITIONFILE_H
 
 #include <QFile>
 #include <QIODevice>
@@ -9,6 +9,8 @@
 
 namespace PiLibocik{namespace Partition{
 
+class PrioritetsFile;
+
 class WayFile: public QFile{
 public:
     WayFile(QString filename);
@@ -17,9 +19,13 @@ public:
 };
 
 class NodeFile: public QFile{
+private:
+    QDataStream     *stream;
+    PrioritetsFile  *prioFile;
 public:
     NodeFile(QString filename);
-    Node getNode(qint64& pos);
+    void setPrioritetsFile(PrioritetsFile *prio);
+    Node getNode(qint64 pos=-1);
     QList<Node> getBlock(qint64 pos);
 };
 
@@ -31,6 +37,8 @@ public:
 };
 
 class PrioritetsFile:public QFile{
+private:
+    QDataStream *stream;
 public:
     PrioritetsFile(QString filename);
     double getPrioritet(qint64 pos);

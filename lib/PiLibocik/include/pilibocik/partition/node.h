@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef PILIBOCIK_NODE_H
+#define PILIBOCIK_NODE_H
 
 #include <QVector>
 #include <pilibocik/point.h>
