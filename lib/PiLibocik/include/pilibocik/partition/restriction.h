@@ -8,12 +8,12 @@ class Way;
 
 class Restriction{
 private:
-    quint64 to;
-    quint64 via;
+    qint64 to;
+    qint64 via;
     int type;
 public:
     Restriction();
-    Restriction(quint64 to, quint64 via, int type);
+    Restriction(qint64 to, qint64 via, int type);
     int getType();
     quint64 getWayTo();
     quint64 getVia();

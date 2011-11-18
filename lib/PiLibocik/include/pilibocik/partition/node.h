@@ -9,17 +9,19 @@
 namespace PiLibocik{namespace Partition{
 class Edge;
 class Way;
+class PartitionFile;
 
 
 class Node: public Point{
 private:
     int id;
+    PartitionFile *part;
     QVector<qint64> ways;
     QVector<Edge> boundaryEdges;
     QVector<Edge> routingEdges;
 public:
     Node();
-    Node(int id,double lon,double lat);
+    Node(int id,double lon,double lat,PartitionFile *m=0);
     int getId();
     bool isEmpty();
     QVector<qint64> getWays();
