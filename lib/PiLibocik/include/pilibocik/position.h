@@ -1,13 +1,13 @@
-#ifndef POINT_H
-#define POINT_H
+#ifndef LOCATION_H
+#define LOCATION_H
 
 namespace PiLibocik{
     /**
      * @brief
      *
-     * @class Point point.h <pilibocik/point.h>
+     * @class Position position.h <pilibocik/position.h>
      */
-    class Point
+    class Position
     {
     private:
         double lon, /**< TODO */
@@ -16,11 +16,11 @@ namespace PiLibocik{
 /**
  * @brief
  *
- * @fn Point
+ * @fn Position
  * @param lon
  * @param lat
  */
-        Point(double lon, double lat);
+        Position(double lon, double lat);
 
         /**
          * @brief
@@ -37,4 +37,4 @@ namespace PiLibocik{
     };
 }
 
-#endif // POINT_H
+#endif // LOCATION_H

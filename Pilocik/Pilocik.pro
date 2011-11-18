@@ -51,7 +51,6 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/util/StopClock.cpp \
     ../lib/sosmscout/src/osmscout/oss/Parser.cpp \
     ../lib/sosmscout/src/osmscout/oss/Scanner.cpp \
-    ../lib/sosmscout/src/osmscout/Point.cpp \
     ../lib/sosmscout/src/osmscout/util/Projection.cpp \
     ../lib/sosmscout/src/osmscout/Types.cpp \
     ../lib/sosmscout/src/osmscout/Tag.cpp \
@@ -76,6 +75,14 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitioning.cpp \
     ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
+    ../lib/sosmscout/src/osmscout/Point.cpp \
+    ../lib/PiLibocik/src/preparedata.cpp \
+    ../lib/PiLibocik/src/position.cpp \
+    ../lib/PiLibocik/src/poi.cpp \
+    ../lib/PiLibocik/src/pilibocik.cpp \
+    ../lib/PiLibocik/src/poifileppoi.cpp \
+    ../lib/PiLibocik/src/boundarybox.cpp \
+    ../lib/PiLibocik/src/geohash.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
@@ -124,6 +131,7 @@ FORMS    += \
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
+INCLUDEPATH += ./../lib/PiLibocik/include/
 
 
 Release:DESTDIR = ../build/release
@@ -143,3 +151,4 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+

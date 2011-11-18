@@ -71,7 +71,8 @@ namespace PiLibocik{
                 subtags.append("opening_hours");
                 while(!tags.isNull())
                 {
-                    subtags.append(tags.attributeNode("key").value());
+                    if(!subtags.contains(tags.attributeNode("key").value()))
+                        subtags.append(tags.attributeNode("key").value());
                     tags = tags.nextSiblingElement("tag");
                 }
 
@@ -82,7 +83,8 @@ namespace PiLibocik{
                 poiTypes[types.attributeNode("id").value().toInt()].append(QPair<QString,QString>(types.attributeNode("key").value(),types.attributeNode("value").value()));
                 QList<QString>* subtags = &poiTypeSubtags[types.attributeNode("id").value().toInt()];
                 QDomElement tags = types.firstChildElement("tag");
-                subtags->append(types.attributeNode("key").value());
+                if(!subtags->contains(types.attributeNode("key").value()))
+                    subtags->append(types.attributeNode("key").value());
                 while(!tags.isNull())
                 {
                     subtags->append(tags.attributeNode("key").value());
@@ -144,7 +146,7 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                 }
 
                 QSqlQuery qwaynodes;
@@ -160,24 +162,26 @@ namespace PiLibocik{
 
                     if(!wayNodes.contains(id))
                     {
-                        QList<Point> pointList;
-                        pointList.append(Point(lon,lat));
+                        QList<Position> pointList;
+                        pointList.append(Position(lon,lat));
                         wayNodes.insert(id, pointList);
                     }
                     else
                     {
-                        wayNodes[id].append(Point(lon,lat));
+                        wayNodes[id].append(Position(lon,lat));
                     }
 
                 }
 
-                QMapIterator<int, QList<Point> > j(wayNodes);
+                QMapIterator<int, QList<Position> > j(wayNodes);
                 while (j.hasNext()) {
                     j.next();
-                    Point shapeCenter = shapeToPoint(j.value());
+                    Position shapeCenter = shapeToPoint(j.value());
                     double lon = shapeCenter.getLon();
                     double lat = shapeCenter.getLat();
                     QString hash = Geohash::generateGeohash(lon,lat,8);
+//                    if(hash.contains("u35"))
+                        //qDebug()<<lon<<lat<<hash;
 
                     QSqlQuery qtags;
                     qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM way_tags WHERE ref="+QString::number(j.key())+")");
@@ -207,7 +211,7 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                     wayNodes.clear();
                 }
             }
@@ -333,17 +337,17 @@ namespace PiLibocik{
         db.close();
     }
 
-    Point PrepareData::shapeToPoint(QList<Point> shape)
+    Position PrepareData::shapeToPoint(QList<Position> shape)
     {
         double sumLon = 0;
         double sumLat = 0;
-        foreach(Point p, shape)
+        foreach(Position p, shape)
         {
             sumLon += p.getLon();
             sumLat += p.getLat();
         }
 
-        return Point(sumLon/shape.size(),sumLat/shape.size());
+        return Position(sumLon/shape.size(),sumLat/shape.size());
     }
 
     QList<Poi> PrepareData::getPoiList(){

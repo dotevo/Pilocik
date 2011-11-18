@@ -15,22 +15,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-//    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db","../test/config.xml");
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db","../test/config.xml");
 
     //------------SAVE-----------------
 //    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/poi.db");
-//    qDebug()<<"Generating binary files";
-//    QList<PiLibocik::Poi> pois=pd->getPoiList();
-//    QMap<int,QString> types=pd->getPoiTypeNames();
-//    PiLibocik::PoiFilePPOI n;
-//    n.saveToFile("g:/mojepoi2",pois,types);
+    qDebug()<<"Generating binary files";
+    QList<PiLibocik::Poi> pois=pd->getPoiList();
+    QMap<int,QString> types=pd->getPoiTypeNames();
+    PiLibocik::PoiFilePPOI n;
+    n.saveToFile("g:/mojepoi2",pois,types);
 
     //----------------------------------
 
 
     //-------------LOAD------------------
-    PiLibocik::PoiFilePPOI n;
-    PiLibocik::BoundaryBox b(PiLibocik::Point(18.6285,54.2666),PiLibocik::Point(18.9,55));
+//    PiLibocik::PoiFilePPOI n;
+    PiLibocik::BoundaryBox b(PiLibocik::Position(15.9877,50.9603),PiLibocik::Position(17.3939,51.4551));
     QList <PiLibocik::Poi> p=n.loadPOIsFromFile("G:/mojepoi2",b,-1);
     QListIterator <PiLibocik::Poi> iter(p);
     QTime t;
@@ -39,15 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
     while(iter.hasNext()){
         PiLibocik::Poi poi=iter.next();
         i++;
-        qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType();
+//        qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType()<<"Geohash:"<<poi.getGeohash();
         QList < QPair <QString,QString > > l= poi.getTags();
         QListIterator <QPair <QString,QString > > iter2(l);
         while(iter2.hasNext()){
             QPair <QString,QString > n=iter2.next();
-            qDebug()<<n.first<<"="<<n.second;
+//            qDebug()<<n.first<<"="<<n.second;
         }
     }
-    qDebug()<<"Time: "<<t.elapsed()<<"Size: "<<i;
+//    qDebug()<<"Time: "<<t.elapsed()<<"Size: "<<i;
     //-----------------------------------
 
 

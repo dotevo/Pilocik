@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
-#include <pilibocik/point.h>
+#include <pilibocik/position.h>
 #include <pilibocik/poi.h>
 #include <pilibocik/geohash.h>
 
@@ -29,9 +29,9 @@ namespace PiLibocik{
         QMap<int, QList<QPair<QString,QString> > > poiTypes;
         QMap<int,QString> poiTypeNames;
         QMap<int,QList<QString> > poiTypeSubtags;
-        QMap<int,QList<Point> > wayNodes;
+        QMap<int,QList<Position> > wayNodes;
 
-        Point shapeToPoint(QList<Point> shape);
+        Position shapeToPoint(QList<Position> shape);
         void removePoiDuplicates();
         void createTables();
 

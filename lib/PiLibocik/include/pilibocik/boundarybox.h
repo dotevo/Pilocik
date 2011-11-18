@@ -1,7 +1,7 @@
 #ifndef BOUNDARYBOX_H
 #define BOUNDARYBOX_H
 
-#include <pilibocik/point.h>
+#include <pilibocik/position.h>
 #include <pilibocik/geohash.h>
 #include <QList>
 #include <QPair>
@@ -12,11 +12,11 @@ namespace PiLibocik{
 
 class BoundaryBox{
 private:
-    Point p1;
-    Point p2;
+    Position p1;
+    Position p2;
     QMap<int, QPair<double,double> > spatialError;
 public:
-    BoundaryBox(Point p1,Point p2);
+    BoundaryBox(Position p1,Position p2);
     QList <Geohash> getGeohashesIn(int precision);
 };
 

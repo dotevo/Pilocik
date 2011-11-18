@@ -257,8 +257,6 @@ void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,
   painter->drawPolygon(marker);
 }
 
-
-
 //////////////////////////////////////////////////////////////
 
 MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
@@ -290,6 +288,12 @@ void MapPixmapRenderer::run(){
         osmscout::MapData             data;
         osmscout::MapParameter        drawParameter;
         osmscout::AreaSearchParameter searchParameter;
+        PiLibocik::PoiFilePPOI        poiDatabase;
+        PiLibocik::BoundaryBox        bbox(PiLibocik::Position(projection->GetLonMin(), projection->GetLatMin()),
+                                           PiLibocik::Position(projection->GetLonMax(), projection->GetLatMax()));
+        QList <PiLibocik::Poi>        poiList = poiDatabase.loadPOIsFromFile("G:/mojepoi2",bbox,-1);
+        QListIterator<PiLibocik::Poi> iter(poiList);
+
         QPainter *painter=new QPainter(&pixmap);
         drawParameter.SetOptimizeAreaNodes(true);
         drawParameter.SetOptimizeWayNodes(true);
@@ -310,10 +314,44 @@ void MapPixmapRenderer::run(){
                                drawParameter,
                                data,
                                painter );
+
+
+
+
         osmscout::MercatorProjection p=(*projection);
+        while(iter.hasNext()){
+            PiLibocik::Poi poi=iter.next();
+            //qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType();
+            drawPoiIcon(poi.getType(), poi.getLon(), poi.getLat(),p, painter);
+//            double x,y, mx, my;
+//            projection->GeoToPixel(poi.getLon(), poi.getLat(), x, y);
+//            projection->GeoToPixel(projection->GetLonMin(),projection->GetLatMin(), mx, my);
+//            qDebug()<<poi.getLon()<<":"<<poi.getLat()<<" = = = "<<mx<<":"<<my;
+            //QList < QPair <QString,QString > > l= poi.getTags();
+            //QListIterator <QPair <QString,QString > > iter2(l);
+//            while(iter2.hasNext()){
+//                QPair <QString,QString > n=iter2.next();
+//                qDebug()<<n.first<<"="<<n.second;
+//            }
+        }
         pixmapRendered(pixmap,p);
         delete painter;
     started=false;
+}
+
+void MapPixmapRenderer::drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter)
+{
+    double x,y;
+    projection.GeoToPixel(lon, lat, x, y);
+    qDebug()<<"min"<<projection.GetLonMin()<<":"<<projection.GetLatMin()<<"|"<<
+              "max"<<projection.GetLonMax()<<":"<<projection.GetLatMax()<<"|"<<
+              lon<<":"<<lat<<"|"<<x<<":"<<y;
+
+    if(lon>projection.GetLonMin()&&lon<projection.GetLonMax()&&lat>projection.GetLatMin()&&lat<projection.GetLatMax())
+    {
+        QImage image("D:/Projects/Pilocik/Binary/Pilocik/Pilocik/images/poi/toilets.gif");
+        painter->drawImage(QPointF(x,y), image);
+    }
 }
 
 

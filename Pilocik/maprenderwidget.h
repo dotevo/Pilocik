@@ -14,7 +14,10 @@
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
-
+#include <pilibocik/boundarybox.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/position.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -35,6 +38,7 @@ public:
       @param magnification ratio
       */
     void init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d);
+    void drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter);
     bool isWorking();
 private:
     float d;

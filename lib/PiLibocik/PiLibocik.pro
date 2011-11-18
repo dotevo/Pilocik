@@ -14,22 +14,22 @@ DEFINES += PiLibocik_WRITE_MODE
 
 SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \
-    src/point.cpp \
     src/poi.cpp \
     src/preparedata.cpp \
     src/boundarybox.cpp \
     src/poifileppoi.cpp \
-    main.cpp
+    main.cpp \
+    src/position.cpp
 
 INCLUDEPATH +=include
 
 HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/geohash.h \
-    include/pilibocik/point.h \
     include/pilibocik/poi.h \
     include/pilibocik/preparedata.h \
     include/pilibocik/boundarybox.h \
-    include/pilibocik/poifileppoi.h
+    include/pilibocik/poifileppoi.h \
+    include/pilibocik/position.h
 
 
 unix:!symbian {
@@ -40,6 +40,12 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+
+
+
 
 
 

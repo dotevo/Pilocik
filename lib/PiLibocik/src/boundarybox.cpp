@@ -2,7 +2,7 @@
 #include <QDebug>
 
 namespace PiLibocik{
-BoundaryBox::BoundaryBox(Point p1,Point p2):p1(p1),p2(p2){
+BoundaryBox::BoundaryBox(Position p1,Position p2):p1(p1),p2(p2){
     spatialError.insert(1, QPair<double,double>(23,23));
     spatialError.insert(2, QPair<double,double>(5.6,2.8));
     spatialError.insert(3, QPair<double,double>(0.7,0.7));
@@ -26,7 +26,7 @@ QList <Geohash> BoundaryBox::getGeohashesIn(int precision){
             if(!ret.contains(geo.toQString()))
             {
                 ret.insert(geo.toQString(), geo);
-                qDebug()<<geo.toQString();
+                qDebug()<<"geohash:!"<<geo.toQString();
             }
 
         }
