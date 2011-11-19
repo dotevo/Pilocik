@@ -1,5 +1,5 @@
-#ifndef WAY_H
-#define WAY_H
+#ifndef PILIBOCIK_WAY_H
+#define PILIBOCIK_WAY_H
 
 #include <QVector>
 #include <pilibocik/partition/restriction.h>
@@ -8,6 +8,7 @@
 namespace PiLibocik{namespace Partition{
 class Node;
 class Restriction;
+class PartitionFile;
 
 class Way{
 private:
@@ -16,9 +17,10 @@ private:
     QVector<qint64> nodes;
     QVector<Restriction> restriction;
     qint8 oneway;
+    PartitionFile* part;
 public:
     Way();
-    Way(int id,double prio,qint8 oneway);
+    Way(int id,double prio,qint8 oneway,PartitionFile*p=0);
     bool isEmpty();
     int getId();
     double getPrioritet();

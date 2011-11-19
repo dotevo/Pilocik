@@ -1,5 +1,5 @@
-#ifndef POI_H
-#define POI_H
+#ifndef PILIBOCIK_POI_H
+#define PILIBOCIK_POI_H
 
 #include <QString>
 #include <QList>

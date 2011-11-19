@@ -1,5 +1,5 @@
-#ifndef PILIBOCIK_H
-#define PILIBOCIK_H
+#ifndef PILIBOCIK_PILIBOCIK_H
+#define PILIBOCIK_PILIBOCIK_H
 
 namespace PiLibocik{
     class PiLibocik {

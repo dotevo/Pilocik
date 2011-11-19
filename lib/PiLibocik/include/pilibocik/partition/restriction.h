@@ -1,5 +1,5 @@
-#ifndef RESTRICTION_H
-#define RESTRICTION_H
+#ifndef PILIBOCIK_RESTRICTION_H
+#define PILIBOCIK_RESTRICTION_H
 
 #include <pilibocik/partition/way.h>
 
@@ -8,12 +8,12 @@ class Way;
 
 class Restriction{
 private:
+    qint64 to;
+    qint64 via;
     int type;
-    quint64 via;
-    quint64 to;
 public:
     Restriction();
-    Restriction(quint64 to, quint64 via, int type);
+    Restriction(qint64 to, qint64 via, int type);
     int getType();
     quint64 getWayTo();
     quint64 getVia();
