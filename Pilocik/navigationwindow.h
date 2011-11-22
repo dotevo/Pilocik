@@ -28,6 +28,7 @@ public:
 
     void retranslate();
     void setRoute(QVector<osmscout::Routing::RouteNode> route);
+    QPointF getCoordinates();
 
 private slots:
     void on_menuButton_clicked();

@@ -56,6 +56,11 @@ public:
       */
     void forceMapWidgetRepaint();
 
+    /**
+      @brief Sets poi description, gets as arg list of tags pairs.
+      */
+    void setDetails(QList < QPair <QString, QString> > tags);
+
 private slots:
     /**
       @brief Back button clicked. Closing info window.

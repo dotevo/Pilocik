@@ -11,6 +11,26 @@
 
 namespace PiLibocik{
 
+    class PoiDisplay
+    {
+    private:
+        int     type;
+        bool    display;
+        int     zoom;
+        QString iconPath;
+
+    public:
+        PoiDisplay();
+        PoiDisplay(int type, bool display, int zoom, QString iconPath);
+        void setDisplay(bool display);
+        bool getDisplay();
+        int  getZoom();
+        int  getType();
+        QString getIconPath();
+        bool operator ==(const PoiDisplay &p) const;
+    };
+
+
     /**
      * @brief
      *

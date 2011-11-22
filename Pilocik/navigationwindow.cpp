@@ -53,8 +53,8 @@ NavigationWindow::~NavigationWindow()
     delete routeWin;
     delete optionsWin;
     delete gpsInfoWin;
-    //delete mapRenderer;
-    //delete ui->widget;
+    delete mapRenderer;
+//    delete ui->widget;
     delete TWidgetManager::getInstance();
     Settings::getInstance()->saveSettings();
     delete Settings::getInstance();
@@ -197,4 +197,9 @@ void NavigationWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+QPointF NavigationWindow::getCoordinates()
+{
+    return ui->widget->getCoordinates();
 }

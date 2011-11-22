@@ -4,8 +4,13 @@
 #include "qfullscreenframe.h"
 
 #include <QTreeWidgetItem>
+#include <QMap>
 
 #include <osmscout/Searching.h>
+
+#include <pilibocik/poi.h>
+
+
 
 namespace Ui {
     class PointSelectionWindow;
@@ -80,6 +85,9 @@ private:
     static const int INFO_COLUMN = 3;
     static const int COLUMNS_COUNT = 4;
 
+    QMap<int, QString> poiTypes;
+    QList<PiLibocik::Poi> poiList;
+
     /**
       @brief Coordinates of current location.
       */
@@ -104,7 +112,7 @@ private:
       @brief Sets POIs in widget with specified type.
       @param type Type of POIs.
       */
-    void fillPOIWidget(QString type);
+    void fillPOIWidget(int type);
 
     /**
       @brief Searching type. It defines what object type is searching now.

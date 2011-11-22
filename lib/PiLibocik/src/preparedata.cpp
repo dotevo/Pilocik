@@ -120,15 +120,20 @@ namespace PiLibocik{
                     QSqlQuery qtags;
                     qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM node_tags WHERE ref="+QString::number(id)+")");
                     QMap<QString,QString> queryTags;
-                    while(qtags.next())
+                    while(qtags.next()){
                         queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
+                    }
 
                     QString name = "";
                     if(!queryTags["name"].isNull())
                     {
                         name = queryTags["name"];
-                        queryTags.remove("name");
+//                        queryTags.remove("name");
                     }
+                    else if(!queryTags["operator"].isNull())
+                        name = queryTags["operator"];
+                    else
+                        name = poiTypeNames[i.key()];
 
                     QList< QPair<QString,QString> > tags;
 
@@ -136,7 +141,7 @@ namespace PiLibocik{
                         foreach(QString queryTag,queryTags.keys())
                         {
                             if(queryTag.startsWith(tag, Qt::CaseInsensitive))
-                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag].toLatin1()));
+                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag]));
                         }
                     }
 
@@ -146,7 +151,7 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                 }
 
                 QSqlQuery qwaynodes;
@@ -180,21 +185,24 @@ namespace PiLibocik{
                     double lon = shapeCenter.getLon();
                     double lat = shapeCenter.getLat();
                     QString hash = Geohash::generateGeohash(lon,lat,8);
-//                    if(hash.contains("u35"))
-                        //qDebug()<<lon<<lat<<hash;
 
                     QSqlQuery qtags;
                     qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM way_tags WHERE ref="+QString::number(j.key())+")");
                     QMap<QString,QString> queryTags;
-                    while(qtags.next())
+                    while(qtags.next()){
                         queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
+                    }
 
                     QString name = "";
                     if(!queryTags["name"].isNull())
                     {
                         name = queryTags["name"];
-                        queryTags.remove("name");
+//                        queryTags.remove("name");
                     }
+                    else if(!queryTags["operator"].isNull())
+                        name = queryTags["operator"];
+                    else
+                        name = poiTypeNames[i.key()];
 
                     QList< QPair<QString,QString> > tags;
 
@@ -202,7 +210,7 @@ namespace PiLibocik{
                         foreach(QString queryTag,queryTags.keys())
                         {
                             if(queryTag.startsWith(tag, Qt::CaseInsensitive))
-                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag].toLatin1()));
+                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag]));
                         }
                     }
                     poiList.append(Poi(lon,lat,name,i.key(),tags, hash));
@@ -211,7 +219,7 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                     wayNodes.clear();
                 }
             }

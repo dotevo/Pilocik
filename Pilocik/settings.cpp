@@ -18,8 +18,7 @@ Settings::Settings(QApplication* a)
     startLanguage = "";
 }
 
-Settings::~Settings()
-{
+Settings::~Settings(){
 }
 
 void Settings::loadSettings()
@@ -69,8 +68,34 @@ void Settings::resetDefaultSettings()
             "       <mapPath></mapPath>\n"
             "       <mapStylePath></mapStylePath>\n"
             "       <layoutStylePath></layoutStylePath>\n"
+            "       <poiFilePath>c:/map/poi</poiFilePath>\n"
+            "       <poiIconsDir>../Pilocik/images/poi/</poiIconsDir>\n"
             "       <simulationPath></simulationPath>\n"
             "   </coreSettings>\n"
+            "   <poiSettings\n>"
+            "       <poi zoom=\"128\" icon=\"transport_fuel.gif\" type=\"0\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"transport_parking.gif\" type=\"1\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"shopping_car.gif\" type=\"2\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"money_atm.gif\" type=\"3\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"money_bank.gif\" type=\"4\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"health_pharmacy.gif\" type=\"5\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"health_hospital.gif\" type=\"6\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"tourist_cinema2.gif\" type=\"7\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"nightclub.gif\" type=\"8\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"tourist_theatre.gif\" type=\"9\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"poi_embassy.gif\" type=\"10\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"amenity_firestation.gif\" type=\"11\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"amenity_police.n.gif\" type=\"12\"/\n>"
+            "       <poi zoom=\"8192\" icon=\"amenity_post_office.gif\" type=\"13\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"accommodation_shelter.gif\" type=\"14\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"toilets.gif\" type=\"15\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"amenity_town_hall.gif\" type=\"16\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"money_currency_exchange.gif\" type=\"17\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"shopping_convenience.gif\" type=\"18\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"food_restaurant.gif\" type=\"19\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"food_bar.gif\" type=\"20\"/\n>"
+            "       <poi zoom=\"16384\" icon=\"food_cafe.gif\" type=\"21\"/\n>"
+            "   </poiSettings\n>"
             "   <profile name=\"default\">\n"
             "       <widgets>\n"
             "           <widget name=\"Clock\">\n"
@@ -99,6 +124,30 @@ void Settings::resetDefaultSettings()
             "           <lon>17.03</lon>\n"
             "           <zoom>8</zoom>\n"
             "       </map>\n"
+            "       <poiDisplay>"
+            "          <poi display=\"true\" type=\"0\"/>\n"
+            "          <poi display=\"false\" type=\"1\"/>\n"
+            "          <poi display=\"false\" type=\"2\"/>\n"
+            "          <poi display=\"false\" type=\"3\"/>\n"
+            "          <poi display=\"false\" type=\"4\"/>\n"
+            "          <poi display=\"false\" type=\"5\"/>\n"
+            "          <poi display=\"false\" type=\"6\"/>\n"
+            "          <poi display=\"false\" type=\"7\"/>\n"
+            "          <poi display=\"false\" type=\"8\"/>\n"
+            "          <poi display=\"false\" type=\"9\"/>\n"
+            "          <poi display=\"false\" type=\"10\"/>\n"
+            "          <poi display=\"false\" type=\"11\"/>\n"
+            "          <poi display=\"false\" type=\"12\"/>\n"
+            "          <poi display=\"false\" type=\"13\"/>\n"
+            "          <poi display=\"false\" type=\"14\"/>\n"
+            "          <poi display=\"false\" type=\"15\"/>\n"
+            "          <poi display=\"false\" type=\"16\"/>\n"
+            "          <poi display=\"false\" type=\"17\"/>\n"
+            "          <poi display=\"false\" type=\"18\"/>\n"
+            "          <poi display=\"false\" type=\"19\"/>\n"
+            "          <poi display=\"false\" type=\"20\"/>\n"
+            "          <poi display=\"false\" type=\"21\"/>\n"
+            "       </poiDisplay>"
             "       <language>\n"
             "           <active>system</active>\n"
             "       </language>\n"
@@ -127,7 +176,20 @@ void Settings::configureProfile(QString profile)
     mapPath = coreSettingsNode.firstChildElement("mapPath").text();
     mapStylePath = coreSettingsNode.firstChildElement("mapStylePath").text();
     layoutStylePath = coreSettingsNode.firstChildElement("layoutStylePath").text();
+    poiFilePath = coreSettingsNode.firstChildElement("poiFilePath").text();
+    poiIconsDir = coreSettingsNode.firstChildElement("poiIconsDir").text();
     simulationPath = coreSettingsNode.firstChildElement("simulationPath").text();
+
+    QDomElement poiNode = doc->firstChildElement("settings").firstChildElement("poiSettings").firstChildElement("poi");
+    while(!poiNode.isNull())
+    {
+        int poiType = poiNode.attributeNode("type").value().toInt();
+        QString poiIconPath = poiNode.attributeNode("icon").value();
+        int poiDisplayZoom = poiNode.attributeNode("zoom").value().toInt();
+        PiLibocik::PoiDisplay poiDisplay(poiType, false, poiDisplayZoom, poiIconPath);
+        poiDisplaySettings.insert(poiType, poiDisplay);
+        poiNode = poiNode.nextSiblingElement("poi");
+    }
 
     //Loading profile settings from xml to local variables
 
@@ -173,6 +235,18 @@ void Settings::configureProfile(QString profile)
     QDomElement langSettings = profileSettings.firstChildElement("language");
     language = langSettings.firstChildElement("active").text();
     startLanguage = language.compare("System", Qt::CaseInsensitive) == 0 ? "" : language;
+
+    //Configure poi display settings
+
+    QDomElement poiDisplayNode = profileSettings.firstChildElement("poiDisplay").firstChildElement("poi");
+    while(!poiDisplayNode.isNull())
+    {
+        int poiType = poiDisplayNode.attributeNode("type").value().toInt();
+        bool poiDisplay = poiDisplayNode.attributeNode("display").value() == "true";
+        poiDisplaySettings[poiType].setDisplay(poiDisplay);
+        poiDisplayNode = poiDisplayNode.nextSiblingElement("poi");
+    }
+
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)
@@ -220,12 +294,24 @@ void Settings::modifyCoreSettings(QString name, QString value)
     //configureProfile(profileSettingsXMLNode.attributeNode("name").value());
 }
 
+void Settings::modifyPoiDisplaySettings(QMap<int, PiLibocik::PoiDisplay> newPoiDisplaySettings)
+{
+    poiDisplaySettings = newPoiDisplaySettings;
+    QDomElement poiSettingsNode = profileSettingsXMLNode.firstChildElement("poiDisplay").firstChildElement("poi");
+    while(!poiSettingsNode.isNull())
+    {
+        int type = poiSettingsNode.attributeNode("type").value().toInt();
+        QString newValue = poiDisplaySettings[type].getDisplay() ? "true" : "false";
+        poiSettingsNode.attributeNode("display").setValue(newValue);
+        poiSettingsNode = poiSettingsNode.nextSiblingElement("poi");
+    }
+}
+
 void Settings::modifyMapSettings(double lat, double lon, int zoom)
 {
     this->lat=lat;
     this->lon=lon;
     this->zoom=zoom;
-    //QDomElement mapSettings = doc->firstChildElement("settings").firstChildElement("map");
     QDomElement mapSettings = profileSettingsXMLNode.firstChildElement("map");
     mapSettings.firstChildElement("lat").firstChild().toText().setData(QString::number(lat));
     mapSettings.firstChildElement("lon").firstChild().toText().setData(QString::number(lon));
