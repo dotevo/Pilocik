@@ -6,11 +6,13 @@
 #include "widgets/tspeedmeterwidget.h"
 #include "widgets/tsliderwidget.h"
 #include "widgets/thintwidget.h"
+#include "widgets/troutingprogresswidget.h"
 #include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
 #include "gpsinfowindow.h"
 #include "settings.h"
+#include "QDebug"
 
 //to delete
 #include <iostream>
@@ -64,6 +66,9 @@ void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("Hint", new THintWidget(this));
     TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
+    TWidgetManager::getInstance()->addWidget("RoutingProgress", new TRoutingProgressWidget(this));
+    TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
+
     TSliderWidget* slider = new TSliderWidget(this);
     slider->initZoom(Settings::getInstance()->getZoom());
     TWidgetManager::getInstance()->addWidget("Slider", slider);
@@ -168,7 +173,9 @@ void NavigationWindow::menuClosedSlot() {
 
 void NavigationWindow::on_sliderButton_clicked() {
     TWidgetManager::getInstance()->changeMode();
-    ui->sliderButton->setText(ui->sliderButton->text().compare("<--->") ? "<--->" : "<>");
+    ui->sliderButton->setIcon(TWidgetManager::getInstance()->getMode() == 1 ?
+                                  QIcon("..//Pilocik//images//icons//64x64//lock_open_ico.gif") :
+                                  QIcon("..//Pilocik//images//icons//64x64//lock_closed_ico.gif") );
 }
 
 void NavigationWindow::positionUpdated(GPSdata gps_data){

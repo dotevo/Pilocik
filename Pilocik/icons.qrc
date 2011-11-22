@@ -25,5 +25,7 @@
         <file>images/icons/64x64/settings_ico.gif</file>
         <file>images/icons/64x64/user_ico.gif</file>
         <file>images/icons/64x64/pilocik_ico.gif</file>
+        <file>images/icons/64x64/lock_closed_ico.gif</file>
+        <file>images/icons/64x64/lock_open_ico.png</file>
     </qresource>
 </RCC>

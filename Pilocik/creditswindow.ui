@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>420</width>
     <height>300</height>
    </rect>
   </property>
@@ -166,6 +166,16 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
     </spacer>
    </item>
    <item>
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Map data (c) </string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_6">
      <property name="font">
       <font>
@@ -173,7 +183,7 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
       </font>
      </property>
      <property name="text">
-      <string>Created with usage of mapr from Open Street Maps</string>
+      <string>OpenStreetMap contributors, CC-BY-SA</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
