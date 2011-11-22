@@ -19,6 +19,7 @@ void PartitionsRenderWidget::init(QString dbPath)
     pixmap = QPixmap(width, height);
 
     calculateNewMapCenter(17.03,51.11,30);
+    //calculateNewMapCenter(2, 2, 15); // for testing graphs
 
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbPath);
