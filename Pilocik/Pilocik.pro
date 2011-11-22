@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     widgets/tsliderwidget.cpp \
     widgets/thintwidget.cpp \
     creditswindow.cpp \
-    widgets/troutingprogresswidget.cpp
+    widgets/troutingprogresswidget.cpp \
+    widgets/terrorwidget.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -117,7 +118,8 @@ HEADERS  +=  tmovableframe.h \
     widgets/tsliderwidget.h \
     widgets/thintwidget.h \
     creditswindow.h \
-    widgets/troutingprogresswidget.h
+    widgets/troutingprogresswidget.h \
+    widgets/terrorwidget.h
 
 
 FORMS    += \
@@ -136,7 +138,8 @@ FORMS    += \
     widgets/tsliderwidget.ui \
     widgets/thintwidget.ui \
     creditswindow.ui \
-    widgets/troutingprogresswidget.ui
+    widgets/troutingprogresswidget.ui \
+    widgets/terrorwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -160,6 +163,9 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
 
 
 

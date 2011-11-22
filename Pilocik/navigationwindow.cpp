@@ -7,6 +7,7 @@
 #include "widgets/tsliderwidget.h"
 #include "widgets/thintwidget.h"
 #include "widgets/troutingprogresswidget.h"
+#include "widgets/terrorwidget.h"
 #include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
@@ -66,12 +67,13 @@ void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->addWidget("Hint", new THintWidget(this));
     TWidgetManager::getInstance()->addWidget("Clock", new TClockWidget(this));
     TWidgetManager::getInstance()->addWidget("SpeedMeter", new TSpeedMeterWidget(this));
-    TWidgetManager::getInstance()->addWidget("RoutingProgress", new TRoutingProgressWidget(this));
-    TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
-
     TSliderWidget* slider = new TSliderWidget(this);
     slider->initZoom(Settings::getInstance()->getZoom());
     TWidgetManager::getInstance()->addWidget("Slider", slider);
+    TWidgetManager::getInstance()->addWidget("RoutingProgress", new TRoutingProgressWidget(this));
+    TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
+    TWidgetManager::getInstance()->addWidget("ErrorMessage", new TErrorWidget(this));
+    TWidgetManager::getInstance()->getWidget("ErrorMessage")->setVisible(false);
 
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
@@ -168,7 +170,8 @@ void NavigationWindow::menuClosedSlot() {
     ui->menuButton->setVisible(true);
     ui->trackingButton->setVisible(true);
     ui->sliderButton->setVisible(true);
-    ui->menuPanel->setVisible(true);
+    ui->menuPanel->setVisible(false);
+    TWidgetManager::getInstance()->showAllWidgets();
 }
 
 void NavigationWindow::on_sliderButton_clicked() {
