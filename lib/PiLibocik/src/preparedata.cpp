@@ -18,21 +18,26 @@ namespace PiLibocik{
         db.setDatabaseName(dbOutPath);
         db.open();
 
-        createTables();
         saveToDatabase();
+
+        db.close();
+    }
+
+    PrepareData::PrepareData(QString dbMapPath, QString XMLconfigPath)
+    {
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(dbMapPath);
+        db.open();
+
+        loadXMLconfig(XMLconfigPath);
+        generateData();
 
         db.close();
     }
 
     PrepareData::PrepareData(QString dbLoadPath)
     {
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName(dbLoadPath);
-        db.open();
-
-        loadFromDatabase();
-
-        db.close();
+        loadFromDatabase(dbLoadPath);
     }
 
     void PrepareData::loadXMLconfig(QString XMLpath)
@@ -51,22 +56,42 @@ namespace PiLibocik{
         QDomElement types = doc->firstChildElement("poi").firstChildElement("type");
 
         while(!types.isNull()){
-            qDebug()<<types.attributeNode("id").value();
-            poiTypes.insert(types.attributeNode("id").value().toInt(),
-                            QPair<QString,QString>(types.attributeNode("key").value(),types.attributeNode("value").value()));
-            poiTypeNames.insert(types.attributeNode("id").value().toInt(),types.attributeNode("name").value());
-
-            QDomElement tags = types.firstChildElement("tag");
-            QList<QString> subtags;
-
-            while(!tags.isNull())
+            if(!poiTypes.contains(types.attributeNode("id").value().toInt()))
             {
-                subtags.append(tags.attributeNode("key").value());
-                tags = tags.nextSiblingElement("tag");
+                QList<QPair<QString, QString> > typeTag;
+                typeTag.append(QPair<QString,QString>(types.attributeNode("key").value(),types.attributeNode("value").value()));
+                poiTypes.insert(types.attributeNode("id").value().toInt(),
+                                typeTag);
+                poiTypeNames.insert(types.attributeNode("id").value().toInt(),types.attributeNode("name").value());
+                QDomElement tags = types.firstChildElement("tag");
+                QList<QString> subtags;
+
+                subtags.append(types.attributeNode("key").value());
+                subtags.append("addr");
+                subtags.append("opening_hours");
+                while(!tags.isNull())
+                {
+                    if(!subtags.contains(tags.attributeNode("key").value()))
+                        subtags.append(tags.attributeNode("key").value());
+                    tags = tags.nextSiblingElement("tag");
+                }
+
+                poiTypeSubtags.insert(types.attributeNode("id").value().toInt(), subtags);
+            }
+            else
+            {
+                poiTypes[types.attributeNode("id").value().toInt()].append(QPair<QString,QString>(types.attributeNode("key").value(),types.attributeNode("value").value()));
+                QList<QString>* subtags = &poiTypeSubtags[types.attributeNode("id").value().toInt()];
+                QDomElement tags = types.firstChildElement("tag");
+                if(!subtags->contains(types.attributeNode("key").value()))
+                    subtags->append(types.attributeNode("key").value());
+                while(!tags.isNull())
+                {
+                    subtags->append(tags.attributeNode("key").value());
+                    tags = tags.nextSiblingElement("tag");
+                }
             }
 
-            if(!subtags.isEmpty())
-                poiTypeSubtags.insert(types.attributeNode("id").value().toInt(), subtags);
 
             types = types.nextSiblingElement("type");
         }
@@ -74,111 +99,145 @@ namespace PiLibocik{
 
     void PrepareData::generateData()
     {
-        QMapIterator<int, QPair<QString,QString> > i(poiTypes);
+        QMapIterator<int, QList<QPair<QString,QString> > > i(poiTypes);
         while (i.hasNext()) {
             i.next();
-            QSqlQuery qnodes;
-            QPair<QString,QString> typeTag = (QPair<QString,QString>)(i.value());
-            qnodes.exec("SELECT id, lon, lat, hash FROM nodes WHERE id IN (SELECT ref FROM node_tags WHERE tag=(SELECT id FROM tags where key='"+typeTag.first+"' and value='"+typeTag.second+"'))");
-            while(qnodes.next())
-            {
-                int id = qnodes.value(0).toInt();
-                double lon = qnodes.value(1).toDouble();
-                double lat = qnodes.value(2).toDouble();
-                QString hash = qnodes.value(3).toString();
-
-                QSqlQuery qtags;
-                qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM node_tags WHERE ref="+QString::number(id)+")");
-                QMap<QString,QString> queryTags;
-                while(qtags.next())
-                    queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
-
-                QString name = "";
-                if(!queryTags["name"].isNull())
-                {
-                    name = queryTags["name"];
-                    queryTags.remove("name");
-                }
-
-                QList< QPair<QString,QString> > tags;
-
-                foreach(QString tag, poiTypeSubtags[i.key()])
-                    if(queryTags.keys().contains(tag))
-                    {
-                        tags.append(QPair<QString,QString>(tag,queryTags[tag]));
-                        qDebug()<<tags.size();
-                    }
-
-                poiList.append(Poi(lon,lat,name,i.key(),tags,hash));
-                QString strtags;
-                for(int x=0; x < tags.size(); x++)
-                {
-                    strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
-                }
-                qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
-            }
-
-            QSqlQuery qwaynodes;
-            qwaynodes.exec("SELECT way, lon, lat FROM way_nodes INNER JOIN nodes ON nodes.id = node WHERE way IN (SELECT ref FROM way_tags WHERE tag=(SELECT id FROM tags where key='"+typeTag.first+"' AND value='"+typeTag.second+"'))");
-
-            while(qwaynodes.next())
-            {
-                int id = qwaynodes.value(0).toInt();
-                double lon = qwaynodes.value(1).toDouble();
-                double lat = qwaynodes.value(2).toDouble();
-
-                if(!wayNodes.contains(id))
-                {
-                    QList<Point> pointList;
-                    pointList.append(Point(lon,lat));
-                    wayNodes.insert(id, pointList);
-                }
+            QList<QPair<QString,QString> > typeTags = (QList<QPair<QString,QString> >)(i.value());
+            typedef QPair<QString,QString> myQPair;
+            foreach(myQPair typeTag, typeTags){
+                QSqlQuery qnodes;
+                if(typeTag.second.contains('%'))
+                    qnodes.exec("SELECT id, lon, lat, hash FROM nodes WHERE id IN (SELECT ref FROM node_tags WHERE tag IN (SELECT id FROM tags where key='"+typeTag.first+"' and value LIKE '"+typeTag.second+"'))");
                 else
+                    qnodes.exec("SELECT id, lon, lat, hash FROM nodes WHERE id IN (SELECT ref FROM node_tags WHERE tag IN (SELECT id FROM tags where key='"+typeTag.first+"' and value='"+typeTag.second+"'))");
+                while(qnodes.next())
                 {
-                    wayNodes[id].append(Point(lon,lat));
-                }
+                    int id = qnodes.value(0).toInt();
+                    double lon = qnodes.value(1).toDouble();
+                    double lat = qnodes.value(2).toDouble();
+                    QString hash = qnodes.value(3).toString();
 
-            }
+                    QSqlQuery qtags;
+                    qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM node_tags WHERE ref="+QString::number(id)+")");
+                    QMap<QString,QString> queryTags;
+                    while(qtags.next())
+                        queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
 
-            QMapIterator<int, QList<Point> > j(wayNodes);
-            while (j.hasNext()) {
-                j.next();
-                Point shapeCenter = shapeToPoint(j.value());
-                double lon = shapeCenter.getLon();
-                double lat = shapeCenter.getLat();
-                QString hash = Geohash::generateGeohash(lon,lat,8);
-
-                QSqlQuery qtags;
-                qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM way_tags WHERE ref="+QString::number(j.key())+")");
-                QMap<QString,QString> queryTags;
-                while(qtags.next())
-                    queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
-
-                QString name = "";
-                if(!queryTags["name"].isNull())
-                {
-                    name = queryTags["name"];
-                    queryTags.remove("name");
-                }
-
-                QList< QPair<QString,QString> > tags;
-
-                foreach(QString tag, poiTypeSubtags[i.key()]){
-                    if(queryTags.keys().contains(tag))
+                    QString name = "";
+                    if(!queryTags["name"].isNull())
                     {
-                        tags.append(QPair<QString,QString>(tag,queryTags[tag]));
+                        name = queryTags["name"];
+                        queryTags.remove("name");
                     }
+
+                    QList< QPair<QString,QString> > tags;
+
+                    foreach(QString tag, poiTypeSubtags[i.key()]){
+                        foreach(QString queryTag,queryTags.keys())
+                        {
+                            if(queryTag.startsWith(tag, Qt::CaseInsensitive))
+                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag].toLatin1()));
+                        }
+                    }
+
+                    poiFromNodesList.append(Poi(lon,lat,name,i.key(),tags,hash));
+                    QString strtags;
+                    for(int x=0; x < tags.size(); x++)
+                    {
+                        strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
+                    }
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                 }
-                poiList.append(Poi(lon,lat,name,i.key(),tags, hash));
-                QString strtags;
-                for(int x=0; x < tags.size(); x++)
+
+                QSqlQuery qwaynodes;
+                if(typeTag.second.contains('%'))
+                    qwaynodes.exec("SELECT way, lon, lat FROM way_nodes INNER JOIN nodes ON nodes.id = node WHERE way IN (SELECT ref FROM way_tags WHERE tag IN (SELECT id FROM tags where key='"+typeTag.first+"' AND value LIKE '"+typeTag.second+"'))");
+                else
+                    qwaynodes.exec("SELECT way, lon, lat FROM way_nodes INNER JOIN nodes ON nodes.id = node WHERE way IN (SELECT ref FROM way_tags WHERE tag IN (SELECT id FROM tags where key='"+typeTag.first+"' AND value='"+typeTag.second+"'))");
+                while(qwaynodes.next())
                 {
-                    strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
+                    int id = qwaynodes.value(0).toInt();
+                    double lon = qwaynodes.value(1).toDouble();
+                    double lat = qwaynodes.value(2).toDouble();
+
+                    if(!wayNodes.contains(id))
+                    {
+                        QList<Position> pointList;
+                        pointList.append(Position(lon,lat));
+                        wayNodes.insert(id, pointList);
+                    }
+                    else
+                    {
+                        wayNodes[id].append(Position(lon,lat));
+                    }
+
                 }
-                qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
-                wayNodes.clear();
+
+                QMapIterator<int, QList<Position> > j(wayNodes);
+                while (j.hasNext()) {
+                    j.next();
+                    Position shapeCenter = shapeToPoint(j.value());
+                    double lon = shapeCenter.getLon();
+                    double lat = shapeCenter.getLat();
+                    QString hash = Geohash::generateGeohash(lon,lat,8);
+//                    if(hash.contains("u35"))
+                        //qDebug()<<lon<<lat<<hash;
+
+                    QSqlQuery qtags;
+                    qtags.exec("SELECT key,value FROM tags WHERE id IN (SELECT tag FROM way_tags WHERE ref="+QString::number(j.key())+")");
+                    QMap<QString,QString> queryTags;
+                    while(qtags.next())
+                        queryTags.insert(qtags.value(0).toString(),qtags.value(1).toString());
+
+                    QString name = "";
+                    if(!queryTags["name"].isNull())
+                    {
+                        name = queryTags["name"];
+                        queryTags.remove("name");
+                    }
+
+                    QList< QPair<QString,QString> > tags;
+
+                    foreach(QString tag, poiTypeSubtags[i.key()]){
+                        foreach(QString queryTag,queryTags.keys())
+                        {
+                            if(queryTag.startsWith(tag, Qt::CaseInsensitive))
+                                tags.append(QPair<QString,QString>(queryTag,queryTags[queryTag].toLatin1()));
+                        }
+                    }
+                    poiList.append(Poi(lon,lat,name,i.key(),tags, hash));
+                    QString strtags;
+                    for(int x=0; x < tags.size(); x++)
+                    {
+                        strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
+                    }
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    wayNodes.clear();
+                }
             }
         }
+
+        removePoiDuplicates();
+    }
+
+    void PrepareData::removePoiDuplicates()
+    {
+        int removed = 0;
+        foreach(Poi poi, poiList)
+        {
+            for(int i=0; i<poiFromNodesList.size(); i++)
+            {
+                Poi nodePoi = poiFromNodesList.takeLast();
+                if(poi.getGeohash().left(7)==nodePoi.getGeohash().left(7)&&poi.getType()==nodePoi.getType()){
+                    qDebug()<<poi.getGeohash()<<nodePoi.getGeohash();
+                    removed++;
+                }
+                else
+                    poiList.append(nodePoi);
+            }
+        }
+        poiFromNodesList.clear();
+        qDebug()<<"removed"<<removed<<"duplicates";
     }
 
     void PrepareData::createTables()
@@ -214,6 +273,7 @@ namespace PiLibocik{
 
     void PrepareData::saveToDatabase()
     {
+        createTables();
         QMapIterator<int,QString> i(poiTypeNames);
         while(i.hasNext())
         {
@@ -250,8 +310,11 @@ namespace PiLibocik{
         q.exec("END TRANSACTION");
     }
 
-    void PrepareData::loadFromDatabase()
+    void PrepareData::loadFromDatabase(QString dbLoadPath)
     {
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(dbLoadPath);
+        db.open();
         QSqlQuery q;
         q.exec("SELECT id,geohash,type,lon,lat,name FROM pois;");
         while(q.next())
@@ -271,19 +334,20 @@ namespace PiLibocik{
         {
             poiTypeNames.insert(q.value(0).toInt(), q.value(1).toString());
         }
+        db.close();
     }
 
-    Point PrepareData::shapeToPoint(QList<Point> shape)
+    Position PrepareData::shapeToPoint(QList<Position> shape)
     {
         double sumLon = 0;
         double sumLat = 0;
-        foreach(Point p, shape)
+        foreach(Position p, shape)
         {
             sumLon += p.getLon();
             sumLat += p.getLat();
         }
 
-        return Point(sumLon/shape.size(),sumLat/shape.size());
+        return Position(sumLon/shape.size(),sumLat/shape.size());
     }
 
     QList<Poi> PrepareData::getPoiList(){

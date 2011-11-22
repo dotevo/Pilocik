@@ -10,10 +10,16 @@
 #include <QRect>
 #include <QString>
 #include <QThread>
+#include <QVector>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
+#include <pilibocik/boundarybox.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/position.h>
+#include <osmscout/Routing.h>
 
 
 namespace Ui {
@@ -35,6 +41,7 @@ public:
       @param magnification ratio
       */
     void init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d);
+    void drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter);
     bool isWorking();
 private:
     float d;
@@ -83,6 +90,18 @@ public:
     QPointF getCoordinates();
 
     /**
+      @brief Settings route.
+      @param Actual route.
+      */
+    void setRoute(QVector<osmscout::Routing::RouteNode> route);
+
+    /**
+      @brief Gettings actual route.
+      @return Actual route.
+      */
+    QVector<osmscout::Routing::RouteNode> getRoute();
+
+    /**
       @brief Setting zoom value.
       @param zoom value.
       */
@@ -116,13 +135,29 @@ public:
       */
     bool getTracking();
 
+    /**
+      @brief Enable or disable rendering route.
+      @param Actual route rendering value.
+      */
+    void setRouting(bool routing);
+
+    /**
+      @brief Gets actual route rendering value.
+      @return Actual route rendering value.
+      */
+    bool getRouting();
+
 private:
     bool tracking;
+    bool routing;
+    bool manualSimulation;
+    bool movingPosition;
     double myLon,myLat,myAngle;
 
     bool mouseDown;
     //Dodatkowy rozmiar w cache
-    int lat,lon,zoom;
+    double lat,lon;
+    int zoom;
     //Pressed
     double lon1,lat1;
 
@@ -135,14 +170,22 @@ private:
     osmscout::MercatorProjection  projectionRendered;
     osmscout::MercatorProjection  projectionRendered1;
 
+    QVector<osmscout::Routing::RouteNode> route;
+    int lastNodeIndex;
+
     MapPixmapRenderer *rendererThread;
     QImage image;
     void testPixmap(bool force=false);
     void DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter);
+    void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
+    void updateHint();
 
 public slots:
 
     void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
+
+signals:
+    void leftRoute(double actLon, double actLat, double destLon, double destLat);
 };
 
 

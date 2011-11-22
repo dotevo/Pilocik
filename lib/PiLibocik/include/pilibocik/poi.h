@@ -3,9 +3,11 @@
 
 #include <QString>
 #include <QList>
+#include <QStringList>
 #include <QPair>
 #include <QMap>
-#include <pilibocik/point.h>
+#include <QDate>
+#include <pilibocik/position.h>
 
 namespace PiLibocik{
 
@@ -14,7 +16,7 @@ namespace PiLibocik{
      *
      * @class Poi poi.h <pilibocik/poi.h>
      */
-    class Poi:public Point
+    class Poi:public Position
     {
     private:
         QMap <int,QString> types; /**< TODO */
@@ -74,6 +76,12 @@ namespace PiLibocik{
          * @param type
          */
         QString getTypeName(int type);
+        /**
+         * @brief
+         *
+         * @param now
+         */
+        int isOpen(QDate now);
 
 
 //#ifdef PiLibocik_WRITE_MODE

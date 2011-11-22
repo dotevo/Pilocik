@@ -5,6 +5,8 @@
 #include <pilibocik/poifileppoi.h>
 #include <pilibocik/boundarybox.h>
 #include <QDebug>
+#include <QTime>
+#include <pilibocik/geohash.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,33 +15,39 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    //PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db", "g:/poi.db", "../../PiLibocik/poiConfig.xml");
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/map/poland.db","../test/config.xml");
 
     //------------SAVE-----------------
-    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("c:/poi.db");
+//    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/poi.db");
+    qDebug()<<"Generating binary files";
     QList<PiLibocik::Poi> pois=pd->getPoiList();
     QMap<int,QString> types=pd->getPoiTypeNames();
     PiLibocik::PoiFilePPOI n;
-    n.saveToFile("c:/map/mojepoi2",pois,types);
+    n.saveToFile("g:/mojepoi2",pois,types);
 
     //----------------------------------
 
 
     //-------------LOAD------------------
-    //PiLibocik::PoiFilePPOI n;
-    PiLibocik::BoundaryBox b(PiLibocik::Point(18.6285,54.2666),PiLibocik::Point(18.9,55));
-    QList <PiLibocik::Poi> p=n.loadPOIsFromFile("c:/map/mojepoi2",b,-1);
+//    PiLibocik::PoiFilePPOI n;
+    PiLibocik::BoundaryBox b(PiLibocik::Position(15.9877,50.9603),PiLibocik::Position(17.3939,51.4551));
+    QList <PiLibocik::Poi> p=n.loadPOIsFromFile("G:/mojepoi2",b,-1);
     QListIterator <PiLibocik::Poi> iter(p);
+    QTime t;
+    t.start();
+    int i = 0;
     while(iter.hasNext()){
         PiLibocik::Poi poi=iter.next();
-        qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType();
+        i++;
+//        qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType()<<"Geohash:"<<poi.getGeohash();
         QList < QPair <QString,QString > > l= poi.getTags();
         QListIterator <QPair <QString,QString > > iter2(l);
         while(iter2.hasNext()){
             QPair <QString,QString > n=iter2.next();
-            qDebug()<<n.first<<"="<<n.second;
+//            qDebug()<<n.first<<"="<<n.second;
         }
     }
+//    qDebug()<<"Time: "<<t.elapsed()<<"Size: "<<i;
     //-----------------------------------
 
 

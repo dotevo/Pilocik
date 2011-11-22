@@ -3,8 +3,8 @@
 
 #include <QDebug>
 
-InfoWindow::InfoWindow(QFrame *parent) :
-    QFrame(parent),
+InfoWindow::InfoWindow(NavigationWindow *parent) :
+    QFullScreenFrame(parent),
     ui(new Ui::InfoWindow)
 {
     ui->setupUi(this);

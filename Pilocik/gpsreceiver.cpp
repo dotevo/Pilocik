@@ -225,6 +225,7 @@ int GPSreceiver::connectSerialPort()
 
     return connected ? serialPortIndex : 0;
 #endif
+    return false;
 }
 
 bool GPSreceiver::testSerialPort()
@@ -247,6 +248,7 @@ bool GPSreceiver::testSerialPort()
     }
     return test.contains("$");
 #endif
+    return false;
 }
 
 bool GPSreceiver::startRealGPS()
@@ -295,6 +297,7 @@ bool GPSreceiver::startRealGPS()
         }
     }
 #endif
+    return false;
 }
 
 void GPSreceiver::run()
