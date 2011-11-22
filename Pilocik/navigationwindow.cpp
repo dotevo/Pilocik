@@ -129,7 +129,7 @@ void NavigationWindow::on_routeButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     routeWin->setVisible(true);
     routeWin->raise();
-    connect(routeWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(routeWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_optionsButton_clicked() {
@@ -140,7 +140,7 @@ void NavigationWindow::on_optionsButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     optionsWin->setVisible(true);
     optionsWin->raise();
-    connect(optionsWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(optionsWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_gpsButton_clicked() {
@@ -151,7 +151,7 @@ void NavigationWindow::on_gpsButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     gpsInfoWin->setVisible(true);
     gpsInfoWin->raise();
-    connect(gpsInfoWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(gpsInfoWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_exitButton_clicked() {

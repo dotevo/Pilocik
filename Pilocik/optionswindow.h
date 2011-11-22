@@ -10,6 +10,7 @@ namespace Ui {
 class MapOptionsWindow;
 class GPSOptionsWindow;
 class UserOptionsWindow;
+class CreditsWindow;
 
 class OptionsWindow : public QFullScreenFrame
 {
@@ -34,14 +35,17 @@ private slots:
      */
     void optionWindowClosed();
 
+    void on_creditsButton_clicked();
+
 signals:
-    void windowClosed();
+    void closed();
 
 private:
     Ui::OptionsWindow *ui;
     MapOptionsWindow * moWin;
     GPSOptionsWindow *gpsWin;
     UserOptionsWindow *userWin;
+    CreditsWindow *creditsWin;
 
     void changeEvent(QEvent *);
 };

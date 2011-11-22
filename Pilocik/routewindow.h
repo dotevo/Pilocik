@@ -24,7 +24,7 @@ private slots:
     void pswClosed();
 
 signals:
-    void windowClosed();
+    void closed();
 
 private:
     Ui::RouteWindow *ui;

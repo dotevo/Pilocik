@@ -29,7 +29,7 @@ void RouteWindow::on_toButton_clicked(){
 
 void RouteWindow::on_routeBackButton_clicked(){
     setVisible(false);
-    emit windowClosed();
+    emit closed();
 }
 
 void RouteWindow::pswClosed(){
