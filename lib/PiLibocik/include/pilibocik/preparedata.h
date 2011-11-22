@@ -1,5 +1,5 @@
-#ifndef PREPAREDATA_H
-#define PREPAREDATA_H
+#ifndef PILIBOCIK_PREPAREDATA_H
+#define PILIBOCIK_PREPAREDATA_H
 
 #include <QList>
 #include <QMap>

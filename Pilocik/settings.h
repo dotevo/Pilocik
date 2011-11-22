@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QTranslator>
 #include <QApplication>
+#include <pilibocik/poi.h>
 
 class Settings
 {
@@ -22,7 +23,11 @@ private:
     QString mapPath,
             mapStylePath,
             layoutStylePath,
+            poiFilePath,
+            poiIconsDir,
             simulationPath;
+    QMap<int, PiLibocik::PoiDisplay> poiDisplaySettings;
+
 
     //profileSettings
     QDomElement profileSettingsXMLNode;
@@ -69,6 +74,7 @@ public:
     void modifyWidgetSettings(QString name, QMap<QString,QString>);
     void modifyMapSettings(double lat, double lon, int zoom);
     void modifyLanguageSettings();
+    void modifyPoiDisplaySettings(QMap<int, PiLibocik::PoiDisplay> newPoiDisplaySettings);
 
     QTranslator* reloadTranslation(QString lang = "");
 
@@ -94,6 +100,21 @@ public:
     QString getSimulationPath()
     {
         return simulationPath;
+    }
+
+    QString getPoiFilePath()
+    {
+        return poiFilePath;
+    }
+
+    QString getPoiIconsDir()
+    {
+        return poiIconsDir;
+    }
+
+    QMap<int, PiLibocik::PoiDisplay> getPoiDisplaySettings()
+    {
+        return poiDisplaySettings;
     }
 
     double getLat()

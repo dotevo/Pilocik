@@ -52,10 +52,11 @@ QMap< int,QString > PoiFilePPOI::loadPOIsTypesFromFile(QString file){
         quint8 size=0;
         inData>>size;
         char* n = new char[size];
-        inData.readRawData((char*)&n,(int)size);
-        QString name(n);
+        inData.readRawData((char*)n,(int)size);
+        QByteArray bytename(n, size);
+        QString name(bytename);
         name.resize(size);
-        qDebug()<<name.length();
+        //qDebug()<<name.length();
         types.insert(i,name);
     }
     return types;
@@ -74,13 +75,13 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     in >> geoHashSize;
     char *firstGeo=new char[geoHashSize];
     in >> geoHashsCount;
-    qDebug()<<in.device()->pos();
+//    qDebug()<<in.device()->pos();
     int a=0;
     a+=geoHashSize;
-    qDebug()<<a;
+    //qDebug()<<a;
     in.readRawData(firstGeo,a);
-    qDebug()<<in.device()->pos()<<":"<<a;
-    qDebug()<<firstGeo;
+    //qDebug()<<in.device()->pos()<<":"<<a;
+    //qDebug()<<firstGeo;
     QString s(firstGeo);
     s=s.left(a);
     Geohash geoFirst(s);
@@ -105,11 +106,6 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
 
 
     QList<Geohash> geohashes=bbox.getGeohashesIn(geoHashSize);
-    Geohash geo0("u2g");
-    Geohash geo1("u2z");
-    for(;geo0<geo1;geo0++){
-        geohashes.append(geo0);
-    }
 
     QVector<qint64> indexes;    
 
@@ -121,7 +117,7 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
             in.device()->seek(positionINX+n*sizeof(qint64));
             qint64 ind;
             in >> ind;
-            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
+            //qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
             //if empty
             if(ind!=0)
                 indexes.push_back(ind);
@@ -212,7 +208,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
     while(iter.hasNext()){
         Poi *poi=(Poi*)&iter.next();
         QString geo=poi->getGeohash();
-        Geohash geoH(geo.left(3));
+        Geohash geoH(geo.left(5));
         if(geoHashedPOIs.contains(geoH)){
             geoHashedPOIs.value(geoH)->push_back(poi);
         }else{
@@ -252,7 +248,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
         QListIterator<int> typesListIter(typesList);        
         while(typesListIter.hasNext()){            
             QString s=types.value(typesListIter.next());
-            qDebug()<<s.length()<<s;
+            //qDebug()<<s.length()<<s;
             outData<<(quint8)s.length();                 //fileDATA     1byte(m)*n
             outData.writeRawData(s.toLatin1(),s.length());//fileDATA     1byte*m
         }
@@ -283,7 +279,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
 
                 //Data (first block)
                 outIndex<< outData.device()->pos() ;
-                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
+                //qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
                 makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
 
 
@@ -293,7 +289,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
             geo2=listIterator.next();
             for(geo1++;geo1<geo2;geo1++){
                 outIndex << empty;
-                qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
+                //qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
             }
             outIndex << outData.device()->pos();
             qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());

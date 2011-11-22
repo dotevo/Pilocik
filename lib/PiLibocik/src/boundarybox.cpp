@@ -3,6 +3,7 @@
 
 namespace PiLibocik{
 BoundaryBox::BoundaryBox(Position p1,Position p2):p1(p1),p2(p2){
+    precision = -1;
     spatialError.insert(1, QPair<double,double>(23,23));
     spatialError.insert(2, QPair<double,double>(5.6,2.8));
     spatialError.insert(3, QPair<double,double>(0.7,0.7));
@@ -13,25 +14,33 @@ BoundaryBox::BoundaryBox(Position p1,Position p2):p1(p1),p2(p2){
     spatialError.insert(8, QPair<double,double>(0.00017,0.000085));
 }
 
-
-
 QList <Geohash> BoundaryBox::getGeohashesIn(int precision){
-    //TODO bbox to geohashes
+    this->precision = precision;
     QMap<QString, Geohash> ret;
-    for(double lon=p1.getLon(); lon < p2.getLon(); lon+=spatialError[precision].first)
+    double lon=p1.getLon();
+    while(1)
     {
-        for(double lat=p1.getLat(); lat < p2.getLat(); lat+=spatialError[precision].second)
+        double lat=p1.getLat();
+        while(1)
         {
             Geohash geo(lon, lat, precision);
             if(!ret.contains(geo.toQString()))
             {
                 ret.insert(geo.toQString(), geo);
-                qDebug()<<"geohash:!"<<geo.toQString();
+                //qDebug()<<"geohash:!"<<geo.toQString();
             }
-
+            if(lat > p2.getLat()) break;
+            lat+=spatialError[precision].second;
         }
+        if(lon > p2.getLon()) break;
+        lon+=spatialError[precision].first;
     }
     return ret.values();
+}
+
+QPair<double,double> BoundaryBox::getCurrentError()
+{
+    return spatialError[precision];
 }
 
 }

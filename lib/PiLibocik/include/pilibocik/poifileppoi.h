@@ -1,5 +1,5 @@
-#ifndef POIFILEPPOI_H
-#define POIFILEPPOI_H
+#ifndef PILIBOCIK_POIFILEPPOI_H
+#define PILIBOCIK_POIFILEPPOI_H
 
 #include <QFile>
 #include <pilibocik/poifile.h>

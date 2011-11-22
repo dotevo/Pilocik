@@ -3,6 +3,47 @@
 
 namespace PiLibocik{
 
+PoiDisplay::PoiDisplay(){
+}
+
+PoiDisplay::PoiDisplay(int type, bool display, int zoom, QString iconPath)
+{
+    this->type = type;
+    this->display = display;
+    this->zoom = zoom;
+    this->iconPath = iconPath;
+}
+
+void PoiDisplay::setDisplay(bool display)
+{
+    this->display = display;
+}
+
+bool PoiDisplay::getDisplay()
+{
+    return display;
+}
+
+int PoiDisplay::getZoom()
+{
+    return zoom;
+}
+
+int PoiDisplay::getType()
+{
+    return type;
+}
+
+bool PoiDisplay::operator ==(const PoiDisplay &p) const
+{
+    return type == p.type;
+}
+
+QString PoiDisplay::getIconPath()
+{
+    return iconPath;
+}
+
 Poi::Poi(double lon,double lat,QString name,int type, QList < QPair <QString, QString> > tags)
          :Position(lon,lat),name(name),type(type),tags(tags){
 }
