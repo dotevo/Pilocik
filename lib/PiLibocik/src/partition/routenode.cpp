@@ -5,7 +5,7 @@ namespace PiLibocik{namespace Partition{
 
 RouteNode::RouteNode() : Node(){}
 
-RouteNode::RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, bool routing = false, RouteNode *prevNode=0, PartitionFile *m=0) :
+RouteNode::RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, bool routing, RouteNode *prevNode, PartitionFile *m) :
                                                     Node(id, cell, lon, lat, m),
                                                                                 prevWayId(prevWayId),
                                                                                 rating(rating),
@@ -13,7 +13,7 @@ RouteNode::RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId
                                                                                 prevNode(prevNode){
 }
 
-RouteNode::RouteNode(Node node, int prevWayId, double rating, bool routing = false, RouteNode *prevNode=0, PartitionFile *m=0) :
+RouteNode::RouteNode(Node node, int prevWayId, double rating, bool routing, RouteNode *prevNode, PartitionFile *m) :
                                                     Node(node.getId(), node.getCell(), node.getLon(), node.getLat(), m),
                                                                                 prevWayId(prevWayId),
                                                                                 rating(rating),
@@ -22,7 +22,7 @@ RouteNode::RouteNode(Node node, int prevWayId, double rating, bool routing = fal
 }
 
 RouteNode RouteNode::getPrevNode(){
-    return &prevNode;
+    return *prevNode;
 }
 
 int RouteNode::getPrevWay(){
