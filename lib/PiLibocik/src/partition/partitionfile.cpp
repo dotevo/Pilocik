@@ -270,6 +270,9 @@ PrioritetsFile  *PartitionFile::getPrioritetsFile(){
     return prioritetsFile;
 }
 
+Node PartitionFile::getNearestNode(Position pos){
+    // TODO: implementation
+}
 
 qint64 PartitionFile::loadIndex(QDataStream &stream,int type){
     qint64 ret=0;

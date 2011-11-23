@@ -81,6 +81,14 @@ public:
     void savePartition( QList<Way> &ways, QList<Node> &nodes, int prec);
 #endif
 
+    /**
+     * @brief Gets node that is closest to given position.
+     *
+     * @param pos - given position
+     *
+     * @return Closest node
+     */
+    Node getNearestNode(Position pos);
     static qint64 loadIndex(QDataStream &stream,int type);
 };
 
