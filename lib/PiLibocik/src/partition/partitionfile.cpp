@@ -1,8 +1,14 @@
 #include <pilibocik\partition\partitionfile.h>
-#include <pilibocik/partition/edge.h>
 #include <QMap>
 #include <QDebug>
 #include <QListIterator>
+
+#include <pilibocik/partition/boundaryedge.h>
+#include <pilibocik/partition/way.h>
+#include <pilibocik/partition/restriction.h>
+#include <pilibocik/partition/node.h>
+#include <pilibocik/partition/edge.h>
+
 
 namespace PiLibocik{namespace Partition{
 
@@ -70,12 +76,14 @@ Node NodeFile::getNode(qint64 pos){
     if(pos!=-1)
         stream->device()->seek(pos);
     quint32 id;
+    quint32 cell;
     double lon,lat;
     quint8 waysCount,boundCount,routeCount;
     stream->operator >>(id);
+    stream->operator >>(cell);
     stream->operator >>(lon);
     stream->operator >>(lat);
-    Node node(id,lon,lat,part);
+    Node node(id,cell,lon,lat,part);
 
     stream->operator >>(waysCount);
     for(quint8 i=0;i<waysCount;i++){
@@ -91,9 +99,10 @@ Node NodeFile::getNode(qint64 pos){
     stream->operator >>(boundCount);
     for(quint8 i=0;i<boundCount;i++){
         qint64 nInd     = PartitionFile::loadIndex(*stream,fileType);
+        qint64 wayInd  = PartitionFile::loadIndex(*stream,fileType);
         qint64 prioInd  = PartitionFile::loadIndex(*stream,fileType);
         double value=part->getPrioritetsFile()->getPrioritet(prioInd);
-        Edge e(nInd,value);
+        BoundaryEdge e(nInd,wayInd,value,part);
         node.addBoundaryEdge(e);
     }
 
@@ -103,8 +112,8 @@ Node NodeFile::getNode(qint64 pos){
         stream->operator >>(nInd);
         stream->operator >>(prioInd);
         double value=part->getPrioritetsFile()->getPrioritet(prioInd);
-        Edge e(nInd,value);
-        node.addBoundaryEdge(e);
+        Edge e(nInd,value,part);
+        node.addRoutingEdge(e);
     }
     return node;
 }
@@ -167,6 +176,7 @@ double PrioritetsFile::getPrioritet(qint64 pos){
     Nodes count (nn)    -quint32
     -----Node-----
         int             -quint32
+        cell            -quint32
         lon             -double
         lat             -double
         WaysCount(wc)   -quint8
@@ -175,6 +185,7 @@ double PrioritetsFile::getPrioritet(qint64 pos){
         BoundCount(bc)  -quint8
         ----Boundary *(bc)--
             Node(pair)  -qint64 (NODES)
+            Way         -qint64 (WAY)
             Prio        -qint64 (PRIO)
         RouteCount(rc)  -quint8
         ----Routes *(rc)----
@@ -354,6 +365,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                         nodesIndex.insert(n->getId(),nodeStream.device()->pos());
                         //Dodaj dane w node
                         nodeStream<<n->getId();
+                        nodeStream<<n->getCell();
                         nodeStream<<n->getLon();
                         nodeStream<<n->getLat();
                         /****WAYS****/
@@ -367,13 +379,16 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                             addIndex(nodeStream,emptyIndex,sizeType);
                         }
                         /****BOUNDARY_EDGES****/
-                        QVector <Edge> node_bound=n->getBoundaryEdges();
+                        QVector <BoundaryEdge> node_bound=n->getBoundaryEdges();
                         nodeStream<<(quint8)node_bound.size();
                         for(int j=0;j<node_bound.size();j++){
                             //Dodaj wpis oznazcajacy podmiane node
-                            Edge e=node_bound.at(j);
+                            BoundaryEdge e=node_bound.at(j);
                             nodesToReplace.append(QPair<int,qint64>(e.getPair(),nodeStream.device()->pos()) );
                             //Dodaj pusty index
+                            addIndex(nodeStream,emptyIndex,sizeType);
+                            ///Droga
+                            waysToReplace.append(QPair<int,qint64>(e.getWay(),nodeStream.device()->pos()) );
                             addIndex(nodeStream,emptyIndex,sizeType);
                             //Dodaj priorytet index
                             addIndex(nodeStream,prioritetsStream.device()->pos(),sizeType);

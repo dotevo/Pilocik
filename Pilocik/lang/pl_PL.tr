@@ -2,6 +2,59 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="tr_TR">
 <context>
+    <name>CreditsWindow</name>
+    <message>
+        <location filename="../creditswindow.ui" line="14"/>
+        <source>Frame</source>
+        <translation type="unfinished">Ramka</translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="44"/>
+        <source>&lt;img src=&quot;:/gif/images/other/pilocik_logo.gif&quot; /&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="80"/>
+        <source>Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="98"/>
+        <source>Jordanek Adam</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="116"/>
+        <source>Klimek Tomasz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="134"/>
+        <source>Lampart Bartosz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../creditswindow.ui" line="152"/>
+        <source>Marsik Rafał</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="177"/>
+        <source>Map data (c) </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="192"/>
+        <source>OpenStreetMap contributors, CC-BY-SA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../creditswindow.ui" line="223"/>
+        <source>BACK</source>
+        <translation type="unfinished">WSTECZ</translation>
+    </message>
+</context>
+<context>
     <name>GPSInfoWindow</name>
     <message>
         <location filename="../gpsinfowindow.ui" line="14"/>
@@ -154,36 +207,44 @@
 <context>
     <name>InfoWindow</name>
     <message>
-        <location filename="../infowindow.ui" line="14"/>
+        <location filename="../infowindow.ui" line="20"/>
         <source>Frame</source>
         <translation>Ramka</translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="44"/>
         <source>NAME:</source>
-        <translation>NAZWA:</translation>
+        <translation type="obsolete">NAZWA:</translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="57"/>
         <source>COORDINATES:</source>
-        <translation>WSPÓŁRZĘDNE:</translation>
+        <translation type="obsolete">WSPÓŁRZĘDNE:</translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="70"/>
-        <location filename="../infowindow.ui" line="83"/>
-        <location filename="../infowindow.ui" line="96"/>
+        <location filename="../infowindow.ui" line="44"/>
+        <source>POI details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="80"/>
+        <location filename="../infowindow.ui" line="97"/>
+        <location filename="../infowindow.ui" line="107"/>
         <source>TextLabel</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="138"/>
-        <source>BACK</source>
-        <translation>WSTECZ</translation>
+        <location filename="../infowindow.ui" line="90"/>
+        <source>Coordinates:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="167"/>
-        <source>INFO</source>
+        <location filename="../infowindow.ui" line="117"/>
+        <source>Details:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../infowindow.ui" line="149"/>
+        <source>BACK</source>
+        <translation>WSTECZ</translation>
     </message>
 </context>
 <context>
@@ -447,27 +508,27 @@
         <translation>Wersja:</translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="117"/>
+        <location filename="../mapoptionswindow.ui" line="104"/>
         <source>Show only opened stores</source>
         <translation>Pokaż tylko otwarte sklepy</translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="124"/>
+        <location filename="../mapoptionswindow.ui" line="111"/>
         <source>ShowPOI</source>
         <translation>Pokaż POI</translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="137"/>
+        <location filename="../mapoptionswindow.ui" line="124"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="150"/>
+        <location filename="../mapoptionswindow.ui" line="137"/>
         <source>BACK</source>
         <translation>WSTECZ</translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="157"/>
+        <location filename="../mapoptionswindow.ui" line="144"/>
         <source>MAP OPTIONS</source>
         <translation>OPCJE MAPY</translation>
     </message>
@@ -485,12 +546,7 @@
         <translation>Zablokuj śledzenie</translation>
     </message>
     <message>
-        <location filename="../navigationwindow.ui" line="263"/>
-        <source>&lt;&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../navigationwindow.ui" line="285"/>
+        <location filename="../navigationwindow.ui" line="289"/>
         <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -503,7 +559,7 @@
         <translation>Ramka</translation>
     </message>
     <message>
-        <location filename="../optionswindow.ui" line="114"/>
+        <location filename="../optionswindow.ui" line="91"/>
         <source>BACK</source>
         <translation>WSTECZ</translation>
     </message>
@@ -611,7 +667,7 @@
     </message>
     <message>
         <location filename="../routewindow.ui" line="20"/>
-        <location filename="../routewindow.cpp" line="12"/>
+        <location filename="../routewindow.cpp" line="14"/>
         <source>ROUTE PLANNING</source>
         <translation>PLANOWANIE TRASY</translation>
     </message>
@@ -700,6 +756,29 @@
     </message>
 </context>
 <context>
+    <name>TErrorWidget</name>
+    <message>
+        <location filename="../widgets/terrorwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Forma</translation>
+    </message>
+    <message>
+        <location filename="../widgets/terrorwidget.ui" line="25"/>
+        <source>ERROR!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/terrorwidget.ui" line="35"/>
+        <source>TextLabel</source>
+        <translation type="unfinished">-</translation>
+    </message>
+    <message>
+        <location filename="../widgets/terrorwidget.ui" line="72"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>THintWidget</name>
     <message>
         <location filename="../widgets/thintwidget.ui" line="14"/>
@@ -708,7 +787,17 @@
     </message>
     <message>
         <location filename="../widgets/thintwidget.ui" line="20"/>
-        <source>Za</source>
+        <source>For</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thintwidget.ui" line="34"/>
+        <source>meters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thintwidget.ui" line="41"/>
+        <source>next crossing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -716,14 +805,17 @@
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../widgets/thintwidget.ui" line="34"/>
-        <source>metrów</source>
-        <translation type="unfinished"></translation>
+</context>
+<context>
+    <name>TRoutingProgressWidget</name>
+    <message>
+        <location filename="../widgets/troutingprogresswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Forma</translation>
     </message>
-    <message utf8="true">
-        <location filename="../widgets/thintwidget.ui" line="41"/>
-        <source>skręć w lewo</source>
+    <message>
+        <location filename="../widgets/troutingprogresswidget.ui" line="23"/>
+        <source>Calculating route...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

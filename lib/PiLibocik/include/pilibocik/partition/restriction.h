@@ -1,10 +1,11 @@
 #ifndef PILIBOCIK_RESTRICTION_H
 #define PILIBOCIK_RESTRICTION_H
 
-#include <pilibocik/partition/way.h>
+#include <qglobal.h>
 
 namespace PiLibocik{namespace Partition{
 class Way;
+class Node;
 
 class Restriction{
 private:
@@ -16,8 +17,9 @@ public:
     Restriction(qint64 to, qint64 via, int type);
     int getType();
     quint64 getWayTo();
-    quint64 getVia();
+    quint64 getVia();    
     Way getWayToObj();
+    Node getViaObj();
 };
 
 }}
