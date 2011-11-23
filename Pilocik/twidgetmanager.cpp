@@ -58,6 +58,11 @@ void TWidgetManager::setMode(TMovableFrame::TMOVABLEMODE mode) {
      }
 }
 
+void TWidgetManager::setWidgetVisible(QString name, bool visible)
+{
+    widgets[name]->setVisible(visible);
+}
+
 void TWidgetManager::addWidget(QString name, TMovableFrame* w) {
     if(w!=0){
         widgets.insert(name,w);

@@ -16,6 +16,7 @@
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Routing.h>
+#include <osmscout/Searching.h>
 
 namespace Ui {
     class MapRenderWidget;
@@ -58,6 +59,12 @@ signals:
 class MapRenderWidget : public QWidget
 {
     Q_OBJECT
+
+    enum PenStyle {
+        NORMAL_LINE,
+        ROUTE_LINE,
+        ROUTE_EDGE_LINE,
+    };
 
 public:
     MapRenderWidget(QWidget *parent=0,int width=0,int height=0);
@@ -141,12 +148,28 @@ public:
       */
     bool getRouting();
 
+    enum HintType {
+        NoHint,
+        NormalHint,
+        LeaveRouteHint,
+        FinishRouteHint
+    };
+
+    /**
+      @brief Updates hint with specified hint type.
+      @param hintType Hint type.
+      */
+    void updateHint(HintType hintType = NoHint);
+
 private:
     bool tracking;
     bool routing;
     bool manualSimulation;
     bool movingPosition;
     double myLon,myLat,myAngle;
+    double nodeR, routeW;   // size of node and route
+    osmscout::Searching::Intersection nextIntersection;
+    int getNextCrossIndex();
 
     bool mouseDown;
     //Dodatkowy rozmiar w cache
@@ -168,18 +191,19 @@ private:
     int lastNodeIndex;
 
     MapPixmapRenderer *rendererThread;
+    osmscout::Searching *searching;
     QImage image;
     void testPixmap(bool force=false);
     void DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter);
     void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
-    void updateHint();
+    QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
+    void setRouteSizes(int zoom);
 
 public slots:
 
     void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
+    void leaveRoute(double actLon, double actLat, double destLon, double destLat);
 
-signals:
-    void leftRoute(double actLon, double actLat, double destLon, double destLat);
 };
 
 

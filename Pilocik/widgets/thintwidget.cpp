@@ -6,46 +6,68 @@ THintWidget::THintWidget(QWidget *parent) :
     ui(new Ui::THintWidget)
 {
     ui->setupUi(this);
+
+    finishRoute = "You are at the destination! Good job dude!";
+    leaveRoute = "You left the route!";
 }
 
 THintWidget::~THintWidget()
 {
-    delete ui;
+
 }
 
-void THintWidget::setPre(QString pre)
+void THintWidget::updateDistance(double distance)
 {
-    ui->labelPre->setText(pre);
+    ui->label->setText(QString::number(distance));
 }
 
-void THintWidget::setDistance(QString distance)
+void THintWidget::setFinishRoute()
 {
-    ui->labelDist->setText(distance);
+    ui->label->setText(finishRoute);
 }
 
-void THintWidget::setHintContent(QString content)
+void THintWidget::setLeaveRoute()
 {
-    ui->labelHint->setText(content);
+    ui->label->setText(leaveRoute);
 }
 
-QString THintWidget::getPre()
+void THintWidget::setIntersection(osmscout::Searching::Intersection intersection)
 {
-    return ui->labelPre->text();
+    this->intersection = &intersection;
+
+    myPosX = intersection.myPos.x();
+    myPosY = intersection.myPos.y();
+
+    crossX = intersection.cross.x();
+    crossY = intersection.cross.y();
+
+    wayX = intersection.way.x();
+    wayY = intersection.way.y();
 }
 
-QString THintWidget::getDistance()
+void THintWidget::paintEvent(QPaintEvent *e)
 {
-    return ui->labelDist->text();
+    QPainter painter(this);
+
+    painter.setRenderHint(painter.Antialiasing);
+
+    QPen pen;
+    pen.setColor(Qt::red);
+    pen.setWidth(10);
+    pen.setJoinStyle(Qt::RoundJoin);
+    pen.setCapStyle(Qt::RoundCap);
+
+    painter.setPen(pen);
+
+    painter.drawLine(myPosX, myPosY, crossX, crossY);
+    painter.drawLine(crossX, crossY, wayX, wayY);
+
+    /*
+    pen.setColor(Qt::white);
+    for (int i = 0; i < intersection->ways.size(); i++) {
+        painter.drawLine(intersection->cross, intersection->ways[i]);
+    }
+    */
 }
 
-QString THintWidget::getHintContent()
-{
-    return ui->labelHint->text();
-}
 
-void THintWidget::updateAll(QString pre, QString distance, QString content)
-{
-    setPre(pre);
-    setDistance(distance);
-    setHintContent(content);
-}
