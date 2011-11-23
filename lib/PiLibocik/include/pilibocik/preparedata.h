@@ -1,5 +1,5 @@
-#ifndef PREPAREDATA_H
-#define PREPAREDATA_H
+#ifndef PILIBOCIK_PREPAREDATA_H
+#define PILIBOCIK_PREPAREDATA_H
 
 #include <QList>
 #include <QMap>
@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
-#include <pilibocik/point.h>
+#include <pilibocik/position.h>
 #include <pilibocik/poi.h>
 #include <pilibocik/geohash.h>
 
@@ -25,24 +25,28 @@ namespace PiLibocik{
         QSqlDatabase db;
         QStringList queriesBuffer;
         QList<Poi> poiList;
-        QMap<int,QPair<QString,QString> > poiTypes;
+        QList<Poi> poiFromNodesList;
+        QMap<int, QList<QPair<QString,QString> > > poiTypes;
         QMap<int,QString> poiTypeNames;
         QMap<int,QList<QString> > poiTypeSubtags;
-        QMap<int,QList<Point> > wayNodes;
+        QMap<int,QList<Position> > wayNodes;
 
-        void loadXMLconfig(QString XMLpath);
-        void generateData();
-        void saveToDatabase();
-        void loadFromDatabase();
-        Point shapeToPoint(QList<Point> shape);
+        Position shapeToPoint(QList<Position> shape);
+        void removePoiDuplicates();
         void createTables();
 
     public:
         PrepareData(QString dbMapPath, QString dbOutPath, QString XMLconfigPath);
+        PrepareData(QString dbMapPath, QString XMLconfigPath);
         PrepareData(QString dbLoadPath);
 
         QList<Poi> getPoiList();
         QMap<int,QString> getPoiTypeNames();
+
+        void generateData();
+        void saveToDatabase();
+        void loadXMLconfig(QString XMLpath);
+        void loadFromDatabase(QString dbLoadPath);
 
     };
 }

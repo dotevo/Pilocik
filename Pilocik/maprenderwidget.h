@@ -11,12 +11,21 @@
 #include <QString>
 #include <QThread>
 #include <QVector>
+#include <QMap>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Routing.h>
+<<<<<<< HEAD
 #include <osmscout/Searching.h>
+=======
+#include <pilibocik/boundarybox.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/position.h>
+#include <settings.h>
+>>>>>>> f2307a1532d7284fd97bacdc093cef6c3a8ad07a
 
 namespace Ui {
     class MapRenderWidget;
@@ -45,6 +54,9 @@ private:
     osmscout::MapPainterQt        *mapPainter;
     osmscout::MercatorProjection  *projection;
     osmscout::StyleConfig  *styleConfig;
+    QMap<int, PiLibocik::PoiDisplay> poiDisplaySettings;
+
+    void drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter);
 signals:
     void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection);
 

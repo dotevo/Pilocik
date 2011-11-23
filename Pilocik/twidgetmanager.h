@@ -100,6 +100,13 @@ public:
      */
     void setMode(TMovableFrame::TMOVABLEMODE mode);
     /**
+     * @brief Get mode. (Moving,Standing)
+     *
+     * @fn getMode
+     * @return mode
+     */
+    TMovableFrame::TMOVABLEMODE getMode();
+    /**
      * @brief
      *
      * @fn setParent

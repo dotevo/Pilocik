@@ -6,11 +6,14 @@
 #include "widgets/tspeedmeterwidget.h"
 #include "widgets/tsliderwidget.h"
 #include "widgets/thintwidget.h"
+#include "widgets/troutingprogresswidget.h"
+#include "widgets/terrorwidget.h"
 #include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
 #include "gpsinfowindow.h"
 #include "settings.h"
+#include "QDebug"
 
 //to delete
 #include <iostream>
@@ -57,8 +60,8 @@ NavigationWindow::~NavigationWindow()
     delete routeWin;
     delete optionsWin;
     delete gpsInfoWin;
-    //delete mapRenderer;
-    //delete ui->widget;
+    delete mapRenderer;
+//    delete ui->widget;
     delete TWidgetManager::getInstance();
     Settings::getInstance()->saveSettings();
     delete Settings::getInstance();
@@ -71,6 +74,10 @@ void NavigationWindow::addWidgets(){
     TSliderWidget* slider = new TSliderWidget(this);
     slider->initZoom(Settings::getInstance()->getZoom());
     TWidgetManager::getInstance()->addWidget("Slider", slider);
+    TWidgetManager::getInstance()->addWidget("RoutingProgress", new TRoutingProgressWidget(this));
+    TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
+    TWidgetManager::getInstance()->addWidget("ErrorMessage", new TErrorWidget(this));
+    TWidgetManager::getInstance()->getWidget("ErrorMessage")->setVisible(false);
 
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
@@ -133,7 +140,7 @@ void NavigationWindow::on_routeButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     routeWin->setVisible(true);
     routeWin->raise();
-    connect(routeWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(routeWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_optionsButton_clicked() {
@@ -144,7 +151,7 @@ void NavigationWindow::on_optionsButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     optionsWin->setVisible(true);
     optionsWin->raise();
-    connect(optionsWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(optionsWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_gpsButton_clicked() {
@@ -155,7 +162,7 @@ void NavigationWindow::on_gpsButton_clicked() {
     TWidgetManager::getInstance()->hideAllWidgets();
     gpsInfoWin->setVisible(true);
     gpsInfoWin->raise();
-    connect(gpsInfoWin, SIGNAL(windowClosed()), this, SLOT(menuClosedSlot()));
+    connect(gpsInfoWin, SIGNAL(closed()), this, SLOT(menuClosedSlot()));
 }
 
 void NavigationWindow::on_exitButton_clicked() {
@@ -167,12 +174,15 @@ void NavigationWindow::menuClosedSlot() {
     ui->menuButton->setVisible(true);
     ui->trackingButton->setVisible(true);
     ui->sliderButton->setVisible(true);
-    ui->menuPanel->setVisible(true);
+    ui->menuPanel->setVisible(false);
+    TWidgetManager::getInstance()->showAllWidgets();
 }
 
 void NavigationWindow::on_sliderButton_clicked() {
     TWidgetManager::getInstance()->changeMode();
-    ui->sliderButton->setText(ui->sliderButton->text().compare("<--->") ? "<--->" : "<>");
+    ui->sliderButton->setIcon(TWidgetManager::getInstance()->getMode() == 1 ?
+                                  QIcon("..//Pilocik//images//icons//64x64//lock_open_ico.gif") :
+                                  QIcon("..//Pilocik//images//icons//64x64//lock_closed_ico.gif") );
 }
 
 void NavigationWindow::positionUpdated(GPSdata gps_data){
@@ -201,4 +211,9 @@ void NavigationWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+QPointF NavigationWindow::getCoordinates()
+{
+    return ui->widget->getCoordinates();
 }

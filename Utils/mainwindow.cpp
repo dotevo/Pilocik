@@ -67,7 +67,8 @@ void MainWindow::on_simPauseBtn_clicked()
 
 void MainWindow::on_partGenBtn_clicked()
 {
-    osmscout::Partitioning part(ui->partGenMapPath->text(), ui->partGenMapStylePath->text() );
+    //osmscout::Partitioning part(ui->partGenMapPath->text(), ui->partGenMapStylePath->text() );
+    osmscout::Partitioning part;
     //part.TestAlgorithm();
 
     osmscout::Partitioning::DatabasePartition dbPart=part.FindPartition();

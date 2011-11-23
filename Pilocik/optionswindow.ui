@@ -25,7 +25,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>100</height>
+       <height>80</height>
       </size>
      </property>
      <property name="text">
@@ -43,12 +43,12 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
+   <item row="0" column="2">
     <widget class="QPushButton" name="GPSButton">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>100</height>
+       <height>80</height>
       </size>
      </property>
      <property name="text">
@@ -57,29 +57,6 @@
      <property name="icon">
       <iconset resource="icons.qrc">
        <normaloff>:/gif/images/icons/64x64/gps_ico.gif</normaloff>:/gif/images/icons/64x64/gps_ico.gif</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>48</width>
-       <height>48</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QPushButton" name="userButton">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="icons.qrc">
-       <normaloff>:/gif/images/icons/64x64/user_ico.gif</normaloff>:/gif/images/icons/64x64/user_ico.gif</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -112,6 +89,61 @@
      </property>
      <property name="text">
       <string>BACK</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="userButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/gif/images/icons/64x64/user_ico.gif</normaloff>:/gif/images/icons/64x64/user_ico.gif</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>48</width>
+       <height>48</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="creditsButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/gif/images/icons/64x64/pilocik_ico.gif</normaloff>:/gif/images/icons/64x64/pilocik_ico.gif</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>64</width>
+       <height>64</height>
+      </size>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>300</number>
      </property>
     </widget>
    </item>

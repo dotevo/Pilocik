@@ -1,4 +1,5 @@
 #include <pilibocik/geohash.h>
+#include <iostream>
 #include <QDebug>
 
 uint qHash(PiLibocik::Geohash &key){

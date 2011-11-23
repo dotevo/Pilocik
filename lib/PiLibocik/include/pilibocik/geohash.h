@@ -1,5 +1,5 @@
-#ifndef GEOHASH_H
-#define GEOHASH_H
+#ifndef PILIBOCIK_GEOHASH_H
+#define PILIBOCIK_GEOHASH_H
 
 #include <QString>
 #include <QPair>

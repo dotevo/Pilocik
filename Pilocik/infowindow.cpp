@@ -29,10 +29,11 @@ void InfoWindow::setCoordinates(const double lat, const double lon)
     this->lon = lon;
     this->lat = lat;
 
-    ui->lonText->setText(QString::number(lon));
-    ui->latText->setText(QString::number(lat));
+    ui->lonText->setText(" Lat: "+QString::number(lon));
+    ui->latText->setText(" Lon: "+QString::number(lat));
 
-    //ui->mapWidget->setCoordinates(lat, lon);
+    ui->mapWidget->setCoordinates(lat, lon);
+    ui->mapWidget->repaint();
 }
 
 void InfoWindow::setZoom(const int zoom)
@@ -54,6 +55,16 @@ QSize InfoWindow::getSize()
 void InfoWindow::forceMapWidgetRepaint()
 {
     //ui->mapWidget->forceRepaint();
+}
+
+void InfoWindow::setDetails(QList < QPair <QString, QString> > tags)
+{
+    typedef QPair<QString,QString> tag;
+    foreach(tag t, tags)
+    {
+        QLabel *l = new QLabel(" "+t.first + " : " + t.second, ui->infoWidget);
+        ui->infoData->layout()->addWidget(l);
+    }
 }
 
 void InfoWindow::on_backButton_clicked()

@@ -23,8 +23,10 @@ private slots:
     void on_routeBackButton_clicked();
     void pswClosed();
 
+    void on_pushButton_clicked();
+
 signals:
-    void windowClosed();
+    void closed();
 
 private:
     Ui::RouteWindow *ui;

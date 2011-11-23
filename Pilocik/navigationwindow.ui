@@ -260,7 +260,11 @@ border-bottom-left-radius: 0px;
 </string>
     </property>
     <property name="text">
-     <string>&lt;&gt;</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="menuButton">

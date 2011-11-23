@@ -1,20 +1,42 @@
-#ifndef POI_H
-#define POI_H
+#ifndef PILIBOCIK_POI_H
+#define PILIBOCIK_POI_H
 
 #include <QString>
 #include <QList>
+#include <QStringList>
 #include <QPair>
 #include <QMap>
-#include <pilibocik/point.h>
+#include <QDate>
+#include <pilibocik/position.h>
 
 namespace PiLibocik{
+
+    class PoiDisplay
+    {
+    private:
+        int     type;
+        bool    display;
+        int     zoom;
+        QString iconPath;
+
+    public:
+        PoiDisplay();
+        PoiDisplay(int type, bool display, int zoom, QString iconPath);
+        void setDisplay(bool display);
+        bool getDisplay();
+        int  getZoom();
+        int  getType();
+        QString getIconPath();
+        bool operator ==(const PoiDisplay &p) const;
+    };
+
 
     /**
      * @brief
      *
      * @class Poi poi.h <pilibocik/poi.h>
      */
-    class Poi:public Point
+    class Poi:public Position
     {
     private:
         QMap <int,QString> types; /**< TODO */
@@ -74,6 +96,12 @@ namespace PiLibocik{
          * @param type
          */
         QString getTypeName(int type);
+        /**
+         * @brief
+         *
+         * @param now
+         */
+        int isOpen(QDate now);
 
 
 //#ifdef PiLibocik_WRITE_MODE

@@ -51,7 +51,6 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/util/StopClock.cpp \
     ../lib/sosmscout/src/osmscout/oss/Parser.cpp \
     ../lib/sosmscout/src/osmscout/oss/Scanner.cpp \
-    ../lib/sosmscout/src/osmscout/Point.cpp \
     ../lib/sosmscout/src/osmscout/util/Projection.cpp \
     ../lib/sosmscout/src/osmscout/Types.cpp \
     ../lib/sosmscout/src/osmscout/Tag.cpp \
@@ -76,6 +75,14 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitioning.cpp \
     ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
+    ../lib/sosmscout/src/osmscout/Point.cpp \
+    ../lib/PiLibocik/src/preparedata.cpp \
+    ../lib/PiLibocik/src/position.cpp \
+    ../lib/PiLibocik/src/poi.cpp \
+    ../lib/PiLibocik/src/pilibocik.cpp \
+    ../lib/PiLibocik/src/poifileppoi.cpp \
+    ../lib/PiLibocik/src/boundarybox.cpp \
+    ../lib/PiLibocik/src/geohash.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
@@ -83,7 +90,10 @@ SOURCES += main.cpp\
     widgets/tspeedmeterwidget.cpp \
     settings.cpp \
     widgets/tsliderwidget.cpp \
-    widgets/thintwidget.cpp
+    widgets/thintwidget.cpp \
+    creditswindow.cpp \
+    widgets/troutingprogresswidget.cpp \
+    widgets/terrorwidget.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -106,7 +116,10 @@ HEADERS  +=  tmovableframe.h \
     widgets/tspeedmeterwidget.h \
     settings.h \
     widgets/tsliderwidget.h \
-    widgets/thintwidget.h
+    widgets/thintwidget.h \
+    creditswindow.h \
+    widgets/troutingprogresswidget.h \
+    widgets/terrorwidget.h
 
 
 FORMS    += \
@@ -123,10 +136,14 @@ FORMS    += \
     widgets/tspeedmeterwidget.ui \
     pointselectionwindow.ui \
     widgets/tsliderwidget.ui \
-    widgets/thintwidget.ui
+    widgets/thintwidget.ui \
+    creditswindow.ui \
+    widgets/troutingprogresswidget.ui \
+    widgets/terrorwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
+INCLUDEPATH += ./../lib/PiLibocik/include/
 
 
 Release:DESTDIR = ../build/release
@@ -146,6 +163,19 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

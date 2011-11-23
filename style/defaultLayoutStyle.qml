@@ -1,0 +1,280 @@
+/*WINDOW*/
+QWidget > QTabWidget{
+    background: #3c3c3c;
+}
+
+QFrame{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(42, 42, 42, 200),
+                             stop: 0.49 rgba(74, 74, 74, 200),
+                             stop: 0.5 rgba(16, 16, 16, 200),
+                             stop: 1 rgba(42, 42, 42, 200));
+    border-radius: 10px;
+    border: 1px solid rgba(106, 106, 106, 200);
+}
+
+QGraphicsView{
+    background: #3c3c3c;
+    border-radius: 0px;
+    border: 0px solid rgb(70, 70, 70);
+}
+
+QLabel {
+    color: #FFF;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    font-weight: bold;
+    font-family: "Verdana";
+}
+
+QPushButton{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(42, 42, 42, 200),
+                             stop: 0.49 rgba(74, 74, 74, 200),
+                             stop: 0.5 rgba(16, 16, 16, 200),
+                             stop: 1 rgba(42, 42, 42, 200));
+    border-radius: 10px;
+    color: #FFF;
+    border: 1px solid rgba(106, 106, 106, 200);
+    width: 90px
+}
+
+QPushButton:hover{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(62, 62, 82, 200),
+                             stop: 0.49 rgba(94, 94, 164, 200),
+                             stop: 0.5 rgba(26, 26, 46, 200),
+                             stop: 1 rgba(62, 62, 82, 200));
+    border: 1px solid rgba(94, 94, 164, 200);
+    color: #BBB;
+}
+
+QPushButton:pressed{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(42, 42, 102, 200),
+                             stop: 0.49 rgba(74, 74, 184, 200),
+                             stop: 0.5 rgba(16, 16, 56, 200),
+                             stop: 1 rgba(42, 42, 102, 200));
+    border: 1px solid rgba(74, 74, 184, 200);
+    color: #DDD;
+}
+
+QPushButton:disabled{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(22, 22, 37, 100),
+                             stop: 0.49 rgba(44, 44, 76, 100),
+                             stop: 0.5 rgba(6, 6, 17, 100),
+                             stop: 1 rgba(22, 22, 49, 100));
+    border: 1px solid rgba(96, 96, 96, 100);
+    color: rgba(255, 255, 255, 100);
+}
+
+#menuPanel{
+    background: rgba(50,50,50,220);
+    /* qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(0, 0, 0, 230),
+                             stop: 1 rgba(0, 0, 0, 100));*/
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#routeFrame{
+    background: rgba(50,50,50,200);
+    border-radius: 0px;
+}
+
+QLineEdit{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #d3d3d3,
+                             stop: 1 #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid rgb(180, 180, 180 );
+}
+
+QListView{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #d3d3d3,
+                             stop: 1 #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid rgb(180, 180, 180 );
+}
+
+/*RADIOBUTTON*/
+QRadioButton{
+    color: #DDD;
+    font: bold ;
+    font-size: 12px;
+}
+
+ QRadioButton::indicator{
+    width: 20px;
+    height: 20px;
+}
+ QRadioButton::indicator::checked {
+    background: qradialgradient(cx:0, cy:0, radius: 1,
+             fx:0.5, fy:0.5, stop:0 #f9f9f9, stop:1 #a3a3a3);
+    border-radius: 11px;
+    border: 1px solid rgba(106, 106, 106, 200);
+ }
+
+ QRadioButton::indicator::unchecked {
+    background: qradialgradient(cx:0, cy:0, radius: 1,
+             fx:0.3, fy:0.3, stop:0 #222, stop:1 #444);
+    border-radius: 11px;
+    border: 1px solid rgba(96, 96, 96, 200);
+ }
+/*=======================================*/
+
+/*CHECKBOX*/
+QCheckBox{
+    color: #DDD;
+    font: bold ;
+    font-size: 12px;
+}
+
+QCheckBox::indicator{
+    width: 20px;
+    height: 20px;
+}
+QCheckBox::indicator::checked {
+    background: qradialgradient(cx:0, cy:0, radius: 1,
+                            fx:0.5, fy:0.5, stop:0 #f9f9f9, stop:1 #a3a3a3);
+    border-radius: 4px;
+    border: 1px solid rgba(96, 96, 96, 200);
+ }
+
+QCheckBox::indicator::unchecked {
+    background: qradialgradient(cx:0, cy:0, radius: 1,
+                            fx:0.3, fy:0.3, stop:0 #222, stop:1 #444);
+    border-radius: 4px;
+    border: 1px solid rgba(96, 96, 96, 200);
+ }
+/*=======================================*/
+
+QComboBox{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #d3d3d3,
+                             stop: 1 #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid rgb(180, 180, 180 );
+    font: bold ;
+    font-size: 12px;
+}
+
+QComboBox:editable {
+    background: white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                            stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                            stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+}
+
+/* QComboBox gets the "on" state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #D3D3D3, stop: 0.4 #D8D8D8,
+                             stop: 0.5 #DDDDDD, stop: 1.0 #E1E1E1);
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+     padding-top: 3px;
+     padding-left: 4px;
+}
+
+QComboBox::drop-down {
+     subcontrol-origin: padding;
+     subcontrol-position: top right;
+     width: 15px;
+
+     border-left-width: 1px;
+     border-left-color: darkgray;
+     border-left-style: solid; /* just a single line */
+     border-top-right-radius: 3px; /* same radius as the QComboBox */
+     border-bottom-right-radius: 3px;
+}
+
+QComboBox QAbstractItemView {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #d3d3d3,
+                             stop: 1 #f9f9f9);
+    border-radius: 0px;
+}
+
+/*PROGRESS BAR*/
+QProgressBar:horizontal {
+    border: 0;
+    background: rgba(0,0,0,0);
+}
+QProgressBar::chunk:horizontal {
+    border: 1px solid rgb(180, 180, 180 );
+    border-radius: 8px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #d3d3d3,
+                                stop: 1 #f9f9f9);
+}
+
+/*SPECYFIC!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/*RouteWindow*/
+#toButton,#fromButton,#nearestButton{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                            stop: 0 #d3d3d3,
+                            stop: 1 #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid rgb(180, 180, 180 );
+    color:#000;
+}
+
+#toButton:pressed,#fromButton:pressed,#nearestButton:pressed,#nearestClrButton:pressed{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                        stop: 0 #a3a3a3,
+                        stop: 1 #c9c9c9);
+}
+QFullScreenFrame{
+    background: rgba(50,50,50,200);
+    border-radius: 0px;
+}
+
+/*SLIDER*/
+QSlider::groove:vertical {
+    width: 4px;
+    margin: 6px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                            stop: 0 #d3d3d3,
+                            stop: 1 #f9f9f9);
+    border-radius: 2px;
+    border: 1px solid rgb(180, 180, 180 );
+}
+
+QSlider::handle:vertical {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #d3d3d3,
+                             stop: 1 #f9f9f9);
+    border-radius: 4px;
+    border: 1px solid rgb(180, 180, 180 );
+    color:#000;
+    height:8px;
+    margin: 0 -6px; /* expand outside the groove */
+}
+
+/*TABWIDGET*/
+QTabWidget::pane {
+    background: rgba(255,0,0,255);
+}
+QTabBar::tab {
+    background: rgba(0,0,0,0);
+    min-width: 150px;
+    padding: 4px;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+}
+QTabBar::tab:selected {
+    font-size: 24px;
+}
+QTreeWidget{
+    //color: rgb(255, 255, 255);
+    background: rgb(255, 0, 0);
+}
+

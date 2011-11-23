@@ -2,6 +2,7 @@
 #define MAPOPTIONSWINDOW_H
 
 #include "qfullscreenframe.h"
+#include "pilibocik/poi.h"
 
 namespace Ui {
     class MapOptionsWindow;
@@ -27,7 +28,8 @@ signals:
 
 private:
     Ui::MapOptionsWindow *ui;
-
+    QMap<int, PiLibocik::PoiDisplay> poiDisplaySettings;
+    QMap<int,QString> poiTypes;
     void changeEvent(QEvent *);
 };
 

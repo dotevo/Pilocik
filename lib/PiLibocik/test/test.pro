@@ -15,7 +15,7 @@ DEFINES += PiLibocik_WRITE_MODE
 SOURCES += main.cpp\
         mainwindow.cpp \
     ../src/preparedata.cpp \
-    ../src/point.cpp \
+    ../src/position.cpp \
     ../src/poi.cpp \
     ../src/pilibocik.cpp \
     ../src/poifileppoi.cpp \
@@ -27,5 +27,9 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 INCLUDEPATH += ../include/
+
+OTHER_FILES += \
+    config.xml
+
 
 

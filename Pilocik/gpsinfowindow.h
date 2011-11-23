@@ -26,7 +26,7 @@ private slots:
     void clearInfo();
 
 signals:
-    void windowClosed();
+    void closed();
 
 private:
     QString status;

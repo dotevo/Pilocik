@@ -3,6 +3,7 @@
 #include "mapoptionswindow.h"
 #include "gpsoptionswindow.h"
 #include "useroptionswindow.h"
+#include "creditswindow.h"
 #include "navigationwindow.h"
 
 OptionsWindow::OptionsWindow(NavigationWindow *parent) :
@@ -20,6 +21,9 @@ OptionsWindow::OptionsWindow(NavigationWindow *parent) :
 
     userWin=new UserOptionsWindow(parent);
     userWin->setVisible(false);
+
+    creditsWin=new CreditsWindow(parent);
+    creditsWin->setVisible(false);
 }
 
 OptionsWindow::~OptionsWindow() {
@@ -31,7 +35,7 @@ OptionsWindow::~OptionsWindow() {
 
 void OptionsWindow::on_backButton_clicked() {
     setVisible(false);
-    emit windowClosed();
+    emit closed();
 }
 
 void OptionsWindow::on_mapButton_clicked() {
@@ -57,6 +61,15 @@ void OptionsWindow::on_userButton_clicked() {
     userWin->setVisible(true);
     userWin->raise();
     connect(userWin, SIGNAL(closed()),
+            this, SLOT(optionWindowClosed()));
+    setVisible(false);
+}
+
+void OptionsWindow::on_creditsButton_clicked()
+{
+    creditsWin->setVisible(true);
+    creditsWin->raise();
+    connect(creditsWin, SIGNAL(closed()),
             this, SLOT(optionWindowClosed()));
     setVisible(false);
 }

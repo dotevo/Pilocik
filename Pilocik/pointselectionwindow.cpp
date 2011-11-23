@@ -7,11 +7,16 @@
 #include <QAbstractItemView>
 #include <QInputDialog>
 #include <QVector>
+#include <QMapIterator>
 
 #include <QDebug>
 #include "osmscout/Searching.h"
 #include "osmscout/Relation.h"
 #include "osmscout/Routing.h"
+
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/boundarybox.h>
+#include <pilibocik/position.h>
 
 PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double currentLocationX, double currentLocationY) :
     ui(new Ui::PointSelectionWindow),
@@ -22,7 +27,10 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
     ui->setupUi(this);
     sizeChanged(NavigationWindow::main);
 
-    ui->typeComboBox->addItems(searching->getPOIS().values());
+    PiLibocik::PoiFilePPOI poiDB;
+    poiTypes = poiDB.loadPOIsTypesFromFile(Settings::getInstance()->getPoiFilePath());
+
+    ui->typeComboBox->addItems(poiTypes.values());
     ui->typeComboBox->setCurrentIndex(0);
 
     ui->treeWidget->setColumnCount(COLUMNS_COUNT);
@@ -407,7 +415,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
 
     }
 }
-
+/*
 void PointSelectionWindow::fillPOIWidget(QString type)
 {
     QVector<osmscout::NodeRef> poiRef;
@@ -458,6 +466,59 @@ void PointSelectionWindow::fillPOIWidget(QString type)
         ui->poiTreeWidget->resizeColumnToContents(NAME_COLUMN);
         ui->poiTreeWidget->resizeColumnToContents(PATH_COLUMN);
     }
+}
+*/
+
+void PointSelectionWindow::fillPOIWidget(int type)
+{
+    QPointF here = NavigationWindow::main->getCoordinates();
+    double cx = here.x();
+    double cy = here.y();
+
+    PiLibocik::BoundaryBox bbox(PiLibocik::Position(cx,cy),
+                                PiLibocik::Position(cx,cy));
+
+    PiLibocik::PoiFilePPOI poiDB;
+    poiList = poiDB.loadPOIsFromFile(Settings::getInstance()->getPoiFilePath(), bbox, type);
+
+    double x1 = cx;
+    double x2 = cx;
+    double y1 = cy;
+    double y2 = cy;
+    int limit = 100;
+    while(poiList.size()<10 && limit > 0)
+    {
+        x1-=bbox.getCurrentError().first;
+        y1-=bbox.getCurrentError().second;
+        x2+=bbox.getCurrentError().first;
+        y2+=bbox.getCurrentError().second;
+        bbox = PiLibocik::BoundaryBox(PiLibocik::Position(x1,y1),
+                                      PiLibocik::Position(x2,y2));
+        poiList = poiDB.loadPOIsFromFile(Settings::getInstance()->getPoiFilePath(), bbox, type);
+        limit--;
+    }
+
+    QMap<double, int> poisDistance;
+    int i = 0;
+    foreach(PiLibocik::Poi poi, poiList){
+        poisDistance.insert(searching->CalculateDistance(cx, cy, poi.getLon(), poi.getLat()), i++);
+    }
+
+    QTreeWidgetItem *item;
+    QMapIterator<double, int> it(poisDistance);
+    while(it.hasNext())
+    {
+        it.next();
+        item = new QTreeWidgetItem(ui->poiTreeWidget);
+        item->setText(ID_COLUMN, QString::number(it.value()));
+        QString distance = it.key() < 1 ? QString::number((int)(it.key()*1000)).append(" m") : QString::number(it.key(), 'g', 2).append(" km");
+        item->setText(NAME_COLUMN, poiList.at(it.value()).getName().toLatin1());
+        item->setText(PATH_COLUMN, distance);
+        item->setText(INFO_COLUMN, "INFO");
+    }
+
+    ui->poiTreeWidget->resizeColumnToContents(NAME_COLUMN);
+    ui->poiTreeWidget->resizeColumnToContents(PATH_COLUMN);
 }
 
 void PointSelectionWindow::on_poiOkButton_clicked() {
@@ -527,28 +588,43 @@ void PointSelectionWindow::on_poiOkButton_clicked() {
         route.push_back(node);
     }
 
-    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
-    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));
+    /*NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
+    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));*/
 
     emit ok_clicked();
 }
 
 void PointSelectionWindow::on_typeComboBox_currentIndexChanged(const QString &type)
 {
-    QString typeId = searching->getPOIS().key(type);
+    ui->poiTreeWidget->clear();
+    fillPOIWidget(poiTypes.key(type));
 }
 
 void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     if (column == INFO_COLUMN) {
         InfoWindow *infoPoiWin = new InfoWindow(NavigationWindow::main);
+        infoPoiWin->resize(NavigationWindow::main->size());
 
-        osmscout::NodeRef node;
-        searching->searchNode(item->text(ID_COLUMN).toInt(), node);
+        double lat,lon;
+        QString name;
+        if(ui->tabWidget->currentIndex() == 0)
+        {
+            PiLibocik::Poi poi = poiList.at(item->text(ID_COLUMN).toInt());
+            lat = poi.getLat();
+            lon = poi.getLon();
+            name = poi.getName();
+            infoPoiWin->setDetails(poi.getTags());
+        }
+        else
+        {
+            osmscout::NodeRef node;
+            searching->searchNode(item->text(ID_COLUMN).toInt(), node);
 
-        double lat = node.Get()->GetLat();
-        double lon = node.Get()->GetLon();
-        QString name = item->text(NAME_COLUMN);
+            lat = node.Get()->GetLat();
+            lon = node.Get()->GetLon();
+            name = item->text(NAME_COLUMN);
+        }
 
         infoPoiWin->setName(name);
         infoPoiWin->setCoordinates(lat, lon);

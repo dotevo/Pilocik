@@ -63,6 +63,12 @@ void TWidgetManager::setWidgetVisible(QString name, bool visible)
     widgets[name]->setVisible(visible);
 }
 
+TMovableFrame::TMOVABLEMODE TWidgetManager::getMode() {
+    QMapIterator<QString, TMovableFrame*> i(widgets);
+    i.next();
+    return i.value()->getMode();
+}
+
 void TWidgetManager::addWidget(QString name, TMovableFrame* w) {
     if(w!=0){
         widgets.insert(name,w);
