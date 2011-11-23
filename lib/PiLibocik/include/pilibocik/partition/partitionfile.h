@@ -3,12 +3,12 @@
 
 #include <QFile>
 #include <QIODevice>
-#include <pilibocik/partition/way.h>
 #include <pilibocik/boundarybox.h>
 #include <pilibocik/geohash.h>
 
 namespace PiLibocik{namespace Partition{
-
+class Way;
+class Node;
 class PartitionFile;
 
 class WayFile: public QFile{

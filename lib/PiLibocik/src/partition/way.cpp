@@ -1,13 +1,35 @@
 #include <pilibocik\partition\way.h>
+#include <pilibocik/partition/node.h>
 #include <pilibocik/partition/partitionfile.h>
+#include <pilibocik/partition/restriction.h>
 #include <QDebug>
 
 namespace PiLibocik{namespace Partition{
 
 Way::Way(){
+    restriction=new QVector<Restriction>();
 }
 
+
+Way::Way(const Way &way){
+    id=way.id;
+    prio=way.prio;
+    nodes=way.nodes;
+    oneway=way.oneway;
+    part=way.part;
+    restriction=new QVector<Restriction>();
+    for(int i=0;i<way.restriction->size();i++)
+        restriction->push_back(way.restriction->at(i));
+}
+
+
+
 Way::Way(int id,double prio,qint8 oneway,PartitionFile*p):id(id),prio(prio),oneway(oneway),part(p){
+    restriction=new QVector<Restriction>();
+}
+
+Way::~Way(){
+    delete restriction;
 }
 
 bool Way::isEmpty(){
@@ -41,7 +63,7 @@ QVector<Node> Way::getNodesObj(){
 }
 
 void Way::addRestriction(Restriction r){
-    restriction.append(r);
+    restriction->append(r);
 }
 
 QVector<Restriction> Way::getRestrictions(){

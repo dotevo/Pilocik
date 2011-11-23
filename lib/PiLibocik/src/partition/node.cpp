@@ -1,19 +1,26 @@
 #include <pilibocik\partition\node.h>
 #include <pilibocik/partition/partitionfile.h>
+#include <pilibocik/partition/way.h>
+
 #include <QDebug>
 
 namespace PiLibocik{namespace Partition{
 
 Node::Node():Position(0,0){
     id=-1;
+    cell=0;
 }
 
-Node::Node(int id,double lon,double lat):Position(lon,lat){
+Node::Node(int id,quint32 cell,double lon,double lat,PartitionFile *m):Position(lon,lat),cell(cell),part(m){
     this->id=id;
 }
 
 bool Node::isEmpty(){
     return id<0;
+}
+
+quint32 Node::getCell(){
+    return cell;
 }
 
 int Node::getId(){
@@ -37,11 +44,11 @@ QVector<Way> Node::getWaysObj(){
     return waysObj;
 }
 
-void Node::addBoundaryEdge(Edge e){
+void Node::addBoundaryEdge(BoundaryEdge e){
     boundaryEdges.push_back(e);
 }
 
-QVector<Edge> Node::getBoundaryEdges(){
+QVector<BoundaryEdge> Node::getBoundaryEdges(){
     return boundaryEdges;
 }
 

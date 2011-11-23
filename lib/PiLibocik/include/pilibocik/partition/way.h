@@ -2,25 +2,25 @@
 #define PILIBOCIK_WAY_H
 
 #include <QVector>
-#include <pilibocik/partition/restriction.h>
-#include <pilibocik/partition/node.h>
 
 namespace PiLibocik{namespace Partition{
+class PartitionFile;
 class Node;
 class Restriction;
-class PartitionFile;
 
 class Way{
 private:
     int id;
     double prio;
     QVector<qint64> nodes;
-    QVector<Restriction> restriction;
+    QVector<Restriction>* restriction;
     qint8 oneway;
     PartitionFile* part;
 public:
     Way();
     Way(int id,double prio,qint8 oneway,PartitionFile*p=0);
+    Way(const Way &way);
+    ~Way();
     bool isEmpty();
     int getId();
     double getPrioritet();
