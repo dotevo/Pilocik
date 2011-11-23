@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     widgets/tsliderwidget.cpp \
     widgets/thintwidget.cpp \
     creditswindow.cpp \
-    widgets/troutingprogresswidget.cpp
+    widgets/troutingprogresswidget.cpp \
+    pluginmanager.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -117,7 +118,8 @@ HEADERS  +=  tmovableframe.h \
     widgets/tsliderwidget.h \
     widgets/thintwidget.h \
     creditswindow.h \
-    widgets/troutingprogresswidget.h
+    widgets/troutingprogresswidget.h \
+    pluginmanager.h
 
 
 FORMS    += \
@@ -160,6 +162,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
 
 
 
