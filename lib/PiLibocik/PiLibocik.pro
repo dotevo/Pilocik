@@ -7,7 +7,7 @@ QT      -= gui
 QT       += sql xml
 
 TARGET = PiLibocik
-TEMPLATE = app
+TEMPLATE = lib
 CONFIG += staticlib
 
 DEFINES += PiLibocik_WRITE_MODE
@@ -18,7 +18,6 @@ SOURCES += src/pilibocik.cpp \
     src/preparedata.cpp \
     src/boundarybox.cpp \
     src/poifileppoi.cpp \
-    main.cpp \
     src/position.cpp \
     src/partition/edge.cpp \
     src/partition/node.cpp \
