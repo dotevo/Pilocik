@@ -74,7 +74,7 @@ FORMS    += mainwindow.ui
 
 INCLUDEPATH += ../lib/sosmscout/include
 
-TRANSLATIONS = lang\pl.ts
+TRANSLATIONS = lang/pl.ts
 
 
 
