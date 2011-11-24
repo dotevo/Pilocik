@@ -68,14 +68,67 @@ void MainWindow::on_simPauseBtn_clicked()
 
 void MainWindow::on_dataInitOutputFilePathButton_clicked()
 {
+    ui->dataInitOutputFilePath->setText(QFileDialog::getSaveFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
+}
+
+void MainWindow::on_dataInitMapPathButton_clicked()
+{
+    ui->dataInitMapPath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("Database Files (*.db)")));
+}
+
+void MainWindow::on_prioCalcDataFilePathButton_clicked()
+{
+    ui->prioCalcDataFilePath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
+}
+
+void MainWindow::on_prioCalcOutputFilePathButton_clicked()
+{
+    ui->prioCalcOutputFilePath->setText(QFileDialog::getSaveFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
+}
+
+void MainWindow::on_partCalcDataFilePathButton_clicked()
+{
+    ui->partCalcDataFilePath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
+}
+
+void MainWindow::on_partCalcPrioFilePathButton_clicked()
+{
+    ui->partCalcPrioFilePath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
+}
+
+void MainWindow::on_partCalcOutputPathButton_clicked()
+{
+    ui->partCalcOutputPath->setText(QFileDialog::getExistingDirectory());
+}
+
+void MainWindow::on_dataInitBtn_clicked()
+{
     osmscout::Partitioning part;
 
     part.InitData();
     part.SaveData(ui->dataInitOutputFilePath->text());
 }
 
-void MainWindow::on_dataInitMapPathButton_clicked()
+void MainWindow::on_osmPathButton_clicked()
 {
-    ui->dataInitOutputFilePath->setText(QFileDialog::getOpenFileName(this,
-         tr("Chose file"), "", tr("Text Files (*.txt)")));
+    ui->osmPath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("OSM Files (*.osm)")));
+}
+
+void MainWindow::on_outputDirButton_clicked()
+{
+    ui->outputDir->setText(QFileDialog::getSaveFileName(this,
+         tr("Chose file"), "", tr("Database Files (*.db)")));
+}
+
+void MainWindow::on_simPathButton_clicked()
+{
+    ui->simPath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("GPS Files (*.gps)")));
 }

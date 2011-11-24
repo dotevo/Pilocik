@@ -1,4 +1,4 @@
- #-------------------------------------------------
+#-------------------------------------------------
 #
 # Project created by QtCreator 2011-10-25T14:16:57
 #
@@ -10,7 +10,6 @@ QT       += core gui \
 
 TARGET = Utils
 TEMPLATE = app
-
 
 Debug:unix:LIBS += ../lib/PiLibocik/debug/libPiLibocik.so
 Debug:win32:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
@@ -83,6 +82,10 @@ INCLUDEPATH += ../lib/sosmscout/include \
         ../lib/PiLibocik/include
 
 TRANSLATIONS = lang/pl.ts
+
+RESOURCES += \
+    Icons.qrc
+
 
 
 

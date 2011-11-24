@@ -31,6 +31,15 @@ private slots:
     void on_simPauseBtn_clicked();
     void on_dataInitOutputFilePathButton_clicked();
     void on_dataInitMapPathButton_clicked();
+    void on_prioCalcDataFilePathButton_clicked();
+    void on_prioCalcOutputFilePathButton_clicked();
+    void on_partCalcDataFilePathButton_clicked();
+    void on_partCalcPrioFilePathButton_clicked();
+    void on_partCalcOutputPathButton_clicked();
+    void on_dataInitBtn_clicked();
+    void on_osmPathButton_clicked();
+    void on_outputDirButton_clicked();
+    void on_simPathButton_clicked();
 };
 
 #endif // MAINWINDOW_H
