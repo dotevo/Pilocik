@@ -63,7 +63,21 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/util/Geometry.cpp \
     ../lib/sosmscout/src/osmscout/util/FileWriter.cpp \
     ../lib/sosmscout/src/osmscout/util/FileScanner.cpp \
-    ../lib/sosmscout/src/osmscout/util/Cache.cpp
+    ../lib/sosmscout/src/osmscout/util/Cache.cpp \
+    ../lib/PiLibocik/src/preparedata.cpp \
+    ../lib/PiLibocik/src/position.cpp \
+    ../lib/PiLibocik/src/poi.cpp \
+    ../lib/PiLibocik/src/pilibocik.cpp \
+    ../lib/PiLibocik/src/poifileppoi.cpp \
+    ../lib/PiLibocik/src/boundarybox.cpp \
+    ../lib/PiLibocik/src/geohash.cpp \
+    ../lib/PiLibocik/src/partition/boundaryedge.cpp \
+    ../lib/PiLibocik/src/partition/edge.cpp \
+    ../lib/PiLibocik/src/partition/node.cpp \
+    ../lib/PiLibocik/src/partition/partitionfile.cpp \
+    ../lib/PiLibocik/src/partition/routenode.cpp \
+    ../lib/PiLibocik/src/partition/restriction.cpp \
+    ../lib/PiLibocik/src/partition/way.cpp
 
 HEADERS  += mainwindow.h \
     databasegen.h \
@@ -72,10 +86,10 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += ../lib/sosmscout/include
+INCLUDEPATH += ../lib/sosmscout/include \
+        ../lib/PiLibocik/include
 
 TRANSLATIONS = lang\pl.ts
-
 
 
 

@@ -1,12 +1,6 @@
 /*WINDOW*/
 QWidget > QTabWidget{
-    background: #3c3c3c;
-}
-
-QFrame{
-    background: black;
-    border-radius: 0px;
-    border: 1px solid rgb(0, 255, 0);
+    background: #ff0000;
 }
 
 QGraphicsView{

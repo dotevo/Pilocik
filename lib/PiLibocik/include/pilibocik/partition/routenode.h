@@ -1,5 +1,5 @@
-#ifndef ROUTENODE_H
-#define ROUTENODE_H
+#ifndef PILIBOCIK_ROUTENODE_H
+#define PILIBOCIK_ROUTENODE_H
 
 #include <pilibocik/partition/node.h>
 

@@ -1,4 +1,4 @@
-#include <pilibocik\partition\way.h>
+#include <pilibocik/partition/way.h>
 #include <pilibocik/partition/node.h>
 #include <pilibocik/partition/partitionfile.h>
 #include <pilibocik/partition/restriction.h>
@@ -39,7 +39,6 @@ bool Way::isEmpty(){
 int Way::getId(){
     return id;
 }
-
 
 void Way::addNode(qint64 node){
     nodes.append(node);

@@ -1,6 +1,6 @@
-#include <pilibocik\partition\node.h>
-#include <pilibocik/partition/partitionfile.h>
+#include <pilibocik/partition/node.h>
 #include <pilibocik/partition/way.h>
+#include <pilibocik/partition/partitionfile.h>
 
 #include <QDebug>
 
