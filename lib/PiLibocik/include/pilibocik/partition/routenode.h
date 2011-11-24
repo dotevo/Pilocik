@@ -12,12 +12,60 @@ private:
     double rating;
     bool routing;
 public:
+    /**
+     * @brief Default constructor
+     *
+     */
     RouteNode();
-    RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, bool routing = false, RouteNode *prevNode=0, PartitionFile *m=0);
-    RouteNode(Node node, int prevWayId, double rating, bool routing = false, RouteNode *prevNode=0, PartitionFile *m=0);
+    /**
+     * @brief Constructor
+     *
+     * @param id
+     * @param cell
+     * @param lon
+     * @param lat
+     * @param prevWayId - id of the way through which came
+     * @param rating
+     * @param prevNode - pointer to node from which came
+     * @param routing
+     * @param pf - pointer to partition file
+     */
+    RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
+    /**
+     * @brief Constructor
+     *
+     * @param node
+     * @param prevWayId - id of the way through which came
+     * @param rating
+     * @param prevNode - pointer to node from which came
+     * @param routing
+     * @param pf - pointer to partition file
+     */
+    RouteNode(Node node, int prevWayId, double rating, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
+    /**
+     * @brief
+     *
+     * @return node object
+     */
     RouteNode getPrevNode();
+    /**
+     * @brief
+     *
+     * @return id of way
+     */
     int getPrevWay();
+    /**
+     * @brief
+     *
+     * @return value of rating
+     */
     double getRating();
+    /**
+     * @brief Gets boolean value that indicates if it's routing edge
+     *
+     * @return true - is routing edge | false - is not
+     */
+    bool getRouting();
 };
 
 }}
