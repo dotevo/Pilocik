@@ -29,7 +29,8 @@ private slots:
     void on_simStopBtn_clicked();
     void on_simStartBtn_clicked();
     void on_simPauseBtn_clicked();
-    void on_partGenBtn_clicked();
+    void on_dataInitOutputFilePathButton_clicked();
+    void on_dataInitMapPathButton_clicked();
 };
 
 #endif // MAINWINDOW_H

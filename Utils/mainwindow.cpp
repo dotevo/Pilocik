@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QTime>
+#include <QFileDialog>
 
 #include <osmscout/Partitioning.h>
 #include <osmscout/Partitionmodel.h>
@@ -65,13 +66,16 @@ void MainWindow::on_simPauseBtn_clicked()
     gps->pause();
 }
 
-void MainWindow::on_partGenBtn_clicked()
+void MainWindow::on_dataInitOutputFilePathButton_clicked()
 {
-    //osmscout::Partitioning part(ui->partGenMapPath->text(), ui->partGenMapStylePath->text() );
     osmscout::Partitioning part;
-    //part.TestAlgorithm();
 
-    osmscout::Partitioning::DatabasePartition dbPart=part.FindPartition();
+    part.InitData();
+    part.SaveData(ui->dataInitOutputFilePath->text());
+}
 
-    part.saveToDatabase(ui->partGenOutputPath->text(),dbPart);
+void MainWindow::on_dataInitMapPathButton_clicked()
+{
+    ui->dataInitOutputFilePath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("Text Files (*.txt)")));
 }
