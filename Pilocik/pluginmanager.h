@@ -3,7 +3,7 @@
 
 #include<QMap>
 #include<QPluginLoader>
-/*
+
 class Version{
 private:
     int firstNumber;
@@ -32,7 +32,7 @@ class PluginManager
 private:
     PluginManager();
     QMap<QString,QPluginLoader*> plugins;
-    static PluginManager *plugin_manager;
+    static PluginManager *pluginManager;
     PluginManager();
 public:
     static PluginManager * getInstance();
@@ -43,5 +43,5 @@ public:
 };
 
 Q_DECLARE_INTERFACE (PluginInterface, "PilocikPlugin/0.1")
-*/
+
 #endif // PLUGINMANAGER_H
