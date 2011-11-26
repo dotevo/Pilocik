@@ -82,6 +82,7 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
     ../lib/sosmscout/src/osmscout/Point.cpp \
+    ../lib/sosmscout/src/osmscout/Routing.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
