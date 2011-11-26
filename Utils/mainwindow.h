@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "databasegen.h"
 #include "gpsemulator.h"
+#include <osmscout/Partitioning.h>
 
 namespace Ui {
     class MainWindow;
@@ -21,9 +22,11 @@ private:
     Ui::MainWindow *ui;
     DatabaseGen *gen;
     GPSemulator *gps;
+    osmscout::Partitioning *part;
 
 
 private slots:
+    void calculationFinished();
     void on_genBtn_clicked();
     void on_partitionOk_clicked();
     void on_simStopBtn_clicked();
@@ -40,6 +43,11 @@ private slots:
     void on_osmPathButton_clicked();
     void on_outputDirButton_clicked();
     void on_simPathButton_clicked();
+    void on_cancelBtn_clicked();
+    void on_poiFilePathBrowseButton_clicked();
+    void on_partRenderPathButton_clicked();
+    void on_prioCalcButton_clicked();
+    void on_partCalcButton_clicked();
 };
 
 #endif // MAINWINDOW_H

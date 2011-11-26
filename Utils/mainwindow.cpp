@@ -4,7 +4,6 @@
 #include <QTime>
 #include <QFileDialog>
 
-#include <osmscout/Partitioning.h>
 #include <osmscout/Partitionmodel.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qApp->processEvents();
 
     gen = new DatabaseGen();
+    part = new osmscout::Partitioning();
     gps = new GPSemulator();
 
     connect(gen, SIGNAL(progressUpdate(int)), ui->mcProgressBar, SLOT(setValue(int)));
@@ -30,11 +30,32 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(gps, SIGNAL(progressUpdate(int)), ui->simSlider, SLOT(setValue(int)));
     connect(ui->simSpeed, SIGNAL(valueChanged(double)), gps, SLOT(setSpeed(double)));
     connect(ui->simSlider, SIGNAL(valueChanged(int)), gps, SLOT(selectSimPoint(int)));
+
+    connect(part, SIGNAL(initDataStatusChanged(QString)), ui->dataInitStatus, SLOT(setText(QString)));
+    connect(part, SIGNAL(initDataPartProgress(int)), ui->dataInitPartialProgressBar, SLOT(setValue(int)));
+    connect(part, SIGNAL(initDataOverallProgress(int)), ui->dataInitOverallProgressBar, SLOT(setValue(int)));
+
+    connect(part, SIGNAL(prioCalcStatusChanged(QString)), ui->prioCalcStatus, SLOT(setText(QString)));
+    connect(part, SIGNAL(prioCalcProgress(int)), ui->prioCalcProgressBar, SLOT(setValue(int)));
+
+    connect(part, SIGNAL(partCalcStatusChanged(QString)), ui->partCalcStatus, SLOT(setText(QString)));
+    connect(part, SIGNAL(partCalcProgress(int)), ui->partCalcProgressBar, SLOT(setValue(int)));
+
+    connect(part, SIGNAL(initDataFinished()), this, SLOT(calculationFinished()));
+    connect(part, SIGNAL(prioCalcFinished()), this, SLOT(calculationFinished()));
+    connect(part, SIGNAL(partCalcFinished()), this, SLOT(calculationFinished()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::calculationFinished()
+{
+    ui->dataInitBtn->setEnabled(true);
+    ui->prioCalcButton->setEnabled(true);
+    ui->partCalcButton->setEnabled(true);
 }
 
 void MainWindow::on_genBtn_clicked()
@@ -107,14 +128,6 @@ void MainWindow::on_partCalcOutputPathButton_clicked()
     ui->partCalcOutputPath->setText(QFileDialog::getExistingDirectory());
 }
 
-void MainWindow::on_dataInitBtn_clicked()
-{
-    osmscout::Partitioning part;
-
-    part.InitData();
-    part.SaveData(ui->dataInitOutputFilePath->text());
-}
-
 void MainWindow::on_osmPathButton_clicked()
 {
     ui->osmPath->setText(QFileDialog::getOpenFileName(this,
@@ -131,4 +144,55 @@ void MainWindow::on_simPathButton_clicked()
 {
     ui->simPath->setText(QFileDialog::getOpenFileName(this,
          tr("Chose file"), "", tr("GPS Files (*.gps)")));
+}
+
+void MainWindow::on_cancelBtn_clicked()
+{
+
+}
+
+void MainWindow::on_poiFilePathBrowseButton_clicked()
+{
+    ui->poiFilePath->setText(QFileDialog::getOpenFileName(this,
+        tr("Chose file"), "", tr("POI Files (*.poi)"))); // TC: Nie wiem jakie jest rozszerzenie...
+}
+
+void MainWindow::on_partRenderPathButton_clicked()
+{
+    ui->partRenderPath->setText(QFileDialog::getSaveFileName(this,
+        tr("Chose file"), "", tr("Database Files (*.db)")));
+}
+
+void MainWindow::on_dataInitBtn_clicked()
+{
+    ui->dataInitBtn->setEnabled(false);
+    ui->prioCalcButton->setEnabled(false);
+    ui->partCalcButton->setEnabled(false);
+    part->setStage(osmscout::Partitioning::DATA_INITIALIZATION);
+    part->setDatabasePath(ui->dataInitMapPath->text());
+    part->setSimpleDataPath(ui->dataInitOutputFilePath->text());
+    part->start();
+}
+
+void MainWindow::on_prioCalcButton_clicked()
+{
+    ui->dataInitBtn->setEnabled(false);
+    ui->prioCalcButton->setEnabled(false);
+    ui->partCalcButton->setEnabled(false);
+    part->setStage(osmscout::Partitioning::PRIORITIES_CALCULATION);
+    part->setSimpleDataPath(ui->prioCalcDataFilePath->text());
+    part->setPrioritiesDataPath(ui->prioCalcOutputFilePath->text());
+    part->start();
+}
+
+void MainWindow::on_partCalcButton_clicked()
+{
+    ui->dataInitBtn->setEnabled(false);
+    ui->prioCalcButton->setEnabled(false);
+    ui->partCalcButton->setEnabled(false);
+    part->setStage(osmscout::Partitioning::PARTITIONS_CALCULATION);
+    part->setSimpleDataPath(ui->partCalcDataFilePath->text());
+    part->setPrioritiesDataPath(ui->partCalcPrioFilePath->text());
+    part->setFinalDataPath(ui->prioCalcOutputFilePath->text());
+    part->start();
 }

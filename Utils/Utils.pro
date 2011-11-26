@@ -8,6 +8,8 @@ QT       += core gui \
             sql \
             xml
 
+DEFINES += PiLibocik_WRITE_MODE
+
 TARGET = Utils
 TEMPLATE = app
 
@@ -16,6 +18,12 @@ Debug:win32:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
 
 Release:unix:LIBS += ../lib/PiLibocik/release/libPiLibocik.so
 Release:win32:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+
+HEADERS  += mainwindow.h \
+    ../lib/sosmscout/include/osmscout/Partitioning.h \
+    databasegen.h \
+    gpsemulator.h \
+    partitionsrenderwidget.h
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -70,12 +78,6 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/util/FileScanner.cpp \
     ../lib/sosmscout/src/osmscout/util/Cache.cpp
 
-
-HEADERS  += mainwindow.h \
-    databasegen.h \
-    gpsemulator.h \
-    partitionsrenderwidget.h
-
 FORMS    += mainwindow.ui
 
 INCLUDEPATH += ../lib/sosmscout/include \
@@ -85,6 +87,8 @@ TRANSLATIONS = lang/pl.ts
 
 RESOURCES += \
     Icons.qrc
+
+
 
 
 

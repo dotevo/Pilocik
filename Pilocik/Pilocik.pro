@@ -10,6 +10,12 @@ QT       += core gui sql \
 TARGET = ../../build/Pilocik
 TEMPLATE = app
 
+Debug:unix:LIBS += ../lib/PiLibocik/debug/libPiLibocik.so
+Debug:win32:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+
+Release:unix:LIBS += ../lib/PiLibocik/release/libPiLibocik.so
+Release:win32:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+
 TRANSLATIONS = lang/pl_PL.tr \
         lang/en_EN.tr
 
@@ -76,13 +82,6 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
     ../lib/sosmscout/src/osmscout/Point.cpp \
-    ../lib/PiLibocik/src/preparedata.cpp \
-    ../lib/PiLibocik/src/position.cpp \
-    ../lib/PiLibocik/src/poi.cpp \
-    ../lib/PiLibocik/src/pilibocik.cpp \
-    ../lib/PiLibocik/src/poifileppoi.cpp \
-    ../lib/PiLibocik/src/boundarybox.cpp \
-    ../lib/PiLibocik/src/geohash.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
@@ -96,7 +95,8 @@ SOURCES += main.cpp\
     widgets/terrorwidget.cpp
 
 
-HEADERS  +=  tmovableframe.h \
+HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
+    tmovableframe.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
