@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include "navigationwindow.h"
+#include "pluginmanager.h"
 #include <QtGlobal>
 #include <QDebug>
 #include <QFile>
@@ -8,6 +9,8 @@
 int main(int argc, char *argv[])
 {
     QApplication *a = new QApplication(argc, argv);
+    PluginManager::getInstance();
+    /*
 
     Settings::getInstance(a)->loadSettings();
     Settings::getInstance()->configureProfile("default");
@@ -25,5 +28,5 @@ int main(int argc, char *argv[])
         w.showFullScreen();
     #endif
 
-    return a->exec();
+    return a->exec();*/
 }
