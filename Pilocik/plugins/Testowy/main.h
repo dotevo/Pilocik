@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include "../../pluginmanager.h"
+#include "../../plugininterface.h"
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QAbstractTableModel>
@@ -17,10 +18,13 @@ class Testowy :public QObject, public PluginInterface{
         //From interface
         QString getName(){return "Testowy";}
         QString getDesc(){return "Test";}
-        Version getVersion(){static Version v(0,1); return v;}
+        PluginVersion getVersion(){static PluginVersion v(0,1); return v;}
+        QList<PluginWidget*> getWidgets();
+
         void init ();
         void run ();
     };
 
 
 #endif // MAIN_H
+

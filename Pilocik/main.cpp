@@ -9,8 +9,6 @@
 int main(int argc, char *argv[])
 {
     QApplication *a = new QApplication(argc, argv);
-    PluginManager::getInstance();
-    /*
 
     Settings::getInstance(a)->loadSettings();
     Settings::getInstance()->configureProfile("default");
@@ -21,6 +19,9 @@ int main(int argc, char *argv[])
     NavigationWindow::main=&w;
     w.show();
 
+    PluginManager::getInstance()->initAll();
+    PluginManager::getInstance()->runAll();
+
     Settings::getInstance()->reloadTranslation(Settings::getInstance()->getStartLanguage());
 
     //Dla windowsa CE fullscreen
@@ -28,5 +29,5 @@ int main(int argc, char *argv[])
         w.showFullScreen();
     #endif
 
-    return a->exec();*/
+    return a->exec();
 }

@@ -70,7 +70,14 @@ void TWidgetManager::addWidget(QString name, TMovableFrame* w) {
 
         //Configure widget from settings file
         QMap<QString,QString> widgetSettings = Settings::getInstance()->getWidgetSettings(name);
-        QPoint position(widgetSettings["posx"].toInt(),widgetSettings["posy"].toInt());
+        int PosX=0;
+        int PosY=0;
+        if(widgetSettings.contains("posx"))
+            PosX=widgetSettings["posx"].toInt();
+        if(widgetSettings.contains("posy"))
+            PosY=widgetSettings["posy"].toInt();
+
+        QPoint position(PosX,PosY);
         w->move(position);
         //w->setVisible(widgetSettings["enabled"]=="true");
         w->setVisible(true);

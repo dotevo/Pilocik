@@ -20,7 +20,7 @@
       <enum>QFrame::Plain</enum>
      </property>
      <property name="text">
-      <string>Wyznaczanie trasy...</string>
+      <string>Calculating route...</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

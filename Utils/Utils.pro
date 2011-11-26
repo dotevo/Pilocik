@@ -12,6 +12,12 @@ TARGET = Utils
 TEMPLATE = app
 
 
+Debug:unix:LIBS += ../lib/PiLibocik/debug/libPiLibocik.so
+Debug:win32:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+
+Release:unix:LIBS += ../lib/PiLibocik/release/libPiLibocik.so
+Release:win32:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     databasegen.cpp \
@@ -65,6 +71,7 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/util/FileScanner.cpp \
     ../lib/sosmscout/src/osmscout/util/Cache.cpp
 
+
 HEADERS  += mainwindow.h \
     databasegen.h \
     gpsemulator.h \
@@ -72,10 +79,10 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += ../lib/sosmscout/include
+INCLUDEPATH += ../lib/sosmscout/include \
+        ../lib/PiLibocik/include
 
-TRANSLATIONS = lang\pl.ts
-
+TRANSLATIONS = lang/pl.ts
 
 
 

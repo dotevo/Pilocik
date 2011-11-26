@@ -120,8 +120,13 @@ void Settings::resetDefaultSettings()
             "           </widget>\n"
             "           <qidget name=\"RoutingProcess\">\n"
             "               <enabled>true</enabled>\n"
-            "               <posx>10</posx>\n"
-            "               <posy>10</posy>\n"
+            "               <posx>260</posx>\n"
+            "               <posy>140</posy>\n"
+            "           </widget>\n"
+            "           <qidget name=\"ErrorMessage\">\n"
+            "               <enabled>true</enabled>\n"
+            "               <posx>260</posx>\n"
+            "               <posy>140</posy>\n"
             "           </widget>\n"
             "       </widgets>\n"
             "       <map>\n"
@@ -254,8 +259,7 @@ void Settings::configureProfile(QString profile)
 
 }
 
-QMap<QString,QString> Settings::getWidgetSettings(QString name)
-{
+QMap<QString,QString> Settings::getWidgetSettings(QString name){
     return widgetsSettings[name];
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>300</height>
+    <height>316</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,12 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="pilocikLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <pointsize>22</pointsize>
@@ -35,10 +41,10 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 }</string>
      </property>
      <property name="text">
-      <string>Pilocik</string>
+      <string>&lt;img src=&quot;:/gif/images/other/pilocik_logo.gif&quot; /&gt;</string>
      </property>
      <property name="textFormat">
-      <enum>Qt::RichText</enum>
+      <enum>Qt::AutoText</enum>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

@@ -1,5 +1,14 @@
 #include "pluginmanager.h"
-
+#include "pluginwidget.h"
+#include "plugininterface.h"
+#include "twidgetmanager.h"
+#include "navigationwindow.h"
+#include <QDebug>
+#include <QDir>
+#include <QHBoxLayout>
+#include <QStringList>
+#include <QApplication>
+#include <QListIterator>
 
 PluginManager* PluginManager::pluginManager = NULL;
 
@@ -20,19 +29,26 @@ PluginManager::PluginManager(){
     //Lista plików w katalogu
     QStringList filelist=plugins_dir.entryList();
     QStringListIterator filelist_iterator(filelist);
-    cout<<"£adowanie pluginów:"<<endl;
+
+    qDebug()<<"£adowanie pluginów:";
     while (filelist_iterator.hasNext()){
         QString name=filelist_iterator.next().toLocal8Bit().constData();
-        cout<<"\t"<<name.toStdString().c_str();
+        qDebug()<<"\t"<<name;
         QPluginLoader *loader=new QPluginLoader(QApplication::applicationDirPath()+"/Plugins/"+name);
         if(loader->load()){
-            if (Plugin_Interface *interface = qobject_cast<Plugin_Interface *>(loader->instance())){
-                //Sprawdzanie czy nie ma ju¿ pluginu danego typu np. baza danych
-                plugins[interface->getName()]=loader;
+           PluginInterface *inter=(PluginInterface *)(loader->instance());
+
+           if(inter !=0 ){
+               QString n=inter->getName();
+               if(!plugins.contains(n)){
+                    //Sprawdzanie czy nie ma ju¿ pluginu danego typu np. baza danych
+                    plugins.insert(n,loader);
+                    qDebug() <<"\t\t [OK]";
+               }
             }else
-                cout <<"\t\t [INIT ERROR]"<<endl;
+                qDebug() <<"\t\t [INIT ERROR]";
         }else{
-            cout <<"\t\t [LOAD ERROR]"<<endl;
+            qDebug() <<"\t\t [LOAD ERROR]";
             delete loader;
         }
     }
@@ -49,8 +65,18 @@ void PluginManager::initAll(){
 void PluginManager::runAll(){
     QMapIterator<QString, QPluginLoader*> i(plugins);
     while (i.hasNext()) {
+        qDebug()<<plugins.size();
         PluginInterface *pi=qobject_cast<PluginInterface *>(i.next().value()->instance());
         pi->run();
+        qDebug()<<pi->getName();
+        //Add widgets
+        QListIterator <PluginWidget*> plugin(pi->getWidgets());
+        while(plugin.hasNext()){
+            PluginWidget *n=plugin.next();
+            n->setParent(NavigationWindow::main);
+            TWidgetManager::getInstance()->addWidget(n->getWidgetName(), n);
+            qDebug()<<"Dodane:"<<n->getWidgetName();
+        }
     }
 }
 
@@ -63,6 +89,6 @@ PluginManager *PluginManager::getInstance(){
 
 PluginInterface *PluginManager::getPlugin(QString name){
     if(plugins.find(name)==plugins.end()) return NULL;
-    return qobject_cast<Plugin_Interface *>(plugins[name]->instance());
+    return qobject_cast<PluginInterface *>(plugins[name]->instance());
 }
 

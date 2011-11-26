@@ -38,8 +38,8 @@ void RouteWindow::on_routeBackButton_clicked(){
 void RouteWindow::on_pushButton_clicked()
 {
     setVisible(false);
-    emit closed();
     ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
+    emit closed();
 }
 
 void RouteWindow::pswClosed(){

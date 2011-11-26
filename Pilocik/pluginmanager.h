@@ -1,27 +1,13 @@
 #ifndef PLUGINMANAGER_H
 #define PLUGINMANAGER_H
 
+#include <QObject>
 #include<QMap>
+#include<QList>
 #include<QPluginLoader>
 
-class Version{
-private:
-    int firstNumber;
-    int secondNumber;
-public:
-    Version (int firstNumber, int secondNumber):firstNumber(firstNumber),secondNumber(secondNumber){}
-    //TODO: opratory
-};
-
-class PluginInterface{
-    public:
-        virtual ~PluginInterface () {}
-        virtual QString getName()=0;
-        virtual QString getDesc()=0;
-        virtual Version getVersion()=0;
-        virtual void init ()=0;
-        virtual void run ()=0;
-};
+class PluginWidget;
+class PluginInterface;
 
 class PluginManager
 {
@@ -37,6 +23,5 @@ public:
     PluginInterface *getPluginFromType(QString type);
 };
 
-Q_DECLARE_INTERFACE (PluginInterface, "PilocikPlugin/0.1")
 
 #endif // PLUGINMANAGER_H

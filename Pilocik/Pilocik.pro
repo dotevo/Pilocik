@@ -15,7 +15,6 @@ TRANSLATIONS = lang/pl_PL.tr \
 
 
 SOURCES += main.cpp\
-    tmovableframe.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
     navigationwindow.cpp \
@@ -93,7 +92,8 @@ SOURCES += main.cpp\
     widgets/thintwidget.cpp \
     creditswindow.cpp \
     widgets/troutingprogresswidget.cpp \
-    pluginmanager.cpp
+    pluginmanager.cpp\
+    widgets/terrorwidget.cpp
 
 
 HEADERS  +=  tmovableframe.h \
@@ -119,7 +119,10 @@ HEADERS  +=  tmovableframe.h \
     widgets/thintwidget.h \
     creditswindow.h \
     widgets/troutingprogresswidget.h \
-    pluginmanager.h
+    pluginmanager.h \
+    widgets/terrorwidget.h \
+    pluginwidget.h \
+    plugininterface.h
 
 
 FORMS    += \
@@ -138,7 +141,8 @@ FORMS    += \
     widgets/tsliderwidget.ui \
     widgets/thintwidget.ui \
     creditswindow.ui \
-    widgets/troutingprogresswidget.ui
+    widgets/troutingprogresswidget.ui \
+    widgets/terrorwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -162,14 +166,6 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
-
-
-
-
-
-
-
-
 
 
 
