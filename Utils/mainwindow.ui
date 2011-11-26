@@ -7,11 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>692</width>
-    <height>605</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Icons.qrc">
+    <normaloff>:/png/images/pilocik_ico.png</normaloff>:/png/images/pilocik_ico.png</iconset>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -341,6 +348,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item>
               <widget class="QScrollArea" name="scrollArea_2">
+               <property name="styleSheet">
+                <string notr="true">background: rgba(0,0,0,0);</string>
+               </property>
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
@@ -350,7 +360,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>606</width>
-                  <height>86</height>
+                  <height>119</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout">
@@ -1341,6 +1351,12 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>400</height>
+             </size>
+            </property>
             <property name="title">
              <string>Partition render</string>
             </property>
@@ -1451,6 +1467,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="Icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
