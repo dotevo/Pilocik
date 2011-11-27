@@ -87,7 +87,7 @@ p, li { white-space: pre-wrap; }
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="iconSize">
          <size>
@@ -1241,13 +1241,23 @@ p, li { white-space: pre-wrap; }
              <string>Settings</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_9">
-             <property name="spacing">
-              <number>2</number>
-             </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_24">
                <item>
+                <widget class="QRadioButton" name="partDatabaseRadioButton">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="partRenderPathL">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -1255,19 +1265,53 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="text">
-                  <string>Partition files path:</string>
+                  <string>Partition database path:</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="partRenderPath">
+                <widget class="QLineEdit" name="partDatabaseRenderPath">
                  <property name="text">
                   <string/>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="partRenderPathButton">
+                <widget class="QPushButton" name="partDatabaseRenderPathButton">
+                 <property name="text">
+                  <string>Browse</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_33">
+               <item>
+                <widget class="QRadioButton" name="partBinaryRadioButton">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_23">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Partition binary files:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="partBinaryRenderPath"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="partBinaryRenderButton">
                  <property name="text">
                   <string>Browse</string>
                  </property>
@@ -1325,7 +1369,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_22">
                <item>
-                <widget class="QPushButton" name="partitionOk">
+                <widget class="QPushButton" name="partitionRenderButton">
                  <property name="text">
                   <string>Render</string>
                  </property>
@@ -1351,6 +1395,12 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1435,19 +1485,6 @@ p, li { white-space: pre-wrap; }
              </item>
             </layout>
            </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
