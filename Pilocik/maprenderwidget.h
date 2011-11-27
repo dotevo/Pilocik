@@ -17,15 +17,12 @@
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Routing.h>
-<<<<<<< HEAD
 #include <osmscout/Searching.h>
-=======
 #include <pilibocik/boundarybox.h>
 #include <pilibocik/poi.h>
 #include <pilibocik/poifileppoi.h>
 #include <pilibocik/position.h>
 #include <settings.h>
->>>>>>> f2307a1532d7284fd97bacdc093cef6c3a8ad07a
 
 namespace Ui {
     class MapRenderWidget;
