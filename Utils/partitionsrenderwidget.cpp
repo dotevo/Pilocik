@@ -1,6 +1,13 @@
 #include "partitionsrenderwidget.h"
 #include <QDebug>
 
+#include <../../PiLibocik/include/pilibocik/geohash.h>
+#include <../../PiLibocik/include/pilibocik/boundarybox.h>
+#include <../../PiLibocik/include/pilibocik/partition/boundaryedge.h>
+#include <../../PiLibocik/include/pilibocik/partition/partitionfile.h>
+#include <../../PiLibocik/include/pilibocik/partition/node.h>
+#include <../../PiLibocik/include/pilibocik/partition/way.h>
+
 PartitionsRenderWidget::PartitionsRenderWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -18,52 +25,105 @@ void PartitionsRenderWidget::init(QString dbPath)
 
     pixmap = QPixmap(width, height);
 
-    calculateNewMapCenter(17.03,51.11,30);
+    calculateNewMapCenter(17.03,51.11,130);
     //calculateNewMapCenter(2, 2, 15); // for testing graphs
 
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(dbPath);
-    if(!db.open()){
-        qDebug()<<"[SQLiteDatabase::open]"<<db.lastError();
-        return;
-    }
+    bool fromDatabase = false;
+    if(fromDatabase) {
+        // partition from database
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(dbPath);
+        if(!db.open()){
+            qDebug()<<"[SQLiteDatabase::open]"<<db.lastError();
+            return;
+        }
 
-    QSqlQuery query(db);
-    query.prepare("SELECT id,lon,lat,cell FROM nodes");
-    query.exec();
-    while (query.next()) {
-        pNode newNode;
-        newNode.lon = query.value(1).toDouble();
-        newNode.lat = query.value(2).toDouble();
-        newNode.cellNo = query.value(3).toInt();
-        pNodes.insert(query.value(0).toInt(), newNode);
-    }
+        QSqlQuery query(db);
+        query.prepare("SELECT id,lon,lat,cell FROM nodes");
+        query.exec();
+        while (query.next()) {
+            pNode newNode;
+            newNode.lon = query.value(1).toDouble();
+            newNode.lat = query.value(2).toDouble();
+            newNode.cellNo = query.value(3).toInt();
+            pNodes.insert(query.value(0).toInt(), newNode);
+        }
 
-    query.prepare("SELECT id, prio_car FROM innerWays");
-    query.exec();
-    while (query.next()) {
-        pWay newWay;
-        newWay.priority = query.value(1).toInt();
-        pWays.insert(query.value(0).toInt(), newWay);
-    }
+        query.prepare("SELECT id, prio_car FROM innerWays");
+        query.exec();
+        while (query.next()) {
+            pWay newWay;
+            newWay.priority = query.value(1).toInt();
+            pWays.insert(query.value(0).toInt(), newWay);
+        }
 
-    query.prepare("SELECT way, node, num FROM ways_nodes");
-    query.exec();
-    while (query.next()) {
-        pWays[query.value(0).toInt()].nodes.append(query.value(1).toInt());
-    }
+        query.prepare("SELECT way, node, num FROM ways_nodes");
+        query.exec();
+        while (query.next()) {
+            pWays[query.value(0).toInt()].nodes.append(query.value(1).toInt());
+        }
 
-    query.prepare("SELECT node1, node2, wayId FROM boundaryEdges");
-    query.exec();
-    while (query.next()) {
-        pBoundary pb;
-        pb.node1 = query.value(0).toInt();
-        pb.node2 = query.value(1).toInt();
-        pb.way = query.value(2).toInt();
-        pBoundaryWays.append(pb);
-    }
+        query.prepare("SELECT node1, node2, wayId FROM boundaryEdges");
+        query.exec();
+        while (query.next()) {
+            pBoundary pb;
+            pb.node1 = query.value(0).toInt();
+            pb.node2 = query.value(1).toInt();
+            pb.way = query.value(2).toInt();
+            pBoundaryWays.append(pb);
+        }
 
-    db.close();
+        db.close();
+    } else {
+        // partition loaded from binary files
+        PiLibocik::Partition::PartitionFile partitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
+
+        PiLibocik::BoundaryBox bbox(PiLibocik::Position(0.1, 0.1), PiLibocik::Position(32.0, 32.0));
+        QList<PiLibocik::Partition::Node> fileNodes = partitionFile.getNodesFromBoundaryBox(bbox);
+        QListIterator<PiLibocik::Partition::Node> fileNodesIter(fileNodes);
+
+        while(fileNodesIter.hasNext()){
+            PiLibocik::Partition::Node fileNode = fileNodesIter.next();
+
+            pNode newNode;
+            newNode.lon = fileNode.getLon();
+            newNode.lat = fileNode.getLat();
+            newNode.cellNo = fileNode.getCell();
+            pNodes.insert(fileNode.getId(), newNode);
+
+            QVector<PiLibocik::Partition::Way> fileWays = fileNode.getWaysObj();
+            for(int i=0; i<fileWays.size(); i++){
+                PiLibocik::Partition::Way fileWay = fileWays.at(i);
+
+                if(pWays.find(fileWay.getId()) == pWays.end()) {
+                    pWay newWay;
+                    newWay.priority = fileWay.getPrioritet();
+                    pWays.insert(fileWay.getId(), newWay);
+
+                    QVector<PiLibocik::Partition::Node> fileNodesInWay = fileWay.getNodesObj();
+                    for(int j=0;j<fileNodesInWay.size();j++){
+                        PiLibocik::Partition::Node fileNodeInWay = fileNodesInWay.at(j);
+
+                        pWays[fileWay.getId()].nodes.append(fileNodeInWay.getId());
+                    }
+                }
+            }
+
+            QVector<PiLibocik::Partition::BoundaryEdge> fileBoundaryEdges = fileNode.getBoundaryEdges();
+            for(int i=0; i<fileBoundaryEdges.size(); i++){
+                PiLibocik::Partition::BoundaryEdge fileBoundaryEdge = fileBoundaryEdges.at(i);
+
+                PiLibocik::Partition::Node filePairNode = fileBoundaryEdge.getPairObj();
+                if(filePairNode.getId() > fileNode.getId()) {
+                    pBoundary pb;
+                    pb.node1 = fileNode.getId();
+                    pb.node2 = filePairNode.getId();
+                    pb.way = fileBoundaryEdge.getWayObj().getId();
+                    pBoundaryWays.append(pb);
+                }
+            }
+        }
+    }
 
     int cells = 50;
 
@@ -180,14 +240,13 @@ void PartitionsRenderWidget::renderPartitions()
 {
     pixmap = QPixmap(width, height);
     QPainter *painter = new QPainter(&pixmap);
-    painter->fillRect(0,0,width,height,QColor(255,255,255));
+    painter->fillRect(0,0,width,height,QColor(230,230,230));
     //Define size
     double size = magnification/240;
     // Display nodes
     if(showNodes)
     foreach(pNode myNode, pNodes.values())
     {
-
         painter->setPen(pColors.at(myNode.cellNo%50));
         painter->setBrush(pColors.at(myNode.cellNo%50));
         double x, y;

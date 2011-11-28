@@ -28,7 +28,6 @@ private:
 private slots:
     void calculationFinished();
     void on_genBtn_clicked();
-    void on_partitionOk_clicked();
     void on_simStopBtn_clicked();
     void on_simStartBtn_clicked();
     void on_simPauseBtn_clicked();
@@ -45,9 +44,11 @@ private slots:
     void on_simPathButton_clicked();
     void on_cancelBtn_clicked();
     void on_poiFilePathBrowseButton_clicked();
-    void on_partRenderPathButton_clicked();
     void on_prioCalcButton_clicked();
     void on_partCalcButton_clicked();
+    void on_partBinaryRenderButton_clicked();
+    void on_partDatabaseRenderPathButton_clicked();
+    void on_partitionRenderButton_clicked();
 };
 
 #endif // MAINWINDOW_H
