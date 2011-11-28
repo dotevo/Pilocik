@@ -54,7 +54,6 @@ NavigationWindow::~NavigationWindow()
     delete optionsWin;
     delete gpsInfoWin;
     delete mapRenderer;
-//    delete ui->widget;
     delete TWidgetManager::getInstance();
     Settings::getInstance()->saveSettings();
     delete Settings::getInstance();

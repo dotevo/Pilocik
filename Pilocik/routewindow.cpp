@@ -24,12 +24,19 @@ void RouteWindow::on_toButton_clicked(){
                                  NavigationWindow::main->mapRenderer->getCoordinates().y());
     psw->setVisible(true);
     connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    connect(psw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(targetSet(double,double,QString)));
     setVisible(false);
 }
 
 void RouteWindow::on_routeBackButton_clicked(){
     setVisible(false);
     emit windowClosed();
+}
+
+void RouteWindow::targetSet(double lon, double lat, QString name)
+{
+    ui->toButton->setText(name);
+    Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
 void RouteWindow::pswClosed(){
