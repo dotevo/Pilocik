@@ -1,4 +1,4 @@
-#include <pilibocik\partition\restriction.h>
+#include <pilibocik/partition/restriction.h>
 #include <pilibocik/partition/way.h>
 
 namespace PiLibocik{namespace Partition{

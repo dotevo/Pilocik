@@ -1,4 +1,4 @@
-#include <pilibocik\partition\partitionfile.h>
+#include <pilibocik/partition/partitionfile.h>
 #include <QMap>
 #include <QDebug>
 #include <QListIterator>

@@ -1,4 +1,4 @@
-#include <pilibocik\partition\edge.h>
+#include <pilibocik/partition/edge.h>
 #include <pilibocik/partition/partitionfile.h>
 #include <pilibocik/partition/node.h>
 

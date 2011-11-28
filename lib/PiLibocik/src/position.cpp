@@ -1,4 +1,4 @@
-#include <../pilibocik/position.h>
+#include <pilibocik/position.h>
 
 namespace PiLibocik{
 
