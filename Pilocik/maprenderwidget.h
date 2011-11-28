@@ -224,7 +224,6 @@ public slots:
 
     void leaveRoute(double actLon, double actLat, double destLon, double destLat);
     void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
-    void updateHint();
 
     void newPixmapRendered(QImage image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
