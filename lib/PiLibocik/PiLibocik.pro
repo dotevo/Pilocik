@@ -8,7 +8,7 @@ QT       += sql xml
 
 TARGET = PiLibocik
 TEMPLATE = lib
-CONFIG += staticlib
+#CONFIG += staticlib
 
 DEFINES += PiLibocik_WRITE_MODE
 

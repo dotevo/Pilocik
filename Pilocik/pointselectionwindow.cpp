@@ -588,8 +588,8 @@ void PointSelectionWindow::on_poiOkButton_clicked() {
         route.push_back(node);
     }
 
-    /*NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
-    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));*/
+    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
+    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));
 
     emit ok_clicked();
 }
