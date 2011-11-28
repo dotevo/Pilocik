@@ -1,5 +1,6 @@
 #include "maprenderwidget.h"
 #include "navigationwindow.h"
+#include "infowindow.h"
 
 #include "qmath.h"
 #include "settings.h"
@@ -9,6 +10,7 @@
 
 #include <QFileInfo>
 #include <QDir>
+#include <QDate>
 
 #include <QObject>
 
@@ -19,6 +21,7 @@
 #include <QDebug>
 #include <QPointF>
 #include <QPen>
+#include <QRgb>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
@@ -33,8 +36,6 @@
 #include <osmscout/Node.h>
 #include <osmscout/Searching.h>
 
-#include <QtSvg/QSvgRenderer>
-
 osmscout::Database *MapRenderWidget::database=0;
 osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
@@ -44,9 +45,11 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
     lastNodeIndex = 0;
 
     //updateHint(NoHint);
+    showArrow = false;
 
-    cachePixmapSize=2;
-    delta=0.0;
+    cachePixmapSize=3;
+    delta=0.2;
+
     mouseDown=false;
     //Database loading
     if(database==0){
@@ -79,7 +82,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
     rendererThread=new MapPixmapRenderer(this);
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
-    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection)));
+    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)));
     //testPixmap();
 
     searching = new osmscout::Searching();
@@ -93,6 +96,13 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
 MapRenderWidget::~MapRenderWidget(){
     Settings::getInstance()->modifyMapSettings(projection.GetLat(), projection.GetLon(), projection.GetMagnification());
+}
+
+void MapRenderWidget::setCacheSettings(int cachePixmapSize, double delta)
+{
+    this->cachePixmapSize = cachePixmapSize;
+    this->delta = delta;
+    qDebug()<<this->cachePixmapSize<<this->delta;
 }
 
 void MapRenderWidget::testPixmap(bool force){
@@ -154,15 +164,27 @@ void MapRenderWidget::paintEvent(QPaintEvent *e){
          if (routing) {
              DrawRoute(projection, painter);
          }
+
+         if(showArrow)
+         {
+             DrawArrow(projection, painter, arrowLon, arrowLat);
+         }
          delete painter;
     }
 }
 
+void MapRenderWidget::insertArrow(double lon, double lat)
+{
+    showArrow = true;
+    arrowLon = lon;
+    arrowLat = lat;
+}
 
 void MapRenderWidget::mousePressEvent(QMouseEvent *e){
     mouseDown=true;
     lon1=e->posF().x();
     lat1=projection.GetHeight()-e->posF().y();
+    clicked=e->pos();
 
     double myX, myY;
 
@@ -170,11 +192,37 @@ void MapRenderWidget::mousePressEvent(QMouseEvent *e){
     if (manualSimulation && e->x() > myX - 10 && e->x() < myX + 10 && e->y() > myY - 10 && e->y() < myY + 10) {
         movingPosition = true;
     }
+
 }
 
 void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
     mouseDown=false;
     movingPosition = false;
+
+    if(abs(e->pos().x()-clicked.x())<10 || abs(e->pos().y()-clicked.y())<10)
+    {
+        double lon1,lat1;
+        double lon2,lat2;
+        projection.PixelToGeo(e->pos().x()-12, projection.GetHeight()-e->pos().y()-12,lon1,lat1);
+        projection.PixelToGeo(e->pos().x()+12, projection.GetHeight()-e->pos().y()+12,lon2,lat2);
+        foreach(PiLibocik::Poi poi, poiList)
+        {
+            if(poi.getLon() > lon1 && poi.getLon() < lon2 && poi.getLat() > lat1 && poi.getLat() < lat2)
+            {
+                QList<InfoWindow *> infos = NavigationWindow::main->findChildren<InfoWindow*>();
+                foreach(InfoWindow* info, infos)
+                    delete info;
+                InfoWindow * info = new InfoWindow(NavigationWindow::main);
+                info->resize(NavigationWindow::main->size());
+                info->show();
+                info->setPoiType(poi.getType());
+                info->setName(poi.getName());
+                info->setDetails(poi.getTags());
+                info->setCoordinates(poi.getLon(), poi.getLat());
+                break;
+            }
+        }
+    }
 }
 
 void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
@@ -304,9 +352,10 @@ QVector<osmscout::Routing::RouteNode> MapRenderWidget::getRoute()
     return route;
 }
 
-void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection){
+void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList){
     projectionRendered=projection;
     this->image=pixmap;
+    this->poiList = poiList;
     testPixmap();
     repaint();
 }
@@ -456,6 +505,32 @@ QPen MapRenderWidget::setPenStyle(PenStyle penStyle)
     }
 
     return pen;
+}
+
+void MapRenderWidget::DrawArrow(const osmscout::Projection &projection, QPainter *painter, double lon, double lat)
+{
+    QPolygon arrow;
+    arrow.putPoints(0, 7, 6,0, 16,0, 16,14, 22,14, 11,25, 0,14, 6,14);
+
+    double x,y;
+    projection.GeoToPixel(lon,lat, x, y);
+
+    QMatrix matrix;
+    matrix.translate((int)x-9, (int)y-32);
+    arrow = matrix.map(arrow);
+
+    QLinearGradient grad = QLinearGradient(QPoint(0,0),QPoint(0,1));
+    QGradientStops stops;
+    stops << QGradientStop(0, QColor::fromRgb(0x3b679e));
+    stops << QGradientStop(0.6, QColor::fromRgb(0x2b88d9));
+    stops << QGradientStop(0.61, QColor::fromRgb(0x207cca));
+    stops << QGradientStop(1, QColor::fromRgb(0x7db9e8));
+    grad.setStops(stops);
+    grad.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+    painter->setBrush(QBrush(grad));
+    painter->setPen(QPen(QColor::fromRgb(255,255,255,255)));
+    painter->drawPolygon(arrow);
 }
 
 void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter *painter)
@@ -627,37 +702,59 @@ void MapPixmapRenderer::run(){
 
         QTime t;
         t.start();
+        QList <PiLibocik::Poi> poiList;
+
         foreach(PiLibocik::PoiDisplay poiDisp, poiDisplaySettings)
         {
-            if(poiDisp.getDisplay() && poiDisp.getZoom()<=projection->GetMagnification())
+            if(poiDisp.getDisplay() && poiDisp.getZoom()<=(int)(projection->GetMagnification()))
             {
                 int type = poiDisplaySettings.key(poiDisp);
-                QList <PiLibocik::Poi> poiList = poiDatabase.loadPOIsFromFile(Settings::getInstance()->getPoiFilePath(),bbox,type);
-                QListIterator<PiLibocik::Poi> iter(poiList);
-                while(iter.hasNext()){
-                    PiLibocik::Poi poi=iter.next();
-                    drawPoiIcon(poi.getType(), poi.getLon(), poi.getLat(),p, painter);
-                }
+                poiList.append(poiDatabase.loadPOIsFromFile(Settings::getInstance()->getPoiFilePath(),bbox,type));
             }
+        }
+        QListIterator<PiLibocik::Poi> iter(poiList);
+        while(iter.hasNext()){
+            PiLibocik::Poi poi=iter.next();
+            drawPoiIcon(poi, p, painter);
         }
         qDebug()<<"TIME:"<<t.elapsed();
 
-        pixmapRendered(pixmap,p);
+        qRegisterMetaType<QList<PiLibocik::Poi> >("QList<PiLibocik::Poi>");
+        pixmapRendered(pixmap,p,poiList);
         delete painter;
     started=false;
 }
 
-void MapPixmapRenderer::drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter)
+void MapPixmapRenderer::drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection &projection, QPainter *painter)
 {
-    if(lon>projection.GetLonMin()&&
-       lon<projection.GetLonMax()&&
-       lat>projection.GetLatMin()&&
-       lat<projection.GetLatMax())
+    if(poi.getLon()>projection.GetLonMin()&&
+       poi.getLon()<projection.GetLonMax()&&
+       poi.getLat()>projection.GetLatMin()&&
+       poi.getLat()<projection.GetLatMax())
     {
         double x,y;
-        projection.GeoToPixel(lon, lat, x, y);
-        QImage image(Settings::getInstance()->getPoiIconsDir()+poiDisplaySettings[type].getIconPath());
-        painter->drawImage(QPointF(x,y), image);
+        projection.GeoToPixel(poi.getLon(), poi.getLat(), x, y);
+        QImage image(Settings::getInstance()->getPoiIconsDir()+poiDisplaySettings[poi.getType()].getIconPath());
+        if(poi.isOpen(QDateTime::currentDateTime())!=1)
+        {
+            QRgb col;
+            int gray;
+            int width = image.width();
+            int height = image.height();
+            for (int i = 0; i < width; ++i)
+            {
+                for (int j = 0; j < height; ++j)
+                {
+                    if(qAlpha(image.pixel(i,j))>0)
+                    {
+                        col = image.pixel(i, j);
+                        gray = qGray(col);
+                        image.setPixel(i, j, qRgb(gray, gray, gray));
+                    }
+                }
+            }
+        }
+        painter->drawImage(QPointF(x-6,y-6), image);
     }
 }
 

@@ -10,6 +10,8 @@
 
 #include <pilibocik/poi.h>
 
+#include <settings.h>
+
 
 
 namespace Ui {
@@ -60,7 +62,17 @@ private slots:
       */
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
-    void on_poiOkButton_clicked();
+    void on_nameLineEdit_textChanged(const QString &arg1);
+
+    void on_poiOK_clicked();
+
+    void on_addressOK_clicked();
+
+    void on_historyOK_clicked();
+
+    void on_favouriteOK_clicked();
+
+    void on_findMore_clicked();
 
     void on_typeComboBox_currentIndexChanged(const QString &arg1);
 
@@ -68,10 +80,21 @@ private slots:
 
     void on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_poiTreeWidget_itemSelectionChanged();
+
+    void on_treeWidget_itemSelectionChanged();
+
+    void on_historyList_itemSelectionChanged();
+
+    void on_favouriteList_itemSelectionChanged();
+
     void on_tabWidget_currentChanged(int index);
+
+    void on_showOpened_stateChanged(int state);
 
 signals:
     void ok_clicked();
+    void positionChoosen(double lon, double lat, QString name);
 
 private:
     static const int COUNTRY_SEARCH = 1;
@@ -85,8 +108,15 @@ private:
     static const int INFO_COLUMN = 3;
     static const int COLUMNS_COUNT = 4;
 
+    double retLon, retLat;
+    QString retName;
+
+    int findPoisCount;
+    int findPoisAreaLimit;
     QMap<int, QString> poiTypes;
     QList<PiLibocik::Poi> poiList;
+    QList<StorePoint> historyPoints;
+    QList<StorePoint> favouritePoints;
 
     /**
       @brief Coordinates of current location.
@@ -112,7 +142,7 @@ private:
       @brief Sets POIs in widget with specified type.
       @param type Type of POIs.
       */
-    void fillPOIWidget(int type);
+    void fillPOIWidget(int type, QString name);
 
     /**
       @brief Searching type. It defines what object type is searching now.
@@ -140,6 +170,10 @@ private:
     osmscout::Location location;
 
     void changeEvent(QEvent *);
+
+    void initHistoryList();
+
+    void initFavouriteList();
 };
 
 #endif // POINTSELECTIONWINDOW_H

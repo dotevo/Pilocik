@@ -42,8 +42,15 @@ namespace PiLibocik{
          * @brief
          *
          * @fn getGeohash
-         */
+         */        
         Geohash getGeohash(int p);
+        /**
+         * @brief
+         *
+         * @fn getDistance
+         * @return distance
+         */
+        double getSimpleDistance(Position p);
     };
 }
 

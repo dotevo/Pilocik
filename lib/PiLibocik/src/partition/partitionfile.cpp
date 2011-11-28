@@ -310,7 +310,21 @@ int PartitionFile::getSizeType(){
 }
 
 Node PartitionFile::getNearestNode(Position pos){
-    // TODO: implementation
+    Node ret;
+    int prec=this->indexNodeFile->getPrecision();
+    Geohash geo=pos.getGeohash(prec);
+    QList <Node> n=nodeFile->getBlock(indexNodeFile->getNodesBlock(geo));
+    QListIterator <Node> iter(n);
+    double value=1000;
+    while(iter.hasNext()){
+        Node node=iter.next();
+        double value2=node.getSimpleDistance(pos);
+        if(value2<value){
+            value=value2;
+            ret=node;
+        }
+    }
+    return ret;
 }
 
 qint64 PartitionFile::loadIndex(QDataStream &stream,int type){

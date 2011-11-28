@@ -34,7 +34,7 @@
 }</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="poiTab">
       <attribute name="title">
@@ -145,7 +145,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="showOpened">
          <property name="text">
           <string>Show only opened stores</string>
          </property>
@@ -195,7 +195,20 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="poiOkButton">
+          <widget class="QPushButton" name="findMore">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Find More</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="poiOK">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -443,7 +456,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="okButton">
+          <widget class="QPushButton" name="addressOK">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -542,10 +555,46 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_12">
           <item>
-           <widget class="QListView" name="listView_3"/>
+           <widget class="QTreeWidget" name="historyList">
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="historyOK">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>OK</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -564,10 +613,46 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_13">
           <item>
-           <widget class="QListView" name="listView_4"/>
+           <widget class="QTreeWidget" name="favouriteList">
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="favouriteOK">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>OK</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

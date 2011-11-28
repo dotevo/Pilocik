@@ -20,43 +20,6 @@
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="2" column="0" colspan="4">
-    <widget class="QFrame" name="nearestFrame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
-       <number>3</number>
-      </property>
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="nearestLabel">
-        <property name="text">
-         <string>Map style:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="TLineEdit" name="mapStylePath"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="5" column="0" colspan="4">
     <widget class="QFrame" name="nearestFrame_2">
      <property name="frameShape">
@@ -80,6 +43,12 @@
       </property>
       <item row="1" column="0">
        <widget class="QLabel" name="nearestLabel_2">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>Map file:</string>
         </property>
@@ -98,21 +67,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QCheckBox" name="checkBox_2">
-     <property name="text">
-      <string>Show only opened stores</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <widget class="QCheckBox" name="checkBox">
-     <property name="text">
-      <string>ShowPOI</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="3">
+   <item row="8" column="3">
     <widget class="QPushButton" name="okButton">
      <property name="minimumSize">
       <size>
@@ -125,7 +80,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="8" column="0">
     <widget class="QPushButton" name="backButton">
      <property name="minimumSize">
       <size>
@@ -148,13 +103,86 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" colspan="4">
-    <widget class="QFrame" name="poiSettings">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <layout class="QGridLayout" name="poiLayout"/>
+   <item row="2" column="0" colspan="4">
+    <widget class="QFrame" name="nearestFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="nearestLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Map style:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="3">
+       <widget class="TLineEdit" name="mapStylePath"/>
+      </item>
+      <item row="1" column="3">
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>ShowPOI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Show only opened stores</string>
+        </property>
+       </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="QScrollArea" name="poiSettings">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>374</width>
+        <height>63</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="poiLayout"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

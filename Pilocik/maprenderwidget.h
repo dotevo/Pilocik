@@ -53,9 +53,9 @@ private:
     osmscout::StyleConfig  *styleConfig;
     QMap<int, PiLibocik::PoiDisplay> poiDisplaySettings;
 
-    void drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter);
+    void drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection& projection,QPainter *painter);
 signals:
-    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection);
+    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 
 };
@@ -170,15 +170,26 @@ public:
       */
     void updateHint(HintType hintType = NoHint);
 
+    /**
+      @brief Sets settings for cache management.
+      @param cachePixmapSize Pixmap size multiplier.
+      @param delta Determines how early start rendering new map.
+      */
+    void setCacheSettings(int cachePixmapSize, double delta);
+
+    void insertArrow(double lon, double lat);
+
 private:
     bool tracking;
     bool routing;
     bool manualSimulation;
     bool movingPosition;
+    bool showArrow;
     double myLon,myLat,myAngle;
     double nodeR, routeW;   // size of node and route
     osmscout::Searching::Intersection nextIntersection;
     int getNextCrossIndex();
+    double arrowLon, arrowLat;
 
     bool mouseDown;
     //Dodatkowy rozmiar w cache
@@ -186,6 +197,7 @@ private:
     int zoom;
     //Pressed
     double lon1,lat1;
+    QPoint clicked;
 
     int cachePixmapSize;
     double delta;
@@ -195,7 +207,7 @@ private:
     osmscout::MercatorProjection  projection;
     osmscout::MercatorProjection  projectionRendered;
     osmscout::MercatorProjection  projectionRendered1;
-
+    QList<PiLibocik::Poi> poiList;
     QVector<osmscout::Routing::RouteNode> route;
     int lastNodeIndex;
 
@@ -210,8 +222,11 @@ private:
 
 public slots:
 
-    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
     void leaveRoute(double actLon, double actLat, double destLon, double destLat);
+    void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
+    void updateHint();
+
+    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 };
 

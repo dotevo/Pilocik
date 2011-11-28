@@ -9,6 +9,14 @@
 
 Settings * Settings::instance=0;
 
+StorePoint::StorePoint(int pos, QString name, double lon, double lat)
+{
+    this->pos = pos;
+    this->name = name;
+    this->lon = lon;
+    this->lat = lat;
+}
+
 Settings::Settings(QApplication* a)
 {
     app = a;
@@ -257,6 +265,33 @@ void Settings::configureProfile(QString profile)
         poiDisplayNode = poiDisplayNode.nextSiblingElement("poi");
     }
 
+    //Load history points
+
+    QDomElement historyPointNode = profileSettings.firstChildElement("historyPoints").firstChildElement("point");
+    while(!historyPointNode.isNull())
+    {
+        int pos = historyPointNode.attributeNode("pos").value().toInt();
+        QString name = historyPointNode.attributeNode("name").value();
+        double lon = historyPointNode.attributeNode("lon").value().toDouble();
+        double lat = historyPointNode.attributeNode("lat").value().toDouble();
+        StorePoint sp(pos, name, lon, lat);
+        historyPoints.append(sp);
+        historyPointNode = historyPointNode.nextSiblingElement("point");
+    }
+
+    //Load favourite points
+
+    QDomElement favPointNode = profileSettings.firstChildElement("favouritePoints").firstChildElement("point");
+    while(!favPointNode.isNull())
+    {
+        int pos = favPointNode.attributeNode("pos").value().toInt();
+        QString name = favPointNode.attributeNode("name").value();
+        double lon = favPointNode.attributeNode("lon").value().toDouble();
+        double lat = favPointNode.attributeNode("lat").value().toDouble();
+        StorePoint sp(pos, name, lon, lat);
+        favouritePoints.append(sp);
+        favPointNode = favPointNode.nextSiblingElement("point");
+    }
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name)
@@ -326,6 +361,45 @@ void Settings::modifyMapSettings(double lat, double lon, int zoom)
     mapSettings.firstChildElement("lat").firstChild().toText().setData(QString::number(lat));
     mapSettings.firstChildElement("lon").firstChild().toText().setData(QString::number(lon));
     mapSettings.firstChildElement("zoom").firstChild().toText().setData(QString::number(zoom));
+}
+
+void Settings::addHistoryPoint(QString name, double lon, double lat)
+{
+    //Search for duplicates
+    foreach(StorePoint sp, historyPoints)
+        if(sp.getName()==name && sp.getLon() == lon && sp.getLat() == lat)
+            return;
+
+    QDomElement historyPointsNode = profileSettingsXMLNode.firstChildElement("historyPoints");
+    QDomElement newPoint = doc->createElement("point");
+    newPoint.setAttribute("pos",historyPoints.size());
+    newPoint.setAttribute("name", name);
+    newPoint.setAttribute("lon",lon);
+    newPoint.setAttribute("lat",lat);
+    historyPointsNode.appendChild(newPoint);
+    historyPoints.append(StorePoint(historyPoints.size(), name, lon, lat));
+}
+
+void Settings::addFavouritePoint(QString name, double lon, double lat)
+{
+    QDomElement favPointsNode = profileSettingsXMLNode.firstChildElement("historyPoints");
+    QDomElement newPoint = doc->createElement("point");
+    newPoint.setAttribute("pos", favouritePoints.size());
+    newPoint.setAttribute("name", name);
+    newPoint.setAttribute("lon",lon);
+    newPoint.setAttribute("lat",lat);
+    favPointsNode.appendChild(newPoint);
+    favouritePoints.append(StorePoint(favouritePoints.size(), name, lon, lat));
+}
+
+void Settings::removeHistoryPoint(int pos)
+{
+
+}
+
+void Settings::removeFavouritePoint(int pos)
+{
+
 }
 
 void Settings::modifyLanguageSettings()
