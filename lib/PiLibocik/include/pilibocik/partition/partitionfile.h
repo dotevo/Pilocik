@@ -3,12 +3,12 @@
 
 #include <QFile>
 #include <QIODevice>
-#include <pilibocik/partition/way.h>
 #include <pilibocik/boundarybox.h>
 #include <pilibocik/geohash.h>
 
 namespace PiLibocik{namespace Partition{
-
+class Way;
+class Node;
 class PartitionFile;
 
 class WayFile: public QFile{
@@ -76,11 +76,20 @@ public:
     NodeFile        *getNodeFile();
     WayFile         *getWayFile();
     PrioritetsFile  *getPrioritetsFile();
+    int             getSizeType();
 
 #ifdef PiLibocik_WRITE_MODE
     void savePartition( QList<Way> &ways, QList<Node> &nodes, int prec);
 #endif
 
+    /**
+     * @brief Gets node that is closest to given position.
+     *
+     * @param pos - given position
+     *
+     * @return Closest node
+     */
+    Node getNearestNode(Position pos);
     static qint64 loadIndex(QDataStream &stream,int type);
 };
 

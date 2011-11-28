@@ -10,6 +10,12 @@ QT       += core gui sql \
 TARGET = ../../build/Pilocik
 TEMPLATE = app
 
+Debug:unix:LIBS += ../lib/PiLibocik/debug/libPiLibocik.so
+Debug:win32:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+
+Release:unix:LIBS += ../lib/PiLibocik/release/libPiLibocik.so
+Release:win32:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+
 TRANSLATIONS = lang/pl_PL.tr \
         lang/en_EN.tr
 
@@ -76,13 +82,7 @@ SOURCES += main.cpp\
     ../lib/sosmscout/src/osmscout/Partitionmodel.cpp \
     ../lib/sosmscout/src/osmscout/Searching.cpp \
     ../lib/sosmscout/src/osmscout/Point.cpp \
-    ../lib/PiLibocik/src/preparedata.cpp \
-    ../lib/PiLibocik/src/position.cpp \
-    ../lib/PiLibocik/src/poi.cpp \
-    ../lib/PiLibocik/src/pilibocik.cpp \
-    ../lib/PiLibocik/src/poifileppoi.cpp \
-    ../lib/PiLibocik/src/boundarybox.cpp \
-    ../lib/PiLibocik/src/geohash.cpp \
+    ../lib/sosmscout/src/osmscout/Routing.cpp \
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
@@ -90,10 +90,14 @@ SOURCES += main.cpp\
     widgets/tspeedmeterwidget.cpp \
     settings.cpp \
     widgets/tsliderwidget.cpp \
-    widgets/thintwidget.cpp
+    widgets/thintwidget.cpp \
+    creditswindow.cpp \
+    widgets/troutingprogresswidget.cpp \
+    widgets/terrorwidget.cpp
 
 
-HEADERS  +=  tmovableframe.h \
+HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
+    tmovableframe.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
     navigationwindow.h \
@@ -113,7 +117,10 @@ HEADERS  +=  tmovableframe.h \
     widgets/tspeedmeterwidget.h \
     settings.h \
     widgets/tsliderwidget.h \
-    widgets/thintwidget.h
+    widgets/thintwidget.h \
+    creditswindow.h \
+    widgets/troutingprogresswidget.h \
+    widgets/terrorwidget.h
 
 
 FORMS    += \
@@ -130,7 +137,10 @@ FORMS    += \
     widgets/tspeedmeterwidget.ui \
     pointselectionwindow.ui \
     widgets/tsliderwidget.ui \
-    widgets/thintwidget.ui
+    widgets/thintwidget.ui \
+    creditswindow.ui \
+    widgets/troutingprogresswidget.ui \
+    widgets/terrorwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -154,4 +164,19 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

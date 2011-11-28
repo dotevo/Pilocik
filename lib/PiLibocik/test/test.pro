@@ -11,16 +11,15 @@ TEMPLATE = app
 
 DEFINES += PiLibocik_WRITE_MODE
 
+Debug:unix:LIBS += ../debug/libPiLibocik.so
+Debug:win32:LIBS += ../debug/libPiLibocik.a
+
+Release:unix:LIBS += ../release/libPiLibocik.so
+Release:win32:LIBS += ../release/libPiLibocik.a
+
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    ../src/preparedata.cpp \
-    ../src/position.cpp \
-    ../src/poi.cpp \
-    ../src/pilibocik.cpp \
-    ../src/poifileppoi.cpp \
-    ../src/boundarybox.cpp \
-    ../src/geohash.cpp
+        mainwindow.cpp
 
 HEADERS  += mainwindow.h \
 

@@ -7,7 +7,7 @@ QT      -= gui
 QT       += sql xml
 
 TARGET = PiLibocik
-TEMPLATE = app
+TEMPLATE = lib
 CONFIG += staticlib
 
 DEFINES += PiLibocik_WRITE_MODE
@@ -18,13 +18,14 @@ SOURCES += src/pilibocik.cpp \
     src/preparedata.cpp \
     src/boundarybox.cpp \
     src/poifileppoi.cpp \
-    main.cpp \
     src/position.cpp \
     src/partition/edge.cpp \
     src/partition/node.cpp \
     src/partition/partitionfile.cpp \
     src/partition/restriction.cpp \
-    src/partition/way.cpp
+    src/partition/way.cpp \
+    src/partition/boundaryedge.cpp \
+    src/partition/routenode.cpp
 
 
 INCLUDEPATH +=include
@@ -40,7 +41,9 @@ HEADERS += include/pilibocik/pilibocik.h \
     include/pilibocik/partition/node.h \
     include/pilibocik/partition/partitionfile.h \
     include/pilibocik/partition/restriction.h \
-    include/pilibocik/partition/way.h
+    include/pilibocik/partition/routenode.h \
+    include/pilibocik/partition/way.h \
+    include/pilibocik/partition/boundaryedge.h
 
 
 unix:!symbian {
@@ -51,3 +54,7 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+
+
+

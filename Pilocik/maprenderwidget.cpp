@@ -51,7 +51,8 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
     if(database==0){
         QString map = Settings::getInstance()->getMapPath();
         if(map.size()==0) {
-            std::cerr << "It's not a map, it's a shit!" << std::endl;
+            std::cerr << "Wrong map dir!" << std::endl;
+            //std::cerr << "It's not a map, it's a shit!" << std::endl;
         }
 
         database = new osmscout::Database(databaseParameter);

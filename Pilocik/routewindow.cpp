@@ -1,6 +1,8 @@
 #include "routewindow.h"
 #include "ui_routewindow.h"
 #include "navigationwindow.h"
+#include "twidgetmanager.h"
+#include "widgets/troutingprogresswidget.h"
 
 RouteWindow::RouteWindow(NavigationWindow *parent) :
     QFullScreenFrame(parent),
@@ -30,7 +32,15 @@ void RouteWindow::on_toButton_clicked(){
 
 void RouteWindow::on_routeBackButton_clicked(){
     setVisible(false);
-    emit windowClosed();
+    emit closed();
+    ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->stopCalculating();
+}
+
+void RouteWindow::on_pushButton_clicked()
+{
+    setVisible(false);
+    ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
+    emit closed();
 }
 
 void RouteWindow::targetSet(double lon, double lat, QString name)

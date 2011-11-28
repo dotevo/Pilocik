@@ -24,8 +24,10 @@ private slots:
     void pswClosed();
     void targetSet(double lon, double lat, QString name);
 
+    void on_pushButton_clicked();
+
 signals:
-    void windowClosed();
+    void closed();
 
 private:
     Ui::RouteWindow *ui;

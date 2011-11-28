@@ -1,8 +1,14 @@
 #include <pilibocik\partition\partitionfile.h>
-#include <pilibocik/partition/edge.h>
 #include <QMap>
 #include <QDebug>
 #include <QListIterator>
+
+#include <pilibocik/partition/boundaryedge.h>
+#include <pilibocik/partition/way.h>
+#include <pilibocik/partition/restriction.h>
+#include <pilibocik/partition/node.h>
+#include <pilibocik/partition/edge.h>
+
 
 namespace PiLibocik{namespace Partition{
 
@@ -70,12 +76,15 @@ Node NodeFile::getNode(qint64 pos){
     if(pos!=-1)
         stream->device()->seek(pos);
     quint32 id;
+    quint32 cell;
     double lon,lat;
     quint8 waysCount,boundCount,routeCount;
     stream->operator >>(id);
+    stream->operator >>(cell);
     stream->operator >>(lon);
     stream->operator >>(lat);
-    Node node(id,lon,lat,part);
+    Node node(id,cell,lon,lat,part);
+    //qDebug()<<id<<":"<<lon<<":"<<lat<<":"<<cell;
 
     stream->operator >>(waysCount);
     for(quint8 i=0;i<waysCount;i++){
@@ -89,22 +98,24 @@ Node NodeFile::getNode(qint64 pos){
     }
 
     stream->operator >>(boundCount);
+    //qDebug()<<"Bound"<<boundCount;
     for(quint8 i=0;i<boundCount;i++){
         qint64 nInd     = PartitionFile::loadIndex(*stream,fileType);
+        qint64 wayInd  = PartitionFile::loadIndex(*stream,fileType);
         qint64 prioInd  = PartitionFile::loadIndex(*stream,fileType);
         double value=part->getPrioritetsFile()->getPrioritet(prioInd);
-        Edge e(nInd,value);
+        BoundaryEdge e(nInd,wayInd,value,part);
         node.addBoundaryEdge(e);
     }
 
     stream->operator >>(routeCount);
+    //qDebug()<<routeCount;
     for(quint8 i=0;i<routeCount;i++){
-        qint64 nInd,prioInd;
-        stream->operator >>(nInd);
-        stream->operator >>(prioInd);
+        qint64 nInd     = PartitionFile::loadIndex(*stream,fileType);
+        qint64 prioInd  = PartitionFile::loadIndex(*stream,fileType);
         double value=part->getPrioritetsFile()->getPrioritet(prioInd);
-        Edge e(nInd,value);
-        node.addBoundaryEdge(e);
+        Edge e(nInd,value,part);
+        node.addRoutingEdge(e);
     }
     return node;
 }
@@ -141,8 +152,39 @@ int IndexNodeFile::getPrecision(){
 }
 
 qint64 IndexNodeFile::getNodesBlock(Geohash geo){
-    //TODO
-    return 0;
+    QDataStream dataStream(this);
+    dataStream.device()->seek(0);
+    quint8 geoHashSize=0;
+    quint64 geoHashsCount=0;
+    dataStream >> geoHashSize;
+    dataStream >> geoHashsCount;
+
+    char *firstGeo=new char[geoHashSize];
+    dataStream.readRawData(firstGeo,geoHashSize);
+
+    QString s(firstGeo);
+    s=s.left(geoHashSize);
+    Geohash geoFirst(s);
+    qint64 n=geo-geoFirst;
+
+    if(n>geoHashsCount||n<0)
+        return -1;
+
+    if(part->getSizeType()==1){
+        dataStream.device()->seek(dataStream.device()->pos()+n*sizeof(qint32));
+        qint32 zz;
+        dataStream>>zz;
+        if(zz==0)return -1;
+        return zz;
+    }else if(part->getSizeType()==0){
+        dataStream.device()->seek(dataStream.device()->pos()+n*sizeof(qint64));
+        qint64 zz;
+        dataStream>>zz;
+        if(zz==0)return -1;
+        return zz;
+    }
+
+    return -1;
 }
 
 PrioritetsFile::PrioritetsFile(QString filename,int fileType,PartitionFile *p):QFile(filename),fileType(fileType),part(p){
@@ -167,6 +209,7 @@ double PrioritetsFile::getPrioritet(qint64 pos){
     Nodes count (nn)    -quint32
     -----Node-----
         int             -quint32
+        cell            -quint32
         lon             -double
         lat             -double
         WaysCount(wc)   -quint8
@@ -175,6 +218,7 @@ double PrioritetsFile::getPrioritet(qint64 pos){
         BoundCount(bc)  -quint8
         ----Boundary *(bc)--
             Node(pair)  -qint64 (NODES)
+            Way         -qint64 (WAY)
             Prio        -qint64 (PRIO)
         RouteCount(rc)  -quint8
         ----Routes *(rc)----
@@ -238,7 +282,9 @@ QList <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
     while(iter.hasNext()){
         Geohash g=iter.next();
         qint64 index=indexNodeFile->getNodesBlock(g);
-        ret.append( nodeFile->getBlock(index)  );
+        qDebug()<<g.toQString()<<":"<<index<<"Idx";
+        if(index>-1)
+            ret.append( nodeFile->getBlock(index)  );
     }
 
     return ret;
@@ -259,6 +305,27 @@ PrioritetsFile  *PartitionFile::getPrioritetsFile(){
     return prioritetsFile;
 }
 
+int PartitionFile::getSizeType(){
+    return sizeType;
+}
+
+Node PartitionFile::getNearestNode(Position pos){
+    Node ret;
+    int prec=this->indexNodeFile->getPrecision();
+    Geohash geo=pos.getGeohash(prec);
+    QList <Node> n=nodeFile->getBlock(indexNodeFile->getNodesBlock(geo));
+    QListIterator <Node> iter(n);
+    double value=1000;
+    while(iter.hasNext()){
+        Node node=iter.next();
+        double value2=node.getSimpleDistance(pos);
+        if(value2<value){
+            value=value2;
+            ret=node;
+        }
+    }
+    return ret;
+}
 
 qint64 PartitionFile::loadIndex(QDataStream &stream,int type){
     qint64 ret=0;
@@ -336,6 +403,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
         qSort(geokeys);
 
         {
+            nodeStream << (quint64)0x00ff00ff00ff00ff;
             qint64 emptyIndex=0;
             QListIterator<Geohash> listIterator(geokeys);
             Geohash geo(0);
@@ -354,6 +422,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                         nodesIndex.insert(n->getId(),nodeStream.device()->pos());
                         //Dodaj dane w node
                         nodeStream<<n->getId();
+                        nodeStream<<n->getCell();
                         nodeStream<<n->getLon();
                         nodeStream<<n->getLat();
                         /****WAYS****/
@@ -367,13 +436,16 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                             addIndex(nodeStream,emptyIndex,sizeType);
                         }
                         /****BOUNDARY_EDGES****/
-                        QVector <Edge> node_bound=n->getBoundaryEdges();
+                        QVector <BoundaryEdge> node_bound=n->getBoundaryEdges();
                         nodeStream<<(quint8)node_bound.size();
                         for(int j=0;j<node_bound.size();j++){
                             //Dodaj wpis oznazcajacy podmiane node
-                            Edge e=node_bound.at(j);
+                            BoundaryEdge e=node_bound.at(j);
                             nodesToReplace.append(QPair<int,qint64>(e.getPair(),nodeStream.device()->pos()) );
                             //Dodaj pusty index
+                            addIndex(nodeStream,emptyIndex,sizeType);
+                            ///Droga
+                            waysToReplace.append(QPair<int,qint64>(e.getWay(),nodeStream.device()->pos()) );
                             addIndex(nodeStream,emptyIndex,sizeType);
                             //Dodaj priorytet index
                             addIndex(nodeStream,prioritetsStream.device()->pos(),sizeType);
@@ -475,15 +547,13 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
             if(!was){
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
-                qDebug()<<geo.toQString();
-                qDebug()<<last.toQString();
-                quint64 l=last-geo;
+                quint64 l=last-geo+1;
                 qDebug()<<l;
                 //Geohash size
                 indexNodeStream<<l;
 
                 QString n=geo.toQString();
-                indexNodeStream << n.toLatin1();
+                indexNodeStream.writeRawData(n.toLatin1(),n.length());
 
                 //Dodaj pierwszy
                 addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
@@ -494,15 +564,18 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                 was=true;
 
             }
-            for(;geo2<geo;geo2++){
-                addIndex(indexNodeStream,0,sizeType);
-            }
+            else{
+                for(;geo2<geo;geo2++){
+                    addIndex(indexNodeStream,0,sizeType);
+                }
 
-            if(geoBlocks.contains(geo)){
-                addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
-            }else{
-                //empty
-                addIndex(indexNodeStream,0,sizeType);
+
+                if(geoBlocks.contains(geo)){
+                    addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
+                }else{
+                    //empty
+                    addIndex(indexNodeStream,0,sizeType);
+                }
             }
         }
 
