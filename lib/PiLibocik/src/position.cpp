@@ -17,4 +17,10 @@ namespace PiLibocik{
         return Geohash::generateGeohash(lon,lat,p);
     }
 
+    double Position::getSimpleDistance(Position p){
+        double la=p.getLat()-getLat();
+        double lo=p.getLon()-getLon();
+        return la*la+lo*lo;
+    }
+
 }
