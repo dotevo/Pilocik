@@ -179,6 +179,9 @@ public:
 
     void insertArrow(double lon, double lat);
 
+    bool PixelToGeo(double x, double y,
+                    double& lon, double& lat) const;
+
 private:
     bool tracking;
     bool routing;

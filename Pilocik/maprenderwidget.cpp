@@ -28,6 +28,7 @@
 
 #include "twidgetmanager.h"
 #include "widgets/thintwidget.h"
+#include "widgets/thandymenuwidget.h"
 
 #include <osmscout/Database.h>
 #include <osmscout/StyleConfigLoader.h>
@@ -214,14 +215,18 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
                     delete info;
                 InfoWindow * info = new InfoWindow(NavigationWindow::main);
                 info->resize(NavigationWindow::main->size());
-                info->show();
                 info->setPoiType(poi.getType());
                 info->setName(poi.getName());
                 info->setDetails(poi.getTags());
                 info->setCoordinates(poi.getLon(), poi.getLat());
+
+                ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPOIClicked(true);
+                ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPOIInfoWindow(info);
                 break;
             }
         }
+        ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPosition((lon1+lon2)/2, (lat1+lat2)/2);
+        ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->showMenu(e->pos().x(), e->pos().y());
     }
 }
 

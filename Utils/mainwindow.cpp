@@ -93,6 +93,8 @@ void MainWindow::on_dataInitOutputFilePathButton_clicked()
 {
     ui->dataInitOutputFilePath->setText(QFileDialog::getSaveFileName(this,
          tr("Chose file"), "", tr("Text Files (*.txt)")));
+    ui->prioCalcDataFilePath->setText(ui->dataInitOutputFilePath->text());
+    ui->partCalcDataFilePath->setText(ui->dataInitOutputFilePath->text());
 }
 
 void MainWindow::on_dataInitMapPathButton_clicked()
@@ -111,6 +113,7 @@ void MainWindow::on_prioCalcOutputFilePathButton_clicked()
 {
     ui->prioCalcOutputFilePath->setText(QFileDialog::getSaveFileName(this,
          tr("Chose file"), "", tr("Text Files (*.txt)")));
+    ui->partCalcPrioFilePath->setText(ui->prioCalcOutputFilePath->text());
 }
 
 void MainWindow::on_partCalcDataFilePathButton_clicked()

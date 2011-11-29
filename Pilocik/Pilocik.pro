@@ -91,7 +91,8 @@ SOURCES += main.cpp\
     widgets/thintwidget.cpp \
     creditswindow.cpp \
     widgets/troutingprogresswidget.cpp \
-    widgets/terrorwidget.cpp
+    widgets/terrorwidget.cpp \
+    widgets/thandymenuwidget.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
@@ -118,7 +119,8 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     widgets/thintwidget.h \
     creditswindow.h \
     widgets/troutingprogresswidget.h \
-    widgets/terrorwidget.h
+    widgets/terrorwidget.h \
+    widgets/thandymenuwidget.h
 
 
 FORMS    += \
@@ -138,7 +140,8 @@ FORMS    += \
     widgets/thintwidget.ui \
     creditswindow.ui \
     widgets/troutingprogresswidget.ui \
-    widgets/terrorwidget.ui
+    widgets/terrorwidget.ui \
+    widgets/thandymenuwidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -162,3 +165,20 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

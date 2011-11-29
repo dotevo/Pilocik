@@ -5,6 +5,7 @@
 #include "widgets/tclockwidget.h"
 #include "widgets/tspeedmeterwidget.h"
 #include "widgets/tsliderwidget.h"
+#include "widgets/thandymenuwidget.h"
 #include "widgets/thintwidget.h"
 #include "widgets/troutingprogresswidget.h"
 #include "widgets/terrorwidget.h"
@@ -77,6 +78,8 @@ void NavigationWindow::addWidgets(){
     TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
     TWidgetManager::getInstance()->addWidget("ErrorMessage", new TErrorWidget(this));
     TWidgetManager::getInstance()->getWidget("ErrorMessage")->setVisible(false);
+    TWidgetManager::getInstance()->addWidget("HandyMenu", new THandyMenuWidget(this));
+    TWidgetManager::getInstance()->getWidget("HandyMenu")->setVisible(false);
 
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
@@ -127,7 +130,7 @@ void NavigationWindow::on_menuButton_clicked(){
 }
 
 void NavigationWindow::on_trackingButton_clicked(){
-    ui->trackingButton->setText(ui->widget->getTracking()?"Enable tracking":"Disable tracking");
+    ui->trackingButton->setText(ui->widget->getTracking()?"Off":"On");
     ui->widget->setTracking(!ui->widget->getTracking());
 }
 

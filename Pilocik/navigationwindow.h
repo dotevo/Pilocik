@@ -51,11 +51,13 @@ private:
     void addWidgets();
     void addFrames();
 
-    RouteWindow *routeWin;
     OptionsWindow *optionsWin;
     GPSInfoWindow *gpsInfoWin;
 
     void changeEvent(QEvent *);
+
+public:
+    RouteWindow *routeWin;
 };
 
 #endif // NAVIGATIONWINDOW_H

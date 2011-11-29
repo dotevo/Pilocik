@@ -282,7 +282,7 @@ QList <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
     while(iter.hasNext()){
         Geohash g=iter.next();
         qint64 index=indexNodeFile->getNodesBlock(g);
-        qDebug()<<g.toQString()<<":"<<index<<"Idx";
+        //qDebug()<<g.toQString()<<":"<<index<<"Idx";
         if(index>-1)
             ret.append( nodeFile->getBlock(index)  );
     }

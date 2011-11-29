@@ -28,5 +28,8 @@
         <file>images/icons/64x64/lock_closed_ico.gif</file>
         <file>images/icons/64x64/lock_open_ico.gif</file>
         <file>images/other/pilocik_logo.gif</file>
+        <file>images/icons/64x64/tracking_ico.gif</file>
+        <file>images/icons/64x64/menu_ico.gif</file>
+        <file>images/icons/64x64/plugins_ico.gif</file>
     </qresource>
 </RCC>

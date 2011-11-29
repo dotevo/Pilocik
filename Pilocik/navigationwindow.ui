@@ -29,28 +29,57 @@
       <height>378</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QPushButton" name="trackingButton">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>130</y>
-      <width>121</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#trackingButton{
+    <widget class="QPushButton" name="trackingButton">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>130</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#trackingButton{
 border-top-left-radius: 10px;
 border-bottom-left-radius: 0px;
 border-bottom-right-radius: 0px;
 border-top-right-radius: 10px;
 }
 </string>
-    </property>
-    <property name="text">
-     <string>Disable tracking</string>
-    </property>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/gif/images/icons/64x64/tracking_ico.gif</normaloff>:/gif/images/icons/64x64/tracking_ico.gif</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sliderButton">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>130</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#sliderButton{
+border-radius: 0px;
+border-top-left-radius: 10px;
+border-bottom-left-radius: 0px;
+}
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="icons.qrc">
+       <normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</iconset>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="menuPanel">
     <property name="geometry">
@@ -242,31 +271,6 @@ border-top-right-radius: 10px;
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="sliderButton">
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>130</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#sliderButton{
-border-radius: 0px;
-border-top-left-radius: 10px;
-border-bottom-left-radius: 0px;
-}
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="icons.qrc">
-      <normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</normaloff>:/gif/images/icons/64x64/lock_closed_ico.gif</iconset>
-    </property>
-   </widget>
    <widget class="QPushButton" name="menuButton">
     <property name="geometry">
      <rect>
@@ -286,12 +290,14 @@ border-top-right-radius: 10px;
 </string>
     </property>
     <property name="text">
-     <string>Menu</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/gif/images/icons/64x64/menu_ico.gif</normaloff>:/gif/images/icons/64x64/menu_ico.gif</iconset>
     </property>
    </widget>
    <zorder>widget</zorder>
-   <zorder>trackingButton</zorder>
-   <zorder>sliderButton</zorder>
    <zorder>menuButton</zorder>
    <zorder>menuPanel</zorder>
   </widget>

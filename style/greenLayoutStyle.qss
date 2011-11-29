@@ -284,3 +284,7 @@ QTabBar::tab {
 QTabBar::tab:selected {
     font-size: 24px;
 }
+QTreeWidget{
+    //color: rgb(255, 255, 255);
+    background: rgb(255, 0, 0);
+}

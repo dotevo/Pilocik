@@ -18,11 +18,13 @@ public:
     explicit RouteWindow(NavigationWindow *parent = 0);
     ~RouteWindow();
 
+public slots:
+    void targetSet(double lon, double lat, QString name);
+
 private slots:
     void on_toButton_clicked();
     void on_routeBackButton_clicked();
     void pswClosed();
-    void targetSet(double lon, double lat, QString name);
 
     void on_pushButton_clicked();
 
