@@ -166,7 +166,6 @@ qint64 IndexNodeFile::getNodesBlock(Geohash geo){
     s=s.left(geoHashSize);
     Geohash geoFirst(s);
     qint64 n=geo-geoFirst;
-
     if(n>geoHashsCount||n<0)
         return -1;
 
@@ -312,8 +311,15 @@ int PartitionFile::getSizeType(){
 Node PartitionFile::getNearestNode(Position pos){
     Node ret;
     int prec=this->indexNodeFile->getPrecision();
+    //qDebug()<<"Prec:"<<prec;
     Geohash geo=pos.getGeohash(prec);
-    QList <Node> n=nodeFile->getBlock(indexNodeFile->getNodesBlock(geo));
+    //qDebug()<<geo.toQString();
+    qint64 index=indexNodeFile->getNodesBlock(geo);
+    //qDebug()<<"IDX"<<index;
+    if(index==-1)
+        return ret;
+
+    QList <Node> n=nodeFile->getBlock(index);
     QListIterator <Node> iter(n);
     double value=1000;
     while(iter.hasNext()){
@@ -588,6 +594,8 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                 //Dodaj pierwszy
                 addIndex(indexNodeStream,geoBlocks.value(geo),sizeType);
                 geo2=geo;
+                //przesun
+                geo2++;
                 if(!geoIterator.hasNext()){
                     break;
                 }
@@ -606,6 +614,8 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                     //empty
                     addIndex(indexNodeStream,0,sizeType);
                 }
+                geo2=geo;
+                geo2++;
             }
         }
 

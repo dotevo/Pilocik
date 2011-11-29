@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     w.show();
 
     return a.exec();*/
-
+/*
     {
          //Tworzenie przyk3adowych danych
          QList <PiLibocik::Partition::Node> nodes;
@@ -44,11 +44,15 @@ int main(int argc, char *argv[])
          ways.append(w);
          ways.append(w2);
          p.savePartition(ways,nodes,4);
-     }
+     }*/
 
      PiLibocik::Partition::PartitionFile p("","car",QIODevice::ReadOnly,1);
      //Wroc³aw 51.118552&lon=17.057824
-     PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0,51),PiLibocik::Position(18,52));
+     PiLibocik::Partition::Node n=p.getNearestNode(PiLibocik::Position(17.05,51.11));
+     qDebug()<<n.getId()<<" POS:"<<n.getLon()<<":"<<n.getLat();
+
+
+     /*PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0,51),PiLibocik::Position(18,52));
      QList<PiLibocik::Partition::Node> n=p.getNodesFromBoundaryBox(bbox);
      qDebug()<<n.length()<<"LL";
      QListIterator<PiLibocik::Partition::Node> iter(n);
@@ -65,7 +69,7 @@ int main(int argc, char *argv[])
                  qDebug()<<"      NODE"<<nnn.getId()<<":"<<nnn.getCell()<<";"<<nnn.getLon()<<":"<<nnn.getLat();
              }
          }
-     }
+     }*/
 
 
     return 0;
