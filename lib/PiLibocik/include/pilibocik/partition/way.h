@@ -110,7 +110,6 @@ public:
      * @return return value 0-way twoway;1-direction with nodes;-1-the opposite direction
      */
     qint8 getOneway();
-
 };
 
 }}
