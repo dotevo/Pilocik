@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     part = new osmscout::Partitioning();
     gps = new GPSemulator();
 
-    if(false) {
+    if(true) {
         osmscout::Routing *r = new osmscout::Routing();
         PiLibocik::Position p1(17.0151, 51.1234);
         PiLibocik::Position p2(17.1252, 51.1975);

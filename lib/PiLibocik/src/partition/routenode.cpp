@@ -18,7 +18,11 @@ RouteNode::RouteNode(Node node, int prevWayId, double rating, RouteNode *prevNod
                                                                                 prevWayId(prevWayId),
                                                                                 rating(rating),
                                                                                 routing(routing),
-                                                                                prevNode(prevNode){
+                                                                                prevNode(prevNode) {
+    ways = node.getWays();
+    boundaryEdges = node.getBoundaryEdges();
+    routingEdges = node.getRoutingEdges();
+    part = node.getPartitionfile();
 }
 
 RouteNode RouteNode::getPrevNode(){

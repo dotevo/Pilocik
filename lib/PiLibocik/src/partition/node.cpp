@@ -19,6 +19,10 @@ bool Node::isEmpty(){
     return id<0;
 }
 
+PartitionFile *Node::getPartitionFile(){
+    return part;
+}
+
 quint32 Node::getCell(){
     return cell;
 }

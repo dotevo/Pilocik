@@ -16,16 +16,20 @@ class Node: public Position{
 private:
     int id;
     quint32 cell;
-    PartitionFile *part;
+
+protected:
     QVector<qint64> ways;
     QVector<BoundaryEdge> boundaryEdges;
     QVector<Edge> routingEdges;
+    PartitionFile *part;
+
 public:
     Node();
     Node(int id,quint32 cell,double lon,double lat,PartitionFile *m=0);
     int getId();
     quint32 getCell();
     bool isEmpty();
+    PartitionFile *getPartitionFile();
     QVector<qint64> getWays();
     void addWay(qint64 pos);
     QVector<Way> getWaysObj();
