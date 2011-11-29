@@ -64,7 +64,7 @@ private:
 
 #ifdef PiLibocik_WRITE_MODE
     void addIndex(QDataStream &stream,qint64 pos,int type);
-    void addWayToFile(QDataStream &waystream,QDataStream &wayStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType);
+    void addWayToFile(QDataStream &waystream,QDataStream &wayStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,int> &waysIndexId,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType);
 #endif
 
 public:

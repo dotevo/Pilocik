@@ -16,29 +16,39 @@ int main(int argc, char *argv[])
 
     return a.exec();*/
 
-  /*  {
-
+    {
          //Tworzenie przyk3adowych danych
          QList <PiLibocik::Partition::Node> nodes;
          PiLibocik::Partition::Way w(1,0.5,(quint8)0);
+         PiLibocik::Partition::Way w2(2,0.5,(quint8)0);
          //Dodaj 10node do drogi 1
          for(int i=0;i<10;i++){
-             PiLibocik::Partition::Node n(i,100,0.1*i+0.1,0.1*i+0.1);
-             PiLibocik::Partition::Edge e1( (i+1)%10,0.1 );
+             PiLibocik::Partition::Node n(i, 100,0.1*i+0.1,0.1*i+0.1);
+             PiLibocik::Partition::Edge e1( (i+1)%10,  0.1 );
+             PiLibocik::Partition::BoundaryEdge b1((i+4)%10,1,0.5);
              //PiLibocik::Partition::Edge e2
              n.addRoutingEdge(e1);
-             n.addWay(1);
-             nodes.append(n);
+             n.addBoundaryEdge(b1);
+             n.addWay(0);
+
              w.addNode(i);
+             if(i%2==0){
+                 n.addWay(1);
+                 w2.addNode(i);
+             }
+             nodes.append(n);
+
          }
          PiLibocik::Partition::PartitionFile p("test","car",QIODevice::WriteOnly,1);
          QList <PiLibocik::Partition::Way> ways;
          ways.append(w);
+         ways.append(w2);
          p.savePartition(ways,nodes,4);
      }
-*/
-     PiLibocik::Partition::PartitionFile p("test","car",QIODevice::ReadOnly,1);
-     PiLibocik::BoundaryBox bbox(PiLibocik::Position(0.1,0.1),PiLibocik::Position(1.5,1.5));
+
+     PiLibocik::Partition::PartitionFile p("","car",QIODevice::ReadOnly,1);
+     //Wroc³aw 51.118552&lon=17.057824
+     PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0,51),PiLibocik::Position(18,52));
      QList<PiLibocik::Partition::Node> n=p.getNodesFromBoundaryBox(bbox);
      qDebug()<<n.length()<<"LL";
      QListIterator<PiLibocik::Partition::Node> iter(n);
