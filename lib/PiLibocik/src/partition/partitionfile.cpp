@@ -147,7 +147,7 @@ int IndexNodeFile::getPrecision(){
     QDataStream dataStream(this);
     quint8 value=0;
     dataStream>>value;
-    qDebug()<<(int)value;
+    //qDebug()<<(int)value;
     return (int)value;
 }
 
@@ -282,7 +282,7 @@ QList <Node> PartitionFile::getNodesFromBoundaryBox(BoundaryBox &bbox){
     while(iter.hasNext()){
         Geohash g=iter.next();
         qint64 index=indexNodeFile->getNodesBlock(g);
-        qDebug()<<g.toQString()<<":"<<index<<"Idx";
+        //qDebug()<<g.toQString()<<":"<<index<<"Idx";
         if(index>-1)
             ret.append( nodeFile->getBlock(index)  );
     }
@@ -519,7 +519,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
             else
                 oneway0.push_back(w);
         }
-        qDebug()<<oneway0.size()<<"[]"<<oneway_1.size()<<"[]"<<oneway1.size();
+        //qDebug()<<oneway0.size()<<"[]"<<oneway_1.size()<<"[]"<<oneway1.size();
 
         //oneway 1 pos
         addIndex(wayStream,0,sizeType) ;
@@ -561,7 +561,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
             //Ustaw na pozycje
             nodeStream.device()->seek(L.second);
             addIndex(nodeStream,waysIndex.value(L.first),sizeType) ;
-            qDebug()<<L.first<<"L"<<L.second<<":"<<nodeStream.device()->pos()<<"WART:"<<waysIndex.value(L.first);
+            //qDebug()<<L.first<<"L"<<L.second<<":"<<nodeStream.device()->pos()<<"WART:"<<waysIndex.value(L.first);
         }
         qDebug()<<"Uzupelniam KOniec";
 
@@ -578,7 +578,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
                 quint64 l=last-geo+1;
-                qDebug()<<l;
+                //qDebug()<<l;
                 //Geohash size
                 indexNodeStream<<l;
 
@@ -614,7 +614,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
 
 
 void PartitionFile::addWayToFile(QDataStream &wayStream,QDataStream &prioritetsStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,int> &waysIndexId,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType){
-    qDebug()<<w->getId()<<";"<<waysIndexId.value(w->getId())<<":"<<wayStream.device()->pos();
+    //qDebug()<<w->getId()<<";"<<waysIndexId.value(w->getId())<<":"<<wayStream.device()->pos();
     waysIndex.insert(waysIndexId.value(w->getId()),wayStream.device()->pos());
     wayStream<<(quint32)w->getId();
     //Nodes

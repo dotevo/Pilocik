@@ -6,6 +6,7 @@
 
 #include <osmscout/Partitionmodel.h>
 #include <osmscout/Routing.h>
+#include "../lib/PiLibocik/include/pilibocik/boundarybox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,11 +20,12 @@ MainWindow::MainWindow(QWidget *parent) :
     part = new osmscout::Partitioning();
     gps = new GPSemulator();
 
-    //osmscout::Routing r = new osmscout::Routing();
-    //PiLibocik::Position p1(14.9883, 51.1545);
-    //PiLibocik::Position p2(16.0152, 51.1975);
-    //PiLibocik::BoundaryBox bBox(p1, p2);
-    //r.CalculateRoute(bBox);
+    if(false) {
+        osmscout::Routing *r = new osmscout::Routing();
+        PiLibocik::Position p1(17.0151, 51.1234);
+        PiLibocik::Position p2(17.1252, 51.1975);
+        r->CalculateRoute(p1, p2);
+    }
 
     connect(gen, SIGNAL(progressUpdate(int)), ui->mcProgressBar, SLOT(setValue(int)));
     connect(gen, SIGNAL(statusUpdate(QString)), ui->mcStatus, SLOT(setText(QString)));
