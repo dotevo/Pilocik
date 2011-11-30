@@ -575,7 +575,7 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
 void PointSelectionWindow::on_poiOK_clicked() {
     //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
 
-    std::vector<osmscout::Routing::RouteNode> route;
+    std::vector<osmscout::Routing::Step> route;
 
     double lons[12];
     double lats[12];
@@ -630,7 +630,7 @@ void PointSelectionWindow::on_poiOK_clicked() {
     cross[11] = true;
 
     for (int i = 0; i < 12; i++) {
-        osmscout::Routing::RouteNode node;
+        osmscout::Routing::Step node;
         node.id = ids[i];
         node.lat = lats[i];
         node.lon = lons[i];
@@ -640,7 +640,7 @@ void PointSelectionWindow::on_poiOK_clicked() {
     }
 
     NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
-    par->setRoute(QVector<osmscout::Routing::RouteNode>::fromStdVector(route));
+    par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);

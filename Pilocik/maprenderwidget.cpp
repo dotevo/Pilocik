@@ -238,7 +238,7 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
             int nextCross = getNextCrossIndex();
 
             if (nextCross != -1 && nextCross + 1 < route.size()) {
-                QList<osmscout::Routing::RouteNode> ways;
+                QList<osmscout::Routing::Step> ways;
                 ways.append(route.at(nextCross + 1));
 
                 nextIntersection = osmscout::Searching::SimulateNextCrossing(route.at(nextCross - 1),
@@ -347,12 +347,12 @@ int MapRenderWidget::getZoom(){
     return projection.GetMagnification();
 }
 
-void MapRenderWidget::setRoute(QVector<osmscout::Routing::RouteNode> route)
+void MapRenderWidget::setRoute(QVector<osmscout::Routing::Step> route)
 {
     this->route = route;
 }
 
-QVector<osmscout::Routing::RouteNode> MapRenderWidget::getRoute()
+QVector<osmscout::Routing::Step> MapRenderWidget::getRoute()
 {
     return route;
 }
@@ -436,7 +436,7 @@ void MapRenderWidget::updateHint(HintType hintType)
             double distance = 0;
 
             // from actual position to lastNodeIndex + 1
-            osmscout::Routing::RouteNode actNode;
+            osmscout::Routing::Step actNode;
             actNode.lat = myLat;
             actNode.lon = myLon;
             actNode.crossing = false;
@@ -544,8 +544,8 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     for (int i = lastNodeIndex + 1; i < route.size() - 1; i++) {
-        osmscout::Routing::RouteNode node = route.at(i);
-        osmscout::Routing::RouteNode nextNode = route.at(i + 1);
+        osmscout::Routing::Step node = route.at(i);
+        osmscout::Routing::Step nextNode = route.at(i + 1);
 
         double x, x2, y, y2;
         projection.GeoToPixel(node.lon, node.lat, x, y);
@@ -577,7 +577,7 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
     }
 
     if (lastNodeIndex < route.size() ) {
-        osmscout::Routing::RouteNode lastNode = route.at(lastNodeIndex);
+        osmscout::Routing::Step lastNode = route.at(lastNodeIndex);
 
         double actX, actY, lastX, lastY;
         projection.GeoToPixel(myLon, myLat, actX, actY);
@@ -596,7 +596,7 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
     }
 
     if (!route.isEmpty()) {
-        osmscout::Routing::RouteNode finishNode = route.last();
+        osmscout::Routing::Step finishNode = route.last();
         double finishX, finishY;
         projection.GeoToPixel(finishNode.lon, finishNode.lat, finishX, finishY);
 

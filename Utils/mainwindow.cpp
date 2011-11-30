@@ -24,7 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
         osmscout::Routing *r = new osmscout::Routing();
         PiLibocik::Position p1(17.0151, 51.1234);
         PiLibocik::Position p2(17.1252, 51.1975);
-        r->CalculateRoute(p1, p2);
+        QList< osmscout::Routing::Step > route = r->CalculateRoute(p1, p2);
+        QListIterator< osmscout::Routing::Step > it(route);
+        while(it.hasNext()) {
+            osmscout::Routing::Step s = it.next();
+            qDebug() << s.lon << ":" << s.lat << ((s.crossing) ? " x" : "");
+        }
     }
 
     connect(gen, SIGNAL(progressUpdate(int)), ui->mcProgressBar, SLOT(setValue(int)));

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "tmovableframe.h"
+#include "../lib/PiLibocik/include/pilibocik/position.h"
 
 namespace Ui {
     class TRoutingProgressWidget;
@@ -34,7 +35,7 @@ public:
      * @brief Indicates start of route calculation and shows widget.
      *
      */
-    void startCalculating();
+    void startCalculating(PiLibocik::Position startingPosition, PiLibocik::Position endPosition);
     /**
      * @brief Indicates end of route calculation and hides widget.
      *

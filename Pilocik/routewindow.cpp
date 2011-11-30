@@ -39,7 +39,9 @@ void RouteWindow::on_routeBackButton_clicked(){
 void RouteWindow::on_pushButton_clicked()
 {
     setVisible(false);
-    ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
+    PiLibocik::Position startingPosition(17.0151, 51.1234);
+    PiLibocik::Position endPosition(17.1252, 51.1975);
+    ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating(startingPosition, endPosition);
     emit closed();
 }
 

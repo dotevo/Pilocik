@@ -24,7 +24,7 @@ TRoutingProgressWidget::~TRoutingProgressWidget()
     delete ui;
 }
 
-void TRoutingProgressWidget::startCalculating()
+void TRoutingProgressWidget::startCalculating(PiLibocik::Position startingPosition, PiLibocik::Position endPosition)
 {
     calculating = true;
     ui->progressBar->setValue(0);

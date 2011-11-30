@@ -22,7 +22,7 @@ RouteNode::RouteNode(Node node, int prevWayId, double rating, RouteNode *prevNod
     ways = node.getWays();
     boundaryEdges = node.getBoundaryEdges();
     routingEdges = node.getRoutingEdges();
-    part = node.getPartitionfile();
+    part = node.getPartitionFile();
 }
 
 RouteNode RouteNode::getPrevNode(){
