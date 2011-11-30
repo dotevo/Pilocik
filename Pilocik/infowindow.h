@@ -61,6 +61,11 @@ public:
       */
     void setDetails(QList < QPair <QString, QString> > tags);
 
+    /**
+      @brief Sets poi type and changes zoom to best for specified Poi.
+      */
+    void setPoiType(int type);
+
 private slots:
     /**
       @brief Back button clicked. Closing info window.

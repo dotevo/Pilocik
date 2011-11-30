@@ -101,7 +101,7 @@ namespace PiLibocik{
          *
          * @param now
          */
-        int isOpen(QDate now);
+        int isOpen(QDateTime now);
 
 
 //#ifdef PiLibocik_WRITE_MODE

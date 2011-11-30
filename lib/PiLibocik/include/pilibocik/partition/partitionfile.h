@@ -76,6 +76,7 @@ public:
     NodeFile        *getNodeFile();
     WayFile         *getWayFile();
     PrioritetsFile  *getPrioritetsFile();
+    int             getSizeType();
 
 #ifdef PiLibocik_WRITE_MODE
     void savePartition( QList<Way> &ways, QList<Node> &nodes, int prec);

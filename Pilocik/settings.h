@@ -9,6 +9,35 @@
 #include <QApplication>
 #include <pilibocik/poi.h>
 
+
+class StorePoint
+{
+private:
+    int     pos;
+    QString name;
+    double  lon,
+            lat;
+
+public:
+    StorePoint(int pos, QString name, double lon, double lat);
+
+    int getPos(){
+        return pos;
+    }
+
+    QString getName(){
+        return name;
+    }
+
+    double getLon(){
+        return lon;
+    }
+
+    double getLat(){
+        return lat;
+    }
+};
+
 class Settings
 {
 private:
@@ -32,6 +61,8 @@ private:
     //profileSettings
     QDomElement profileSettingsXMLNode;
     QMap<QString, QMap<QString, QString> > widgetsSettings;
+    QList<StorePoint> historyPoints;
+    QList<StorePoint> favouritePoints;
     QString language;
     QString startLanguage;
     double  lat,
@@ -75,6 +106,10 @@ public:
     void modifyMapSettings(double lat, double lon, int zoom);
     void modifyLanguageSettings();
     void modifyPoiDisplaySettings(QMap<int, PiLibocik::PoiDisplay> newPoiDisplaySettings);
+    void addHistoryPoint(QString name, double lon, double lat);
+    void addFavouritePoint(QString name, double lon, double lat);
+    void removeHistoryPoint(int pos);
+    void removeFavouritePoint(int pos);
 
     QTranslator* reloadTranslation(QString lang = "");
 
@@ -115,6 +150,19 @@ public:
     QMap<int, PiLibocik::PoiDisplay> getPoiDisplaySettings()
     {
         return poiDisplaySettings;
+    }
+
+    QList<StorePoint> getHistoryPoints()
+    {
+        QList<StorePoint> revHistory;
+        for(int i = historyPoints.size()-1; i>=0; i--)
+            revHistory.append(historyPoints.at(i));
+        return revHistory;
+    }
+
+    QList<StorePoint> getFavouritePoints()
+    {
+        return favouritePoints;
     }
 
     double getLat()

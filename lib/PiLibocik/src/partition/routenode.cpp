@@ -33,4 +33,8 @@ double RouteNode::getRating(){
     return rating;
 }
 
+bool RouteNode::getRouting(){
+    return routing;
+}
+
 }}

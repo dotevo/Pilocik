@@ -30,10 +30,14 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mapRenderer = ui->widget;
+
     TWidgetManager::getInstance()->setParent(this);
     addWidgets();
     TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::STAND));
     //TWidgetManager::getInstance()->setMode(TMovableFrame::TMOVABLEMODE(TMovableFrame::MOVING));
+
+    mapRenderer->updateHint();
+
     ui->menuPanel->setVisible(false);
     addFrames();
     ui->widget->setVisible(true);
@@ -57,7 +61,6 @@ NavigationWindow::~NavigationWindow()
     delete optionsWin;
     delete gpsInfoWin;
     delete mapRenderer;
-//    delete ui->widget;
     delete TWidgetManager::getInstance();
     Settings::getInstance()->saveSettings();
     delete Settings::getInstance();

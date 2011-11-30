@@ -1,5 +1,6 @@
 #include "infowindow.h"
 #include "ui_infowindow.h"
+#include <pilibocik/poi.h>
 
 #include <QDebug>
 
@@ -8,31 +9,38 @@ InfoWindow::InfoWindow(NavigationWindow *parent) :
     ui(new Ui::InfoWindow)
 {
     ui->setupUi(this);
-
+    ui->mapWidget->setCacheSettings(1, 0.0);
 //    ui->mapWidget->setSize(getSize());
 }
 
 InfoWindow::~InfoWindow()
 {
+    delete ui->mapWidget;
     delete ui;
+}
+
+void InfoWindow::setPoiType(int type)
+{
+    QMap<int, PiLibocik::PoiDisplay> poiDisplay = Settings::getInstance()->getPoiDisplaySettings();
+    setZoom(poiDisplay[type].getZoom()*4);
 }
 
 void InfoWindow::setName(const QString name)
 {
     this->name = name;
-
     ui->nameText->setText(name);
 }
 
-void InfoWindow::setCoordinates(const double lat, const double lon)
+void InfoWindow::setCoordinates(const double lon, const double lat)
 {
     this->lon = lon;
     this->lat = lat;
 
-    ui->lonText->setText(" Lat: "+QString::number(lon));
-    ui->latText->setText(" Lon: "+QString::number(lat));
+    ui->lonText->setText(" Lon: "+QString::number(lon));
+    ui->latText->setText(" Lat: "+QString::number(lat));
 
-    ui->mapWidget->setCoordinates(lat, lon);
+    ui->mapWidget->setCoordinates(lon, lat);
+    ui->mapWidget->insertArrow(lon,lat);
     ui->mapWidget->repaint();
 }
 
@@ -44,7 +52,6 @@ void InfoWindow::setZoom(const int zoom)
 void InfoWindow::setMapRender()
 {
     ui->mapWidget = new MapRenderWidget(this, getSize().width(), getSize().height());
-    //ui->mapWidget->forceRepaint();
 }
 
 QSize InfoWindow::getSize()

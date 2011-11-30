@@ -17,6 +17,7 @@
 #include <osmscout/StyleConfig.h>
 #include <osmscout/MapPainterQt.h>
 #include <osmscout/Routing.h>
+#include <osmscout/Searching.h>
 #include <pilibocik/boundarybox.h>
 #include <pilibocik/poi.h>
 #include <pilibocik/poifileppoi.h>
@@ -52,9 +53,9 @@ private:
     osmscout::StyleConfig  *styleConfig;
     QMap<int, PiLibocik::PoiDisplay> poiDisplaySettings;
 
-    void drawPoiIcon(int type, double lon, double lat, osmscout::Projection& projection,QPainter *painter);
+    void drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection& projection,QPainter *painter);
 signals:
-    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection);
+    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 
 };
@@ -67,6 +68,12 @@ signals:
 class MapRenderWidget : public QWidget
 {
     Q_OBJECT
+
+    enum PenStyle {
+        NORMAL_LINE,
+        ROUTE_LINE,
+        ROUTE_EDGE_LINE,
+    };
 
 public:
     MapRenderWidget(QWidget *parent=0,int width=0,int height=0);
@@ -150,12 +157,39 @@ public:
       */
     bool getRouting();
 
+    enum HintType {
+        NoHint,
+        NormalHint,
+        LeaveRouteHint,
+        FinishRouteHint
+    };
+
+    /**
+      @brief Updates hint with specified hint type.
+      @param hintType Hint type.
+      */
+    void updateHint(HintType hintType = NoHint);
+
+    /**
+      @brief Sets settings for cache management.
+      @param cachePixmapSize Pixmap size multiplier.
+      @param delta Determines how early start rendering new map.
+      */
+    void setCacheSettings(int cachePixmapSize, double delta);
+
+    void insertArrow(double lon, double lat);
+
 private:
     bool tracking;
     bool routing;
     bool manualSimulation;
     bool movingPosition;
+    bool showArrow;
     double myLon,myLat,myAngle;
+    double nodeR, routeW;   // size of node and route
+    osmscout::Searching::Intersection nextIntersection;
+    int getNextCrossIndex();
+    double arrowLon, arrowLat;
 
     bool mouseDown;
     //Dodatkowy rozmiar w cache
@@ -163,6 +197,7 @@ private:
     int zoom;
     //Pressed
     double lon1,lat1;
+    QPoint clicked;
 
     int cachePixmapSize;
     double delta;
@@ -172,23 +207,26 @@ private:
     osmscout::MercatorProjection  projection;
     osmscout::MercatorProjection  projectionRendered;
     osmscout::MercatorProjection  projectionRendered1;
-
+    QList<PiLibocik::Poi> poiList;
     QVector<osmscout::Routing::RouteNode> route;
     int lastNodeIndex;
 
     MapPixmapRenderer *rendererThread;
+    osmscout::Searching *searching;
     QImage image;
     void testPixmap(bool force=false);
     void DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter);
     void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
-    void updateHint();
+    QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
+    void setRouteSizes(int zoom);
 
 public slots:
 
-    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection);
+    void leaveRoute(double actLon, double actLat, double destLon, double destLat);
+    void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
 
-signals:
-    void leftRoute(double actLon, double actLat, double destLon, double destLat);
+    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
+
 };
 
 

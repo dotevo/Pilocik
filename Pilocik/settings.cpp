@@ -9,6 +9,14 @@
 
 Settings * Settings::instance=0;
 
+StorePoint::StorePoint(int pos, QString name, double lon, double lat)
+{
+    this->pos = pos;
+    this->name = name;
+    this->lon = lon;
+    this->lat = lat;
+}
+
 Settings::Settings(QApplication* a)
 {
     app = a;
@@ -72,30 +80,30 @@ void Settings::resetDefaultSettings()
             "       <poiIconsDir>../Pilocik/images/poi/</poiIconsDir>\n"
             "       <simulationPath></simulationPath>\n"
             "   </coreSettings>\n"
-            "   <poiSettings\n>"
-            "       <poi zoom=\"128\" icon=\"transport_fuel.gif\" type=\"0\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"transport_parking.gif\" type=\"1\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"shopping_car.gif\" type=\"2\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"money_atm.gif\" type=\"3\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"money_bank.gif\" type=\"4\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"health_pharmacy.gif\" type=\"5\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"health_hospital.gif\" type=\"6\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"tourist_cinema2.gif\" type=\"7\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"nightclub.gif\" type=\"8\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"tourist_theatre.gif\" type=\"9\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"poi_embassy.gif\" type=\"10\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"amenity_firestation.gif\" type=\"11\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"amenity_police.n.gif\" type=\"12\"/\n>"
-            "       <poi zoom=\"8192\" icon=\"amenity_post_office.gif\" type=\"13\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"accommodation_shelter.gif\" type=\"14\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"toilets.gif\" type=\"15\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"amenity_town_hall.gif\" type=\"16\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"money_currency_exchange.gif\" type=\"17\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"shopping_convenience.gif\" type=\"18\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"food_restaurant.gif\" type=\"19\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"food_bar.gif\" type=\"20\"/\n>"
-            "       <poi zoom=\"16384\" icon=\"food_cafe.gif\" type=\"21\"/\n>"
-            "   </poiSettings\n>"
+            "   <poiSettings>\n"
+            "       <poi zoom=\"128\" icon=\"transport_fuel.gif\" type=\"0\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"transport_parking.gif\" type=\"1\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"shopping_car.gif\" type=\"2\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"money_atm.gif\" type=\"3\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"money_bank.gif\" type=\"4\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"health_pharmacy.gif\" type=\"5\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"health_hospital.gif\" type=\"6\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"tourist_cinema2.gif\" type=\"7\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"nightclub.gif\" type=\"8\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"tourist_theatre.gif\" type=\"9\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"poi_embassy.gif\" type=\"10\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"amenity_firestation.gif\" type=\"11\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"amenity_police.n.gif\" type=\"12\"/>\n"
+            "       <poi zoom=\"8192\" icon=\"amenity_post_office.gif\" type=\"13\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"accommodation_shelter.gif\" type=\"14\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"toilets.gif\" type=\"15\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"amenity_town_hall.gif\" type=\"16\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"money_currency_exchange.gif\" type=\"17\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"shopping_convenience.gif\" type=\"18\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"food_restaurant.gif\" type=\"19\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"food_bar.gif\" type=\"20\"/>\n"
+            "       <poi zoom=\"16384\" icon=\"food_cafe.gif\" type=\"21\"/>\n"
+            "   </poiSettings>\n"
             "   <profile name=\"default\">\n"
             "       <widgets>\n"
             "           <widget name=\"Clock\">\n"
@@ -257,6 +265,33 @@ void Settings::configureProfile(QString profile)
         poiDisplayNode = poiDisplayNode.nextSiblingElement("poi");
     }
 
+    //Load history points
+
+    QDomElement historyPointNode = profileSettings.firstChildElement("historyPoints").firstChildElement("point");
+    while(!historyPointNode.isNull())
+    {
+        int pos = historyPointNode.attributeNode("pos").value().toInt();
+        QString name = historyPointNode.attributeNode("name").value();
+        double lon = historyPointNode.attributeNode("lon").value().toDouble();
+        double lat = historyPointNode.attributeNode("lat").value().toDouble();
+        StorePoint sp(pos, name, lon, lat);
+        historyPoints.append(sp);
+        historyPointNode = historyPointNode.nextSiblingElement("point");
+    }
+
+    //Load favourite points
+
+    QDomElement favPointNode = profileSettings.firstChildElement("favouritePoints").firstChildElement("point");
+    while(!favPointNode.isNull())
+    {
+        int pos = favPointNode.attributeNode("pos").value().toInt();
+        QString name = favPointNode.attributeNode("name").value();
+        double lon = favPointNode.attributeNode("lon").value().toDouble();
+        double lat = favPointNode.attributeNode("lat").value().toDouble();
+        StorePoint sp(pos, name, lon, lat);
+        favouritePoints.append(sp);
+        favPointNode = favPointNode.nextSiblingElement("point");
+    }
 }
 
 QMap<QString,QString> Settings::getWidgetSettings(QString name){
@@ -325,6 +360,45 @@ void Settings::modifyMapSettings(double lat, double lon, int zoom)
     mapSettings.firstChildElement("lat").firstChild().toText().setData(QString::number(lat));
     mapSettings.firstChildElement("lon").firstChild().toText().setData(QString::number(lon));
     mapSettings.firstChildElement("zoom").firstChild().toText().setData(QString::number(zoom));
+}
+
+void Settings::addHistoryPoint(QString name, double lon, double lat)
+{
+    //Search for duplicates
+    foreach(StorePoint sp, historyPoints)
+        if(sp.getName()==name && sp.getLon() == lon && sp.getLat() == lat)
+            return;
+
+    QDomElement historyPointsNode = profileSettingsXMLNode.firstChildElement("historyPoints");
+    QDomElement newPoint = doc->createElement("point");
+    newPoint.setAttribute("pos",historyPoints.size());
+    newPoint.setAttribute("name", name);
+    newPoint.setAttribute("lon",lon);
+    newPoint.setAttribute("lat",lat);
+    historyPointsNode.appendChild(newPoint);
+    historyPoints.append(StorePoint(historyPoints.size(), name, lon, lat));
+}
+
+void Settings::addFavouritePoint(QString name, double lon, double lat)
+{
+    QDomElement favPointsNode = profileSettingsXMLNode.firstChildElement("historyPoints");
+    QDomElement newPoint = doc->createElement("point");
+    newPoint.setAttribute("pos", favouritePoints.size());
+    newPoint.setAttribute("name", name);
+    newPoint.setAttribute("lon",lon);
+    newPoint.setAttribute("lat",lat);
+    favPointsNode.appendChild(newPoint);
+    favouritePoints.append(StorePoint(favouritePoints.size(), name, lon, lat));
+}
+
+void Settings::removeHistoryPoint(int pos)
+{
+
+}
+
+void Settings::removeFavouritePoint(int pos)
+{
+
 }
 
 void Settings::modifyLanguageSettings()
