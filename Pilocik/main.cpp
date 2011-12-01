@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     NavigationWindow::main=&w;
     w.show();
 
-    PluginManager::getInstance()->initAll();
-    PluginManager::getInstance()->runAll();
+    //PluginManager::getInstance()->initAll();
+    //PluginManager::getInstance()->runAll();
 
     Settings::getInstance()->reloadTranslation(Settings::getInstance()->getStartLanguage());
 

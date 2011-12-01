@@ -11,8 +11,13 @@
 SimpleClock::SimpleClock(){
 }
 
+SimpleClock::~SimpleClock(){
+    qDebug()<<"CLEAR!!";
+    delete clockWidget;
+}
+
+
 void SimpleClock::init(){
-    qDebug()<<"TESTOWY INIT";
     clockWidget=new TClockWidget();
 }
 
@@ -20,6 +25,8 @@ void SimpleClock::init(){
 void SimpleClock::run (){
     qDebug()<<"TESTOWY START";
 }
+
+
 
 QList<PluginWidget*> SimpleClock::getWidgets(){
     QList<PluginWidget*> l;

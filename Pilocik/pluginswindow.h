@@ -22,7 +22,7 @@ class PluginListWidget : public QListWidget
 {
 public:
     PluginListWidget(QWidget* parent = 0);
-
+    void reload();
 protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);

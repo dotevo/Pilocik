@@ -1,38 +1,44 @@
 #include "pluginswindow.h"
+#include "pluginmanager.h"
+#include <QPluginLoader>
+#include <QFileInfo>
 #include "ui_pluginswindow.h"
 
 
 PluginListWidget::PluginListWidget(QWidget* parent)
                 : QListWidget(parent){
     setSelectionMode(QAbstractItemView::ContiguousSelection);
-    for (int i = 0; i < 10; ++i){
-        QListWidgetItem* item = new QListWidgetItem(QString::number(i+i));
-        item->setCheckState(Qt::Unchecked);
+    reload();
+}
+
+void PluginListWidget::reload(){
+    this->clear();
+    QList<QPluginLoader*> plugins=PluginManager::getInstance()->getAllPlugins();
+    QListIterator<QPluginLoader*> iter(plugins);
+    while(iter.hasNext()){
+        QPluginLoader* a=iter.next();
+        QFileInfo pathInfo( a->fileName() );
+        QListWidgetItem* item = new QListWidgetItem(pathInfo.fileName());
+        if(!a->isLoaded())
+            item->setCheckState(Qt::Unchecked);
+        else
+            item->setCheckState(Qt::Checked);
         addItem(item);
     }
 }
 
 void PluginListWidget::mousePressEvent(QMouseEvent* event){
     QListWidgetItem* item = selectedCheckStateItem(event->pos());
-    if (item)
-    {
-        // mouse pressed over a selected items checkbox,
-        // change the check states of all selected items
+    if (item) {
         setSelectedCheckStates(item->checkState() == Qt::Checked ? Qt::Unchecked : Qt::Checked);
-    }
-    else
-    {
-        // otherwise let the base class handle mouse press
+    }else{
         QListWidget::mousePressEvent(event);
     }
 }
 
 
 void PluginListWidget::mouseReleaseEvent(QMouseEvent* event){
-    // do nothing if mouse released over a selected items checkbox
-    if (!selectedCheckStateItem(event->pos()))
-    {
-        // otherwise let the base class handle mouse release
+    if (!selectedCheckStateItem(event->pos())){
         QListWidget::mouseReleaseEvent(event);
     }
 }
@@ -56,8 +62,15 @@ QListWidgetItem* PluginListWidget::selectedCheckStateItem(const QPoint& pos){
 }
 
 void PluginListWidget::setSelectedCheckStates(Qt::CheckState checkState){
-    foreach (QListWidgetItem* item, selectedItems())
+    PluginManager *a=PluginManager::getInstance();
+    foreach (QListWidgetItem* item, selectedItems()){
         item->setCheckState(checkState);
+        //set plugin (load or unload)
+        if(checkState==Qt::Checked)
+            a->loadPlugin(item->text());
+        else
+            a->unloadPlugin(item->text());
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

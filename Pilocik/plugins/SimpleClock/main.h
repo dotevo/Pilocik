@@ -17,6 +17,7 @@ class SimpleClock :public QObject, public PluginInterface{
 
     public:
         SimpleClock();
+        ~SimpleClock();
         //From interface
         QString getName(){return "SimpleClock";}
         QString getDesc(){return "SimpleClock";}

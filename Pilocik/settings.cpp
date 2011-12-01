@@ -467,4 +467,11 @@ QTranslator* Settings::reloadTranslation(QString lang)
 }
 
 
+QString Settings::getPluginSetting(QString pluginName,QString setting){
+    //TODO!!!
+    return "1";
+}
 
+void Settings::modifyPluginSetting(QString pluginName,QString setting,QString value){
+    //TODO!!!
+}

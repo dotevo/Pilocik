@@ -13,14 +13,20 @@ class PluginManager
 {
 private:
     PluginManager();
+    QList<QPluginLoader*> pluginsList;
     QMap<QString,QPluginLoader*> plugins;
     static PluginManager *pluginManager;
-public:
-    static PluginManager * getInstance();
     void initAll();
     void runAll();
-    PluginInterface *getPlugin(QString name);
-    PluginInterface *getPluginFromType(QString type);
+public:
+    static PluginManager * getInstance();
+    void loadPlugins();
+    void loadPlugin(QString name);
+    void unloadPlugin(QString name);
+
+    QPluginLoader*       getPlugin(QString name);
+    QList<QPluginLoader*>  getAllPlugins();
+    PluginInterface       *getPluginFromType(QString type);
 };
 
 
