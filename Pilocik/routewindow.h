@@ -7,6 +7,7 @@
 #include "pointselectionwindow.h"
 #include "routingmanager.h"
 #include "../lib/PiLibocik/include/pilibocik/position.h"
+#include "../lib/sosmscout/include/osmscout/Routing.h"
 
 namespace Ui {
     class RouteWindow;
@@ -28,6 +29,7 @@ public slots:
     void startSet(double lon, double lat, QString name);
     void targetSet(double lon, double lat, QString name);
     void addStop(double lon, double lat, QString name);
+    void NewRouteSlot();
 
 private slots:
     void on_toButton_clicked();

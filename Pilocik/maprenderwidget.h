@@ -219,6 +219,7 @@ private:
     QImage image;
     void testPixmap(bool force=false);
     void DrawPositionMarker(const osmscout::Projection& projection,QPainter *painter);
+    void DrawRouteMarkers(const osmscout::Projection& projection,QPainter *painter);
     void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
     QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
     void setRouteSizes(int zoom);

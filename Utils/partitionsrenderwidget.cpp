@@ -78,7 +78,7 @@ void PartitionsRenderWidget::init(QString dbPath)
         // partition loaded from binary files
         PiLibocik::Partition::PartitionFile partitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
 
-        PiLibocik::BoundaryBox bbox(PiLibocik::Position(16.4, 50.3), PiLibocik::Position(17.1, 51.2));
+        PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0, 51.06), PiLibocik::Position(17.1, 51.12));
         QList<PiLibocik::Partition::Node> fileNodes = partitionFile.getNodesFromBoundaryBox(bbox);
         QListIterator<PiLibocik::Partition::Node> fileNodesIter(fileNodes);
 

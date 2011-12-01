@@ -10,7 +10,7 @@
 
 RoutingManager::RoutingManager()
 {
-    QString dbPath("files");
+    QString dbPath("");
     partitionFile = new PiLibocik::Partition::PartitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
     routing = new osmscout::Routing(partitionFile);
 
@@ -36,6 +36,7 @@ void RoutingManager::run()
 
         routeList = routing->CalculateRoute(NavigationWindow::main->routeWin->getFrom(), throughIterator.next());
 
+        through.append(NavigationWindow::main->routeWin->getTo());
         routeList.append(routing->positionsToSteps(through));
     }
 
@@ -45,7 +46,8 @@ void RoutingManager::run()
         routeVector.push_back(step);
     }
 
-    NavigationWindow::main->mapRenderer->setRoute(routeVector);
+    NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
+    emit NewRoute();
 }
 
 osmscout::Routing *RoutingManager::getRouting()

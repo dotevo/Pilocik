@@ -74,6 +74,7 @@ void THandyMenuWidget::on_navFromButton_clicked()
     shown = false;
     this->setFixedHeight(120);
     setVisible(false);
+    NavigationWindow::main->mapRenderer->repaint();
 }
 
 void THandyMenuWidget::on_navToButton_clicked()
@@ -83,6 +84,7 @@ void THandyMenuWidget::on_navToButton_clicked()
     shown = false;
     this->setFixedHeight(120);
     setVisible(false);
+    NavigationWindow::main->mapRenderer->repaint();
 }
 
 void THandyMenuWidget::on_navThroughButton_clicked()
@@ -92,6 +94,7 @@ void THandyMenuWidget::on_navThroughButton_clicked()
     shown = false;
     this->setFixedHeight(120);
     setVisible(false);
+    NavigationWindow::main->mapRenderer->repaint();
 }
 
 void THandyMenuWidget::on_cancelButton_clicked()

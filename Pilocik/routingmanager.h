@@ -18,7 +18,7 @@ public:
     PiLibocik::Partition::PartitionFile *getPartitionFile();
 
 signals:
-    void RoutingProgressSignal(int progress);
+    void NewRoute();
 
 public slots:
     void RoutingProgressSlot(int progress);
