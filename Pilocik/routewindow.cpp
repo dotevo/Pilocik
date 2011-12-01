@@ -12,7 +12,7 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
 {
     ui->setupUi(this);
     psw=0;
-    routingManager = new RoutingManager();
+    //routingManager = new RoutingManager();
     qDebug() << "start";
 
     ui->label->setText(tr("ROUTE PLANNING"));
@@ -90,7 +90,8 @@ void RouteWindow::on_okButton_clicked()
     setVisible(false);
     ((TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
     emit closed();
-    routingManager->start();
+    //routingManager->start();
+    RoutingManager::getInstance()->start();
 }
 
 void RouteWindow::startSet(double lon, double lat, QString name)

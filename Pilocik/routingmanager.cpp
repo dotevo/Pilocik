@@ -8,11 +8,14 @@
 
 #include <QDebug>
 
+RoutingManager * RoutingManager::instance = 0;
+
 RoutingManager::RoutingManager()
 {
     QString dbPath("files");
     partitionFile = new PiLibocik::Partition::PartitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
-    routing = new osmscout::Routing(partitionFile);
+    //routing = new osmscout::Routing(partitionFile);
+    routing = new osmscout::Routing();
 
     connect(routing, SIGNAL(RoutingProgress(int)), this, SLOT(RoutingProgressSlot(int)));
 }
@@ -23,10 +26,17 @@ RoutingManager::~RoutingManager()
     delete partitionFile;
 }
 
+RoutingManager* RoutingManager::getInstance()
+{
+    if (instance == 0)
+        instance = new RoutingManager();
+    return instance;
+}
+
 void RoutingManager::run()
 {
     QList< osmscout::Routing::Step > routeList;
-    QVector< osmscout::Routing::Step > routeVector;
+    //QVector< osmscout::Routing::Step > routeVector;
 
     if(NavigationWindow::main->routeWin->getThrough().isEmpty()) {
         routeList = routing->CalculateRoute(NavigationWindow::main->routeWin->getFrom(), NavigationWindow::main->routeWin->getTo());
@@ -39,13 +49,15 @@ void RoutingManager::run()
         routeList.append(routing->positionsToSteps(through));
     }
 
+    /*
     QListIterator< osmscout::Routing::Step > routeIterator(routeList);
     while(routeIterator.hasNext()) {
         osmscout::Routing::Step step = routeIterator.next();
         routeVector.push_back(step);
     }
+    */
 
-    NavigationWindow::main->mapRenderer->setRoute(routeVector);
+    NavigationWindow::main->mapRenderer->setRoute(routeList);
 }
 
 osmscout::Routing *RoutingManager::getRouting()

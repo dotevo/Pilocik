@@ -130,7 +130,7 @@ QList<Node> NodeFile::getBlock(qint64 pos){
     quint32 nodesCount;
     ds.device()->seek(pos);
     ds>>nodesCount;
-    qDebug()<<"Nodes Count"<<nodesCount;
+    //qDebug()<<"Nodes Count"<<nodesCount;
     for(quint32 i=0;i<nodesCount;i++){
         //-1 czyli nie zmieniaj wartosci (czytaj kolejno)
         Node node=getNode();
@@ -312,7 +312,7 @@ int PartitionFile::getSizeType(){
 Node PartitionFile::getNearestNode(Position pos){
     Node ret;
     int prec=this->indexNodeFile->getPrecision();
-    //qDebug()<<"Prec:"<<prec;
+    qDebug()<<"Prec:"<<prec;
     Geohash geo=pos.getGeohash(prec);
     //qDebug()<<geo.toQString();
     qint64 index=indexNodeFile->getNodesBlock(geo);

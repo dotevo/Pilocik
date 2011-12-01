@@ -103,13 +103,13 @@ public:
       @brief Settings route.
       @param Actual route.
       */
-    void setRoute(QVector<osmscout::Routing::Step> route);
+    void setRoute(QList<osmscout::Routing::Step> route);
 
     /**
       @brief Gettings actual route.
       @return Actual route.
       */
-    QVector<osmscout::Routing::Step> getRoute();
+    QList<osmscout::Routing::Step> getRoute();
 
     /**
       @brief Setting zoom value.
@@ -211,7 +211,7 @@ private:
     osmscout::MercatorProjection  projectionRendered;
     osmscout::MercatorProjection  projectionRendered1;
     QList<PiLibocik::Poi> poiList;
-    QVector<osmscout::Routing::Step> route;
+    QList<osmscout::Routing::Step> route;
     int lastNodeIndex;
 
     MapPixmapRenderer *rendererThread;

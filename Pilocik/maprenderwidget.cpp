@@ -26,6 +26,7 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
 
+#include "routingmanager.h"
 #include "twidgetmanager.h"
 #include "widgets/thintwidget.h"
 #include "widgets/thandymenuwidget.h"
@@ -254,13 +255,9 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
                 double wayLat;
                 way.Get()->GetCenter(wayLon, wayLat);
 
-                PiLibocik::Partition::Node *wayNode = new PiLibocik::Partition::Node(
-                                                                way.Get()->GetId(),
-                                                                1,
-                                                                wayLon,
-                                                                wayLat);
+                PiLibocik::Partition::Node node = RoutingManager::getInstance()->getPartitionFile()->getNearestNode(PiLibocik::Position(wayLon, wayLat));
+                QVector<PiLibocik::Partition::Way> nodeWays = node.getWaysObj();
 
-                QVector<PiLibocik::Partition::Way> nodeWays = wayNode->getWaysObj();
                 qDebug() << nodeWays.size();
 
                 nextIntersection = osmscout::Searching::SimulateNextCrossing(route.at(nextCross - 1),
@@ -369,13 +366,13 @@ int MapRenderWidget::getZoom(){
     return projection.GetMagnification();
 }
 
-void MapRenderWidget::setRoute(QVector<osmscout::Routing::Step> route)
+void MapRenderWidget::setRoute(QList<osmscout::Routing::Step> route)
 {
     this->route.clear();
     this->route = route;
 }
 
-QVector<osmscout::Routing::Step> MapRenderWidget::getRoute()
+QList<osmscout::Routing::Step> MapRenderWidget::getRoute()
 {
     return route;
 }
