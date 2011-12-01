@@ -2,6 +2,7 @@
 #include "ui_pointselectionwindow.h"
 #include "navigationwindow.h"
 #include "infowindow.h"
+#include "twidgetmanager.h"
 
 #include <QStandardItemModel>
 #include <QAbstractItemView>
@@ -640,7 +641,16 @@ void PointSelectionWindow::on_poiOK_clicked() {
     }
 
     NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
-    par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
+    //par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
+
+    PiLibocik::Position p1(17.0200428, 51.0934354);
+    PiLibocik::Position p2(17.0152651, 51.0951559);
+    osmscout::Routing r;
+    QVector<osmscout::Routing::Step> tour = r.CalculateRoute(p1, p2);
+
+    par->setRoute(tour);
+
+    TWidgetManager::getInstance()->setRouting(true);
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);

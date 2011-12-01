@@ -37,6 +37,9 @@
 #include <osmscout/Node.h>
 #include <osmscout/Searching.h>
 
+#include <../../PiLibocik/include/pilibocik/partition/node.h>
+#include <../../PiLibocik/include/pilibocik/partition/way.h>
+
 osmscout::Database *MapRenderWidget::database=0;
 osmscout::DatabaseParameter MapRenderWidget::databaseParameter;
 
@@ -52,6 +55,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
     delta=0.2;
 
     mouseDown=false;
+
     //Database loading
     if(database==0){
         QString map = Settings::getInstance()->getMapPath();
@@ -111,7 +115,8 @@ void MapRenderWidget::testPixmap(bool force){
     bool needDraw=false;
 
 
-    if(image.isNull())needDraw=true;
+    if(image.isNull())
+        needDraw=true;
     else{
         double W=(projectionRendered.GetLonMax()-projectionRendered.GetLonMin())*delta/2;
         double H=(projectionRendered.GetLatMax()-projectionRendered.GetLatMin())*delta/2;
@@ -121,11 +126,11 @@ void MapRenderWidget::testPixmap(bool force){
             projection.GetLatMax()>projectionRendered.GetLatMax()-H||
                 force)
         {
-                needDraw=true;
+                needDraw = true;
         }
     }
 
-    if(needDraw&&!rendererThread->isWorking()){
+    if(needDraw && !rendererThread->isWorking()){
             QSize s=this->size();
             projectionRendered1=projection;
             projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, projection.GetMagnification()/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
@@ -238,8 +243,25 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
             int nextCross = getNextCrossIndex();
 
             if (nextCross != -1 && nextCross + 1 < route.size()) {
+
                 QList<osmscout::Routing::Step> ways;
                 ways.append(route.at(nextCross + 1));
+
+                osmscout::WayRef way;
+                database->GetWay(route.at(nextCross + 1).wayId, way);
+
+                double wayLon;
+                double wayLat;
+                way.Get()->GetCenter(wayLon, wayLat);
+
+                PiLibocik::Partition::Node *wayNode = new PiLibocik::Partition::Node(
+                                                                way.Get()->GetId(),
+                                                                1,
+                                                                wayLon,
+                                                                wayLat);
+
+                QVector<PiLibocik::Partition::Way> nodeWays = wayNode->getWaysObj();
+                qDebug() << nodeWays.size();
 
                 nextIntersection = osmscout::Searching::SimulateNextCrossing(route.at(nextCross - 1),
                                                                              route.at(nextCross), ways);
@@ -705,8 +727,8 @@ void MapPixmapRenderer::run(){
         PiLibocik::BoundaryBox        bbox(PiLibocik::Position(projection->GetLonMin(), projection->GetLatMin()),
                                            PiLibocik::Position(projection->GetLonMax(), projection->GetLatMax()));
 
-        QTime t;
-        t.start();
+        //QTime t;
+        //t.start();
         QList <PiLibocik::Poi> poiList;
 
         foreach(PiLibocik::PoiDisplay poiDisp, poiDisplaySettings)
@@ -722,7 +744,7 @@ void MapPixmapRenderer::run(){
             PiLibocik::Poi poi=iter.next();
             drawPoiIcon(poi, p, painter);
         }
-        qDebug()<<"TIME:"<<t.elapsed();
+        //qDebug()<<"TIME:"<<t.elapsed();
 
         qRegisterMetaType<QList<PiLibocik::Poi> >("QList<PiLibocik::Poi>");
         pixmapRendered(pixmap,p,poiList);

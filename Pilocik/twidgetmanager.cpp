@@ -7,6 +7,7 @@
 TWidgetManager * TWidgetManager::instance=0;
 
 TWidgetManager::TWidgetManager() {
+    ROUTING = false;
 }
 
 TWidgetManager::~TWidgetManager() {
@@ -101,6 +102,14 @@ void TWidgetManager::showAllWidgets() {
     QMapIterator<QString, TMovableFrame*> i(widgets);
     while (i.hasNext()) {
         i.next();
-        i.value()->setVisible(true);
+        if (!ROUTING && i.key().compare("Hint") == 0)
+            i.value()->setVisible(false);
+        else
+            i.value()->setVisible(true);
     }
+}
+
+void TWidgetManager::setRouting(bool mode)
+{
+    ROUTING = &mode;
 }
