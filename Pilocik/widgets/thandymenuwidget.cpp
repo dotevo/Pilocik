@@ -69,7 +69,7 @@ void THandyMenuWidget::on_poInfoButton_clicked()
 
 void THandyMenuWidget::on_navFromButton_clicked()
 {
-    NavigationWindow::main->routeWin->targetSet(position.getLon(), position.getLat(), "Picked in map view");
+    NavigationWindow::main->routeWin->startSet(position.getLon(), position.getLat(), "Picked in map view");
     poiClicked = false;
     shown = false;
     this->setFixedHeight(120);
@@ -78,7 +78,7 @@ void THandyMenuWidget::on_navFromButton_clicked()
 
 void THandyMenuWidget::on_navToButton_clicked()
 {
-    NavigationWindow::main->routeWin->startSet(position.getLon(), position.getLat(), "Picked in map view");
+    NavigationWindow::main->routeWin->targetSet(position.getLon(), position.getLat(), "Picked in map view");
     poiClicked = false;
     shown = false;
     this->setFixedHeight(120);

@@ -146,6 +146,7 @@ IndexNodeFile::IndexNodeFile(QString filename,PartitionFile *p):QFile(filename),
 int IndexNodeFile::getPrecision(){
     QDataStream dataStream(this);
     quint8 value=0;
+    dataStream.device()->seek(0);
     dataStream>>value;
     //qDebug()<<(int)value;
     return (int)value;

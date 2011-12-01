@@ -18,7 +18,7 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
     ui->label->setText(tr("ROUTE PLANNING"));
 
     // TODO: Nie wiem dlaczego nie dziala...
-    connect(routingManager->getRouting(), SIGNAL(RoutingProgress(int)), (TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"), SLOT(setProgress(int)));
+    //connect(routingManager, SIGNAL(RoutingProgressSignal(int)), (TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"), SLOT(setProgress(int)));
 
     initThroughList();
 }
