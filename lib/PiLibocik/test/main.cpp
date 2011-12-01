@@ -6,6 +6,9 @@
 #include <pilibocik/partition/way.h>
 #include <pilibocik/partition/edge.h>
 #include <pilibocik/boundarybox.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/geohash.h>
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +18,45 @@ int main(int argc, char *argv[])
     w.show();
 
     return a.exec();*/
+
+// POI SAVE
+    QList<PiLibocik::Poi> pois;
+    QList < QPair <QString, QString> >  tags;
+    QString geo1=PiLibocik::Geohash::generateGeohash(20,10,5);
+    PiLibocik::Poi poi(20,10,QString::fromUtf8("ąasdęś"),0,tags,geo1);
+    qDebug()<<"POI:"<<poi.getName();
+    pois.append(poi);
+    QString geo2=PiLibocik::Geohash::generateGeohash(19.1,10.0,5);
+    PiLibocik::Poi poi2(10.1,10,QString::fromUtf8("Kąpłęta"),0,tags,geo2);
+    pois.append(poi2);
+    QMap<int,QString> types;
+    types.insert(0,QString::fromUtf8("ędłę"));
+    PiLibocik::PoiFilePPOI ppo;
+    ppo.saveToFile("poi",pois,types);
+
+
+        PiLibocik::PoiFilePPOI n;
+        PiLibocik::BoundaryBox b(PiLibocik::Position(20,10),PiLibocik::Position(20,10));
+        QTime t;
+        t.start();
+        QList <PiLibocik::Poi> p=n.loadPOIsFromFile("poi",b,-1);
+        QListIterator <PiLibocik::Poi> iter(p);
+        int i = 0;
+        while(iter.hasNext()){
+            PiLibocik::Poi poi=iter.next();
+            i++;
+            qDebug()<<poi.getLat()<<":"<<poi.getLon()<<" Name:"<<poi.getName()<<" Type:"<<poi.getType()<<"Geohash:"<<poi.getGeohash();
+            QList < QPair <QString,QString > > l= poi.getTags();
+            QListIterator <QPair <QString,QString > > iter2(l);
+            while(iter2.hasNext()){
+                QPair <QString,QString > n=iter2.next();
+                qDebug()<<n.first<<"="<<n.second;
+            }
+        }
+        qDebug()<<"Time: "<<t.elapsed()<<"Size: "<<i;
+
+
+
 
   /*  {
 
@@ -36,7 +78,6 @@ int main(int argc, char *argv[])
          ways.append(w);
          p.savePartition(ways,nodes,4);
      }
-*/
      PiLibocik::Partition::PartitionFile p("test","car",QIODevice::ReadOnly,1);
      PiLibocik::BoundaryBox bbox(PiLibocik::Position(0.1,0.1),PiLibocik::Position(1.5,1.5));
      QList<PiLibocik::Partition::Node> n=p.getNodesFromBoundaryBox(bbox);
@@ -56,7 +97,7 @@ int main(int argc, char *argv[])
              }
          }
      }
-
+*/
 
     return 0;
 }
