@@ -91,7 +91,8 @@ SOURCES += main.cpp\
     creditswindow.cpp \
     widgets/troutingprogresswidget.cpp \
     pluginmanager.cpp\
-    widgets/terrorwidget.cpp
+    widgets/terrorwidget.cpp \
+    pluginswindow.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
@@ -121,7 +122,8 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     pluginmanager.h \
     widgets/terrorwidget.h \
     pluginwidget.h \
-    plugininterface.h
+    plugininterface.h \
+    pluginswindow.h
 
 
 FORMS    += \
@@ -141,7 +143,8 @@ FORMS    += \
     widgets/thintwidget.ui \
     creditswindow.ui \
     widgets/troutingprogresswidget.ui \
-    widgets/terrorwidget.ui
+    widgets/terrorwidget.ui \
+    pluginswindow.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -165,3 +168,6 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+
