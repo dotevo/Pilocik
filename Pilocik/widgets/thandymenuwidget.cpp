@@ -10,7 +10,7 @@ THandyMenuWidget::THandyMenuWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setFixedHeight(90);
+    this->setFixedHeight(120);
 
     poiClicked = false;
     shown = false;
@@ -34,7 +34,7 @@ void THandyMenuWidget::showEvent(QShowEvent * e)
 
 void THandyMenuWidget::setPOIClicked(bool clicked)
 {
-    this->setFixedHeight(120);
+    this->setFixedHeight(150);
     poiClicked = clicked;
 }
 
@@ -45,8 +45,8 @@ void THandyMenuWidget::setPOIInfoWindow(InfoWindow * info)
 
 void THandyMenuWidget::setPosition(double lon, double lat)
 {
-    position.setX(lon);
-    position.setY(lat);
+    position.setLon(lon);
+    position.setLat(lat);
 }
 
 void THandyMenuWidget::showMenu(int x, int y)
@@ -63,27 +63,34 @@ void THandyMenuWidget::on_poInfoButton_clicked()
     infoWindow->setVisible(true);
     poiClicked = false;
     shown = false;
-    this->setFixedHeight(90);
+    this->setFixedHeight(120);
     setVisible(false);
 }
 
 void THandyMenuWidget::on_navFromButton_clicked()
 {
-    double lon, lat;
-    NavigationWindow::main->routeWin->targetSet(position.x(), position.y(), "Picked in map view");
+    NavigationWindow::main->routeWin->startSet(position.getLon(), position.getLat(), "Picked in map view");
     poiClicked = false;
     shown = false;
-    this->setFixedHeight(90);
+    this->setFixedHeight(120);
     setVisible(false);
 }
 
 void THandyMenuWidget::on_navToButton_clicked()
 {
-    double lon, lat;
-    NavigationWindow::main->routeWin->targetSet(position.x(), position.y(), "Picked in map view");
+    NavigationWindow::main->routeWin->targetSet(position.getLon(), position.getLat(), "Picked in map view");
     poiClicked = false;
     shown = false;
-    this->setFixedHeight(90);
+    this->setFixedHeight(120);
+    setVisible(false);
+}
+
+void THandyMenuWidget::on_navThroughButton_clicked()
+{
+    NavigationWindow::main->routeWin->addStop(position.getLon(), position.getLat(), "Picked in map view");
+    poiClicked = false;
+    shown = false;
+    this->setFixedHeight(120);
     setVisible(false);
 }
 
@@ -91,6 +98,6 @@ void THandyMenuWidget::on_cancelButton_clicked()
 {
     poiClicked = false;
     shown = false;
-    this->setFixedHeight(90);
+    this->setFixedHeight(120);
     setVisible(false);
 }

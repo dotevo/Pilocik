@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/gif/images/icons/64x64/pilocik_ico.gif</normaloff>:/gif/images/icons/64x64/pilocik_ico.gif</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>

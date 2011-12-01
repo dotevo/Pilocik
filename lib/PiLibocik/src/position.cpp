@@ -2,6 +2,9 @@
 
 namespace PiLibocik{
 
+    Position::Position():lon(0),lat(0){
+    }
+
     Position::Position(double lon, double lat):lon(lon),lat(lat){
     }
 
@@ -9,8 +12,16 @@ namespace PiLibocik{
         return lon;
     }
 
+    double Position::setLon(double lon){
+        this->lon = lon;
+    }
+
     double Position::getLat(){
         return lat;
+    }
+
+    double Position::setLat(double lat){
+        this->lat = lat;
     }
 
     Geohash Position::getGeohash(int p){

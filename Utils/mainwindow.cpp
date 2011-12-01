@@ -20,11 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     part = new osmscout::Partitioning();
     gps = new GPSemulator();
 
-    if(true) {
+    if(false) {
         osmscout::Routing *r = new osmscout::Routing();
         PiLibocik::Position p1(17.0151, 51.1234);
         PiLibocik::Position p2(17.1252, 51.1975);
-        QVector< osmscout::Routing::Step > route = r->CalculateRoute(p1, p2);
+        QList< osmscout::Routing::Step > route = r->CalculateRoute(p1, p2);
         /*QListIterator< osmscout::Routing::Step > it(route);
         while(it.hasNext()) {
             osmscout::Routing::Step s = it.next();
@@ -199,7 +199,7 @@ void MainWindow::on_partCalcButton_clicked()
     part->setStage(osmscout::Partitioning::PARTITIONS_CALCULATION);
     part->setSimpleDataPath(ui->partCalcDataFilePath->text());
     part->setPrioritiesDataPath(ui->partCalcPrioFilePath->text());
-    part->setFinalDataPath(ui->prioCalcOutputFilePath->text());
+    part->setFinalDataPath(ui->partCalcOutputPath->text());
     part->start();
 }
 

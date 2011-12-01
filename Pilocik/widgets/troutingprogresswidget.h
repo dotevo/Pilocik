@@ -35,7 +35,7 @@ public:
      * @brief Indicates start of route calculation and shows widget.
      *
      */
-    void startCalculating(PiLibocik::Position startingPosition, PiLibocik::Position endPosition);
+    void startCalculating();
     /**
      * @brief Indicates end of route calculation and hides widget.
      *
@@ -49,11 +49,6 @@ public:
     void setProgress(int progress);
 
 private slots:
-    /**
-     * @brief TMP!!
-     *
-     */
-    void makeProgress();
 
 private:
     bool calculating;

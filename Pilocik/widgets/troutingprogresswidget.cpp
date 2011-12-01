@@ -12,10 +12,6 @@ TRoutingProgressWidget::TRoutingProgressWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(makeProgress()));
-    timer->start(1000);
-
     calculating = false;
 }
 
@@ -24,11 +20,11 @@ TRoutingProgressWidget::~TRoutingProgressWidget()
     delete ui;
 }
 
-void TRoutingProgressWidget::startCalculating(PiLibocik::Position startingPosition, PiLibocik::Position endPosition)
+void TRoutingProgressWidget::startCalculating()
 {
-    calculating = true;
     ui->progressBar->setValue(0);
-    //setVisible(true);
+    calculating = true;
+    setVisible(true);
 }
 
 void TRoutingProgressWidget::stopCalculating()
@@ -39,10 +35,10 @@ void TRoutingProgressWidget::stopCalculating()
 
 void TRoutingProgressWidget::setProgress(int progress)
 {
-    if(progress >= 0 && progress <= 100) {
+    if(progress >= 0 && progress < 100) {
         ui->progressBar->setValue(progress);
-    } else {
-        // ERROR
+    } else if(progress >= 100){
+        stopCalculating();
     }
 }
 
@@ -50,17 +46,5 @@ void TRoutingProgressWidget::showEvent(QShowEvent * e)
 {
     if(!calculating) {
         setVisible(false);
-    }
-}
-
-void TRoutingProgressWidget::makeProgress()
-{
-    int progr = ui->progressBar->value()+15;
-    if(progr > 99 && calculating == true) {
-        calculating = false;
-        setVisible(false);
-        ((TErrorWidget*) TWidgetManager::getInstance()->getWidget("ErrorMessage"))->showMessage(QString("Unable to calculate route!"));
-    } else {
-        setProgress(progr%100);
     }
 }
