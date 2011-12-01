@@ -21,7 +21,7 @@ public:
     static RoutingManager* getInstance();
 
 signals:
-    void RoutingProgressSignal(int progress);
+    void NewRoute();
 
 public slots:
     void RoutingProgressSlot(int progress);

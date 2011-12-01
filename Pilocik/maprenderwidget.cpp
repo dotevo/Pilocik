@@ -28,6 +28,7 @@
 
 #include "routingmanager.h"
 #include "twidgetmanager.h"
+#include "routewindow.h"
 #include "widgets/thintwidget.h"
 #include "widgets/thandymenuwidget.h"
 
@@ -171,6 +172,7 @@ void MapRenderWidget::paintEvent(QPaintEvent *e){
          if (routing) {
              DrawRoute(projection, painter);
          }
+         DrawRouteMarkers(projection,painter);
 
          if(showArrow)
          {
@@ -199,14 +201,13 @@ void MapRenderWidget::mousePressEvent(QMouseEvent *e){
     if (manualSimulation && e->x() > myX - 10 && e->x() < myX + 10 && e->y() > myY - 10 && e->y() < myY + 10) {
         movingPosition = true;
     }
-
 }
 
 void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
     mouseDown=false;
     movingPosition = false;
 
-    if(abs(e->pos().x()-clicked.x())<10 || abs(e->pos().y()-clicked.y())<10)
+    if(abs(e->pos().x()-clicked.x())<5 || abs(e->pos().y()-clicked.y())<5)
     {
         double lon1,lat1;
         double lon2,lat2;
@@ -554,7 +555,7 @@ void MapRenderWidget::DrawArrow(const osmscout::Projection &projection, QPainter
     grad.setCoordinateMode(QGradient::ObjectBoundingMode);
 
     painter->setBrush(QBrush(grad));
-    painter->setPen(QPen(QColor::fromRgb(255,255,255,255)));
+    painter->setPen(QPen(QColor::fromRgb(0x7db9e8)));
     painter->drawPolygon(arrow);
 }
 
@@ -661,8 +662,87 @@ void MapRenderWidget::DrawPositionMarker(const osmscout::Projection& projection,
   grad.setCoordinateMode(QGradient::ObjectBoundingMode);
 
   painter->setBrush(QBrush(grad));
-  painter->setPen(QPen(QColor::fromRgb(255,255,255,255)));
+  painter->setPen(QPen(QColor::fromRgb(0x7db9e8)));
   painter->drawPolygon(marker);
+}
+
+void MapRenderWidget::DrawRouteMarkers(const osmscout::Projection& projection,QPainter *painter)
+{
+    QPolygon arrow;
+    QPolygon marker;
+    arrow.putPoints(0, 7, 6,0, 16,0, 16,14, 22,14, 11,25, 0,14, 6,14);
+
+    double x,y;
+    //
+    // drawing start
+    //
+    PiLibocik::Position position = NavigationWindow::main->routeWin->getFrom();
+    projection.GeoToPixel(position.getLon(),position.getLat(), x, y);
+
+    marker.clear();
+    marker << QPoint(x-10,y-16) << QPoint(x+10,y-16) << QPoint(x,y);
+
+    QLinearGradient gradRed = QLinearGradient(QPoint(0,0),QPoint(0,1));
+    QGradientStops stops;
+    stops << QGradientStop(0, QColor::fromRgb(0x9e3b3b));
+    stops << QGradientStop(0.6, QColor::fromRgb(0xd92b2b));
+    stops << QGradientStop(0.61, QColor::fromRgb(0xca2020));
+    stops << QGradientStop(1, QColor::fromRgb(0xe87d7d));
+    gradRed.setStops(stops);
+    gradRed.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+    painter->setBrush(QBrush(gradRed));
+    painter->setPen(QPen(QColor::fromRgb(0xe87d7d)));
+    painter->drawPolygon(marker);
+
+    //
+    //drawing end
+    //
+    position = NavigationWindow::main->routeWin->getTo();
+    projection.GeoToPixel(position.getLon(),position.getLat(), x, y);
+
+    marker.clear();
+    marker << QPoint(x-10,y-16) << QPoint(x+10,y-16) << QPoint(x,y);
+
+    QLinearGradient gradGreen = QLinearGradient(QPoint(0,0),QPoint(0,1));
+    stops.clear();
+    stops << QGradientStop(0, QColor::fromRgb(0x479e3b));
+    stops << QGradientStop(0.6, QColor::fromRgb(0x3fd92b));
+    stops << QGradientStop(0.61, QColor::fromRgb(0x2cca20));
+    stops << QGradientStop(1, QColor::fromRgb(0x87e87d));
+    gradGreen.setStops(stops);
+    gradGreen.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+    painter->setBrush(QBrush(gradGreen));
+    painter->setPen(QPen(QColor::fromRgb(0x87e87d)));
+    painter->drawPolygon(marker);
+
+    //
+    // drewing middle
+    //
+    QList< PiLibocik::Position > positions = NavigationWindow::main->routeWin->getThrough();
+    QListIterator< PiLibocik::Position > positionsIterator(positions);
+
+    QLinearGradient gradBlue = QLinearGradient(QPoint(0,0),QPoint(0,1));
+    stops.clear();
+    stops << QGradientStop(0, QColor::fromRgb(0x3b679e));
+    stops << QGradientStop(0.6, QColor::fromRgb(0x2b88d9));
+    stops << QGradientStop(0.61, QColor::fromRgb(0x207cca));
+    stops << QGradientStop(1, QColor::fromRgb(0x7db9e8));
+    gradBlue.setStops(stops);
+    gradBlue.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+    painter->setBrush(QBrush(gradBlue));
+    painter->setPen(QPen(QColor::fromRgb(0x7db9e8)));
+    while(positionsIterator.hasNext()) {
+        position = positionsIterator.next();
+        projection.GeoToPixel(position.getLon(),position.getLat(), x, y);
+
+        marker.clear();
+        marker << QPoint(x-10,y-16) << QPoint(x+10,y-16) << QPoint(x,y);
+
+        painter->drawPolygon(marker);
+    }
 }
 
 //////////////////////////////////////////////////////////////
