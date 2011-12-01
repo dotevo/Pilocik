@@ -92,10 +92,12 @@ SOURCES += main.cpp\
     creditswindow.cpp \
     widgets/troutingprogresswidget.cpp \
     widgets/terrorwidget.cpp \
-    widgets/thandymenuwidget.cpp
+    widgets/thandymenuwidget.cpp \
+    routingmanager.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
+    ../lib/sosmscout/include/osmscout/Routing.h \
     tmovableframe.h \
     twidgetmanager.h \
     widgets/tclockwidget.h \
@@ -120,7 +122,8 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     creditswindow.h \
     widgets/troutingprogresswidget.h \
     widgets/terrorwidget.h \
-    widgets/thandymenuwidget.h
+    widgets/thandymenuwidget.h \
+    routingmanager.h
 
 
 FORMS    += \
@@ -165,6 +168,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
 
 
 

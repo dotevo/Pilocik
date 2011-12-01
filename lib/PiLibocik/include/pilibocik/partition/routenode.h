@@ -11,6 +11,7 @@ private:
     int prevWayId;
     double rating;
     bool routing;
+    double distanceFromStart;
 public:
     /**
      * @brief Default constructor
@@ -30,7 +31,7 @@ public:
      * @param routing
      * @param pf - pointer to partition file
      */
-    RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
+    RouteNode(int id, quint32 cell, double lon, double lat, int prevWayId, double rating, double distanceFromStart=0, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
     /**
      * @brief Constructor
      *
@@ -41,7 +42,7 @@ public:
      * @param routing
      * @param pf - pointer to partition file
      */
-    RouteNode(Node node, int prevWayId, double rating, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
+    RouteNode(Node node, int prevWayId, double rating, double distanceFromStart=0, RouteNode *prevNode=0, bool routing = false, PartitionFile *pf=0);
     /**
      * @brief
      *
@@ -60,6 +61,11 @@ public:
      * @return value of rating
      */
     double getRating();
+    /**
+     * @brief
+     *
+     */
+    double getDistanceFromStart();
     /**
      * @brief Gets boolean value that indicates if it's routing edge
      *

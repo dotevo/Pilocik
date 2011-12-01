@@ -14,15 +14,20 @@ namespace PiLibocik{
     private:
         double lon, /**< TODO */
                lat; /**< TODO */
-    public:
 
-    /**
-     * @brief
-     *
-     * @fn Position
-     * @param lon
-     * @param lat
-     */
+    public:
+        /**
+         * @brief
+         *
+         */
+        Position();
+        /**
+         * @brief
+         *
+         * @fn Position
+         * @param lon
+         * @param lat
+         */
         Position(double lon, double lat);
 
 
@@ -35,9 +40,21 @@ namespace PiLibocik{
         /**
          * @brief
          *
+         * @param lon
+         */
+        double setLon(double lon);
+        /**
+         * @brief
+         *
          * @fn getLat
          */
         double getLat();
+        /**
+         * @brief
+         *
+         * @param lat
+         */
+        double setLat(double lat);
         /**
          * @brief
          *

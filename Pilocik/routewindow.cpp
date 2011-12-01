@@ -4,18 +4,66 @@
 #include "twidgetmanager.h"
 #include "widgets/troutingprogresswidget.h"
 
+#include <QDebug>
+
 RouteWindow::RouteWindow(NavigationWindow *parent) :
     QFullScreenFrame(parent),
     ui(new Ui::RouteWindow)
 {
     ui->setupUi(this);
     psw=0;
+    routingManager = new RoutingManager();
+    qDebug() << "start";
 
     ui->label->setText(tr("ROUTE PLANNING"));
+
+    // TODO: Nie wiem dlaczego nie dziala...
+    connect(routingManager->getRouting(), SIGNAL(RoutingProgress(int)), (TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"), SLOT(setProgress(int)));
+
+    initThroughList();
 }
 
-RouteWindow::~RouteWindow(){
+RouteWindow::~RouteWindow()
+{
     delete ui;
+}
+
+void RouteWindow::initThroughList()
+{
+    ui->throughList->setColumnCount(3);
+    ui->throughList->hideColumn(0);
+    ui->throughList->hideColumn(1);
+    ui->throughList->header()->hide();
+    QListIterator< QPair< QString, PiLibocik::Position > > throughIterator(through);
+    while(throughIterator.hasNext()) {
+        QPair< QString, PiLibocik::Position > pair = throughIterator.next();
+
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->throughList);
+        item->setText(0, QString::number(pair.second.getLon()));
+        item->setText(1, QString::number(pair.second.getLat()));
+        item->setText(2, pair.first);
+    }
+}
+
+PiLibocik::Position RouteWindow::getFrom()
+{
+    return from.second;
+}
+
+PiLibocik::Position RouteWindow::getTo()
+{
+    return to.second;
+}
+
+QList< PiLibocik::Position > RouteWindow::getThrough()
+{
+    QList< PiLibocik::Position > throughPositions;
+    QListIterator< QPair< QString, PiLibocik::Position > > throughIterator(through);
+    while(throughIterator.hasNext()) {
+        QPair< QString, PiLibocik::Position > pair = throughIterator.next();
+        throughPositions.push_back(pair.second);
+    }
+    return throughPositions;
 }
 
 void RouteWindow::on_toButton_clicked(){
@@ -36,19 +84,44 @@ void RouteWindow::on_routeBackButton_clicked(){
     ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->stopCalculating();
 }
 
-void RouteWindow::on_pushButton_clicked()
+void RouteWindow::on_okButton_clicked()
 {
+    qDebug() << "start";
     setVisible(false);
-    PiLibocik::Position startingPosition(17.0151, 51.1234);
-    PiLibocik::Position endPosition(17.1252, 51.1975);
-    ((TRoutingProgressWidget*) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating(startingPosition, endPosition);
+    ((TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
     emit closed();
+    routingManager->start();
+}
+
+void RouteWindow::startSet(double lon, double lat, QString name)
+{
+    ui->fromButton->setText(name);
+    from.first = name;
+    from.second.setLon(lon);
+    from.second.setLat(lat);
+    //Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
 void RouteWindow::targetSet(double lon, double lat, QString name)
 {
     ui->toButton->setText(name);
-    Settings::getInstance()->addHistoryPoint(name, lon, lat);
+    to.first = name;
+    to.second.setLon(lon);
+    to.second.setLat(lat);
+    //Settings::getInstance()->addHistoryPoint(name, lon, lat);
+}
+
+void RouteWindow::addStop(double lon, double lat, QString name)
+{
+    PiLibocik::Position pos(lon,lat);
+    QPair< QString, PiLibocik::Position > pair(name, pos);
+    through.push_back(pair);
+
+    QTreeWidgetItem* item = new QTreeWidgetItem(ui->throughList);
+    item->setText(0, QString::number(pair.second.getLon()));
+    item->setText(1, QString::number(pair.second.getLat()));
+    item->setText(2, pair.first);
+    //Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
 void RouteWindow::pswClosed(){
@@ -67,4 +140,10 @@ void RouteWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void RouteWindow::on_clearThroughButton_clicked()
+{
+    through.clear();
+    ui->throughList->clear();
 }

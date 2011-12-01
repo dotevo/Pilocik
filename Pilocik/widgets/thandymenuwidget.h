@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "tmovableframe.h"
 #include "infowindow.h"
+#include "../../lib/PiLibocik/include/pilibocik/position.h"
 
 namespace Ui {
     class THandyMenuWidget;
@@ -43,11 +44,12 @@ private slots:
     void on_poInfoButton_clicked();
     void on_navFromButton_clicked();
     void on_navToButton_clicked();
+    void on_navThroughButton_clicked();
     void on_cancelButton_clicked();
 
 private:
     QPoint clicked;
-    QPoint position;
+    PiLibocik::Position position;
     InfoWindow * infoWindow;
     bool poiClicked;
     bool shown;

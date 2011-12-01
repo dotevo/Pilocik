@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>100</width>
-    <height>120</height>
+    <width>126</width>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,6 +50,19 @@
      </property>
      <property name="text">
       <string>Navigate To</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="navThroughButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Navigate Through</string>
      </property>
     </widget>
    </item>

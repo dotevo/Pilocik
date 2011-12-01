@@ -349,6 +349,7 @@ int MapRenderWidget::getZoom(){
 
 void MapRenderWidget::setRoute(QVector<osmscout::Routing::Step> route)
 {
+    this->route.clear();
     this->route = route;
 }
 

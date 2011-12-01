@@ -19,6 +19,7 @@ LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
 
 HEADERS  += mainwindow.h \
     ../lib/sosmscout/include/osmscout/Partitioning.h \
+    ../lib/sosmscout/include/osmscout/Routing.h \
     databasegen.h \
     gpsemulator.h \
     partitionsrenderwidget.h
