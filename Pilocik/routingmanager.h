@@ -23,11 +23,22 @@ signals:
 
 public slots:
     void RoutingProgressSlot(int progress);
+    void RoutingErrorSlot(QString errorMessage);
 
 private:
     RoutingManager *instance;
     osmscout::Routing *routing;
     PiLibocik::Partition::PartitionFile *partitionFile;
+
+    /**
+     * @brief This method calculates route for routing edge.
+     *
+     * @param startPosition - position of beggining of routing edge
+     * @param endPosition - position of ending of routing edge
+     *
+     * @return list of Steps without routing edges
+     */
+    QList< osmscout::Routing::Step > routingEdgeToRoute(PiLibocik::Position startPosition, PiLibocik::Position endPosition);
 
 };
 

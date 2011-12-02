@@ -13,13 +13,16 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
     ui->setupUi(this);
     psw=0;
     routingManager = new RoutingManager();
-    qDebug() << "start";
 
     ui->label->setText(tr("ROUTE PLANNING"));
 
     // TODO: Nie wiem dlaczego nie dziala...
     //connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
 
+    startSet(0, 0, tr("Current position"));
+    //connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(FromCurrent(GPSdata)));
+    targetSet(0, 0, tr("Current position"));
+    //connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(ToCurrent(GPSdata)));
     initThroughList();
 }
 
@@ -31,6 +34,18 @@ RouteWindow::~RouteWindow()
 void RouteWindow::NewRouteSlot()
 {
     NavigationWindow::main->mapRenderer->repaint();
+}
+
+void RouteWindow::FromCurrent(GPSdata gpsData)
+{
+    from.second.setLon(gpsData.lon);
+    from.second.setLat(gpsData.lat);
+}
+
+void RouteWindow::ToCurrent(GPSdata gpsData)
+{
+    to.second.setLon(gpsData.lon);
+    to.second.setLat(gpsData.lat);
 }
 
 void RouteWindow::initThroughList()
@@ -71,6 +86,19 @@ QList< PiLibocik::Position > RouteWindow::getThrough()
     return throughPositions;
 }
 
+void RouteWindow::on_fromButton_clicked()
+{
+    if(psw)
+        delete psw;
+    psw=new PointSelectionWindow(NavigationWindow::main,
+                                 NavigationWindow::main->mapRenderer->getCoordinates().x(),
+                                 NavigationWindow::main->mapRenderer->getCoordinates().y());
+    psw->setVisible(true);
+    connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    connect(psw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(startSet(double,double,QString)));
+    setVisible(false);
+}
+
 void RouteWindow::on_toButton_clicked(){
     if(psw)
         delete psw;
@@ -83,6 +111,19 @@ void RouteWindow::on_toButton_clicked(){
     setVisible(false);
 }
 
+void RouteWindow::on_addButton_clicked()
+{
+    if(psw)
+        delete psw;
+    psw=new PointSelectionWindow(NavigationWindow::main,
+                                 NavigationWindow::main->mapRenderer->getCoordinates().x(),
+                                 NavigationWindow::main->mapRenderer->getCoordinates().y());
+    psw->setVisible(true);
+    connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    connect(psw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(addStop(double,double,QString)));
+    setVisible(false);
+}
+
 void RouteWindow::on_routeBackButton_clicked(){
     setVisible(false);
     emit closed();
@@ -91,7 +132,6 @@ void RouteWindow::on_routeBackButton_clicked(){
 
 void RouteWindow::on_okButton_clicked()
 {
-    qDebug() << "start";
     setVisible(false);
     ((TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
     emit closed();
@@ -100,19 +140,23 @@ void RouteWindow::on_okButton_clicked()
 
 void RouteWindow::startSet(double lon, double lat, QString name)
 {
+    disconnect(this, SLOT(FromCurrent(GPSdata)));
     ui->fromButton->setText(name);
     from.first = name;
     from.second.setLon(lon);
     from.second.setLat(lat);
+    disconnect(this, SLOT(startSet(double,double,QString)));
     //Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
 void RouteWindow::targetSet(double lon, double lat, QString name)
 {
+    disconnect(this, SLOT(ToCurrent(GPSdata)));
     ui->toButton->setText(name);
     to.first = name;
     to.second.setLon(lon);
     to.second.setLat(lat);
+    disconnect(this, SLOT(targetSet(double,double,QString)));
     //Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
@@ -126,6 +170,7 @@ void RouteWindow::addStop(double lon, double lat, QString name)
     item->setText(0, QString::number(pair.second.getLon()));
     item->setText(1, QString::number(pair.second.getLat()));
     item->setText(2, pair.first);
+    disconnect(this, SLOT(addStop(double,double,QString)));
     //Settings::getInstance()->addHistoryPoint(name, lon, lat);
 }
 
@@ -151,4 +196,16 @@ void RouteWindow::on_clearThroughButton_clicked()
 {
     through.clear();
     ui->throughList->clear();
+}
+
+void RouteWindow::on_fromClrButton_clicked()
+{
+    startSet(0, 0, tr("Current position"));
+    connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(FromCurrent(GPSdata)));
+}
+
+void RouteWindow::on_toClrButton_clicked()
+{
+    targetSet(0, 0, tr("Current position"));
+    connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(ToCurrent(GPSdata)));
 }

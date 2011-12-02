@@ -31,6 +31,10 @@ void InfoWindow::setName(const QString name)
     ui->nameText->setText(name);
 }
 
+QString InfoWindow::getPOIName(){
+    return name;
+}
+
 void InfoWindow::setCoordinates(const double lon, const double lat)
 {
     this->lon = lon;
