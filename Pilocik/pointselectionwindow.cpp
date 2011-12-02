@@ -113,6 +113,7 @@ void PointSelectionWindow::on_nearestButton_clicked(){
                                  NavigationWindow::main->mapRenderer->getCoordinates().y());
     npsw->setVisible(true);
     npsw->showNearestInfo();
+    connect(npsw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
     connect(npsw, SIGNAL(back_clicked()), this, SLOT(pswClosed()));
     connect(npsw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(nearestSet(double,double,QString)));
     setVisible(false);
@@ -133,9 +134,6 @@ void PointSelectionWindow::pswClosed(){
 
 void PointSelectionWindow::nearestSet(double lon, double lat, QString name)
 {
-    npsw->close();
-    delete npsw;
-    setVisible(true);
     ui->nearestButton->setText(name);
     nearestPoint.first = name;
     nearestPoint.second.setLon(lon);
@@ -789,8 +787,7 @@ void PointSelectionWindow::on_poiOK_clicked() {
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);
-    else
-        emit back_clicked();
+    emit ok_clicked();
 }
 
 void PointSelectionWindow::on_addressOK_clicked()
