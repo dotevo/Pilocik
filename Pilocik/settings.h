@@ -36,6 +36,10 @@ public:
     double getLat(){
         return lat;
     }
+
+    void setPos(int pos){
+        this->pos = pos;
+    }
 };
 
 class Settings

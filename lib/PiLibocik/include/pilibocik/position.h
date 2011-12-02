@@ -42,7 +42,7 @@ namespace PiLibocik{
          *
          * @param lon
          */
-        double setLon(double lon);
+        void setLon(double lon);
         /**
          * @brief
          *
@@ -54,7 +54,7 @@ namespace PiLibocik{
          *
          * @param lat
          */
-        double setLat(double lat);
+        void setLat(double lat);
         /**
          * @brief
          *

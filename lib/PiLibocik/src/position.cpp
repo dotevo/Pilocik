@@ -12,7 +12,7 @@ namespace PiLibocik{
         return lon;
     }
 
-    double Position::setLon(double lon){
+    void Position::setLon(double lon){
         this->lon = lon;
     }
 
@@ -20,7 +20,7 @@ namespace PiLibocik{
         return lat;
     }
 
-    double Position::setLat(double lat){
+    void Position::setLat(double lat){
         this->lat = lat;
     }
 
