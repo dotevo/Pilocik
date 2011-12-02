@@ -41,6 +41,12 @@ public:
     void setName(const QString name);
 
     /**
+      @brief Gets name of poi.
+      @return name Name of object.
+      */
+    QString getPOIName();
+
+    /**
       @brief Creating map render widget with preview of object.
       */
     void setMapRender();

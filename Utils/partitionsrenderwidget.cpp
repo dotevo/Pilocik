@@ -78,7 +78,8 @@ void PartitionsRenderWidget::init(QString dbPath)
         // partition loaded from binary files
         PiLibocik::Partition::PartitionFile partitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
 
-        PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0, 51.06), PiLibocik::Position(17.1, 51.12));
+        //PiLibocik::BoundaryBox bbox(PiLibocik::Position(17.0, 51.06), PiLibocik::Position(17.1, 51.12));
+        PiLibocik::BoundaryBox bbox(PiLibocik::Position(14.4, 49.9), PiLibocik::Position(17.7, 51.8));
         QList<PiLibocik::Partition::Node> fileNodes = partitionFile.getNodesFromBoundaryBox(bbox);
         QListIterator<PiLibocik::Partition::Node> fileNodesIter(fileNodes);
 
@@ -92,6 +93,7 @@ void PartitionsRenderWidget::init(QString dbPath)
             pNodes.insert(fileNode.getId(), newNode);
 
             QVector<PiLibocik::Partition::Way> fileWays = fileNode.getWaysObj();
+            //qDebug() << "W in N = " << fileWays.size();
             for(int i=0; i<fileWays.size(); i++){
                 PiLibocik::Partition::Way fileWay = fileWays.at(i);
 
@@ -109,6 +111,7 @@ void PartitionsRenderWidget::init(QString dbPath)
                 }
             }
 
+            /*
             QVector<PiLibocik::Partition::BoundaryEdge> fileBoundaryEdges = fileNode.getBoundaryEdges();
             for(int i=0; i<fileBoundaryEdges.size(); i++){
                 PiLibocik::Partition::BoundaryEdge fileBoundaryEdge = fileBoundaryEdges.at(i);
@@ -121,7 +124,7 @@ void PartitionsRenderWidget::init(QString dbPath)
                     pb.way = fileBoundaryEdge.getWayObj().getId();
                     pBoundaryWays.append(pb);
                 }
-            }
+            }*/
         }
     }
 

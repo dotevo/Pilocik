@@ -6,6 +6,7 @@
 #include "qfullscreenframe.h"
 #include "pointselectionwindow.h"
 #include "routingmanager.h"
+#include "gpsreceiver.h"
 #include "../lib/PiLibocik/include/pilibocik/position.h"
 #include "../lib/sosmscout/include/osmscout/Routing.h"
 
@@ -30,14 +31,19 @@ public slots:
     void targetSet(double lon, double lat, QString name);
     void addStop(double lon, double lat, QString name);
     void NewRouteSlot();
+    void FromCurrent(GPSdata);
+    void ToCurrent(GPSdata);
 
 private slots:
     void on_toButton_clicked();
     void on_routeBackButton_clicked();
     void pswClosed();
     void on_okButton_clicked();
-
     void on_clearThroughButton_clicked();
+    void on_fromClrButton_clicked();
+    void on_fromButton_clicked();
+    void on_addButton_clicked();
+    void on_toClrButton_clicked();
 
 signals:
     void closed();
