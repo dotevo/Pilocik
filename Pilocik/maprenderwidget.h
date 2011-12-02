@@ -57,7 +57,6 @@ private:
 signals:
     void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
-
 };
 
 
@@ -223,6 +222,8 @@ private:
     void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
     QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
     void setRouteSizes(int zoom);
+
+    void manualMove(QMouseEvent *e);
 
 public slots:
 

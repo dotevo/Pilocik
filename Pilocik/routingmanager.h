@@ -18,8 +18,6 @@ public:
     osmscout::Routing *getRouting();
     PiLibocik::Partition::PartitionFile *getPartitionFile();
 
-    static RoutingManager* getInstance();
-
 signals:
     void NewRoute();
 
@@ -27,7 +25,7 @@ public slots:
     void RoutingProgressSlot(int progress);
 
 private:
-    static RoutingManager *instance;
+    RoutingManager *instance;
     osmscout::Routing *routing;
     PiLibocik::Partition::PartitionFile *partitionFile;
 

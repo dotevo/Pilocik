@@ -8,14 +8,12 @@
 
 #include <QDebug>
 
-RoutingManager * RoutingManager::instance = 0;
-
 RoutingManager::RoutingManager()
 {
-    QString dbPath("");
+    QString dbPath("files");
     partitionFile = new PiLibocik::Partition::PartitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
     //routing = new osmscout::Routing(partitionFile);
-    routing = new osmscout::Routing();
+    routing = new osmscout::Routing(partitionFile);
 
     connect(routing, SIGNAL(RoutingProgress(int)), this, SLOT(RoutingProgressSlot(int)));
 }
@@ -24,13 +22,6 @@ RoutingManager::~RoutingManager()
 {
     delete routing;
     delete partitionFile;
-}
-
-RoutingManager* RoutingManager::getInstance()
-{
-    if (instance == 0)
-        instance = new RoutingManager();
-    return instance;
 }
 
 void RoutingManager::run()
@@ -58,12 +49,9 @@ void RoutingManager::run()
     }
     */
 
-<<<<<<< HEAD
     NavigationWindow::main->mapRenderer->setRoute(routeList);
-=======
-    NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
+    //NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
     emit NewRoute();
->>>>>>> 1f5e92dd971e9eb3a8ac933b6aad4e1d60abdf1e
 }
 
 osmscout::Routing *RoutingManager::getRouting()

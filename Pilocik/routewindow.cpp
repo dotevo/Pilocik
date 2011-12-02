@@ -12,13 +12,13 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
 {
     ui->setupUi(this);
     psw=0;
-    //routingManager = new RoutingManager();
+    routingManager = new RoutingManager();
     qDebug() << "start";
 
     ui->label->setText(tr("ROUTE PLANNING"));
 
     // TODO: Nie wiem dlaczego nie dziala...
-    connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
+    //connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
 
     initThroughList();
 }
@@ -95,8 +95,7 @@ void RouteWindow::on_okButton_clicked()
     setVisible(false);
     ((TRoutingProgressWidget *) TWidgetManager::getInstance()->getWidget("RoutingProgress"))->startCalculating();
     emit closed();
-    //routingManager->start();
-    RoutingManager::getInstance()->start();
+    routingManager->start();
 }
 
 void RouteWindow::startSet(double lon, double lat, QString name)

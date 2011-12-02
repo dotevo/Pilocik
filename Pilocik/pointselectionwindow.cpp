@@ -1,8 +1,10 @@
 #include "pointselectionwindow.h"
 #include "ui_pointselectionwindow.h"
 #include "navigationwindow.h"
+#include "routewindow.h"
 #include "infowindow.h"
 #include "twidgetmanager.h"
+#include "routingmanager.h"
 
 #include <QStandardItemModel>
 #include <QAbstractItemView>
@@ -646,8 +648,9 @@ void PointSelectionWindow::on_poiOK_clicked() {
 
     PiLibocik::Position p1(17.0300428, 51.0814354);
     PiLibocik::Position p2(17.0152651, 51.0951559);
-    osmscout::Routing r;
-    QList<osmscout::Routing::Step> route = r.CalculateRoute(p1, p2);
+    //osmscout::Routing r(RoutingManager::getInstance()->getPartitionFile());
+    //QList<osmscout::Routing::Step> route = NavigationWindow::main->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
+    QList<osmscout::Routing::Step> route = par->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
 
     par->setRoute(route);
 
