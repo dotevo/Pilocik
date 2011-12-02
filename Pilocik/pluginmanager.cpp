@@ -3,6 +3,7 @@
 #include "plugininterface.h"
 #include "twidgetmanager.h"
 #include "navigationwindow.h"
+#include "gpsreceiver.h"
 #include <QDebug>
 #include <QDir>
 #include <QHBoxLayout>
@@ -40,7 +41,7 @@ PluginManager::PluginManager(){
 }
 
 void PluginManager::loadPlugins(){
-    //Load plugins from settings
+    //todo Load plugins from settings
     initAll();
     runAll();
 }
@@ -63,13 +64,27 @@ void PluginManager::loadPlugin(QString name){
     if(!a->load()) return;
     PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
     if(pi==0)return;
+
     pi->init();
     pi->run();
-    qDebug()<<"LOADED";
+
+    QObject *piObj=qobject_cast<QObject *>(a->instance());
+    if(piObj!=0){
+        //Connect slots&signal
+       // if  (piObj->metaObject()->indexOfSlot( "positionUpdated" ) != -1){
+            QObject::connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), piObj, SLOT(positionUpdated(GPSdata)));
+        //}else{
+         //   qDebug()<<"Brak slotu positionUpdated";
+        //}
+    }
+
+
+
     QListIterator <PluginWidget*> plugin(pi->getWidgets());
     while(plugin.hasNext()){
         PluginWidget *n=plugin.next();
         n->setParent(NavigationWindow::main);
+        n->setVisible(false);
         TWidgetManager::getInstance()->addWidget(n->getWidgetName(), n);
         qDebug()<<"ADD widget"<<n->getWidgetName();
     }
@@ -81,12 +96,7 @@ void PluginManager::unloadPlugin(QString name){
     QPluginLoader *a=getPlugin(name);
     qDebug()<<"UnloadPlugin:"<<name<<":"<<(a==0);
     if(a==0)return;
-    /*PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
-    if(pi==0)return;
-    pi->clear();*/
-
     if(!a->unload())return;
-    qDebug()<<"unloaded";
 
     Settings::getInstance()->modifyPluginSetting(name,"run","0");
 }

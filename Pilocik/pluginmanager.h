@@ -24,7 +24,7 @@ public:
     void loadPlugin(QString name);
     void unloadPlugin(QString name);
 
-    QPluginLoader*       getPlugin(QString name);
+    QPluginLoader*         getPlugin(QString name);
     QList<QPluginLoader*>  getAllPlugins();
     PluginInterface       *getPluginFromType(QString type);
 };

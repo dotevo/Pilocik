@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     widgets/troutingprogresswidget.cpp \
     pluginmanager.cpp\
     widgets/terrorwidget.cpp \
-    pluginswindow.cpp
+    pluginswindow.cpp \
+    gpsdata.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
@@ -123,7 +124,8 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     widgets/terrorwidget.h \
     pluginwidget.h \
     plugininterface.h \
-    pluginswindow.h
+    pluginswindow.h \
+    gpsdata.h
 
 
 FORMS    += \
@@ -168,6 +170,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
 
 
 
