@@ -19,7 +19,6 @@ TRANSLATIONS = lang/pl_PL.tr \
 
 
 SOURCES += main.cpp\
-    tmovableframe.cpp \
     twidgetmanager.cpp \
     widgets/tclockwidget.cpp \
     navigationwindow.cpp \
@@ -84,6 +83,7 @@ SOURCES += main.cpp\
     mappainterqt.cpp \
     tlineedit.cpp \
     gpsinfowindow.cpp \
+    pluginswindow.cpp \
     gpsreceiver.cpp \
     widgets/tspeedmeterwidget.cpp \
     settings.cpp \
@@ -93,7 +93,9 @@ SOURCES += main.cpp\
     widgets/troutingprogresswidget.cpp \
     widgets/terrorwidget.cpp \
     widgets/thandymenuwidget.cpp \
-    routingmanager.cpp
+    routingmanager.cpp \
+    pluginmanager.cpp\
+    gpsdata.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
@@ -121,9 +123,14 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     widgets/thintwidget.h \
     creditswindow.h \
     widgets/troutingprogresswidget.h \
-    widgets/terrorwidget.h \
     widgets/thandymenuwidget.h \
-    routingmanager.h
+    routingmanager.h \
+    pluginmanager.h \
+    widgets/terrorwidget.h \
+    pluginwidget.h \
+    plugininterface.h \
+    pluginswindow.h \
+    gpsdata.h
 
 
 FORMS    += \
@@ -144,7 +151,8 @@ FORMS    += \
     creditswindow.ui \
     widgets/troutingprogresswidget.ui \
     widgets/terrorwidget.ui \
-    widgets/thandymenuwidget.ui
+    widgets/thandymenuwidget.ui \
+    pluginswindow.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -167,22 +175,3 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

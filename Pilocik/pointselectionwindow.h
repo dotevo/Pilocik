@@ -29,6 +29,7 @@ class PointSelectionWindow : public QFullScreenFrame
 public:
     explicit PointSelectionWindow(NavigationWindow *parent = 0, double currentLocationX = 0, double currentLocationY = 0);
     ~PointSelectionWindow();
+    void showNearestInfo();
 
 private slots:
     /**
@@ -48,12 +49,7 @@ private slots:
       */
     void on_streetLineEdit_textChanged(const QString &arg1);
 
-    /**
-      @brief Double clicked for item. Choosing location, works only when name column is clicked.
-      @param item Choosing item.
-      @param column Clicked column.
-      */
-    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
+    void on_cityEditBtn_clicked();
 
     /**
       @brief Clicked for item. It open info window for selected object.
@@ -88,12 +84,33 @@ private slots:
 
     void on_favouriteList_itemSelectionChanged();
 
+    void on_historyList_itemClicked(QTreeWidgetItem *item, int column);
+
+    void on_favouriteList_itemClicked(QTreeWidgetItem *item, int column);
+
     void on_tabWidget_currentChanged(int index);
 
     void on_showOpened_stateChanged(int state);
 
+    void on_backBtn1_clicked();
+
+    void on_backBtn2_clicked();
+
+    void on_backBtn3_clicked();
+
+    void on_backBtn4_clicked();
+
+    void on_nearestButton_clicked();
+
+    void on_nearestClrButton_clicked();
+
+    void nearestSet(double lon, double lat, QString name);
+
+    void pswClosed();
+
 signals:
     void ok_clicked();
+    void back_clicked();
     void positionChoosen(double lon, double lat, QString name);
 
 private:
@@ -106,10 +123,13 @@ private:
     static const int NAME_COLUMN = 1;
     static const int PATH_COLUMN = 2;
     static const int INFO_COLUMN = 3;
-    static const int COLUMNS_COUNT = 4;
+    static const int FAV_COLUMN = 4;
+    static const int COLUMNS_COUNT = 5;
 
     double retLon, retLat;
-    QString retName;
+    QString cityName, retName;
+
+    PointSelectionWindow* npsw;
 
     int findPoisCount;
     int findPoisAreaLimit;
@@ -117,6 +137,7 @@ private:
     QList<PiLibocik::Poi> poiList;
     QList<StorePoint> historyPoints;
     QList<StorePoint> favouritePoints;
+    QPair< QString, PiLibocik::Position > nearestPoint;
 
     /**
       @brief Coordinates of current location.
@@ -130,7 +151,7 @@ private:
       @brief Searching region in <i>regions</i> with specified id.
       @param id Region id.
       */
-    osmscout::AdminRegion searchRegion(const int id);
+    osmscout::AdminRegion searchRegion(const unsigned int id);
 
     /**
       @brieg Searching location in <i>locations</i> with specified name.

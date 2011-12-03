@@ -26,7 +26,6 @@ namespace PiLibocik{
         Geohash(char *n,int size);
         ~Geohash();
 
-
         QString toQString();
         static QString generateGeohash(double lon, double lat, int precision);
 
@@ -39,6 +38,8 @@ namespace PiLibocik{
         bool operator==(Geohash &q);
         Geohash &operator=(Geohash &q);
         Geohash &operator=(const Geohash &q);
+        static QPair< double, double > getError(int prec);
+        QPair< double, double > getError();
     };
 }
 

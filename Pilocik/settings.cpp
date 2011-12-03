@@ -169,6 +169,10 @@ void Settings::resetDefaultSettings()
             "       <language>\n"
             "           <active>system</active>\n"
             "       </language>\n"
+            "       <historyPoints>"
+            "       </historyPoints>"
+            "       <favouritePoints>"
+            "       </favouritePoints>"
             "   </profile>\n"
             "</settings>\n";
 
@@ -294,8 +298,7 @@ void Settings::configureProfile(QString profile)
     }
 }
 
-QMap<QString,QString> Settings::getWidgetSettings(QString name)
-{
+QMap<QString,QString> Settings::getWidgetSettings(QString name){
     return widgetsSettings[name];
 }
 
@@ -382,7 +385,10 @@ void Settings::addHistoryPoint(QString name, double lon, double lat)
 
 void Settings::addFavouritePoint(QString name, double lon, double lat)
 {
-    QDomElement favPointsNode = profileSettingsXMLNode.firstChildElement("historyPoints");
+    foreach(StorePoint sp, favouritePoints)
+        if(sp.getName()==name && sp.getLon() == lon && sp.getLat() == lat)
+            return;
+    QDomElement favPointsNode = profileSettingsXMLNode.firstChildElement("favouritePoints");
     QDomElement newPoint = doc->createElement("point");
     newPoint.setAttribute("pos", favouritePoints.size());
     newPoint.setAttribute("name", name);
@@ -399,7 +405,22 @@ void Settings::removeHistoryPoint(int pos)
 
 void Settings::removeFavouritePoint(int pos)
 {
-
+    favouritePoints.removeAt(pos);
+    for(int i=0; i < favouritePoints.size(); i++){
+        favouritePoints[i].setPos(i);
+    }
+    QDomElement favPointNode = profileSettingsXMLNode.firstChildElement("favouritePoints").firstChildElement("point");
+    QDomElement pointToDel;
+    int i = 0;
+    while(!favPointNode.isNull())
+    {
+        if(i==pos)
+            pointToDel=favPointNode;
+        else
+            favPointNode.attributeNode("pos").setValue(QString::number(i++));
+        favPointNode = favPointNode.nextSiblingElement("point");
+    }
+    profileSettingsXMLNode.firstChildElement("favouritePoints").removeChild(pointToDel);
 }
 
 void Settings::modifyLanguageSettings()
@@ -468,4 +489,12 @@ QTranslator* Settings::reloadTranslation(QString lang)
 }
 
 
+QMap<QString,QString> Settings::getPluginSettings(QString pluginName){
+    QMap<QString,QString> ret;
+    ret.insert("Test","1");
+    return ret;
+}
 
+void Settings::modifyPluginSettings(QString pluginName,QMap<QString,QString> setting){
+    //TODO!!!
+}

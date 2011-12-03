@@ -618,12 +618,6 @@ p, li { white-space: pre-wrap; }
              <string>Data initialization</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
-             <property name="spacing">
-              <number>2</number>
-             </property>
-             <property name="bottomMargin">
-              <number>9</number>
-             </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
@@ -681,11 +675,24 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
-                <widget class="QPushButton" name="dataInitBtn">
+                <widget class="QLabel" name="label_24">
                  <property name="text">
-                  <string>Init data</string>
+                  <string>Lon</string>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="lonInput"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_25">
+                 <property name="text">
+                  <string>Lat</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="latinput"/>
                </item>
                <item>
                 <spacer name="horizontalSpacer_2">
@@ -699,6 +706,13 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="dataInitBtn">
+                 <property name="text">
+                  <string>Init data</string>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="dataInitCancelButton">
@@ -892,13 +906,6 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_12">
                <item>
-                <widget class="QPushButton" name="prioCalcButton">
-                 <property name="text">
-                  <string>Calculate priorities</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <spacer name="horizontalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -910,6 +917,13 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="prioCalcButton">
+                 <property name="text">
+                  <string>Calculate priorities</string>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="prioCalcCancelButton">
@@ -1007,9 +1021,6 @@ p, li { white-space: pre-wrap; }
              <string>Partitions calculation</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
-             <property name="spacing">
-              <number>2</number>
-             </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
@@ -1112,9 +1123,22 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_6">
                <item>
-                <widget class="QPushButton" name="partCalcButton">
+                <widget class="QLabel" name="label_26">
                  <property name="text">
-                  <string>Calculate partitions</string>
+                  <string>Precision</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="precisionInput">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>8</number>
+                 </property>
+                 <property name="value">
+                  <number>5</number>
                  </property>
                 </widget>
                </item>
@@ -1130,6 +1154,13 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="partCalcButton">
+                 <property name="text">
+                  <string>Calculate partitions</string>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="partCalcCancelButton">

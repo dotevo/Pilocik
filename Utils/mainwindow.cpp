@@ -200,6 +200,7 @@ void MainWindow::on_partCalcButton_clicked()
     part->setSimpleDataPath(ui->partCalcDataFilePath->text());
     part->setPrioritiesDataPath(ui->partCalcPrioFilePath->text());
     part->setFinalDataPath(ui->partCalcOutputPath->text());
+    part->setPrecision(ui->precisionInput->value());
     part->start();
 }
 

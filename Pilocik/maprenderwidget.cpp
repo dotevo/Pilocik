@@ -547,6 +547,8 @@ QPen MapRenderWidget::setPenStyle(PenStyle penStyle)
         pen.setJoinStyle(Qt::RoundJoin);
         pen.setCosmetic(true);
     break;
+    default:
+        break;
     }
 
     return pen;

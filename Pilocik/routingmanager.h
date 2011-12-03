@@ -11,18 +11,53 @@ class RoutingManager : public QThread
 {
     Q_OBJECT
 public:
+    /**
+     * @brief Constructor.
+     *
+     */
     explicit RoutingManager();
+    /**
+     * @brief Destructor.
+     *
+     */
     ~RoutingManager();
+    /**
+     * @brief
+     *
+     */
     void run();
-
+    /**
+     * @brief Gets pointer to Routing file object.
+     *
+     * @return routing object
+     */
     osmscout::Routing *getRouting();
+    /**
+     * @brief Gets pointer to PartitionFile object.
+     *
+     * @return PartitionFile object
+     */
     PiLibocik::Partition::PartitionFile *getPartitionFile();
 
 signals:
+    /**
+     * @brief Signal emited after routing manager changed route.
+     *
+     */
     void NewRoute();
 
 public slots:
+    /**
+     * @brief Slot for routing progress changes for changing progres in widget.
+     *
+     * @param progress - routing progress to set
+     */
     void RoutingProgressSlot(int progress);
+    /**
+     * @brief Slot for routing error message for showing in widget.
+     *
+     * @param errorMessage - message to show
+     */
     void RoutingErrorSlot(QString errorMessage);
 
 private:

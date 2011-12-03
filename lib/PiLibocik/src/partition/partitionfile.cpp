@@ -46,9 +46,12 @@ Way WayFile::getWay(qint64 pos){
         restrictions.push_back(r);
     }
     stream->device()->seek(0);
-    qint64 oneway1,oneway_1;
-    stream->operator >>(oneway1);
-    stream->operator >>(oneway_1);
+    qint64 oneway1,
+            oneway_1;
+    oneway1 = 0;
+    oneway_1 = 0;
+    oneway1 = part->loadIndex(*stream, fileType);
+    oneway_1 = part->loadIndex(*stream, fileType);
 
     qint8 oneway;
     if(pos>=oneway_1){
@@ -311,26 +314,59 @@ int PartitionFile::getSizeType(){
 
 Node PartitionFile::getNearestNode(Position pos){
     Node ret;
+    QList <Node> n;
+
     int prec=this->indexNodeFile->getPrecision();
-    qDebug()<<"Prec:"<<prec;
+    /*
     Geohash geo=pos.getGeohash(prec);
     //qDebug()<<geo.toQString();
     qint64 index=indexNodeFile->getNodesBlock(geo);
     //qDebug()<<"IDX"<<index;
     if(index==-1)
         return ret;
+    //qDebug()<<"Prec:"<<prec;
+*/
 
-    QList <Node> n=nodeFile->getBlock(index);
+    QList< Position > posAround = pos.getPositionsAround(Geohash::getError(prec));
+    QListIterator< Position > posAroundIter(posAround);
+    while(posAroundIter.hasNext()) {
+        Position tmpPos = posAroundIter.next();
+        //qDebug() << tmpPos.getLon() << " " << tmpPos.getLat();
+        Geohash geo = tmpPos.getGeohash(prec);
+        qDebug() << "POS " << pos.getGeohash(prec).toQString() << " TMPPOS " << geo.toQString();
+        //qDebug()<<geo.toQString();
+        qint64 index = indexNodeFile->getNodesBlock(geo);
+
+        if(index != -1)
+            n.append(nodeFile->getBlock(index));
+    }
+
     QListIterator <Node> iter(n);
-    double value=1000;
+    qDebug() << "START";
+    double value=100000;
     while(iter.hasNext()){
         Node node=iter.next();
-        double value2=node.getSimpleDistance(pos);
-        if(value2<value){
-            value=value2;
-            ret=node;
+        QVector< Way > ways = node.getWaysObj();
+        bool boobs = false;
+        QVectorIterator< Way > waysIterator(ways);
+        while(waysIterator.hasNext()) {
+            Way way = waysIterator.next();
+            if(way.getPrioritet() > 0) {
+                boobs = true;
+                break;
+            }
+        }
+        if(boobs) {
+            double value2=node.getDistance(pos);
+            if(value2<value){
+                value=value2;
+                qDebug() << node.getGeohash(prec).toQString();
+                ret=node;
+            }
         }
     }
+
+    qDebug() << ret.getLon();
     return ret;
 }
 
@@ -526,7 +562,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
             else
                 oneway0.push_back(w);
         }
-        //qDebug()<<oneway0.size()<<"[]"<<oneway_1.size()<<"[]"<<oneway1.size();
+        qDebug()<<oneway0.size()<<"[]"<<oneway_1.size()<<"[]"<<oneway1.size();
 
         //oneway 1 pos
         addIndex(wayStream,0,sizeType) ;

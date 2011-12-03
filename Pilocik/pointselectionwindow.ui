@@ -23,7 +23,7 @@
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="styleSheet">
       <string notr="true">QTreeWidgetItem{
@@ -34,7 +34,7 @@
 }</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="poiTab">
       <attribute name="title">
@@ -182,6 +182,19 @@
        <item row="3" column="0" colspan="3">
         <layout class="QHBoxLayout" name="horizontalLayout_14">
          <item>
+          <widget class="QPushButton" name="backBtn1">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -314,6 +327,12 @@
           </property>
           <item>
            <widget class="QLabel" name="countryLabel">
+            <property name="minimumSize">
+             <size>
+              <width>55</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Country:</string>
             </property>
@@ -321,6 +340,9 @@
           </item>
           <item>
            <widget class="TLineEdit" name="countryLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Polska</string>
             </property>
@@ -329,44 +351,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QFrame" name="cityFrame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
-          <property name="spacing">
-           <number>3</number>
-          </property>
-          <property name="leftMargin">
-           <number>6</number>
-          </property>
-          <property name="topMargin">
-           <number>5</number>
-          </property>
-          <property name="rightMargin">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>5</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="cityLabel">
-            <property name="text">
-             <string>City:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="TLineEdit" name="cityLineEdit"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QFrame" name="streetFrame">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -392,6 +377,12 @@
           </property>
           <item>
            <widget class="QLabel" name="streetLabel">
+            <property name="minimumSize">
+             <size>
+              <width>55</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Street:</string>
             </property>
@@ -403,45 +394,21 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QFrame" name="noFrame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <property name="spacing">
-           <number>3</number>
-          </property>
-          <property name="leftMargin">
-           <number>6</number>
-          </property>
-          <property name="topMargin">
-           <number>5</number>
-          </property>
-          <property name="rightMargin">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>5</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="noLabel">
-            <property name="text">
-             <string>No:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="TLineEdit" name="noLineEdit"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="backBtn2">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
@@ -470,7 +437,7 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <widget class="QFrame" name="frame_2">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -496,6 +463,62 @@
               <string notr="true">1</string>
              </property>
             </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QFrame" name="cityFrame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="cityLabel">
+            <property name="minimumSize">
+             <size>
+              <width>55</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>City:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="TLineEdit" name="cityLineEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cityEditBtn">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>edit</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -569,6 +592,19 @@
        <item row="2" column="0" colspan="2">
         <layout class="QHBoxLayout" name="horizontalLayout_15">
          <item>
+          <widget class="QPushButton" name="backBtn3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -627,6 +663,25 @@
        <item row="2" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_16">
          <item>
+          <widget class="QPushButton" name="backBtn4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -656,6 +711,46 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QFrame" name="nearestInfo">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Choose nearest point</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

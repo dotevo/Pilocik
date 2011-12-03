@@ -36,6 +36,10 @@ public:
     double getLat(){
         return lat;
     }
+
+    void setPos(int pos){
+        this->pos = pos;
+    }
 };
 
 class Settings
@@ -61,6 +65,7 @@ private:
     //profileSettings
     QDomElement profileSettingsXMLNode;
     QMap<QString, QMap<QString, QString> > widgetsSettings;
+    QMap<QString, QMap<QString, QString> > pluginsSettings;
     QList<StorePoint> historyPoints;
     QList<StorePoint> favouritePoints;
     QString language;
@@ -97,6 +102,7 @@ public:
     QString getLanguage();
     QString getLanguageFromLocale(QString loc);
     QString getLocale(QString lang);
+    QMap<QString,QString> getPluginSettings(QString pluginName);
 
     void resetDefaultSettings();
     void configureProfile(QString profile);
@@ -106,6 +112,8 @@ public:
     void modifyMapSettings(double lat, double lon, int zoom);
     void modifyLanguageSettings();
     void modifyPoiDisplaySettings(QMap<int, PiLibocik::PoiDisplay> newPoiDisplaySettings);
+    void modifyPluginSettings(QString pluginName,QMap<QString,QString> setting);
+
     void addHistoryPoint(QString name, double lon, double lat);
     void addFavouritePoint(QString name, double lon, double lat);
     void removeHistoryPoint(int pos);

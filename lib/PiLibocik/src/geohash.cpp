@@ -44,8 +44,6 @@ namespace PiLibocik{
         delete [] geohashValue;
     }
 
-
-
     void Geohash::init(QString gh){
         geohashSize=gh.length();
         geohashValue=new char[geohashSize];
@@ -123,6 +121,27 @@ namespace PiLibocik{
                 return false;
         }
         return false;
+    }
+
+    QPair< double, double > Geohash::getError(int prec){
+        static QVector< QPair< double, double > > error;
+
+        if(error.isEmpty()) {
+            error.push_back(QPair< double, double >(23.0, 23.0));
+            error.push_back(QPair< double, double >(5.6, 2.8));
+            error.push_back(QPair< double, double >(0.7, 0.7));
+            error.push_back(QPair< double, double >(0.18, 0.087));
+            error.push_back(QPair< double, double >(0.022, 0.022));
+            error.push_back(QPair< double, double >(0.0055, 0.0027));
+            error.push_back(QPair< double, double >(0.00068, 0.00068));
+            error.push_back(QPair< double, double >(0.00017, 0.000085));
+        }
+
+        return error.at(prec-1);
+    }
+
+    QPair< double, double > Geohash::getError(){
+        return getError(geohashSize);
     }
 
     unsigned long long Geohash::operator-(Geohash &q){
