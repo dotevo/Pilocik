@@ -102,10 +102,13 @@ void TWidgetManager::showAllWidgets() {
     QMapIterator<QString, TMovableFrame*> i(widgets);
     while (i.hasNext()) {
         i.next();
-        if (!ROUTING && i.key().compare("Hint") == 0)
+        if (!ROUTING && i.key().compare("Hint") == 0) {
             i.value()->setVisible(false);
-        else
+        }
+        else {
             i.value()->setVisible(true);
+         //   i.value()->update();
+        }
     }
 }
 

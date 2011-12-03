@@ -212,29 +212,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="44"/>
-        <source>POI details</source>
+        <location filename="../infowindow.ui" line="49"/>
+        <source>POI information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="80"/>
-        <location filename="../infowindow.ui" line="97"/>
-        <location filename="../infowindow.ui" line="107"/>
+        <location filename="../infowindow.ui" line="91"/>
+        <location filename="../infowindow.ui" line="108"/>
+        <location filename="../infowindow.ui" line="118"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="90"/>
+        <location filename="../infowindow.ui" line="101"/>
         <source>Coordinates:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="117"/>
+        <location filename="../infowindow.ui" line="128"/>
         <source>Details:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infowindow.ui" line="149"/>
+        <location filename="../infowindow.ui" line="179"/>
         <source>BACK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -485,42 +485,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="50"/>
+        <location filename="../mapoptionswindow.ui" line="142"/>
         <source>Map style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="84"/>
+        <location filename="../mapoptionswindow.ui" line="53"/>
         <source>Map file:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="91"/>
+        <location filename="../mapoptionswindow.ui" line="60"/>
         <source>Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="104"/>
+        <location filename="../mapoptionswindow.ui" line="159"/>
         <source>Show only opened stores</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="111"/>
+        <location filename="../mapoptionswindow.ui" line="152"/>
         <source>ShowPOI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="124"/>
+        <location filename="../mapoptionswindow.ui" line="79"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="137"/>
+        <location filename="../mapoptionswindow.ui" line="92"/>
         <source>BACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mapoptionswindow.ui" line="144"/>
+        <location filename="../mapoptionswindow.ui" line="99"/>
         <source>MAP OPTIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -533,13 +533,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../navigationwindow.ui" line="52"/>
-        <source>Disable tracking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../navigationwindow.ui" line="289"/>
-        <source>Menu</source>
+        <location filename="../navigationwindow.ui" line="55"/>
+        <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -553,6 +548,91 @@
     <message>
         <location filename="../optionswindow.ui" line="91"/>
         <source>BACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Partitioning</name>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="68"/>
+        <source>Opening database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="98"/>
+        <source>Getting nodes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="145"/>
+        <source>Getting ways...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="218"/>
+        <source>Deleting all unnecessary nodes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="257"/>
+        <source>Deleting all unnecessary nodes from ways...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="298"/>
+        <source>Checking for oneways...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="345"/>
+        <source>Checking for types...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="378"/>
+        <source>Updating partition data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="389"/>
+        <source>Writing partition to the file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="423"/>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="852"/>
+        <source>Finished.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="431"/>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="434"/>
+        <source>Reading partition from file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="772"/>
+        <source>Saving files...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="860"/>
+        <source>Finding partition...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="1125"/>
+        <source>Calculating priorities...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="1145"/>
+        <source>Writing priorities to the file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Partitioning.cpp" line="1173"/>
+        <source>Reading priorities from file...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -595,57 +675,64 @@
     </message>
     <message>
         <location filename="../pointselectionwindow.ui" line="206"/>
-        <location filename="../pointselectionwindow.ui" line="454"/>
+        <source>Find More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pointselectionwindow.ui" line="219"/>
+        <location filename="../pointselectionwindow.ui" line="467"/>
+        <location filename="../pointselectionwindow.ui" line="593"/>
+        <location filename="../pointselectionwindow.ui" line="651"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="254"/>
+        <location filename="../pointselectionwindow.ui" line="267"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="275"/>
+        <location filename="../pointselectionwindow.ui" line="288"/>
         <source>ADDRESS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="305"/>
+        <location filename="../pointselectionwindow.ui" line="318"/>
         <source>Country:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="312"/>
+        <location filename="../pointselectionwindow.ui" line="325"/>
         <source>Polska</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="346"/>
+        <location filename="../pointselectionwindow.ui" line="359"/>
         <source>City:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="383"/>
+        <location filename="../pointselectionwindow.ui" line="396"/>
         <source>Street:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="420"/>
+        <location filename="../pointselectionwindow.ui" line="433"/>
         <source>No:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="495"/>
+        <location filename="../pointselectionwindow.ui" line="508"/>
         <source>HISTORY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="525"/>
+        <location filename="../pointselectionwindow.ui" line="538"/>
         <source>Before:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pointselectionwindow.ui" line="554"/>
+        <location filename="../pointselectionwindow.ui" line="603"/>
         <source>FAVORITE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -659,70 +746,93 @@
     </message>
     <message>
         <location filename="../routewindow.ui" line="20"/>
-        <location filename="../routewindow.cpp" line="14"/>
+        <location filename="../routewindow.cpp" line="17"/>
         <source>ROUTE PLANNING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="66"/>
+        <location filename="../routewindow.ui" line="68"/>
         <source>FROM:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="85"/>
-        <location filename="../routewindow.ui" line="201"/>
+        <location filename="../routewindow.ui" line="87"/>
+        <location filename="../routewindow.ui" line="187"/>
+        <location filename="../routewindow.cpp" line="22"/>
+        <location filename="../routewindow.cpp" line="24"/>
+        <location filename="../routewindow.cpp" line="203"/>
+        <location filename="../routewindow.cpp" line="209"/>
         <source>Current position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="95"/>
+        <location filename="../routewindow.ui" line="235"/>
         <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="182"/>
+        <location filename="../routewindow.ui" line="168"/>
         <source>TO:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="217"/>
-        <location filename="../routewindow.ui" line="236"/>
+        <location filename="../routewindow.ui" line="109"/>
+        <location filename="../routewindow.ui" line="203"/>
+        <location filename="../routewindow.ui" line="309"/>
         <source>CLEAR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="243"/>
+        <location filename="../routewindow.ui" line="265"/>
         <source>THROUGH:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="274"/>
+        <location filename="../routewindow.ui" line="296"/>
         <source>ADD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="282"/>
+        <location filename="../routewindow.ui" line="215"/>
         <source>Car</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="287"/>
+        <location filename="../routewindow.ui" line="220"/>
         <source>Bike</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="307"/>
+        <location filename="../routewindow.ui" line="378"/>
         <source>BACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="320"/>
+        <location filename="../routewindow.ui" line="404"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../routewindow.ui" line="327"/>
+        <location filename="../routewindow.ui" line="228"/>
         <source>Shortest</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Routing</name>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Routing.cpp" line="39"/>
+        <source>Points are too close!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Routing.cpp" line="220"/>
+        <source>Cannot calculate route!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../lib/sosmscout/src/osmscout/Routing.cpp" line="258"/>
+        <source>Cannot open database!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -763,6 +873,39 @@
     </message>
 </context>
 <context>
+    <name>THandyMenuWidget</name>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="26"/>
+        <source>POI Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="39"/>
+        <source>Naviget From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="52"/>
+        <source>Navigate To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="65"/>
+        <source>Navigate Through</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/thandymenuwidget.ui" line="78"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>THintWidget</name>
     <message>
         <location filename="../widgets/thintwidget.ui" line="14"/>
@@ -770,23 +913,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/thintwidget.ui" line="20"/>
-        <source>For</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/thintwidget.ui" line="34"/>
-        <source>meters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/thintwidget.ui" line="41"/>
-        <source>next crossing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/thintwidget.ui" line="27"/>
-        <source>0</source>
+        <location filename="../widgets/thintwidget.ui" line="60"/>
+        <source>Pilocik :-)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -798,8 +926,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/troutingprogresswidget.ui" line="23"/>
-        <source>Calculating route...</source>
+        <location filename="../widgets/troutingprogresswidget.ui" line="27"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:6pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Do You know?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/troutingprogresswidget.ui" line="46"/>
+        <source>That routing in this application&lt;br /&gt; takes 3 hours?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/troutingprogresswidget.ui" line="68"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Calculating route...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

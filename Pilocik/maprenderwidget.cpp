@@ -271,8 +271,8 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
 
     if (nextCross != -1 && nextCross + 1 < route.size()) {
 
-        QList<osmscout::Routing::Step> ways;
-        ways.append(route.at(nextCross + 1));
+        QList<osmscout::Routing::Step> *ways = new QList<osmscout::Routing::Step>();
+        ways->append(route.at(nextCross + 1));
 
         osmscout::WayRef way;
         database->GetWay(route.at(nextCross + 1).wayId, way);
@@ -285,9 +285,16 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
         //RoutingManager *r = RoutingManager::getInstance();
         //PiLibocik::Partition::Node node = RoutingManager::getInstance()->getPartitionFile()->getNearestNode(PiLibocik::Position(wayLon, wayLat));
 
+        PiLibocik::Position pos(wayLon, wayLat);
+
         PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(wayLon, wayLat));
         PiLibocik::Partition::PartitionFile *pf = NavigationWindow::main->routeWin->routingManager->getPartitionFile();
         QVector<PiLibocik::Partition::Way> nodeWays = node.getWaysObj();
+
+        //QPointF ways[nodeWays.size()];
+
+
+
 
         qDebug() << nodeWays.size();
 
