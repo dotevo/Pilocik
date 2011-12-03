@@ -273,8 +273,43 @@ QTabBar::tab {
 QTabBar::tab:selected {
     font-size: 24px;
 }
-QTreeWidget{
-    //color: rgb(255, 255, 255);
-    background: rgb(255, 0, 0);
+
+/*QTREEWIDGET*/
+QTreeWidget::item {
+    border-bottom: 1px solid white;
+    color: white;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+QWidget > QTreeWidget{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Verdana;
+}
+
+QTreeWidget::item:selected {
+    background-color: white;
+    color: black;
+}
+
+QScrollArea  QWidget#scrollAreaWidgetContents_2{
+
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(42, 42, 42, 200),
+                             stop: 0.49 rgba(74, 74, 74, 200),
+                             stop: 0.5 rgba(16, 16, 16, 200),
+                             stop: 1 rgba(42, 42, 42, 200));
+    border-radius: 10px;
+    border: 1px solid rgba(106, 106, 106, 200);
+}
+
+QScrollBar{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 rgba(42, 42, 42, 200),
+                             stop: 0.49 rgba(74, 74, 74, 200),
+                             stop: 0.5 rgba(16, 16, 16, 200),
+                             stop: 1 rgba(42, 42, 42, 200));
 }
 

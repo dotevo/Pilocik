@@ -37,6 +37,11 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
 
     ui->treeWidget->setColumnCount(COLUMNS_COUNT);
     ui->treeWidget->hideColumn(ID_COLUMN);
+    ui->treeWidget->header()->setResizeMode(NAME_COLUMN, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setResizeMode(PATH_COLUMN, QHeaderView::Stretch);
+    ui->treeWidget->header()->setResizeMode(INFO_COLUMN, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setResizeMode(FAV_COLUMN, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setStretchLastSection(false);
 
     QStringList headers;
     headers << "Id" << "Name" << "Info";
@@ -46,9 +51,19 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
     ui->poiTreeWidget->setColumnCount(COLUMNS_COUNT);
     ui->poiTreeWidget->hideColumn(ID_COLUMN);
     ui->poiTreeWidget->header()->hide();
+    ui->poiTreeWidget->header()->setResizeMode(NAME_COLUMN, QHeaderView::Stretch);
+    ui->poiTreeWidget->header()->setResizeMode(PATH_COLUMN, QHeaderView::ResizeToContents);
+    ui->poiTreeWidget->header()->setResizeMode(INFO_COLUMN, QHeaderView::ResizeToContents);
+    ui->poiTreeWidget->header()->setResizeMode(FAV_COLUMN, QHeaderView::ResizeToContents);
+    ui->poiTreeWidget->header()->setStretchLastSection(false);
 
     ui->typeLabel->setGeometry(0, 0, 10, 10);
     ui->typeComboBox->setGeometry(10, 10, 100, 100);
+
+    ui->cityEditBtn->setVisible(false);
+    ui->streetFrame->setVisible(false);
+    ui->beforeFrame->setVisible(false);
+    ui->nearestInfo->setVisible(false);
 
     if (currentLocationX != 0 && currentLocationY != 0) {
         currentLocation = QPointF(currentLocationX, currentLocationY);
@@ -65,11 +80,69 @@ PointSelectionWindow::PointSelectionWindow(NavigationWindow *parent, double curr
 //    osmscout::LookupPOI lookup;
 
 //    lookup.search("/home/bartek/osmscout-map/5poland/", 51.01, 16.95, 51.2, 17.05, "shop");
-
+    fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
 }
 
 PointSelectionWindow::~PointSelectionWindow(){
     delete ui;
+}
+
+void PointSelectionWindow::showNearestInfo(){
+    ui->nearestInfo->setVisible(true);
+}
+
+void PointSelectionWindow::on_backBtn1_clicked(){
+    emit back_clicked();
+}
+
+void PointSelectionWindow::on_backBtn2_clicked(){
+    emit back_clicked();
+}
+
+void PointSelectionWindow::on_backBtn3_clicked(){
+    emit back_clicked();
+}
+
+void PointSelectionWindow::on_backBtn4_clicked(){
+    emit back_clicked();
+}
+
+void PointSelectionWindow::on_nearestButton_clicked(){
+    npsw=new PointSelectionWindow(NavigationWindow::main,
+                                 NavigationWindow::main->mapRenderer->getCoordinates().x(),
+                                 NavigationWindow::main->mapRenderer->getCoordinates().y());
+    npsw->setVisible(true);
+    npsw->showNearestInfo();
+    connect(npsw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    connect(npsw, SIGNAL(back_clicked()), this, SLOT(pswClosed()));
+    connect(npsw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(nearestSet(double,double,QString)));
+    setVisible(false);
+}
+
+void PointSelectionWindow::on_nearestClrButton_clicked(){
+    ui->nearestButton->setText("Current position");
+    currentLocation = NavigationWindow::main->getCoordinates();
+    ui->poiTreeWidget->clear();
+    fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
+}
+
+void PointSelectionWindow::pswClosed(){
+    npsw->close();
+    delete npsw;
+    setVisible(true);
+}
+
+void PointSelectionWindow::nearestSet(double lon, double lat, QString name)
+{
+    ui->nearestButton->setText(name);
+    nearestPoint.first = name;
+    nearestPoint.second.setLon(lon);
+    nearestPoint.second.setLat(lat);
+    currentLocation = QPointF(lon,lat);
+    //Settings::getInstance()->addHistoryPoint(name, lon, lat);
+    qDebug()<<lon<<lat<<name;
+    ui->poiTreeWidget->clear();
+    fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
 }
 
 osmscout::AdminRegion PointSelectionWindow::searchRegion(const int id)
@@ -147,6 +220,7 @@ void PointSelectionWindow::on_cityLineEdit_textChanged(const QString &text)
             }
             item->setText(PATH_COLUMN, path);
             item->setText(INFO_COLUMN, "INFO");
+            item->setText(FAV_COLUMN, trUtf8("★"));
 
             ui->treeWidget->resizeColumnToContents(NAME_COLUMN);
             ui->treeWidget->resizeColumnToContents(PATH_COLUMN);
@@ -199,6 +273,7 @@ void PointSelectionWindow::on_streetLineEdit_textChanged(const QString &text)
             }
             item->setText(PATH_COLUMN, path);
             item->setText(INFO_COLUMN, "INFO");
+            item->setText(FAV_COLUMN, trUtf8("★"));
 
             ui->treeWidget->resizeColumnToContents(NAME_COLUMN);
             ui->treeWidget->resizeColumnToContents(PATH_COLUMN);
@@ -218,6 +293,7 @@ void PointSelectionWindow::on_nameLineEdit_textChanged(const QString &arg1)
     fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), arg1);
 }
 
+/*
 void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == NAME_COLUMN || column == PATH_COLUMN) {
@@ -243,7 +319,6 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                 searching->searchWay(objRef.GetId(), wayRef);
 
                 if (wayRef.Valid()) {
-                    /*
                     qDebug() << wayRef.Get()->EndIsJoint();
                     qDebug() << QString::fromStdString(wayRef.Get()->GetAttributes().GetName());
                     qDebug() << QString::fromStdString(wayRef.Get()->GetName());
@@ -253,7 +328,6 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     qDebug() << wayRef.Get()->GetTagCount();
                     qDebug() << wayRef.Get()->GetType();
                     qDebug() << wayRef.Get()->GetWidth();
-                    */
 
                     double lonMin;
                     double lonMax;
@@ -269,13 +343,12 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     std::vector<osmscout::RelationRef> relationAreas;
 
                     //searching->searchObjects(lonMin, latMin, lonMax, latMax, nodes, ways, areas, relationWays, relationAreas);
-/*
-                    qDebug() << "Nodes: " << nodes.size();
+
+                    qDebug() << "Nodes: " << nodes.size()
                     qDebug() << "Ways: " << ways.size();
                     qDebug() << "Areas: " << areas.size();
                     qDebug() << "Relation ways: " << relationWays.size();
                     qDebug() << "Relation areas: " << relationAreas.size();
-*/
 
                     for (unsigned int i = 0; i < areas.size(); i++) {
                         osmscout::WayRef areaRef;
@@ -358,7 +431,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
 
         ui->treeWidget->clear();
     }
-}
+}*/
 
 /*
   INFO click
@@ -383,6 +456,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         switch (searchingType) {
         case REGION_SEARCH:
             infoWin = new InfoWindow(NavigationWindow::main);
+            infoWin->resize(NavigationWindow::main->size());
 
             infoWin->setName(region.name);
 
@@ -391,7 +465,11 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
             lat = cityRef.Get()->GetLat();
             lon = cityRef.Get()->GetLon();
 
-            infoWin->setCoordinates(lat, lon);
+            retLon = lon;
+            retLat = lat;
+            retName = region.name;
+
+            infoWin->setCoordinates(lon,lat);
             infoWin->setZoom(osmscout::magCity);
             infoWin->setVisible(true);
             //infoWin->setZoom(osmscout::magWorld);
@@ -404,18 +482,17 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
 
         case STREET_SEARCH:
             infoWin = new InfoWindow(NavigationWindow::main);
-
+            infoWin->resize(NavigationWindow::main->size());
             osmscout::WayRef wayRef;
 
             int id = item->text(0).toInt();
             searching->searchWay(id, wayRef);
 
-
             infoWin->setName(QString::fromUtf8(wayRef.Get()->GetName().c_str()));
 
             wayRef.Get()->GetCenter(lat, lon);
 
-            infoWin->setCoordinates(lat, lon);
+            infoWin->setCoordinates(lon, lat);
             infoWin->setZoom(osmscout::magStreet);
 
             infoWin->setVisible(true);
@@ -427,7 +504,211 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         }
 
     }
+    else if(column == FAV_COLUMN){
+
+        double lat;
+        double lon;
+
+        osmscout::NodeRef cityRef;
+
+        switch (searchingType) {
+        case REGION_SEARCH:
+            searching->searchNode(region.reference.GetId(), cityRef);
+
+            lat = cityRef.Get()->GetLat();
+            lon = cityRef.Get()->GetLon();
+
+            Settings::getInstance()->addFavouritePoint(region.name, lon, lat);
+            initFavouriteList();
+        break;
+        case STREET_SEARCH:
+
+            osmscout::WayRef wayRef;
+
+            int id = item->text(0).toInt();
+            searching->searchWay(id, wayRef);
+
+            wayRef.Get()->GetCenter(lat, lon);
+
+            Settings::getInstance()->addFavouritePoint(cityName+", "+QString::fromUtf8(wayRef.Get()->GetName().c_str()), lon, lat);
+            initFavouriteList();
+            break;
+        }
+
+    } else {
+        osmscout::NodeRef cityRef;
+
+        switch (searchingType) {
+        case REGION_SEARCH:
+            searching->searchNode(region.reference.GetId(), cityRef);
+            region = searchRegion(item->text(ID_COLUMN).toInt());
+
+            ui->cityLineEdit->setEnabled(false);
+            ui->cityLineEdit->setText(region.name);
+            ui->streetFrame->setVisible(true);
+
+            retLon = cityRef.Get()->GetLon();
+            retLat = cityRef.Get()->GetLat();
+            retName = region.name;
+            cityName = retName;
+
+            ui->cityEditBtn->setVisible(true);
+            ui->treeWidget->clear();
+            break;
+
+        case STREET_SEARCH:
+            osmscout::WayRef wayRef;
+
+            int id = item->text(0).toInt();
+            searching->searchWay(id, wayRef);
+
+            wayRef.Get()->GetCenter(retLat, retLon);
+            retName = cityName + ", " + QString::fromUtf8(wayRef.Get()->GetName().c_str());
+
+
+//            QString name = item->text(NAME_COLUMN);
+//            location = searchLocation(name);
+
+//            for (std::list<osmscout::ObjectRef>::const_iterator iter = location.references.begin();
+//                 iter != location.references.end();
+//                 ++iter) {
+
+//                osmscout::ObjectRef objRef = *(iter);
+//                osmscout::WayRef wayRef;
+
+//                searching->searchWay(objRef.GetId(), wayRef);
+
+//                if (wayRef.Valid()) {
+//                    /*
+//                    qDebug() << wayRef.Get()->EndIsJoint();
+//                    qDebug() << QString::fromStdString(wayRef.Get()->GetAttributes().GetName());
+//                    qDebug() << QString::fromStdString(wayRef.Get()->GetName());
+//                    qDebug() << wayRef.Get()->GetId();
+//                    qDebug() << wayRef.Get()->GetReferenceCount();
+//                    qDebug() << QString::fromStdString(wayRef.Get()->GetRefName());
+//                    qDebug() << wayRef.Get()->GetTagCount();
+//                    qDebug() << wayRef.Get()->GetType();
+//                    qDebug() << wayRef.Get()->GetWidth();
+//                    */
+
+//                    double lonMin;
+//                    double lonMax;
+//                    double latMin;
+//                    double latMax;
+
+//                    wayRef.Get()->GetBoundingBox(lonMin, lonMax, latMin, latMax);
+
+//                    std::vector<osmscout::NodeRef> nodes;
+//                    std::vector<osmscout::WayRef> ways;
+//                    std::vector<osmscout::WayRef> areas;
+//                    std::vector<osmscout::RelationRef> relationWays;
+//                    std::vector<osmscout::RelationRef> relationAreas;
+
+//                    //searching->searchObjects(lonMin, latMin, lonMax, latMax, nodes, ways, areas, relationWays, relationAreas);
+///*
+//                    qDebug() << "Nodes: " << nodes.size();
+//                    qDebug() << "Ways: " << ways.size();
+//                    qDebug() << "Areas: " << areas.size();
+//                    qDebug() << "Relation ways: " << relationWays.size();
+//                    qDebug() << "Relation areas: " << relationAreas.size();
+//*/
+
+//                    for (int i = 0; i < areas.size(); i++) {
+//                        osmscout::WayRef areaRef;
+//                        osmscout::WayRef area = areas.at(i);
+//                        searching->searchWay(area.Get()->GetId(), areaRef);
+
+//                        if (areaRef.Valid()) {
+//                            // in poinst should be buildings!
+//                            std::vector<osmscout::Point> points = areaRef.Get()->nodes;
+
+//                            for (int j = 0; j < points.size(); j++) {
+//                                osmscout::Point point = points.at(j);
+//                                osmscout::NodeRef pointRef;
+//                                searching->searchNode(point.GetId(), pointRef);
+
+//                                if (pointRef.Valid()) {
+
+
+//                                    //if (pointRef.Get()->GetTagCount() > 0)
+//                                    //    qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
+//                               }
+
+//                                osmscout::WayRef waj;
+//                                searching->searchWay(point.GetId(), waj);
+
+//                                if (waj.Valid()) {
+//                                    for (int j = 0; j < waj.Get()->GetTagCount(); j++)
+//                                        qDebug() << waj.Get()->GetTagKey(j) << " / " << QString(waj.Get()->GetTagValue(j).c_str());
+//                                    if (waj.Get()->GetTagCount() > 0)
+//                                        qDebug() << "\n";
+//                                }
+
+//                            }
+
+//                        }
+//                    }
+
+
+//                    for (int i = 0; i < ways.size(); i++) {
+//                        osmscout::WayRef way = ways.at(i);
+//                        osmscout::WayRef way2;
+
+//                        searching->searchWay(way.Get()->GetId(), way2);
+//                        //qDebug() << QString::fromStdString(way2.Get()->GetTagValue(0));
+
+//                        if (way2.Valid()) {
+//                            std::vector<osmscout::Point> points = way.Get()->nodes;
+
+//                            for (int j = 0; j < points.size(); j++) {
+//                                osmscout::Point point = points.at(j);
+//                                osmscout::NodeRef pointRef;
+//                                searching->searchNode(point.GetId(), pointRef);
+
+//                                osmscout::WayRef way3;
+//                                searching->searchWay(point.GetId(), way3);
+
+//                                if (way3.Valid()) {
+//                                //   qDebug() << QString::fromStdString(way3.Get()->GetTagValue(0));
+//                                }
+
+//                                if (pointRef.Valid()) {
+
+//                                    if (pointRef.Get()->GetTagCount() > 0)
+//                                        qDebug() << pointRef.Get()->GetId() << " | " << QString(pointRef.Get()->GetTagValue(0).c_str());
+//                               }
+
+//                            }
+//                        }
+
+
+//                    }
+
+
+//                }
+//            }
+            break;
+
+        deafult: std::cerr << "Error! Searching type is not initialized!"; break;
+        }
+    }
 }
+
+void PointSelectionWindow::on_cityEditBtn_clicked(){
+    if(!ui->cityLineEdit->isEnabled())
+    {
+        cityName = "";
+        retLon = 0;
+        retLat = 0;
+        ui->cityLineEdit->setEnabled(true);
+        ui->streetFrame->setVisible(false);
+        ui->cityEditBtn->setVisible(false);
+        ui->streetLineEdit->setText("");
+        ui->cityLineEdit->setText(ui->cityLineEdit->text());
+        on_cityLineEdit_textChanged(ui->cityLineEdit->text());
+    }
+}
+
 /*
 void PointSelectionWindow::fillPOIWidget(QString type)
 {
@@ -484,9 +765,11 @@ void PointSelectionWindow::fillPOIWidget(QString type)
 
 void PointSelectionWindow::fillPOIWidget(int type, QString name)
 {
-    QPointF here = NavigationWindow::main->getCoordinates();
-    double cx = here.x();
-    double cy = here.y();
+    double cx = currentLocation.x();
+    double cy = currentLocation.y();
+    qDebug()<<cx<<cy;
+    if(cx==0 && cy==0)
+        return;
 
     PiLibocik::PoiFilePPOI poiDB;
 
@@ -496,6 +779,12 @@ void PointSelectionWindow::fillPOIWidget(int type, QString name)
     double y2 = cy;
 
     int limit = findPoisAreaLimit;
+    int count = findPoisCount;
+    if(ui->showOpened->isChecked()){
+        limit *=10;
+        count /= 2;
+    }
+
     do{
         PiLibocik::BoundaryBox bbox(PiLibocik::Position(x1,y1),
                                     PiLibocik::Position(x2,y2));
@@ -527,7 +816,7 @@ void PointSelectionWindow::fillPOIWidget(int type, QString name)
             }
 
         limit--;
-    }while(poiList.size()<findPoisCount && limit > 0);
+    }while(poiList.size()<count && limit>0);
 
     QMap<double, int> poisDistance;
     int i = 0;
@@ -545,11 +834,8 @@ void PointSelectionWindow::fillPOIWidget(int type, QString name)
         item->setText(NAME_COLUMN, poiList.at(it.value()).getName().toLatin1());
         item->setText(PATH_COLUMN, distance);
         item->setText(INFO_COLUMN, "INFO");
+        item->setText(FAV_COLUMN, trUtf8("★"));
     }
-    ui->poiTreeWidget->setColumnWidth(NAME_COLUMN,300);
-  //  ui->poiTreeWidget->
-
-
 }
 
 void PointSelectionWindow::on_findMore_clicked()
@@ -572,76 +858,8 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
     fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
 }
 
-void PointSelectionWindow::on_poiOK_clicked() {
-    //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
-
-    /*std::vector<osmscout::Routing::Step> route;
-
-    double lons[12];
-    double lats[12];
-    double ids[12];
-    bool cross[12];
-    for (int i = 0; i < 12; i++)
-        cross[i] = false;
-
-    ids[0] = 163019177;
-    ids[1] = 163019169;
-    ids[2] = 700335113;
-    ids[3] = 354688468;
-    ids[4] = 163019162;
-    ids[5] = 361263007;
-    ids[6] = 163019154;
-    ids[7] = 357534549;
-    ids[8] = 354688480;
-    ids[9] = 354688470;
-    ids[10] = 173358982;
-    ids[11] = 1354742039;
-
-    lons[0] = 17.0200428;
-    lons[1] = 17.0173305;
-    lons[2] = 17.0173006;
-    lons[3] = 17.0172331;
-    lons[4] = 17.016984;
-    lons[5] = 17.0168671;
-    lons[6] = 17.0163112;
-    lons[7] = 17.0162949;
-    lons[8] = 17.0162113;
-    lons[9] = 17.0160545;
-    lons[10] = 17.0154863;
-    lons[11] = 17.0152651;
-
-    lats[0] = 51.0934354;
-    lats[1] = 51.0911184;
-    lats[2] = 51.0911032;
-    lats[3] = 51.0910688;
-    lats[4] = 51.0910281;
-    lats[5] = 51.0910583;
-    lats[6] = 51.0910981;
-    lats[7] = 51.0911919;
-    lats[8] = 51.0915246;
-    lats[9] = 51.0921023;
-    lats[10] = 51.0943413;
-    lats[11] = 51.0951559;
-
-    cross[6] = true;
-    cross[8] = true;
-    cross[9] = true;
-    cross[10] = true;
-    cross[11] = true;
-
-    for (int i = 0; i < 12; i++) {
-        osmscout::Routing::Step node;
-        node.id = ids[i];
-        node.lat = lats[i];
-        node.lon = lons[i];
-        node.crossing = cross[i];
-
-        route.push_back(node);
-    }
-
-    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
-    par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));*/
-
+void PointSelectionWindow::on_poiOK_clicked()
+{
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);
     emit ok_clicked();
@@ -704,11 +922,16 @@ void PointSelectionWindow::on_poiTreeWidget_itemClicked(QTreeWidgetItem *item, i
         infoPoiWin->setCoordinates(lon, lat);
 
         infoPoiWin->setVisible(true);
+    } else if (column == FAV_COLUMN) {
+        Settings::getInstance()->addFavouritePoint("POI: "+poi.getName(), poi.getLon(), poi.getLat());
+        initFavouriteList();
     }
 }
 
 void PointSelectionWindow::on_poiTreeWidget_itemSelectionChanged()
 {
+    if(ui->poiTreeWidget->selectedItems().size()==0)
+        return;
     PiLibocik::Poi poi = poiList.at(ui->poiTreeWidget->selectedItems().at(0)->text(0).toInt());
     retLon = poi.getLon();
     retLat = poi.getLat();
@@ -722,6 +945,8 @@ void PointSelectionWindow::on_treeWidget_itemSelectionChanged()
 
 void PointSelectionWindow::on_historyList_itemSelectionChanged()
 {
+    if(ui->historyList->selectedItems().size()==0)
+        return;
     StorePoint sp = historyPoints.at(ui->historyList->selectedItems().at(0)->text(0).toInt());
     retLon = sp.getLon();
     retLat = sp.getLat();
@@ -730,10 +955,53 @@ void PointSelectionWindow::on_historyList_itemSelectionChanged()
 
 void PointSelectionWindow::on_favouriteList_itemSelectionChanged()
 {
+    if(ui->favouriteList->selectedItems().size()==0)
+        return;
     StorePoint sp = favouritePoints.at(ui->favouriteList->selectedItems().at(0)->text(0).toInt());
     retLon = sp.getLon();
     retLat = sp.getLat();
     retName = sp.getName();
+}
+
+void PointSelectionWindow::on_historyList_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == INFO_COLUMN) {
+        StorePoint sp = historyPoints.at(item->text(0).toInt());
+
+        InfoWindow *infoPoiWin = new InfoWindow(NavigationWindow::main);
+        infoPoiWin->resize(NavigationWindow::main->size());
+
+        infoPoiWin->setZoom(50000);
+
+        infoPoiWin->setName(sp.getName());
+        infoPoiWin->setCoordinates(sp.getLon(), sp.getLat());
+
+        infoPoiWin->setVisible(true);
+    } else if (column == FAV_COLUMN) {
+        StorePoint sp = historyPoints.at(item->text(0).toInt());
+        Settings::getInstance()->addFavouritePoint(sp.getName(), sp.getLon(), sp.getLat());
+        initFavouriteList();
+    }
+}
+
+void PointSelectionWindow::on_favouriteList_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == INFO_COLUMN) {
+        StorePoint sp = favouritePoints.at(item->text(0).toInt());
+
+        InfoWindow *infoPoiWin = new InfoWindow(NavigationWindow::main);
+        infoPoiWin->resize(NavigationWindow::main->size());
+
+        infoPoiWin->setZoom(50000);
+
+        infoPoiWin->setName(sp.getName());
+        infoPoiWin->setCoordinates(sp.getLon(), sp.getLat());
+
+        infoPoiWin->setVisible(true);
+    } else if (column == FAV_COLUMN) {
+        Settings::getInstance()->removeFavouritePoint(item->text(0).toInt());
+        initFavouriteList();
+    }
 }
 
 void PointSelectionWindow::on_poiTreeWidget_clicked(const QModelIndex &index)
@@ -752,6 +1020,7 @@ void PointSelectionWindow::on_tabWidget_currentChanged(int index)
 void PointSelectionWindow::initHistoryList()
 {
     historyPoints = Settings::getInstance()->getHistoryPoints();
+    ui->historyList->clear();
     ui->historyList->setColumnCount(COLUMNS_COUNT);
     ui->historyList->hideColumn(ID_COLUMN);
     ui->historyList->header()->hide();
@@ -760,14 +1029,23 @@ void PointSelectionWindow::initHistoryList()
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->historyList);
         item->setText(ID_COLUMN, QString::number(sp.getPos()));
         item->setText(NAME_COLUMN, sp.getName());
-        item->setText(PATH_COLUMN, "0km");
+        double numDist = searching->CalculateDistance(currentLocation.x(), currentLocation.y(), sp.getLon(), sp.getLat());
+        QString distance = numDist < 1 ? QString::number((int)(numDist*1000)).append(" m") : QString::number(numDist, 'f', 2).append(" km");
+        item->setText(PATH_COLUMN, distance);
         item->setText(INFO_COLUMN, "INFO");
+        item->setText(FAV_COLUMN, trUtf8("★"));
     }
+    ui->historyList->header()->setResizeMode(NAME_COLUMN, QHeaderView::Stretch);
+    ui->historyList->header()->setResizeMode(PATH_COLUMN, QHeaderView::ResizeToContents);
+    ui->historyList->header()->setResizeMode(INFO_COLUMN, QHeaderView::ResizeToContents);
+    ui->historyList->header()->setResizeMode(FAV_COLUMN, QHeaderView::ResizeToContents);
+    ui->historyList->header()->setStretchLastSection(false);
 }
 
 void PointSelectionWindow::initFavouriteList()
 {
     favouritePoints = Settings::getInstance()->getFavouritePoints();
+    ui->favouriteList->clear();
     ui->favouriteList->setColumnCount(COLUMNS_COUNT);
     ui->favouriteList->hideColumn(ID_COLUMN);
     ui->favouriteList->header()->hide();
@@ -776,9 +1054,17 @@ void PointSelectionWindow::initFavouriteList()
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->favouriteList);
         item->setText(ID_COLUMN, QString::number(sp.getPos()));
         item->setText(NAME_COLUMN, sp.getName());
-        item->setText(PATH_COLUMN, "0km");
+        double numDist = searching->CalculateDistance(currentLocation.x(), currentLocation.y(), sp.getLon(), sp.getLat());
+        QString distance = numDist < 1 ? QString::number((int)(numDist*1000)).append(" m") : QString::number(numDist, 'f', 2).append(" km");
+        item->setText(PATH_COLUMN, distance);
         item->setText(INFO_COLUMN, "INFO");
+        item->setText(FAV_COLUMN, trUtf8("☒"));
     }
+    ui->favouriteList->header()->setStretchLastSection(false);
+    ui->favouriteList->header()->setResizeMode(NAME_COLUMN, QHeaderView::Stretch);
+    ui->favouriteList->header()->setResizeMode(PATH_COLUMN, QHeaderView::ResizeToContents);
+    ui->favouriteList->header()->setResizeMode(INFO_COLUMN, QHeaderView::ResizeToContents);
+    ui->historyList->header()->setResizeMode(FAV_COLUMN, QHeaderView::ResizeToContents);
 }
 
 void PointSelectionWindow::changeEvent(QEvent *e)

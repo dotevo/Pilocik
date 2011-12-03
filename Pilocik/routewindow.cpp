@@ -107,6 +107,7 @@ void RouteWindow::on_toButton_clicked(){
                                  NavigationWindow::main->mapRenderer->getCoordinates().y());
     psw->setVisible(true);
     connect(psw, SIGNAL(ok_clicked()), this, SLOT(pswClosed()));
+    connect(psw, SIGNAL(back_clicked()), this, SLOT(pswClosed()));
     connect(psw, SIGNAL(positionChoosen(double,double,QString)), this, SLOT(targetSet(double,double,QString)));
     setVisible(false);
 }
