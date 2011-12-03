@@ -310,7 +310,19 @@ void Settings::modifyWidgetSettings(QString name, QMap<QString,QString> settings
 
     if(widgetSettings.isNull())
     {
-        return;
+
+        QDomElement el = doc->createElement("widget");
+        el.setAttribute("name", name);
+
+        QMapIterator <QString,QString> setIter(settingsToSave);
+        while(setIter.hasNext()){
+            setIter.next();
+            QDomElement toAdd = doc->createElement(setIter.key());
+            QDomText tex=doc->createTextNode(setIter.value());
+            toAdd.appendChild(tex);
+            el.appendChild(toAdd);
+        }
+        profileSettingsXMLNode.firstChildElement("widgets").appendChild(el);
     }
 
     for(int i = 0; i < settingsToSave.size(); i++)
