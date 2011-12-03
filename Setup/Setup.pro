@@ -12,13 +12,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    textprogressbar.cpp \
     newsframe.cpp \
     filedownload.cpp \
     mapdownloadframe.cpp
 
 HEADERS  += mainwindow.h \
-    textprogressbar.h \
     newsframe.h \
     filedownload.h \
     mapdownloadframe.h
@@ -29,6 +27,8 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     res.qrc
+
+
 
 
 
