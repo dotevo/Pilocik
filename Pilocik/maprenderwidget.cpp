@@ -84,7 +84,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
     rendererThread=new MapPixmapRenderer(this);
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
-    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)));
+    connect(rendererThread, SIGNAL(pixmapRendered(QImage*,osmscout::MercatorProjection,QList<PiLibocik::Poi>)), this, SLOT(newPixmapRendered(QImage*,osmscout::MercatorProjection,QList<PiLibocik::Poi>)));
     //testPixmap();
 
     searching = new osmscout::Searching();
@@ -359,9 +359,9 @@ QVector<osmscout::Routing::Step> MapRenderWidget::getRoute()
     return route;
 }
 
-void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList){
+void MapRenderWidget::newPixmapRendered(QImage *pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList){
     projectionRendered=projection;
-    this->image=pixmap;
+    this->image=*pixmap;
     this->poiList = poiList;
     testPixmap();
     repaint();
@@ -808,7 +808,7 @@ void MapPixmapRenderer::run(){
         qDebug()<<"TIME:"<<t.elapsed();
 
         qRegisterMetaType<QList<PiLibocik::Poi> >("QList<PiLibocik::Poi>");
-        pixmapRendered(pixmap,p,poiList);
+        pixmapRendered(&pixmap,p,poiList);
         delete painter;
     started=false;
 }
