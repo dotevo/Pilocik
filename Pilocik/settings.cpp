@@ -467,11 +467,12 @@ QTranslator* Settings::reloadTranslation(QString lang)
 }
 
 
-QString Settings::getPluginSetting(QString pluginName,QString setting){
-    //TODO!!!
-    return "1";
+QMap<QString,QString> Settings::getPluginSettings(QString pluginName){
+    QMap<QString,QString> ret;
+    ret.insert("Test","1");
+    return ret;
 }
 
-void Settings::modifyPluginSetting(QString pluginName,QString setting,QString value){
+void Settings::modifyPluginSettings(QString pluginName,QMap<QString,QString> setting){
     //TODO!!!
 }

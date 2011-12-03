@@ -17,7 +17,7 @@ SimpleClock::~SimpleClock(){
 }
 
 
-void SimpleClock::init(){
+void SimpleClock::init(QMap<QString,QString> settings){
     clockWidget=new TClockWidget();
 }
 
@@ -35,6 +35,10 @@ QList<PluginWidget*> SimpleClock::getWidgets(){
 }
 
 
+QMap<QString,QString> SimpleClock::getSettings(){
+    QMap<QString,QString> ret;
+    return ret;
+}
 
 Q_EXPORT_PLUGIN2(libsimpleclock, SimpleClock)
 

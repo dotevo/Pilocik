@@ -23,8 +23,9 @@ class SimpleClock :public QObject, public PluginInterface{
         QString getDesc(){return "SimpleClock";}
         PluginVersion getVersion(){static PluginVersion v(0,1); return v;}
         QList<PluginWidget*> getWidgets();
-        void init ();
+        void init (QMap<QString,QString>);
         void run ();
+        QMap<QString,QString> getSettings();
     };
 
 

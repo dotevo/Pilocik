@@ -14,7 +14,7 @@ Compass::~Compass(){
 }
 
 
-void Compass::init(){
+void Compass::init(QMap<QString, QString>settings){
     compassWidget=new CompassWidget();
 }
 
@@ -30,6 +30,11 @@ QList<PluginWidget*> Compass::getWidgets(){
 void Compass::positionUpdated(GPSdata data){
     qDebug()<<data.angle;
     compassWidget->setAngle(data.angle);
+}
+
+QMap<QString,QString> Compass::getSettings(){
+    QMap<QString,QString> ret;
+    return ret;
 }
 
 

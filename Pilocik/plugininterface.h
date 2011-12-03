@@ -69,13 +69,19 @@ public:
      *
      * @fn init
      */
-    virtual void init ()=0;
+    virtual void init (QMap<QString,QString> settins)=0;
     /**
      * @brief run all needed functions (eg. timers)
      *
      * @fn run
      */
     virtual void run ()=0;
+    /**
+     * @brief get settings of plugin. Using before unload.
+     *
+     * @fn
+     */
+    virtual QMap<QString,QString> getSettings()=0;
 };
 
 Q_DECLARE_INTERFACE (PluginInterface, "PilocikPlugin/0.1")

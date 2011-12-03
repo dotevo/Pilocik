@@ -98,7 +98,7 @@ public:
     QString getLanguage();
     QString getLanguageFromLocale(QString loc);
     QString getLocale(QString lang);
-    QString getPluginSetting(QString pluginName,QString setting);
+    QMap<QString,QString> getPluginSettings(QString pluginName);
 
     void resetDefaultSettings();
     void configureProfile(QString profile);
@@ -108,7 +108,7 @@ public:
     void modifyMapSettings(double lat, double lon, int zoom);
     void modifyLanguageSettings();
     void modifyPoiDisplaySettings(QMap<int, PiLibocik::PoiDisplay> newPoiDisplaySettings);
-    void modifyPluginSetting(QString pluginName,QString setting,QString value);
+    void modifyPluginSettings(QString pluginName,QMap<QString,QString> setting);
 
     void addHistoryPoint(QString name, double lon, double lat);
     void addFavouritePoint(QString name, double lon, double lat);
