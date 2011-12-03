@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include "navigationwindow.h"
+#include "pluginmanager.h"
 #include <QtGlobal>
 #include <QDebug>
 #include <QFile>
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
     NavigationWindow::main=&w;
     w.show();
 
+    //PluginManager::getInstance()->initAll();
+    //PluginManager::getInstance()->runAll();
+
     Settings::getInstance()->reloadTranslation(Settings::getInstance()->getStartLanguage());
 
     //Dla windowsa CE fullscreen
@@ -27,3 +31,4 @@ int main(int argc, char *argv[])
 
     return a->exec();
 }
+

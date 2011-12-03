@@ -11,6 +11,7 @@ class MapOptionsWindow;
 class GPSOptionsWindow;
 class UserOptionsWindow;
 class CreditsWindow;
+class PluginsWindow;
 
 class OptionsWindow : public QFullScreenFrame
 {
@@ -37,6 +38,8 @@ private slots:
 
     void on_creditsButton_clicked();
 
+    void on_pluginsButton_clicked();
+
 signals:
     void closed();
 
@@ -46,6 +49,7 @@ private:
     GPSOptionsWindow *gpsWin;
     UserOptionsWindow *userWin;
     CreditsWindow *creditsWin;
+    PluginsWindow *pluginsWin;
 
     void changeEvent(QEvent *);
 };

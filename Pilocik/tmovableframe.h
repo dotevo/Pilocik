@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QGraphicsScene>
+#include <QMouseEvent>
 
 class QEvent;
 class QMouseEvent;
@@ -14,7 +15,7 @@ class QMouseEvent;
  */
 class TMovableFrame : public QFrame
 {
-    Q_OBJECT
+ //   Q_OBJECT
 public:
     /**
      * @brief
@@ -32,7 +33,7 @@ public:
      * @fn TMovableFrame
      * @param scene
      */
-    TMovableFrame(QWidget*parent);
+    TMovableFrame(QWidget*parent=0):QFrame(parent){}
 
     /**
      * @brief
@@ -40,36 +41,69 @@ public:
      * @fn mousePressEvent
      * @param event
      */
-    void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event){
+        if(mode==MOVING){
+            event->accept(); // do not propagate
+            offset = event->pos();
+        }
+    }
+
     /**
      * @brief
      *
      * @fn mouseMoveEvent
      * @param event
      */
-    void mouseMoveEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event){
+        if(mode==MOVING){
+            event->accept(); // do not propagate
+            move(mapToParent(event->pos() - offset));
+        }
+    }
+
     /**
      * @brief
      *
      * @fn mouseReleaseEvent
      * @param event
      */
-    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event){
+        if(mode==MOVING){
+            event->accept(); // do not propagate
+            offset = QPoint();
+        }
+    }
+
     /**
      * @brief
      *
      * @fn setMode
      * @param mode
      */
-    void setMode(TMovableFrame::TMOVABLEMODE mode);
+    void setMode(TMovableFrame::TMOVABLEMODE mode){
+        modeChanged(mode);
+        this->blockSignals(true);
+        this->mode=mode;
+    }
+
     /**
      * @brief
      *
      * @fn getMode
      * @return mode
      */    
-    TMovableFrame::TMOVABLEMODE getMode();
-    virtual void modeChanged(TMovableFrame::TMOVABLEMODE &mode){}
+    TMovableFrame::TMOVABLEMODE getMode(){
+        return mode;
+    }
+
+    /**
+     * @brief
+     *
+     * @fn modeChanged
+     */
+    void modeChanged(TMovableFrame::TMOVABLEMODE &mode){
+        Q_UNUSED(mode);
+    }
 private:
     TMOVABLEMODE mode; /**< TODO */
     QPoint offset; /**< TODO */

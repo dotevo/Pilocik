@@ -16,7 +16,7 @@
   types         (t)     -quint8
   ------------- *t -------------
     typeLength      (r)     -int
-    name                    -char(Latin)*r
+    name                    -char(utf8)*r
   ---BLOCK *p-------------------
     typeIndex               -quint16*t
     ---TYPE *t------------------
@@ -75,7 +75,7 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     in >> geoHashSize;
     char *firstGeo=new char[geoHashSize];
     in >> geoHashsCount;
-//    qDebug()<<in.device()->pos();
+    qDebug()<<"LKLK"<<geoHashSize<<"L"<<geoHashsCount;
     int a=0;
     a+=geoHashSize;
     //qDebug()<<a;
@@ -113,11 +113,12 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     for(int i=0;i<geohashes.size();i++){
         Geohash gg=geohashes.at(i);
         qint64 n=gg-geoFirst;
-        if(n>=0&&n<geoHashsCount){
+        qDebug()<<gg.toQString()<<"{}"<<geoFirst.toQString();
+        if(n>=0&&n<=geoHashsCount){
             in.device()->seek(positionINX+n*sizeof(qint64));
             qint64 ind;
             in >> ind;
-            //qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
+            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
             //if empty
             if(ind!=0)
                 indexes.push_back(ind);
@@ -171,7 +172,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
         inData>>lon>>lat>>nameS;
         char* n = new char[nameS];
         inData.readRawData(n,(int)nameS);
-        QString name(n);
+        QString name=QString::fromUtf8(n,nameS);
         delete []n;
         name.resize(nameS);
 
@@ -184,7 +185,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
             inData>>tagSize;
             char* tagChar = new char[tagSize];
             int sizeL=inData.readRawData(tagChar,(int)tagSize);
-            QString tag=QString::fromLatin1(tagChar,sizeL);
+            QString tag=QString::fromUtf8(tagChar,sizeL);
             delete []tagChar;
             tag.resize(tagSize);
             QStringList tagList=tag.split('=');
@@ -202,12 +203,14 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
 
 #ifdef PiLibocik_WRITE_MODE
 void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &types){
+    qDebug()<<pois.length();
     QMap <Geohash, QVector<Poi*>* > geoHashedPOIs;
     QListIterator <Poi> iter(pois);
     //Convert List to hashed map
     while(iter.hasNext()){
         Poi *poi=(Poi*)&iter.next();
         QString geo=poi->getGeohash();
+        qDebug()<<geo;
         Geohash geoH(geo.left(5));
         if(geoHashedPOIs.contains(geoH)){
             geoHashedPOIs.value(geoH)->push_back(poi);
@@ -217,6 +220,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
             geoHashedPOIs.insert(geoH,dupa);
         }
     }
+    qDebug()<<geoHashedPOIs.size()<<"P";
 
 
     QMapIterator <Geohash ,QVector<Poi*> *> mIter(geoHashedPOIs);
@@ -269,6 +273,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
                 quint64 l=last-geo2;
+                qDebug()<<last.toQString()<<":"<<geo2.toQString()<<"L"<<l;
 
                 outIndex << l;
 
@@ -284,17 +289,19 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
 
 
                 number++;
-            }
+            }else{
             geo1=geo2;
-            geo2=listIterator.next();
-            for(geo1++;geo1<geo2;geo1++){
-                outIndex << empty;
-                //qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
+            //if(listIterator.hasNext()){
+                geo2=listIterator.next();
+                for(geo1++;geo1<geo2;geo1++){
+                    outIndex << empty;
+                    //qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
+                }
+                outIndex << outData.device()->pos();
+                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
+                makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
+            //}
             }
-            outIndex << outData.device()->pos();
-            qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
-            makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
-
         }
         qDebug()<<"File data size:"<<outData.device()->size()<<" Index:"<<outIndex.device()->size();
 
@@ -350,8 +357,9 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
 
                 //Add Name
                 QString name=poi->getName();
-                out<<((quint8)name.length());
-                out.writeRawData(name.toAscii(),name.length());
+                QByteArray aZl=name.toUtf8();
+                out<<((quint8)aZl.size());
+                out.writeRawData(aZl.data(),aZl.size());
 
                 //Add Tags count
                 QList <QPair<QString,QString > > list=poi->getTags();                
@@ -363,7 +371,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
                     QPair<QString,QString> pair=tagsIter.next();
                     QString valueP=pair.first+"="+pair.second;
                     out<<((quint8)valueP.length());
-                    QByteArray aZ=valueP.toAscii();
+                    QByteArray aZ=valueP.toUtf8();
                     out.writeRawData(aZ.data(),aZ.size());
                 }
             }

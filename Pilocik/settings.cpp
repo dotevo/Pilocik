@@ -298,8 +298,7 @@ void Settings::configureProfile(QString profile)
     }
 }
 
-QMap<QString,QString> Settings::getWidgetSettings(QString name)
-{
+QMap<QString,QString> Settings::getWidgetSettings(QString name){
     return widgetsSettings[name];
 }
 
@@ -490,4 +489,12 @@ QTranslator* Settings::reloadTranslation(QString lang)
 }
 
 
+QMap<QString,QString> Settings::getPluginSettings(QString pluginName){
+    QMap<QString,QString> ret;
+    ret.insert("Test","1");
+    return ret;
+}
 
+void Settings::modifyPluginSettings(QString pluginName,QMap<QString,QString> setting){
+    //TODO!!!
+}

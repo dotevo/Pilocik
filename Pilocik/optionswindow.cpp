@@ -5,6 +5,7 @@
 #include "useroptionswindow.h"
 #include "creditswindow.h"
 #include "navigationwindow.h"
+#include "pluginswindow.h"
 
 OptionsWindow::OptionsWindow(NavigationWindow *parent) :
     QFullScreenFrame(parent),
@@ -24,6 +25,9 @@ OptionsWindow::OptionsWindow(NavigationWindow *parent) :
 
     creditsWin=new CreditsWindow(parent);
     creditsWin->setVisible(false);
+
+    pluginsWin=new PluginsWindow(parent);
+    pluginsWin->setVisible(false);
 }
 
 OptionsWindow::~OptionsWindow() {
@@ -88,4 +92,12 @@ void OptionsWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void OptionsWindow::on_pluginsButton_clicked(){
+    pluginsWin->setVisible(true);
+    pluginsWin->raise();
+    connect(pluginsWin, SIGNAL(closed()),
+            this, SLOT(optionWindowClosed()));
+    setVisible(false);
 }
