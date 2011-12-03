@@ -145,7 +145,7 @@ void PointSelectionWindow::nearestSet(double lon, double lat, QString name)
     fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
 }
 
-osmscout::AdminRegion PointSelectionWindow::searchRegion(const int id)
+osmscout::AdminRegion PointSelectionWindow::searchRegion(const unsigned int id)
 {
     osmscout::AdminRegion aRegion;  // empty region
     int index = -1;
@@ -440,7 +440,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
 {
     switch (searchingType) {
     case REGION_SEARCH:
-        region = searchRegion(item->text(ID_COLUMN).toInt());
+        region = searchRegion(item->text(ID_COLUMN).toUInt());
         break;
     default: break;
     }
@@ -541,7 +541,7 @@ void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int 
         switch (searchingType) {
         case REGION_SEARCH:
             searching->searchNode(region.reference.GetId(), cityRef);
-            region = searchRegion(item->text(ID_COLUMN).toInt());
+            region = searchRegion(item->text(ID_COLUMN).toUInt());
 
             ui->cityLineEdit->setEnabled(false);
             ui->cityLineEdit->setText(region.name);

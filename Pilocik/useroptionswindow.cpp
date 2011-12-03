@@ -50,8 +50,6 @@ void UserOptionsWindow::on_okButton_clicked(){
     }
     QString layoutStyle = layoutStyleFile.readAll();
     NavigationWindow::main->setStyleSheet(layoutStyle);
-    NavigationWindow::main->style()->unpolish(NavigationWindow::main);
-    NavigationWindow::main->style()->polish(NavigationWindow::main);
     layoutStyleFile.close();
 
     emit closed();

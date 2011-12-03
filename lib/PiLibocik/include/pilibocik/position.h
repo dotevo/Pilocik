@@ -11,7 +11,7 @@ namespace PiLibocik{
      */
     class Position
     {
-    private:
+    protected:
         double lon, /**< TODO */
                lat; /**< TODO */
 
@@ -67,7 +67,15 @@ namespace PiLibocik{
          * @fn getDistance
          * @return distance
          */
-        double getSimpleDistance(Position p);
+        double getDistance(Position p);
+        /**
+         * @brief (self including)
+         *
+         * @param pair
+         *
+         * @return
+         */
+        QList< Position > getPositionsAround(QPair< double, double > pair);
     };
 }
 

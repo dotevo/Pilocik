@@ -41,7 +41,7 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 }</string>
      </property>
      <property name="text">
-      <string>&lt;img src=&quot;:/gif/images/other/pilocik_logo.gif&quot; /&gt;</string>
+      <string>&lt;img src=&quot;:/gif/images/other/pilocik_logo.gif&quot; width=&quot;300&quot; height=&quot;90&quot; /&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -199,19 +199,6 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QPushButton" name="backButton">
        <property name="minimumSize">
         <size>
@@ -223,6 +210,19 @@ color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         <string>BACK</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>

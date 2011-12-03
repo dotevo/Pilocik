@@ -15,11 +15,11 @@ private:
     Position p1;
     Position p2;
     int precision;
-    QMap<int, QPair<double,double> > spatialError;
+    QMap< int, QPair< double,double > > spatialError;
 public:
     BoundaryBox(Position p1,Position p2);
-    QPair<double,double> getCurrentError();
-    QList <Geohash> getGeohashesIn(int precision);
+    QPair< double,double > getCurrentError();
+    QList < Geohash > getGeohashesIn(int precision);
 };
 
 }

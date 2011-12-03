@@ -151,7 +151,7 @@ private:
       @brief Searching region in <i>regions</i> with specified id.
       @param id Region id.
       */
-    osmscout::AdminRegion searchRegion(const int id);
+    osmscout::AdminRegion searchRegion(const unsigned int id);
 
     /**
       @brieg Searching location in <i>locations</i> with specified name.

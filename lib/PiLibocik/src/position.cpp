@@ -1,6 +1,10 @@
 #include <pilibocik/position.h>
 
+#include <QtCore/qmath.h>
+
 namespace PiLibocik{
+
+static double earthRadius = 3958.75;
 
     Position::Position():lon(0),lat(0){
     }
@@ -28,10 +32,34 @@ namespace PiLibocik{
         return Geohash::generateGeohash(lon,lat,p);
     }
 
-    double Position::getSimpleDistance(Position p){
-        double la=p.getLat()-getLat();
-        double lo=p.getLon()-getLon();
-        return la*la+lo*lo;
+    double Position::getDistance(Position p){
+       qreal dLat = (lat-p.lat) * 0.0174532925;
+       qreal dLon = (lon-p.lon) * 0.0174532925;
+       qreal a = qSin(dLat/2) * qSin(dLat/2) +
+                  qCos(p.lat * 0.0174532925) * qCos(lat * 0.0174532925) *
+                  qSin(dLon/2) * qSin(dLon/2);
+       qreal c = 2 * qAtan2(qSqrt(a), qSqrt(1-a));
+       qreal dist = earthRadius * c;
+
+       return (double) dist;
+    }
+
+    QList< Position > Position::getPositionsAround(QPair< double, double > pair){
+        QList< Position > posList;
+
+        //double tmpLon = lon-(2*pair.first);
+        //double tmpLat = lat-(2*pair.second);
+        double tmpLon = lon;
+        double tmpLat = lat;
+        for(int i=0; i<1; ++i) {
+            for(int j=0; j<1; ++j) {
+                posList.append(Position(tmpLon, tmpLat));
+                tmpLon += pair.first;
+            }
+            tmpLat += pair.second;
+        }
+
+        return posList;
     }
 
 }

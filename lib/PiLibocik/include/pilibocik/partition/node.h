@@ -37,6 +37,7 @@ public:
     QVector<BoundaryEdge> getBoundaryEdges();
     void addRoutingEdge(Edge e);
     QVector<Edge> getRoutingEdges();
+    //Node &operator=(Node &n);
 };
 
 }}

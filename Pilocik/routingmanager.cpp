@@ -11,7 +11,7 @@
 
 RoutingManager::RoutingManager()
 {
-    QString dbPath("test01");
+    QString dbPath("test08");
     partitionFile = new PiLibocik::Partition::PartitionFile(dbPath, "car", QIODevice::ReadOnly, 1);
     routing = new osmscout::Routing(partitionFile);
 
