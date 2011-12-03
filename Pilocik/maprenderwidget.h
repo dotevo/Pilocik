@@ -57,7 +57,6 @@ private:
 signals:
     void pixmapRendered(QImage *pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
-
 };
 
 
@@ -103,13 +102,13 @@ public:
       @brief Settings route.
       @param Actual route.
       */
-    void setRoute(QVector<osmscout::Routing::Step> route);
+    void setRoute(QList<osmscout::Routing::Step> route);
 
     /**
       @brief Gettings actual route.
       @return Actual route.
       */
-    QVector<osmscout::Routing::Step> getRoute();
+    QList<osmscout::Routing::Step> getRoute();
 
     /**
       @brief Setting zoom value.
@@ -211,7 +210,7 @@ private:
     osmscout::MercatorProjection  projectionRendered;
     osmscout::MercatorProjection  projectionRendered1;
     QList<PiLibocik::Poi> poiList;
-    QVector<osmscout::Routing::Step> route;
+    QList<osmscout::Routing::Step> route;
     int lastNodeIndex;
 
     MapPixmapRenderer *rendererThread;
@@ -223,6 +222,8 @@ private:
     void DrawRoute(const osmscout::Projection& projection, QPainter *painter);
     QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
     void setRouteSizes(int zoom);
+
+    void manualMove(QMouseEvent *e);
 
 public slots:
 

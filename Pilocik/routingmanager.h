@@ -5,6 +5,7 @@
 
 #include "../lib/sosmscout/include/osmscout/Routing.h"
 #include "navigationwindow.h"
+#include "../../PiLibocik/include/pilibocik/partition/partitionfile.h"
 
 class RoutingManager : public QThread
 {
@@ -60,6 +61,7 @@ public slots:
     void RoutingErrorSlot(QString errorMessage);
 
 private:
+    RoutingManager *instance;
     osmscout::Routing *routing;
     PiLibocik::Partition::PartitionFile *partitionFile;
 

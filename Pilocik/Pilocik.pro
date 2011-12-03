@@ -158,7 +158,6 @@ INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
 INCLUDEPATH += ./../lib/PiLibocik/include/
 
-
 Release:DESTDIR = ../build/release
 Release:OBJECTS_DIR = ../build/release/.obj
 Release:MOC_DIR = ../build/release/.moc

@@ -30,6 +30,8 @@ public:
 
     void setIntersection(osmscout::Searching::Intersection intersection);
 
+    QPointF calculateWay(double px, double py);
+
     //void drawIntersection(QPainter *painter);
 
     osmscout::Searching::Intersection *intersection;
@@ -49,6 +51,8 @@ private:
     QString leaveRoute;
 
     double myPosX, myPosY, crossX, crossY, wayX, wayY;
+
+    double distance;
 
 
 

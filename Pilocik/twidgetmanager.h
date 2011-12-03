@@ -23,6 +23,7 @@ private:
     QMap <QString, TMovableFrame*> widgets; /**< TODO */
     QWidget *parent; /**< TODO */
     static TWidgetManager *instance; /**< TODO */
+    bool *ROUTING;    // is routing mode
 public:
     /**
      * @brief
@@ -123,6 +124,12 @@ public:
      *
      */
     void showAllWidgets();
+
+    /**
+      @brief Sets routing mode
+      */
+    void setRouting(bool mode = true);
+
 };
 
 #endif // TWIDGETMANAGER_H

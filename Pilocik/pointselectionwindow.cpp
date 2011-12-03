@@ -1,7 +1,10 @@
 #include "pointselectionwindow.h"
 #include "ui_pointselectionwindow.h"
 #include "navigationwindow.h"
+#include "routewindow.h"
 #include "infowindow.h"
+#include "twidgetmanager.h"
+#include "routingmanager.h"
 
 #include <QStandardItemModel>
 #include <QAbstractItemView>
@@ -858,8 +861,89 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
     fillPOIWidget(poiTypes.key(ui->typeComboBox->currentText()), ui->nameLineEdit->text());
 }
 
-void PointSelectionWindow::on_poiOK_clicked()
-{
+void PointSelectionWindow::on_poiOK_clicked() {
+    //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
+/*
+    std::vector<osmscout::Routing::Step> route;
+
+    double lons[12];
+    double lats[12];
+    double ids[12];
+    bool cross[12];
+    for (int i = 0; i < 12; i++)
+        cross[i] = false;
+
+    ids[0] = 163019177;
+    ids[1] = 163019169;
+    ids[2] = 700335113;
+    ids[3] = 354688468;
+    ids[4] = 163019162;
+    ids[5] = 361263007;
+    ids[6] = 163019154;
+    ids[7] = 357534549;
+    ids[8] = 354688480;
+    ids[9] = 354688470;
+    ids[10] = 173358982;
+    ids[11] = 1354742039;
+
+    lons[0] = 17.0200428;
+    lons[1] = 17.0173305;
+    lons[2] = 17.0173006;
+    lons[3] = 17.0172331;
+    lons[4] = 17.016984;
+    lons[5] = 17.0168671;
+    lons[6] = 17.0163112;
+    lons[7] = 17.0162949;
+    lons[8] = 17.0162113;
+    lons[9] = 17.0160545;
+    lons[10] = 17.0154863;
+    lons[11] = 17.0152651;
+
+    lats[0] = 51.0934354;
+    lats[1] = 51.0911184;
+    lats[2] = 51.0911032;
+    lats[3] = 51.0910688;
+    lats[4] = 51.0910281;
+    lats[5] = 51.0910583;
+    lats[6] = 51.0910981;
+    lats[7] = 51.0911919;
+    lats[8] = 51.0915246;
+    lats[9] = 51.0921023;
+    lats[10] = 51.0943413;
+    lats[11] = 51.0951559;
+
+    cross[6] = true;
+    cross[8] = true;
+    cross[9] = true;
+    cross[10] = true;
+    cross[11] = true;
+
+    for (int i = 0; i < 12; i++) {
+        osmscout::Routing::Step node;
+        node.id = ids[i];
+        node.lat = lats[i];
+        node.lon = lons[i];
+        node.crossing = cross[i];
+
+        route.push_back(node);
+    }
+*/
+    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
+
+    //par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
+
+    PiLibocik::Position p1(17.0300428, 51.0814354);
+    PiLibocik::Position p2(17.0152651, 51.0951559);
+    //osmscout::Routing r(RoutingManager::getInstance()->getPartitionFile());
+    //QList<osmscout::Routing::Step> route = NavigationWindow::main->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
+    QList<osmscout::Routing::Step> route = par->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
+
+    par->setRoute(route);
+
+    TWidgetManager::getInstance()->setRouting(true);
+
+    //par->setRoute(QList<osmscout::Routing::Step>::fromStdVector(route));
+
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);
     emit ok_clicked();

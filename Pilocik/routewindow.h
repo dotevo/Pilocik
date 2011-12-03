@@ -26,6 +26,8 @@ public:
     PiLibocik::Position getTo();
     QList< PiLibocik::Position > getThrough();
 
+    RoutingManager *routingManager;
+
 public slots:
     void startSet(double lon, double lat, QString name);
     void targetSet(double lon, double lat, QString name);
@@ -51,7 +53,6 @@ signals:
 private:
     Ui::RouteWindow *ui;
     PointSelectionWindow* psw;
-    RoutingManager *routingManager;
     QPair< QString, PiLibocik::Position > from;
     QPair< QString, PiLibocik::Position > to;
     QList< QPair< QString, PiLibocik::Position > > through;

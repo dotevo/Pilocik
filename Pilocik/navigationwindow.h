@@ -27,7 +27,7 @@ public:
     MapRenderWidget *mapRenderer;
 
     void retranslate();
-    void setRoute(QVector<osmscout::Routing::Step> route);
+    void setRoute(QList<osmscout::Routing::Step> route);
     QPointF getCoordinates();
 
 private slots:

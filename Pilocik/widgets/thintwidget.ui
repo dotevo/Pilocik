@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>109</width>
-    <height>122</height>
+    <width>74</width>
+    <height>90</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,12 +52,18 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>91</width>
+        <width>53</width>
         <height>21</height>
        </rect>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
-       <string>Pilocik :-)</string>
+       <string>0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

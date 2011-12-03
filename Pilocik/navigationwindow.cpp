@@ -197,7 +197,7 @@ void NavigationWindow::retranslate()
     ui->retranslateUi(this);
 }
 
-void NavigationWindow::setRoute(QVector<osmscout::Routing::Step> route)
+void NavigationWindow::setRoute(QList<osmscout::Routing::Step> route)
 {
     mapRenderer->setRoute(route);
     mapRenderer->setRouting(true);
