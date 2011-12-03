@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/background.png</file>
+        <file>images/activeTab.png</file>
+        <file>images/inactiveTab.png</file>
+        <file>images/Download crate.png</file>
+        <file>images/Hard drive.png</file>
+        <file>images/Map.png</file>
+        <file>images/News.png</file>
+        <file>images/paint tools.png</file>
+        <file>images/System.png</file>
+        <file>images/exit.png</file>
+        <file>images/exit_hover.png</file>
+        <file>images/minimalize.png</file>
+        <file>images/minimalize_hover.png</file>
+    </qresource>
+</RCC>
