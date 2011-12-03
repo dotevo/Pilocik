@@ -51,6 +51,7 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     }
     QString layoutStyle = layoutStyleFile.readAll();
     this->setStyleSheet(layoutStyle);
+    layoutStyleFile.close();
 }
 
 NavigationWindow::~NavigationWindow()

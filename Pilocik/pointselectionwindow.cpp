@@ -277,7 +277,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     qDebug() << "Relation areas: " << relationAreas.size();
 */
 
-                    for (int i = 0; i < areas.size(); i++) {
+                    for (unsigned int i = 0; i < areas.size(); i++) {
                         osmscout::WayRef areaRef;
                         osmscout::WayRef area = areas.at(i);
                         searching->searchWay(area.Get()->GetId(), areaRef);
@@ -286,7 +286,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                             // in poinst should be buildings!
                             std::vector<osmscout::Point> points = areaRef.Get()->nodes;
 
-                            for (int j = 0; j < points.size(); j++) {
+                            for (unsigned int j = 0; j < points.size(); j++) {
                                 osmscout::Point point = points.at(j);
                                 osmscout::NodeRef pointRef;
                                 searching->searchNode(point.GetId(), pointRef);
@@ -302,7 +302,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                                 searching->searchWay(point.GetId(), waj);
 
                                 if (waj.Valid()) {
-                                    for (int j = 0; j < waj.Get()->GetTagCount(); j++)
+                                    for (unsigned int j = 0; j < waj.Get()->GetTagCount(); j++)
                                         qDebug() << waj.Get()->GetTagKey(j) << " / " << QString(waj.Get()->GetTagValue(j).c_str());
                                     if (waj.Get()->GetTagCount() > 0)
                                         qDebug() << "\n";
@@ -314,7 +314,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                     }
 
 
-                    for (int i = 0; i < ways.size(); i++) {
+                    for (unsigned int i = 0; i < ways.size(); i++) {
                         osmscout::WayRef way = ways.at(i);
                         osmscout::WayRef way2;
 
@@ -324,7 +324,7 @@ void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item
                         if (way2.Valid()) {
                             std::vector<osmscout::Point> points = way.Get()->nodes;
 
-                            for (int j = 0; j < points.size(); j++) {
+                            for (unsigned int j = 0; j < points.size(); j++) {
                                 osmscout::Point point = points.at(j);
                                 osmscout::NodeRef pointRef;
                                 searching->searchNode(point.GetId(), pointRef);

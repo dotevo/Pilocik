@@ -32,6 +32,8 @@ UserOptionsWindow::UserOptionsWindow(NavigationWindow *parent) :
     //Selected language
     else
         ui->languageComboBox->setCurrentIndex(ui->languageComboBox->findText(lang));
+
+    ui->guiStylePath->setText(Settings::getInstance()->getLayoutStylePath());
 }
 
 UserOptionsWindow::~UserOptionsWindow(){
@@ -40,6 +42,18 @@ UserOptionsWindow::~UserOptionsWindow(){
 
 void UserOptionsWindow::on_okButton_clicked(){
     setVisible(false);
+    Settings::getInstance()->modifyCoreSettings("layoutStylePath", ui->guiStylePath->text());
+
+    QFile layoutStyleFile(Settings::getInstance()->getLayoutStylePath());
+    if (!layoutStyleFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QString layoutStyle = layoutStyleFile.readAll();
+    NavigationWindow::main->setStyleSheet(layoutStyle);
+    NavigationWindow::main->style()->unpolish(NavigationWindow::main);
+    NavigationWindow::main->style()->polish(NavigationWindow::main);
+    layoutStyleFile.close();
+
     emit closed();
 }
 

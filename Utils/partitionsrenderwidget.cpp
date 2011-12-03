@@ -97,6 +97,10 @@ void PartitionsRenderWidget::init(QString dbPath)
             for(int i=0; i<fileWays.size(); i++){
                 PiLibocik::Partition::Way fileWay = fileWays.at(i);
 
+                /*if(fileWay.getOneway() != 0) {
+                    qDebug() << "W ID " << fileWay.getId() << " W oneway " << fileWay.getOneway();
+                }*/
+
                 if(pWays.find(fileWay.getId()) == pWays.end()) {
                     pWay newWay;
                     newWay.priority = fileWay.getPrioritet();
