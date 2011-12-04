@@ -773,7 +773,7 @@ void MapRenderWidget::DrawRouteMarkers(const osmscout::Projection& projection,QP
 MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
     mapPainter=new osmscout::MapPainterQt();
     started=false;
-
+pixmap=0;
 }
 
 void MapPixmapRenderer::getPixmap(){
@@ -783,7 +783,7 @@ void MapPixmapRenderer::getPixmap(){
 void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d){
     this->database=database;
     this->projection=projection;
-    this->d=d;
+    this->d=d;    
     styleConfig=style;
     poiDisplaySettings = Settings::getInstance()->getPoiDisplaySettings();
 }
@@ -795,7 +795,8 @@ void MapPixmapRenderer::run(){
 //    qDebug()<<"tak";
         QSize size(projection->GetWidth(),projection->GetHeight());
         //TODO: TEST FORMATS
-        QImage *pixmap=new QImage(size,QImage::Format_RGB16);
+        if(pixmap!=0)delete pixmap;
+       pixmap=new QImage(size,QImage::Format_RGB16);
 //        qDebug()<<"LL"<<projection->GetWidth();
         osmscout::MapData             data;
         osmscout::MapParameter        drawParameter;
@@ -849,7 +850,6 @@ void MapPixmapRenderer::run(){
 
         qRegisterMetaType<QList<PiLibocik::Poi> >("QList<PiLibocik::Poi>");
         emit pixmapRendered(pixmap,p,poiList);
-        delete pixmap;
         delete painter;
     started=false;
 }

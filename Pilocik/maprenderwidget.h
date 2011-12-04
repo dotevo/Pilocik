@@ -47,6 +47,7 @@ public:
 private:
     float d;
     bool started;
+    QImage *pixmap;
     osmscout::Database *database;
     osmscout::MapPainterQt        *mapPainter;
     osmscout::MercatorProjection  *projection;
