@@ -47,6 +47,7 @@ public:
 private:
     float d;
     bool started;
+    QImage *pixmap;
     osmscout::Database *database;
     osmscout::MapPainterQt        *mapPainter;
     osmscout::MercatorProjection  *projection;
@@ -55,7 +56,7 @@ private:
 
     void drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection& projection,QPainter *painter);
 signals:
-    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
+    void pixmapRendered(QImage *pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 };
 
@@ -230,7 +231,7 @@ public slots:
     void leaveRoute(double actLon, double actLat, double destLon, double destLat);
     void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
 
-    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
+    void newPixmapRendered(QImage *image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 };
 

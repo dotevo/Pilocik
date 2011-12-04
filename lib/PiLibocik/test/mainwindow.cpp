@@ -17,11 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //------------SAVE-----------------
 //    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/poi.db");
-//    qDebug()<<"Generating binary files";
-//    QList<PiLibocik::Poi> pois=pd->getPoiList();
-//    QMap<int,QString> types=pd->getPoiTypeNames();
-//    PiLibocik::PoiFilePPOI n;
-//    n.saveToFile("g:/mojepoi2",pois,types);
+    qDebug()<<"Generating binary files";
+    QList<PiLibocik::Poi> pois=pd->getPoiList();
+    QMap<int,QString> types=pd->getPoiTypeNames();
+    PiLibocik::PoiFilePPOI n;
+    n.saveToFile("g:/poi",pois,types);
 
     //----------------------------------
 
@@ -58,6 +58,46 @@ MainWindow::MainWindow(QWidget *parent) :
         PiLibocik::Geohash g=iter.next();
         qDebug()<<g.toQString();
     }*/
+
+
+
+    // POI SAVE
+//        QList<PiLibocik::Poi> pois;
+//        QList < QPair <QString, QString> >  tags;
+//        tags.append(QPair<QString,QString>("name",QString::fromUtf8("ąKłę")));
+//        QString geo1=PiLibocik::Geohash::generateGeohash(20,10,5);
+//        PiLibocik::Poi poi(20,10,QString::fromUtf8("ąasdęś"),0,tags,geo1);
+//        qDebug()<<"POI:"<<poi.getName();
+//        pois.append(poi);
+//        QString geo2=PiLibocik::Geohash::generateGeohash(19.1,10.0,5);
+//        PiLibocik::Poi poi2(10.1,10,QString::fromUtf8("Kąpłęta"),0,tags,geo2);
+//        pois.append(poi2);
+//        QMap<int,QString> types;
+//        types.insert(0,QString::fromUtf8("ędłę"));
+//        PiLibocik::PoiFilePPOI ppo;
+//        ppo.saveToFile("poi",pois,types);
+
+//        ui->label->setText("");
+//            PiLibocik::PoiFilePPOI n;
+//            PiLibocik::BoundaryBox b(PiLibocik::Position(20,10),PiLibocik::Position(20,10));
+//            QTime t;
+//            t.start();
+//            QList <PiLibocik::Poi> p=n.loadPOIsFromFile("poi",b,-1);
+//            QListIterator <PiLibocik::Poi> iter(p);
+//            int i = 0;
+//            while(iter.hasNext()){
+//                PiLibocik::Poi poi=iter.next();
+//                i++;
+//                ui->label->setText(ui->label->text()+":"+poi.getName());
+//                QList < QPair <QString,QString > > l= poi.getTags();
+//                QListIterator <QPair <QString,QString > > iter2(l);
+//                while(iter2.hasNext()){
+//                    QPair <QString,QString > n=iter2.next();
+//                    ui->label->setText(ui->label->text()+"->"+n.first+"="+n.second);
+//                    qDebug()<<n.first<<"="<<n.second;
+//                }
+//            }
+//            qDebug()<<"Time: "<<t.elapsed()<<"Size: "<<i;
 
 }
 

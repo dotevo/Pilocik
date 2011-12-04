@@ -86,11 +86,15 @@ void TWidgetManager::addWidget(QString name, TMovableFrame* w) {
         QPoint position(PosX,PosY);
         w->move(position);
         //w->setVisible(widgetSettings["enabled"]=="true");
-        w->setVisible(true);
 
         w->setParent(parent);
     }
 }
+
+void TWidgetManager::removeWidget(QString name) {
+    widgets.remove(name);
+}
+
 
 void TWidgetManager::setParent(QWidget* w) {
     //TODO: Zmiana widgetów

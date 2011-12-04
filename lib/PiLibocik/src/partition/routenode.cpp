@@ -27,8 +27,8 @@ RouteNode::RouteNode(Node node, int prevWayId, double rating, double distanceFro
     part = node.getPartitionFile();
 }
 
-RouteNode RouteNode::getPrevNode(){
-    return *prevNode;
+RouteNode *RouteNode::getPrevNode(){
+    return prevNode;
 }
 
 int RouteNode::getPrevWay(){

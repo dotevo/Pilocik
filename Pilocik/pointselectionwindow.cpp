@@ -834,7 +834,7 @@ void PointSelectionWindow::fillPOIWidget(int type, QString name)
         item = new QTreeWidgetItem(ui->poiTreeWidget);
         item->setText(ID_COLUMN, QString::number(it.value()));
         QString distance = it.key() < 1 ? QString::number((int)(it.key()*1000)).append(" m") : QString::number(it.key(), 'f', 2).append(" km");
-        item->setText(NAME_COLUMN, poiList.at(it.value()).getName().toLatin1());
+        item->setText(NAME_COLUMN, poiList.at(it.value()).getName());
         item->setText(PATH_COLUMN, distance);
         item->setText(INFO_COLUMN, "INFO");
         item->setText(FAV_COLUMN, trUtf8("★"));
@@ -928,7 +928,7 @@ void PointSelectionWindow::on_poiOK_clicked() {
         route.push_back(node);
     }
 */
-    NavigationWindow *par = dynamic_cast<NavigationWindow*>(parent());
+    NavigationWindow *par = qobject_cast<NavigationWindow*>(parent());
 
     //par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
 

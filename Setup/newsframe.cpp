@@ -1,6 +1,7 @@
 #include "newsframe.h"
 #include "ui_newsframe.h"
 #include "mainwindow.h"
+#include "activesynccomm.h"
 #include <QDebug>
 #include <QFrame>
 #include <QVBoxLayout>
@@ -16,8 +17,9 @@ NewsFrame::NewsFrame(QWidget *parent) :
     ui->setupUi(this);
 
     news = new FileDownload();
-    news->doDownload(QUrl("http://192.168.56.101/news.xml"));
+    news->doDownload(QUrl("http://localhost/news.xml"));
     connect(news, SIGNAL(finished(QString)), this, SLOT(parseNewsXML(QString)));
+    ActiveSyncComm asc = ActiveSyncComm();
 }
 
 NewsFrame::~NewsFrame()
@@ -28,7 +30,6 @@ NewsFrame::~NewsFrame()
 void NewsFrame::parseNewsXML(QString fileName)
 {
     doc = new QDomDocument();
-    qDebug()<<"fire!";
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug()<<"Failed to open file!";

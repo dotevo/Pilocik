@@ -6,6 +6,8 @@
 
 QT       += core gui network xml
 
+LIBS += ..\Setup\activesync\Lib\rapi.lib
+
 TARGET = Setup
 TEMPLATE = app
 
@@ -14,19 +16,35 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     newsframe.cpp \
     filedownload.cpp \
-    mapdownloadframe.cpp
+    mapdownloadframe.cpp \
+    activesynccomm.cpp \
+    installframe.cpp
 
 HEADERS  += mainwindow.h \
     newsframe.h \
     filedownload.h \
-    mapdownloadframe.h
+    mapdownloadframe.h \
+    activesynccomm.h \
+    installframe.h
 
 FORMS    += mainwindow.ui \
     newsframe.ui \
-    mapdownloadframe.ui
+    mapdownloadframe.ui \
+    installframe.ui
+
+INCLUDEPATH += activesync\inc
 
 RESOURCES += \
     res.qrc
+
+
+
+
+
+
+
+
+
 
 
 
