@@ -288,3 +288,31 @@ QTreeWidget{
     //color: rgb(255, 255, 255);
     background: rgb(255, 0, 0);
 }
+
+QScrollArea {
+    background rgba(0, 0, 0, 0);
+}
+
+QScrollBar{
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                         stop: 0 #44b540,
+                         stop: 1 #3d763b);
+}
+
+QListWidget::item {
+    height: 30px;
+    color: black;
+    font: bold ;
+    font-size: 18px;
+}
+
+QGroupBox {
+    background: rgba(0, 0, 0, 0);
+}
+
+QGroupBox::title {
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0px;
+}

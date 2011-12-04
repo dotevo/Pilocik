@@ -48,17 +48,22 @@ namespace PiLibocik{
         QString         geohash; /**< TODO */
 //#endif
     public:
-/**
- * @brief
- *
- * @fn Poi
- * @param lon
- * @param lat
- * @param name
- * @param type
- * @param QList<QPair<QString
- * @param tags
- */
+        /**
+         * @brief
+         *
+         */
+        Poi();
+        /**
+         * @brief
+         *
+         * @fn Poi
+         * @param lon
+         * @param lat
+         * @param name
+         * @param type
+         * @param QList<QPair<QString
+         * @param tags
+         */
         Poi(double lon,double lat,QString name, int type, QList < QPair <QString, QString> > tags);
         /**
          * @brief

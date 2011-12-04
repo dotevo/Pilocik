@@ -284,3 +284,31 @@ QTabBar::tab {
 QTabBar::tab:selected {
     font-size: 24px;
 }
+
+QScrollArea  QWidget#scrollAreaWidgetContents_2{
+    background rgba(0, 0, 0, 0);
+}
+
+QScrollBar{
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                         stop: 0 #406fb5,
+                         stop: 1 #3b4576);
+}
+
+QListWidget::item {
+    height: 30px;
+    color: black;
+    font: bold ;
+    font-size: 18px;
+}
+
+QGroupBox {
+    background: rgba(0, 0, 0, 0);
+}
+
+QGroupBox::title {
+    color:black;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0px;
+}

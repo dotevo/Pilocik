@@ -220,18 +220,8 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
         {
             if(poi.getLon() > lon1 && poi.getLon() < lon2 && poi.getLat() > lat1 && poi.getLat() < lat2)
             {
-                QList<InfoWindow *> infos = NavigationWindow::main->findChildren<InfoWindow*>();
-                foreach(InfoWindow* info, infos)
-                    delete info;
-                InfoWindow * info = new InfoWindow(NavigationWindow::main);
-                info->resize(NavigationWindow::main->size());
-                info->setPoiType(poi.getType());
-                info->setName(poi.getName());
-                info->setDetails(poi.getTags());
-                info->setCoordinates(poi.getLon(), poi.getLat());
-
                 ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPOIClicked(true);
-                ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPOIInfoWindow(info);
+                ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->setPOI(poi);
                 break;
             }
         }
@@ -408,7 +398,7 @@ void MapRenderWidget::newPixmapRendered(QImage *pixmap,osmscout::MercatorProject
 	qDebug()<<"isNull?"<<pixmap->isNull();
     if(pixmap->isNull())return;
     this->image=pixmap->copy();
-    //this->poiList = poiList;
+    this->poiList = poiList;
 	qDebug()<<"beforeTest";
     testPixmap();
     repaint();

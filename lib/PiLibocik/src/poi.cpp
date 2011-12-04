@@ -45,6 +45,9 @@ QString PoiDisplay::getIconPath()
     return iconPath;
 }
 
+Poi::Poi(){
+}
+
 Poi::Poi(double lon,double lat,QString name,int type, QList < QPair <QString, QString> > tags)
          :Position(lon,lat),name(name),type(type),tags(tags){
 }

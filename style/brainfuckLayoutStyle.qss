@@ -204,3 +204,21 @@ QTabBar::tab {
 QTabBar::tab:selected {
     font-size: 24px;
 }
+
+QListWidget::item {
+    height: 30px;
+    color: white;
+    font: bold ;
+    font-size: 18px;
+}
+
+QGroupBox {
+    background: rgba(0, 0, 0, 0);
+}
+
+QGroupBox::title {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0px;
+}
