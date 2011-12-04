@@ -174,7 +174,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
         inData.readRawData(n,(int)nameS);
         QString name=QString::fromUtf8(n,nameS);
         delete []n;
-        name.resize(nameS);
+        //name.resize(nameS);
 
         //Tags
         quint8 tagsC;
@@ -187,7 +187,7 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
             int sizeL=inData.readRawData(tagChar,(int)tagSize);
             QString tag=QString::fromUtf8(tagChar,sizeL);
             delete []tagChar;
-            tag.resize(tagSize);
+            //tag.resize(tagSize);
             QStringList tagList=tag.split('=');
             if(tagList.count()==2){
                 QPair <QString,QString> dupa(tagList.at(0),tagList.at(1));
@@ -369,9 +369,10 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
                 QListIterator <QPair<QString,QString > > tagsIter(list);
                 while(tagsIter.hasNext()){
                     QPair<QString,QString> pair=tagsIter.next();
-                    QString valueP=pair.first+"="+pair.second;
-                    out<<((quint8)valueP.length());
+                    QString valueP=pair.first+"="+pair.second;                    
                     QByteArray aZ=valueP.toUtf8();
+                    out<<((quint8)aZ.size());
+                    qDebug()<<"valueP:"<<valueP.length()<<":"<<"s"<<aZ.size();
                     out.writeRawData(aZ.data(),aZ.size());
                 }
             }
