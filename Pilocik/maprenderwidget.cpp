@@ -49,6 +49,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
     manualSimulation = false;
     movingPosition = false;
     lastNodeIndex = 0;
+    tracking=true;
 
     //updateHint(NoHint);
     showArrow = false;
