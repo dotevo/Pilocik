@@ -247,6 +247,23 @@ void Settings::configureProfile(QString profile)
         widgetSettings = widgetSettings.nextSiblingElement();
     }
 
+    //Configure plugins settings
+
+    QDomElement pluginSettings = profileSettings.firstChildElement("plugins").firstChildElement("plugin");
+    while(!pluginSettings.isNull())
+    {
+        QString pluginName = pluginSettings.attributeNode("name").value();
+        QMap<QString,QString> pluginAttributes;
+        QDomElement pluginNode = pluginSettings.firstChildElement();
+        while(!pluginNode.isNull())
+        {
+            pluginAttributes.insert(pluginNode.nodeName(),pluginNode.text());
+            pluginNode = pluginNode.nextSiblingElement();
+        }
+        pluginsSettings.insert(pluginName, pluginAttributes);
+        pluginSettings = pluginSettings.nextSiblingElement();
+    }
+
     //Configure map settings
 
     QDomElement mapSettings = profileSettings.firstChildElement("map");
@@ -502,11 +519,33 @@ QTranslator* Settings::reloadTranslation(QString lang)
 
 
 QMap<QString,QString> Settings::getPluginSettings(QString pluginName){
-    QMap<QString,QString> ret;
-    ret.insert("Test","1");
+    QMap<QString,QString> ret=pluginsSettings[pluginName];
     return ret;
 }
 
-void Settings::modifyPluginSettings(QString pluginName,QMap<QString,QString> setting){
-    //TODO!!!
+void Settings::modifyPluginSettings(QString name,QMap<QString,QString> settingsToSave){
+    QDomElement pluginSettings = profileSettingsXMLNode.firstChildElement("plugins").firstChildElement("plugin");
+    while(pluginSettings.attributeNode("name").value() != name && !pluginSettings.isNull())
+        pluginSettings = pluginSettings.nextSiblingElement();
+
+    if(pluginSettings.isNull()){
+        QDomElement el = doc->createElement("plugin");
+        el.setAttribute("name", name);
+
+        QMapIterator <QString,QString> setIter(settingsToSave);
+        while(setIter.hasNext()){
+            setIter.next();
+            QDomElement toAdd = doc->createElement(setIter.key());
+            QDomText tex=doc->createTextNode(setIter.value());
+            toAdd.appendChild(tex);
+            el.appendChild(toAdd);
+        }
+        profileSettingsXMLNode.firstChildElement("plugins").appendChild(el);
+    }
+
+    for(int i = 0; i < settingsToSave.size(); i++)
+    {
+        QDomElement attribute = pluginSettings.firstChildElement(settingsToSave.keys().at(i));
+        attribute.firstChild().toText().setData(settingsToSave.values().at(i));
+    }
 }
