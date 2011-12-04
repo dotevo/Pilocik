@@ -17,8 +17,6 @@
 
 #include "gpsdata.h"
 
-
-
 /**
  * @brief Provides GPS device and Simulation support.
  *
@@ -45,8 +43,6 @@ private:
     int mode;
     bool contiunue;
 
-    QList<osmscout::Routing::Step> simulationRoute;
-
     int connectSerialPort();
     bool testSerialPort();
     bool startSimulation();
@@ -60,6 +56,8 @@ public:
 
     GPSreceiver();
     ~GPSreceiver();
+
+    QList<osmscout::Routing::Step> simulationRoute;
 
     /**
      * @brief Set path of simulation file.

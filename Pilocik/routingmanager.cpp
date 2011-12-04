@@ -29,12 +29,12 @@ RoutingManager::~RoutingManager()
 void RoutingManager::run()
 {
     QList< osmscout::Routing::Step > routeList;
-//    QList< osmscout::Routing::Step > finalRoute;
+    QList< osmscout::Routing::Step > finalRoute;
 
 
-    NavigationWindow::main->mapRenderer->setRoute( routeList);
+//    NavigationWindow::main->mapRenderer->setRoute( routeList);
 
-//    NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
+    NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
 
     emit NewRoute();
 
@@ -51,25 +51,6 @@ void RoutingManager::run()
         routeList.append(routing->positionsToSteps(through));
     }
 
-
-    /*
-    QListIterator< osmscout::Routing::Step > routeIterator(routeList);
-    osmscout::Routing::Step step = routeIterator.next();
-    PiLibocik::Position prevPosition(step.lon, step.lat);
-    while(routeIterator.hasNext()) {
-        step = routeIterator.next();
-        if(step.routing) {
-            NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
-            emit NewRoute();
-
-            QList< osmscout::Routing::Step > routingEdgeRoute = routingEdgeToRoute(prevPosition, PiLibocik::Position(step.lon, step.lat));
-
-            QListIterator< osmscout::Routing::Step > routingEdgeIterator(routingEdgeRoute);
-            while(routingEdgeIterator.hasNext()) {
-                step = routingEdgeIterator.next();
-
-=======
->>>>>>> 8070ad0cb66167c7bd46fd906f96887ef79a7f34
     if(!routeList.isEmpty()) {
         QListIterator< osmscout::Routing::Step > routeIterator(routeList);
         osmscout::Routing::Step step = routeIterator.next();

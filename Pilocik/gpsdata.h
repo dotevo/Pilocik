@@ -20,8 +20,6 @@ public:
     QList<int> satelitesSNR;    //!< Scanned satelites Signal To Noise ratio, represents strength of signal
     QString rawOutput;          //!< Unparsed raw data from GPS device
 
-    QList<osmscout::Routing::Step> route;   //!< Route gets from file
-
     GPSdata();
 
     /**
@@ -33,15 +31,9 @@ public:
     void parseBuffer(QStringList* gpsDataBuffer);
 
     /**
-      @brief It gets part of route from buffer and add it to route.
+      @brief It gets part of route from buffer.
       */
-    void getRouteFromBuffer(QStringList* gpsDataBuffer);
-
-    /**
-     @brief It gets route.
-
-    */
-    QList<osmscout::Routing::Step> getRoute();
+    osmscout::Routing::Step getRouteFromBuffer(QStringList* gpsDataBuffer);
 };
 
 

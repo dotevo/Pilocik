@@ -84,6 +84,7 @@ void NavigationWindow::addWidgets(){
 
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
+    connect(gps, SIGNAL(positionUpdate(GPSdata)), mapRenderer, SLOT(positionUpdated(GPSdata)));
     TWidgetManager::getInstance()->showAllWidgets();
 }
 

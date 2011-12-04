@@ -18,6 +18,8 @@ THintWidget::THintWidget(QWidget *parent) :
 
     distance = -1;
 
+    finish = false;
+
 }
 
 THintWidget::~THintWidget()
@@ -55,6 +57,7 @@ void THintWidget::setIntersection(osmscout::Searching::Intersection intersection
     crossX = intersection.cross.x();
     crossY = intersection.cross.y();
 
+    //QPointF way = calculateWay(intersection.ways->at(0).x(), intersection.ways->at(0).y());
     QPointF way = calculateWay(intersection.way.x(), intersection.way.y());
 
     wayX = way.x();
@@ -101,6 +104,8 @@ QPointF THintWidget::calculateWay(double px, double py)
     double cx = crossX;
     double cy = crossY;
 
+    //qDebug() << "P: " << px << " " << py;
+
     double a = (cy - py) / (cx - px);
     double b = py - (a * px);
 
@@ -140,38 +145,66 @@ void THintWidget::paintEvent(QPaintEvent *e)
     int lineW = 10;
     QPainter painter(this);
 
-    if (distance < 100) {
-        QLinearGradient gradient(30, 10, 30, 30);
-        gradient.setColorAt(1, QColor(255, 7*16 + 15, 0, 100 - distance));
-        gradient.setColorAt(0, QColor(255, 7*16 + 15, 0, 75 - distance * 3/4));
+    if (!finish)
+    {
+        if (distance < 100) {
+            QLinearGradient gradient(30, 10, 30, 30);
+            gradient.setColorAt(1, QColor(255, 7*16 + 15, 0, 100 - distance));
+            gradient.setColorAt(0, QColor(255, 7*16 + 15, 0, 75 - distance * 3/4));
 
-        QBrush br(gradient);
-        painter.setBackground(br);
-        painter.fillRect(0, 0, 100, 100, br);
+            QBrush br(gradient);
+            painter.setBackground(br);
+            painter.fillRect(0, 0, 100, 100, br);
+        }
+
+        painter.setRenderHint(painter.Antialiasing);
+
+        QPen pen;
+        pen.setColor(QColor("#763b3b"));
+        pen.setWidth(lineW);
+        pen.setJoinStyle(Qt::RoundJoin);
+        pen.setCapStyle(Qt::RoundCap);
+
+        painter.setPen(pen);
+
+        /*
+        for (int i = 0; i < intersection->numOfWays; i++) {
+            painter.drawLine(intersection->cross, intersection->ways[i]);
+        }
+        */
+        //painter.drawLine(myPosX, myPosY, crossX, crossY);
+        painter.drawLine(myPosX, 100, crossX, crossY);
+
+        painter.drawLine(crossX, crossY, wayX, wayY);
+
+        //qDebug() << wayX << " " << wayY << " " << crossX << " " << crossY;
+    } else {
+        painter.setRenderHint(painter.Antialiasing);
+
+        QPen pen;
+        pen.setColor(QColor("#763b3b"));
+        pen.setWidth(lineW);
+        pen.setJoinStyle(Qt::RoundJoin);
+        pen.setCapStyle(Qt::RoundCap);
+
+        painter.setPen(pen);
+
+        painter.drawLine(myPosX, 100, crossX, crossY);
+
+        pen.setColor(Qt::black);
+        pen.setWidth(1);
+        painter.setPen(pen);
+
+        painter.setBrush(Qt::green);
+
+        painter.drawEllipse(crossX - 10, crossY - 10, 20, 20);
     }
 
-    painter.setRenderHint(painter.Antialiasing);
+}
 
-    QPen pen;
-    pen.setColor(QColor("#763b3b"));
-    pen.setWidth(lineW);
-    pen.setJoinStyle(Qt::RoundJoin);
-    pen.setCapStyle(Qt::RoundCap);
-
-    painter.setPen(pen);
-
-    /*
-    for (int i = 0; i < intersection->numOfWays; i++) {
-        painter.drawLine(intersection->cross, intersection->ways[i]);
-    }
-*/
-    //painter.drawLine(myPosX, myPosY, crossX, crossY);
-    painter.drawLine(myPosX, 100, crossX, crossY);
-
-    painter.drawLine(crossX, crossY, wayX, wayY);
-
-    //qDebug() << wayX << " " << wayY << " " << crossX << " " << crossY;
-
+void THintWidget::setNearlyFinish(bool finish)
+{
+    this->finish = finish;
 }
 
 

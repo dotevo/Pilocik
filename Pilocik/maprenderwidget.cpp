@@ -244,7 +244,7 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
 
         if (movingPosition) {
 
-            manualMove(e);
+            manualMove(QPointF(e->x(), e->y()));
 
         } else {
 
@@ -266,7 +266,7 @@ void MapRenderWidget::mouseMoveEvent(QMouseEvent *e){
     }
 }
 
-void MapRenderWidget::manualMove(QMouseEvent *e)
+void MapRenderWidget::manualMove(QPointF point)
 {
     int nextCross = getNextCrossIndex();
 
@@ -275,26 +275,45 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
         QList<osmscout::Routing::Step> *ways = new QList<osmscout::Routing::Step>();
         ways->append(route.at(nextCross + 1));
 
-        osmscout::WayRef way;
-        database->GetWay(route.at(nextCross + 1).wayId, way);
+//        osmscout::WayRef way;
+//        database->GetWay(route.at(nextCross + 1).wayId, way);
 
-        double wayLon;
-        double wayLat;
-        way.Get()->GetCenter(wayLon, wayLat);
+//        double wayLon;
+//        double wayLat;
+//        way.Get()->GetCenter(wayLon, wayLat);
 
-        // nie pamięta partitionFile w routing manager - nie wiem czemu
-        //RoutingManager *r = RoutingManager::getInstance();
-        //PiLibocik::Partition::Node node = RoutingManager::getInstance()->getPartitionFile()->getNearestNode(PiLibocik::Position(wayLon, wayLat));
+//        PiLibocik::Position pos(wayLon, wayLat);
 
-        PiLibocik::Position pos(wayLon, wayLat);
+//        PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(route.at(nextCross).lon, route.at(nextCross).lat));
 
-        PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(wayLon, wayLat));
-        PiLibocik::Partition::PartitionFile *pf = NavigationWindow::main->routeWin->routingManager->getPartitionFile();
-        QVector<PiLibocik::Partition::Way> nodeWays = node.getWaysObj();
+//        QVector<PiLibocik::Partition::Way> waysV = node.getWaysObj();
+//        for (int i = 0; i < waysV.size(); i++) {
+
+//            QVector<PiLibocik::Partition::Node> nodes = waysV.at(i).getNodesObj();
+//            PiLibocik::Partition::Node w;
+
+//            double minDist = 999999;
+//            foreach(PiLibocik::Partition::Node n, nodes) {
+//                double d = osmscout::Searching::CalculateDistance(n.getLon(), n.getLat(), node.getLon(), node.getLat());
+//                if (d < minDist) {
+//                    minDist = d;
+//                    w = n;
+//                }
+//            }
+//            osmscout::Routing::Step st;
+//            st.id = w.getId();
+//            st.lon = w.getLon();
+//            st.lat = w.getLat();
+
+//            ways->append(st);
+
+//        }
+
+//        QVector<PiLibocik::Partition::Way> nodeWays = node.getWaysObj();
 
         //QPointF ways[nodeWays.size()];
 
-        qDebug() << "Nodeways WAYS: " << nodeWays.size();
+//        qDebug() << "Nodeways WAYS: " << nodeWays.size();
 
         nextIntersection = osmscout::Searching::SimulateNextCrossing(route.at(nextCross - 1),
                                                                      route.at(nextCross), ways);
@@ -302,7 +321,7 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
 
     QPointF correct = osmscout::Searching::CorrectPosition(route.at(lastNodeIndex),
                                                            route.at(lastNodeIndex + 1),
-                                                           QPointF(e->x(), e->y()),
+                                                           QPointF(point.x(), point.y()),
                                                            projection);
 
     myLon = correct.x();
@@ -319,8 +338,11 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
     //    qDebug() << "Finish hint " << distanceToEnd;
     } else {
         // niekoniecznie normal TODO
-        updateHint(NormalHint);
-
+        if (nextCross == route.size() - 1) {
+            updateHint(NearlyFinish);
+        } else {
+            updateHint(NormalHint);
+        }
     //    qDebug() << "Normal hint";
     }
 
@@ -340,6 +362,13 @@ void MapRenderWidget::setMyCoordinates(double lonPar, double latPar,double angle
     if(tracking){
         setCoordinates(lonPar, latPar);
         this->update();
+    }
+
+    if (routing){
+        setCoordinates(lonPar, latPar);
+        double xx, yy;
+        projection.GeoToPixel(myLon, myLat, xx, yy);
+        manualMove(QPointF(xx, yy));
     }
     repaint();
 }
@@ -460,7 +489,7 @@ void MapRenderWidget::updateHint(HintType hintType)
 
     if (hintType == NormalHint)
     {
-
+        hint->setNearlyFinish(false);
         hint->setIntersection(nextIntersection);
         // next cross searching
         int nextCross = -1;
@@ -519,12 +548,20 @@ void MapRenderWidget::updateHint(HintType hintType)
 
     if (hintType == LeaveRouteHint)
     {
+        hint->setNearlyFinish(false);
         hint->setLeaveRoute();
     }
 
     if (hintType == FinishRouteHint)
     {
+        hint->setNearlyFinish(true);
         hint->setFinishRoute();
+    }
+
+    if (hintType == NearlyFinish)
+    {
+        updateHint(NormalHint);
+        hint->setNearlyFinish(true);
     }
 
 }
@@ -636,6 +673,7 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
         painter->setPen(setPenStyle(ROUTE_LINE));
         painter->drawLine(QPointF(actX, actY), QPointF(nextX, nextY));
 
+        projection.GeoToPixel(route.at(getNextCrossIndex()).lon, route.at(getNextCrossIndex()).lat, nextX, nextY);
         painter->setPen(setPenStyle());
         painter->setBrush(Qt::red);
         painter->drawEllipse(nextX - nodeR, nextY - nodeR, 2*nodeR, 2*nodeR);

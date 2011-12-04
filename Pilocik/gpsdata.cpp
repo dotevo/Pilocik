@@ -79,7 +79,7 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
     }
 }
 
-void GPSdata::getRouteFromBuffer(QStringList *gpsDataBuffer)
+osmscout::Routing::Step GPSdata::getRouteFromBuffer(QStringList *gpsDataBuffer)
 {
     QStringList buffer = *gpsDataBuffer;
     QStringList RMCa;
@@ -109,17 +109,8 @@ void GPSdata::getRouteFromBuffer(QStringList *gpsDataBuffer)
         osmscout::Routing::Step step;
         step.lat = lat;
         step.lon = lon;
+        step.crossing = true;
 
-        PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(step.lon, step.lat));
-        qDebug() << "Node: " << node.getId();
-
-            route.append(step);
-            qDebug() << "Dodalem node!";
-
+        return step;
     }
-}
-
-QList<osmscout::Routing::Step> GPSdata::getRoute()
-{
-    return route;
 }

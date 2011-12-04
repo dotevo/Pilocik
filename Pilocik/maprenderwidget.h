@@ -161,6 +161,7 @@ public:
         NoHint,
         NormalHint,
         LeaveRouteHint,
+        NearlyFinish,
         FinishRouteHint
     };
 
@@ -224,10 +225,9 @@ private:
     QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
     void setRouteSizes(int zoom);
 
-    void manualMove(QMouseEvent *e);
+    void manualMove(QPointF point);
 
 public slots:
-
     void leaveRoute(double actLon, double actLat, double destLon, double destLat);
     void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
 
