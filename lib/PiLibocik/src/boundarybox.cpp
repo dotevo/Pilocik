@@ -27,7 +27,6 @@ QList <Geohash> BoundaryBox::getGeohashesIn(int precision){
             if(!ret.contains(geo.toQString()))
             {
                 ret.insert(geo.toQString(), geo);
-                //qDebug()<<"geohash:!"<<geo.toQString();
             }
             if(lat > p2.getLat()) break;
             lat+=spatialError[precision].second;
