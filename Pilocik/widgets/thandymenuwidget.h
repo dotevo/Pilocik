@@ -39,6 +39,7 @@ public:
      *
      */
     void showMenu(int x, int y);
+    void reset();
 
 private slots:
     void on_poInfoButton_clicked();

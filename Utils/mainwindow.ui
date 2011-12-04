@@ -80,6 +80,21 @@ QTabWidget::pane &gt; QWidget {
 	color: white;
 	padding: 5px;
  }
+ QPushButton:hover {
+	color: orange;
+ }
+ QPushButton:disabled {
+	background: qradialgradient(cx:0.5, cy:0.5, radius: 1,
+                            fx:0.5, fy:0.5,
+                            stop:0 #7d8292,
+                            stop:1 #565e6b);
+    border: 1px solid darkgrey;
+    padding: 2px;
+	font-weight: bold;
+	border-radius: 5px;
+	color: lightgrey;
+	padding: 5px;
+ }
 
 #closeButton {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
@@ -95,6 +110,14 @@ width:35px;
 height: 15px;
 }
 
+#closeButton:hover {
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #df8b88,
+                             stop: 0.5 #ab0f10,
+                             stop: 1 #c56567);
+color: white;
+}
+
 #hideButton {
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                              stop: 0 #79bece,
@@ -106,6 +129,14 @@ border: 1px solid #3f7484;
 padding:2px;
 width:25px;
 height: 15px;
+}
+
+#hideButton:hover {
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                             stop: 0 #a7d9e5,
+                             stop: 0.5 #107da8,
+                             stop: 1 #68c6eb);
+color: white;
 }
 
 /* TabButtons */
@@ -161,6 +192,9 @@ font-size: 16px;
       </property>
       <item>
        <widget class="QLabel" name="label_15">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -226,6 +260,9 @@ p, li { white-space: pre-wrap; }
         </item>
         <item>
          <widget class="QLabel" name="label_16">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -422,7 +459,7 @@ Rendering</string>
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -529,6 +566,9 @@ Rendering</string>
                 <layout class="QHBoxLayout" name="horizontalLayout_18">
                  <item>
                   <widget class="QCheckBox" name="addIdx">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Add indexes</string>
                    </property>
@@ -1134,6 +1174,9 @@ Rendering</string>
                  </item>
                  <item>
                   <widget class="QPushButton" name="dataInitCancelButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Cancel</string>
                    </property>
@@ -1345,6 +1388,9 @@ Rendering</string>
                  </item>
                  <item>
                   <widget class="QPushButton" name="prioCalcCancelButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Cancel</string>
                    </property>
@@ -1582,6 +1628,9 @@ Rendering</string>
                  </item>
                  <item>
                   <widget class="QPushButton" name="partCalcCancelButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Cancel</string>
                    </property>

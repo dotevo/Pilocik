@@ -247,7 +247,7 @@ void PartitionsRenderWidget::renderPartitions()
 {
     pixmap = QPixmap(width, height);
     QPainter *painter = new QPainter(&pixmap);
-    painter->fillRect(0,0,width,height,QColor(230,230,230));
+    painter->fillRect(0,0,width,height,QColor(50,50,50));
     //Define size
     double size = magnification/240;
     // Display nodes
@@ -273,7 +273,8 @@ void PartitionsRenderWidget::renderPartitions()
             QPen pen;
 
             pen.setColor(pColors.at(currNode.cellNo%50));
-            pen.setWidthF(size);
+            //pen.setWidthF(size); // too wide in bigger magnification
+            pen.setWidthF(2);
             pen.setJoinStyle(Qt::RoundJoin);
             pen.setCapStyle(Qt::RoundCap);
             pen.setStyle(Qt::SolidLine);

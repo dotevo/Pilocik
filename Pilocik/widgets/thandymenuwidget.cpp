@@ -51,9 +51,16 @@ void THandyMenuWidget::setPosition(double lon, double lat)
 
 void THandyMenuWidget::showMenu(int x, int y)
 {
+    QSize windowSize = NavigationWindow::main->size();
     shown = true;
     clicked.setX(x);
     clicked.setY(y);
+    if(clicked.x() > windowSize.width()-this->width()) {
+        clicked.setX(clicked.x()-this->width());
+    }
+    if(clicked.y() > windowSize.height()-this->height()) {
+        clicked.setY(clicked.y()-this->height());
+    }
     move(clicked);
     setVisible(true);
 }
@@ -98,6 +105,11 @@ void THandyMenuWidget::on_navThroughButton_clicked()
 }
 
 void THandyMenuWidget::on_cancelButton_clicked()
+{
+    reset();
+}
+
+void THandyMenuWidget::reset()
 {
     poiClicked = false;
     shown = false;

@@ -209,6 +209,8 @@ void MapRenderWidget::mouseReleaseEvent(QMouseEvent *e){
 
     if(abs(e->pos().x()-clicked.x())<5 || abs(e->pos().y()-clicked.y())<5)
     {
+        ((THandyMenuWidget *) TWidgetManager::getInstance()->getWidget("HandyMenu"))->reset();
+
         double lon1,lat1;
         double lon2,lat2;
         projection.PixelToGeo(e->pos().x()-12, projection.GetHeight()-e->pos().y()-12,lon1,lat1);
