@@ -95,10 +95,17 @@ void PluginManager::loadPlugin(QString name){
 void PluginManager::unloadPlugin(QString name){
     QPluginLoader *a=getPlugin(name);
     if(a==0)return;
-    if(!a->unload())return;
+
     PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
     Settings::getInstance()->modifyPluginSettings(pi->getName(),pi->getSettings());
+    QListIterator <PluginWidget*> plugin(pi->getWidgets());
+    while(plugin.hasNext()){
+        PluginWidget *n=plugin.next();
+        TWidgetManager::getInstance()->removeWidget(n->getWidgetName());
+    }
 
+
+    if(!a->unload())return;
 
 }
 
@@ -108,6 +115,8 @@ void PluginManager::initAll(){
         QPluginLoader *a=i.next();
         if(a->isLoaded()){
             PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
+
+
             QMap<QString,QString> settings=Settings::getInstance()->getPluginSettings(pi->getName());
             pi->init(settings);
         }

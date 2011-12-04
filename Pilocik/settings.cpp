@@ -137,6 +137,8 @@ void Settings::resetDefaultSettings()
             "               <posy>140</posy>\n"
             "           </widget>\n"
             "       </widgets>\n"
+            "       <plugins>\n"
+            "       </plugins>\n"
             "       <map>\n"
             "           <lat>51.1</lat>\n"
             "           <lon>17.03</lon>\n"

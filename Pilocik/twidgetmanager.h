@@ -88,6 +88,13 @@ public:
      */
     void addWidget(QString name, TMovableFrame* w);
     /**
+     * @brief
+     *
+     * @fn removeWidget
+     * @param name Widget name
+     */
+    void removeWidget(QString name) ;
+    /**
      * @brief Set mode to the opposite one. (from Moving to Stand or from Stand to Moving)
      *
      * @fn changeMode
