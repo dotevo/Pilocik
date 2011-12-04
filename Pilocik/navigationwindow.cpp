@@ -114,7 +114,7 @@ void NavigationWindow::resizeEvent ( QResizeEvent * event ){
     ui->menuPanel->move(point4);
     ui->menuPanel->raise();
 
-    //ui->widget->setSize(size);
+    ui->widget->resize(size.width(),size.height());
 
     emit sizeChanged(this);
 }
