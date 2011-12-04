@@ -132,7 +132,7 @@ void MapRenderWidget::testPixmap(bool force){
         }
     }
 
-    if(needDraw && !rendererThread->isWorking()){
+    if(needDraw && !rendererThread->isRunning()){
             QSize s=this->size();
             projectionRendered1=projection;
             projectionRendered1.Set(projection.GetLon(), projection.GetLat(), lon, lat, 0, projection.GetMagnification()/cachePixmapSize, s.width()*cachePixmapSize, s.height()*cachePixmapSize);
@@ -791,7 +791,7 @@ void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProj
     poiDisplaySettings = Settings::getInstance()->getPoiDisplaySettings();
 }
 
-void MapPixmapRenderer::run(){
+void MapPixmapRenderer::run(){    
     //while(){
         //render pixmap
     started=true;
