@@ -90,16 +90,16 @@ void PluginManager::loadPlugin(QString name){
         qDebug()<<"ADD widget"<<n->getWidgetName();
     }
 
-    //Settings::getInstance()->modifyPluginSetting(name,"run","1");
 }
 
 void PluginManager::unloadPlugin(QString name){
     QPluginLoader *a=getPlugin(name);
-    qDebug()<<"UnloadPlugin:"<<name<<":"<<(a==0);
     if(a==0)return;
     if(!a->unload())return;
+    PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
+    Settings::getInstance()->modifyPluginSettings(pi->getName(),pi->getSettings());
 
-    //Settings::getInstance()->modifyPluginSetting(name,"run","0");
+
 }
 
 void PluginManager::initAll(){
