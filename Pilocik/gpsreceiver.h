@@ -45,6 +45,8 @@ private:
     int mode;
     bool contiunue;
 
+    QList<osmscout::Routing::Step> simulationRoute;
+
     int connectSerialPort();
     bool testSerialPort();
     bool startSimulation();
@@ -85,13 +87,18 @@ public:
      */
     void setMode(int m);
 
-
     /**
      * @brief Clears buffer responsible for receiving GPS data.
      *
      * Buffer should be cleaned after each read from it to ensure best performance.
      */
     void clearBuffer();
+
+    /**
+      @brief Parsing file with gps data to gets route.
+      @return True if file is parsed to end.
+      */
+    bool parseFile();
 
 protected:
     void run();

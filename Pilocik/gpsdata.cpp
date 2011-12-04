@@ -1,5 +1,10 @@
 #include "gpsdata.h"
+#include "navigationwindow.h"
+#include "routewindow.h"
+#include "pilibocik/partition/node.h"
 #include <cstdlib>
+
+#include <QDebug>
 
 /**
  * @brief GPS data parser and it's container.
@@ -72,4 +77,49 @@ void GPSdata::parseBuffer(QStringList* gpsDataBuffer)
         }
         GSV.removeLast();
     }
+}
+
+void GPSdata::getRouteFromBuffer(QStringList *gpsDataBuffer)
+{
+    QStringList buffer = *gpsDataBuffer;
+    QStringList RMCa;
+
+    foreach(QString sentence, buffer)
+    {
+        if(sentence.contains("$GPRMC"))
+            RMCa = sentence.split(',');
+    }
+
+    if (!RMCa.isEmpty())
+    {
+        div_t cLat, cLon;
+        active = true;
+        lat = RMCa.at(3).toDouble();
+        int dir = (RMCa.at(4).compare("N")) ? -1 : 1;
+        cLat = div(lat,100);
+        lat=cLat.quot+(cLat.rem+(lat-(int)lat))/60;
+
+        lon = RMCa.at(5).toDouble();
+        dir = (RMCa.at(6).compare("E")) ? -1 : 1;
+        cLon = div(lon,100);
+        lon = cLon.quot+(cLon.rem+(lon-(int)lon))/60;
+        speed = RMCa.at(7).toDouble()*1.852;
+        angle = RMCa.at(8).toDouble();
+
+        osmscout::Routing::Step step;
+        step.lat = lat;
+        step.lon = lon;
+
+        PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(step.lon, step.lat));
+        qDebug() << "Node: " << node.getId();
+
+            route.append(step);
+            qDebug() << "Dodalem node!";
+
+    }
+}
+
+QList<osmscout::Routing::Step> GPSdata::getRoute()
+{
+    return route;
 }

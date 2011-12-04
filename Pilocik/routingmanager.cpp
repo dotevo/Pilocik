@@ -31,7 +31,7 @@ void RoutingManager::run()
     QList< osmscout::Routing::Step > routeList;
     //QVector< osmscout::Routing::Step > routeVector;
 
-    NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
+    NavigationWindow::main->mapRenderer->setRoute( routeList);
     emit NewRoute();
 
     // first
@@ -47,7 +47,7 @@ void RoutingManager::run()
         routeList.append(routing->positionsToSteps(through));
     }
 
-<<<<<<< HEAD
+
     /*
     QListIterator< osmscout::Routing::Step > routeIterator(routeList);
     osmscout::Routing::Step step = routeIterator.next();
@@ -64,7 +64,6 @@ void RoutingManager::run()
             while(routingEdgeIterator.hasNext()) {
                 step = routingEdgeIterator.next();
 
-=======
     if(!routeList.isEmpty()) {
         QListIterator< osmscout::Routing::Step > routeIterator(routeList);
         osmscout::Routing::Step step = routeIterator.next();
@@ -86,7 +85,6 @@ void RoutingManager::run()
                     routeVector.push_back(step);
                 }
             } else {
->>>>>>> 59b5fe20e675767c2ea25f0a38394d851735a30c
                 prevPosition.setLon(step.lon);
                 prevPosition.setLat(step.lat);
                 routeVector.push_back(step);

@@ -293,10 +293,7 @@ void MapRenderWidget::manualMove(QMouseEvent *e)
 
         //QPointF ways[nodeWays.size()];
 
-
-
-
-        qDebug() << nodeWays.size();
+        qDebug() << "Nodeways WAYS: " << nodeWays.size();
 
         nextIntersection = osmscout::Searching::SimulateNextCrossing(route.at(nextCross - 1),
                                                                      route.at(nextCross), ways);

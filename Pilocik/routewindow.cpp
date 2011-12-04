@@ -3,6 +3,7 @@
 #include "navigationwindow.h"
 #include "twidgetmanager.h"
 #include "widgets/troutingprogresswidget.h"
+#include "maprenderwidget.h"
 
 #include <QDebug>
 
@@ -179,6 +180,7 @@ void RouteWindow::pswClosed(){
     delete psw;
     psw=0;
     setVisible(true);
+    NavigationWindow::main->mapRenderer->updateHint(MapRenderWidget::NormalHint);
 }
 
 void RouteWindow::changeEvent(QEvent *e)

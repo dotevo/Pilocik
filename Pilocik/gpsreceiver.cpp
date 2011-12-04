@@ -1,5 +1,7 @@
 #include "gpsreceiver.h"
 #include <cstdlib>
+#include "navigationwindow.h"
+#include "twidgetmanager.h"
 
 
 
@@ -23,6 +25,12 @@ void GPSreceiver::setSimPath(QString path)
 
 bool GPSreceiver::startSimulation()
 {
+    parseFile();
+
+    NavigationWindow::main->mapRenderer->setRoute(simulationRoute);
+    NavigationWindow::main->mapRenderer->setRouting(true);
+    TWidgetManager::getInstance()->setRouting(true);
+
     QFile file(path);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -246,6 +254,34 @@ void GPSreceiver::run()
 void GPSreceiver::clearBuffer()
 {
     output.clear();
+}
+
+bool GPSreceiver::parseFile()
+{
+    QFile file(path);
+    QStringList outputData;
+    GPSdata gps_data = GPSdata();
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        emit simStatusUpdate("Unable to open specified file.");
+        return false;
+    }
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        outputData.append(line);
+        if(line.contains("$GPRMC"))
+        {
+            gps_data.getRouteFromBuffer(&outputData);
+        }
+    }
+
+    file.close();
+
+    simulationRoute = gps_data.getRoute();
+
+    return true;
 }
 
 void GPSreceiver::setMode(int m)
