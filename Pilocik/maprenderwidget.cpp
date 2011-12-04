@@ -343,6 +343,7 @@ void MapRenderWidget::setMyCoordinates(double lonPar, double latPar,double angle
         setCoordinates(lonPar, latPar);
         this->update();
     }
+    repaint();
 }
 
 QPointF MapRenderWidget::getCoordinates(){

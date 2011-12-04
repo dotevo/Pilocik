@@ -131,8 +131,14 @@ void NavigationWindow::on_menuButton_clicked(){
 }
 
 void NavigationWindow::on_trackingButton_clicked(){
+    bool val=ui->widget->getTracking();
+    if(val)
+        ui->widget->setTracking(false);
+    else
+        ui->widget->setTracking(true);
+
     ui->trackingButton->setText(ui->widget->getTracking()?"Off":"On");
-    ui->widget->setTracking(!ui->widget->getTracking());
+
 }
 
 void NavigationWindow::on_routeButton_clicked() {
