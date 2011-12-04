@@ -215,6 +215,7 @@ void MainWindow::on_dataInitBtn_clicked()
     part->setStage(osmscout::Partitioning::DATA_INITIALIZATION);
     part->setDatabasePath(ui->dataInitMapPath->text());
     part->setSimpleDataPath(ui->dataInitOutputFilePath->text());
+    part->setCoordinates(ui->minLonInput->value(), ui->maxLonInput->value(), ui->minLatInput->value(), ui->maxLatInput->value());
     part->start();
 }
 
