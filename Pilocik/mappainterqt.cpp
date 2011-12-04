@@ -346,9 +346,9 @@ painter->drawImage(QPointF(x-images[style->GetId()-1].width()/2,
                                y-images[style->GetId()-1].height()/2),
                        images[style->GetId()-1]);
 */
-    painter->drawImage(QPointF(x-images->at(style->GetId()-1).width()/2,
+   /* painter->drawImage(QPointF(x-images->at(style->GetId()-1).width()/2,
                                    y-images->at(style->GetId()-1).height()/2),
-                           images->at(style->GetId()-1));
+                           images->at(style->GetId()-1));*/
   }
 
   void MapPainterQt::DrawSymbol(const SymbolStyle* style, double x, double y)
