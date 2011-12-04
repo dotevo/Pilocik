@@ -1,6 +1,8 @@
 #ifndef PILIBOCIK_PREPAREDATA_H
 #define PILIBOCIK_PREPAREDATA_H
 
+#ifdef PiLibocik_WRITE_MODE
+
 #include <QList>
 #include <QMap>
 #include <QMapIterator>
@@ -50,5 +52,5 @@ namespace PiLibocik{
 
     };
 }
-
+#endif
 #endif // PREPAREDATA_H

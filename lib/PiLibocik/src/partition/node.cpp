@@ -63,21 +63,6 @@ void Node::addRoutingEdge(Edge e){
 QVector<Edge> Node::getRoutingEdges(){
     return routingEdges;
 }
-/*
-Node &Node::operator=(Node &n){
-    qDebug() << "op=";
-
-    if (this != &n){
-        ways = n.ways;
-        boundaryEdges = n.boundaryEdges;
-        routingEdges = n.routingEdges;
-        part = n.part;
-
-        lon = n.lon;
-        lat = n.lat;
-    }
-    return *this;
-}*/
 
 
 }}

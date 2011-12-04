@@ -331,18 +331,14 @@ Node PartitionFile::getNearestNode(Position pos){
     QListIterator< Position > posAroundIter(posAround);
     while(posAroundIter.hasNext()) {
         Position tmpPos = posAroundIter.next();
-        //qDebug() << tmpPos.getLon() << " " << tmpPos.getLat();
         Geohash geo = tmpPos.getGeohash(prec);
-        qDebug() << "POS " << pos.getGeohash(prec).toQString() << " TMPPOS " << geo.toQString();
-        //qDebug()<<geo.toQString();
         qint64 index = indexNodeFile->getNodesBlock(geo);
 
         if(index != -1)
             n.append(nodeFile->getBlock(index));
     }
 
-    QListIterator <Node> iter(n);
-    qDebug() << "START";
+    QListIterator <Node> iter(n);    
     double value=100000;
     while(iter.hasNext()){
         Node node=iter.next();
@@ -360,13 +356,10 @@ Node PartitionFile::getNearestNode(Position pos){
             double value2=node.getDistance(pos);
             if(value2<value){
                 value=value2;
-                qDebug() << node.getGeohash(prec).toQString();
                 ret=node;
             }
         }
     }
-
-    qDebug() << ret.getLon();
     return ret;
 }
 
@@ -597,8 +590,7 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
         addIndex(wayStream,wo_1,sizeType) ;
         addIndex(wayStream,wo_0,sizeType) ;
     //-------------------------------------------------------
-        //Uzupe³nij waysInNodes        
-        qDebug()<<"Uzupelniam";
+        //Uzupe³nij waysInNodes
         for(int z=0;z<waysToReplace.size();z++){
             QPair <qint64,qint64> L=waysToReplace.at(z);
             //Ustaw na pozycje
@@ -606,7 +598,6 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
             addIndex(nodeStream,waysIndex.value(L.first),sizeType) ;
             //qDebug()<<L.first<<"L"<<L.second<<":"<<nodeStream.device()->pos()<<"WART:"<<waysIndex.value(L.first);
         }
-        qDebug()<<"Uzupelniam KOniec";
 
     //---Budowanie indexów------------------------------------
         QListIterator<Geohash> geoIterator(geokeys);
@@ -621,7 +612,6 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
                 quint64 l=last-geo+1;
-                //qDebug()<<l;
                 //Geohash size
                 indexNodeStream<<l;
 
@@ -661,16 +651,13 @@ void PartitionFile::savePartition( QList<Way> &ways, QList<Node> &nodes, int pre
 
 
 void PartitionFile::addWayToFile(QDataStream &wayStream,QDataStream &prioritetsStream,Way *w,QMap<int,qint64 > &waysIndex,QMap<int,int> &waysIndexId,QMap<int,qint64 > &nodesIndex, QList<QPair <int,qint64> > &waysToReplaceInWays,int sizeType){
-    //qDebug()<<w->getId()<<";"<<waysIndexId.value(w->getId())<<":"<<wayStream.device()->pos();
     waysIndex.insert(waysIndexId.value(w->getId()),wayStream.device()->pos());
     wayStream<<(quint32)w->getId();
     //Nodes
     QVector <qint64> l= w->getNodes();
     wayStream<<(quint16)l.size();
     for(int j=0;j<l.size();j++){
-        //qDebug()<<wayStream.device()->pos()<<"KUPA";
         addIndex(wayStream,nodesIndex.value(l.at(j)),sizeType);
-        //qDebug()<<wayStream.device()->pos()<<"KUPA2";
     }
     //Prioritet
     addIndex(wayStream,prioritetsStream.device()->pos(),sizeType);
