@@ -29,15 +29,9 @@ RoutingManager::~RoutingManager()
 void RoutingManager::run()
 {
     QList< osmscout::Routing::Step > routeList;
-<<<<<<< HEAD
     QList< osmscout::Routing::Step > finalRoute;
 
     NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
-=======
-    QVector< osmscout::Routing::Step > routeVector;
-
-    NavigationWindow::main->mapRenderer->setRoute(routeVector.toList());
->>>>>>> 5361375c97e7750f713752f56e8f6922fb4187b8
     emit NewRoute();
 
     // first
