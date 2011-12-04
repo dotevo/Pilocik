@@ -1,3 +1,5 @@
+#ifdef PiLibocik_WRITE_MODE
+
 #include <pilibocik/preparedata.h>
 
 #include <QDebug>
@@ -368,3 +370,4 @@ namespace PiLibocik{
 
 }
 
+#endif

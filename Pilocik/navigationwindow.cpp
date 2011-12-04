@@ -9,6 +9,7 @@
 #include "widgets/thintwidget.h"
 #include "widgets/troutingprogresswidget.h"
 #include "widgets/terrorwidget.h"
+#include "widgets/tpoiinfowidget.h"
 #include "maprenderwidget.h"
 #include "routewindow.h"
 #include "optionswindow.h"
@@ -75,12 +76,16 @@ void NavigationWindow::addWidgets(){
     TSliderWidget* slider = new TSliderWidget(this);
     slider->initZoom(Settings::getInstance()->getZoom());
     TWidgetManager::getInstance()->addWidget("Slider", slider);
+
+    // not always visible
     TWidgetManager::getInstance()->addWidget("RoutingProgress", new TRoutingProgressWidget(this));
     TWidgetManager::getInstance()->getWidget("RoutingProgress")->setVisible(false);
     TWidgetManager::getInstance()->addWidget("ErrorMessage", new TErrorWidget(this));
     TWidgetManager::getInstance()->getWidget("ErrorMessage")->setVisible(false);
     TWidgetManager::getInstance()->addWidget("HandyMenu", new THandyMenuWidget(this));
     TWidgetManager::getInstance()->getWidget("HandyMenu")->setVisible(false);
+    TWidgetManager::getInstance()->addWidget("POIInfo", new TPOIInfoWidget(this));
+    TWidgetManager::getInstance()->getWidget("POIInfo")->setVisible(false);
 
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));

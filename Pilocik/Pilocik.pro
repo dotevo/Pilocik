@@ -95,7 +95,8 @@ SOURCES += main.cpp\
     widgets/thandymenuwidget.cpp \
     routingmanager.cpp \
     pluginmanager.cpp\
-    gpsdata.cpp
+    gpsdata.cpp \
+    widgets/tpoiinfowidget.cpp
 
 
 HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
@@ -130,7 +131,8 @@ HEADERS  +=  ../lib/sosmscout/include/osmscout/Partitioning.h \
     pluginwidget.h \
     plugininterface.h \
     pluginswindow.h \
-    gpsdata.h
+    gpsdata.h \
+    widgets/tpoiinfowidget.h
 
 
 FORMS    += \
@@ -152,7 +154,8 @@ FORMS    += \
     widgets/troutingprogresswidget.ui \
     widgets/terrorwidget.ui \
     widgets/thandymenuwidget.ui \
-    pluginswindow.ui
+    pluginswindow.ui \
+    widgets/tpoiinfowidget.ui
 
 INCLUDEPATH += ./
 INCLUDEPATH += ./../lib/sosmscout/include/
@@ -175,3 +178,6 @@ RESOURCES += \
 
 OTHER_FILES += \
     settings.xml
+
+
+

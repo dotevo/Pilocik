@@ -40,9 +40,8 @@ void TSliderWidget::initZoom(int value)
 }
 
 void TSliderWidget::setMode(TMovableFrame::TMOVABLEMODE mode) {
-    /*ui->verticalSlider->setEnabled(!ui->verticalSlider->isEnabled());
-    qDebug() << "xxxxxxxxxx";
-    frame::setMode(mode);*/
+    //ui->verticalSlider->setEnabled(!ui->verticalSlider->isEnabled());
+    //qDebug() << "xxxxxxxxxx";
 }
 
 void TSliderWidget::on_verticalSlider_valueChanged(int value) {

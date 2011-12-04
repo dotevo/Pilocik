@@ -3,6 +3,8 @@
 #include "../navigationwindow.h"
 #include "../routewindow.h"
 #include "../maprenderwidget.h"
+#include "../twidgetmanager.h"
+#include "tpoiinfowidget.h"
 
 THandyMenuWidget::THandyMenuWidget(QWidget *parent) :
     TMovableFrame(parent),
@@ -38,9 +40,9 @@ void THandyMenuWidget::setPOIClicked(bool clicked)
     poiClicked = clicked;
 }
 
-void THandyMenuWidget::setPOIInfoWindow(InfoWindow * info)
+void THandyMenuWidget::setPOI(PiLibocik::Poi poi)
 {
-    infoWindow = info;
+    this->poi = poi;
 }
 
 void THandyMenuWidget::setPosition(double lon, double lat)
@@ -51,56 +53,56 @@ void THandyMenuWidget::setPosition(double lon, double lat)
 
 void THandyMenuWidget::showMenu(int x, int y)
 {
+    QSize windowSize = NavigationWindow::main->size();
     shown = true;
     clicked.setX(x);
     clicked.setY(y);
+    if(clicked.x() > windowSize.width()-this->width()) {
+        clicked.setX(clicked.x()-this->width());
+    }
+    if(clicked.y() > windowSize.height()-this->height()) {
+        clicked.setY(clicked.y()-this->height());
+    }
     move(clicked);
     setVisible(true);
 }
 
 void THandyMenuWidget::on_poInfoButton_clicked()
 {
-    infoWindow->setVisible(true);
-    poiClicked = false;
-    shown = false;
-    this->setFixedHeight(120);
-    setVisible(false);
+    ((TPOIInfoWidget *) TWidgetManager::getInstance()->getWidget("POIInfo"))->showInfo(poi);
+    reset();
 }
 
 void THandyMenuWidget::on_navFromButton_clicked()
 { 
-    NavigationWindow::main->routeWin->startSet(position.getLon(), position.getLat(), (poiClicked) ? "POI: " + infoWindow->getPOIName() : "Picked in map view");
-    poiClicked = false;
-    shown = false;
-    this->setFixedHeight(120);
-    setVisible(false);
-    NavigationWindow::main->mapRenderer->repaint();
+    NavigationWindow::main->routeWin->startSet(position.getLon(), position.getLat(), (poiClicked) ? "POI: " + poi.getName() : "Picked in map view");
+    reset();
 }
 
 void THandyMenuWidget::on_navToButton_clicked()
 {
-    NavigationWindow::main->routeWin->targetSet(position.getLon(), position.getLat(), (poiClicked) ? "POI: " + infoWindow->getPOIName() : "Picked in map view");
-    poiClicked = false;
-    shown = false;
-    this->setFixedHeight(120);
-    setVisible(false);
-    NavigationWindow::main->mapRenderer->repaint();
+    NavigationWindow::main->routeWin->targetSet(position.getLon(), position.getLat(), (poiClicked) ? "POI: " + poi.getName() : "Picked in map view");
+    reset();
 }
 
 void THandyMenuWidget::on_navThroughButton_clicked()
 {
-    NavigationWindow::main->routeWin->addStop(position.getLon(), position.getLat(), "Picked in map view");
-    poiClicked = false;
-    shown = false;
-    this->setFixedHeight(120);
-    setVisible(false);
-    NavigationWindow::main->mapRenderer->repaint();
+    NavigationWindow::main->routeWin->addStop(position.getLon(), position.getLat(), (poiClicked) ? "POI: " + poi.getName() : "Picked in map view");
+    reset();
 }
 
 void THandyMenuWidget::on_cancelButton_clicked()
 {
+    reset();
+}
+
+void THandyMenuWidget::reset()
+{
+    position = PiLibocik::Position();
+    poi = PiLibocik::Poi();
     poiClicked = false;
     shown = false;
     this->setFixedHeight(120);
     setVisible(false);
+    NavigationWindow::main->repaint();
 }

@@ -297,146 +297,6 @@ void PointSelectionWindow::on_nameLineEdit_textChanged(const QString &arg1)
 }
 
 /*
-void PointSelectionWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
-{
-    if (column == NAME_COLUMN || column == PATH_COLUMN) {
-        // TODO:
-        //ui->cityLineEdit->setText(item->text(column));
-
-        switch (searchingType) {
-        case REGION_SEARCH:
-            region = searchRegion(item->text(ID_COLUMN).toInt());
-            break;
-
-        case STREET_SEARCH:
-            QString name = item->text(NAME_COLUMN);
-            location = searchLocation(name);
-
-            for (std::list<osmscout::ObjectRef>::const_iterator iter = location.references.begin();
-                 iter != location.references.end();
-                 ++iter) {
-
-                osmscout::ObjectRef objRef = *(iter);
-                osmscout::WayRef wayRef;
-
-                searching->searchWay(objRef.GetId(), wayRef);
-
-                if (wayRef.Valid()) {
-                    qDebug() << wayRef.Get()->EndIsJoint();
-                    qDebug() << QString::fromStdString(wayRef.Get()->GetAttributes().GetName());
-                    qDebug() << QString::fromStdString(wayRef.Get()->GetName());
-                    qDebug() << wayRef.Get()->GetId();
-                    qDebug() << wayRef.Get()->GetReferenceCount();
-                    qDebug() << QString::fromStdString(wayRef.Get()->GetRefName());
-                    qDebug() << wayRef.Get()->GetTagCount();
-                    qDebug() << wayRef.Get()->GetType();
-                    qDebug() << wayRef.Get()->GetWidth();
-
-                    double lonMin;
-                    double lonMax;
-                    double latMin;
-                    double latMax;
-
-                    wayRef.Get()->GetBoundingBox(lonMin, lonMax, latMin, latMax);
-
-                    std::vector<osmscout::NodeRef> nodes;
-                    std::vector<osmscout::WayRef> ways;
-                    std::vector<osmscout::WayRef> areas;
-                    std::vector<osmscout::RelationRef> relationWays;
-                    std::vector<osmscout::RelationRef> relationAreas;
-
-                    //searching->searchObjects(lonMin, latMin, lonMax, latMax, nodes, ways, areas, relationWays, relationAreas);
-
-                    qDebug() << "Nodes: " << nodes.size()
-                    qDebug() << "Ways: " << ways.size();
-                    qDebug() << "Areas: " << areas.size();
-                    qDebug() << "Relation ways: " << relationWays.size();
-                    qDebug() << "Relation areas: " << relationAreas.size();
-
-                    for (unsigned int i = 0; i < areas.size(); i++) {
-                        osmscout::WayRef areaRef;
-                        osmscout::WayRef area = areas.at(i);
-                        searching->searchWay(area.Get()->GetId(), areaRef);
-
-                        if (areaRef.Valid()) {
-                            // in poinst should be buildings!
-                            std::vector<osmscout::Point> points = areaRef.Get()->nodes;
-
-                            for (unsigned int j = 0; j < points.size(); j++) {
-                                osmscout::Point point = points.at(j);
-                                osmscout::NodeRef pointRef;
-                                searching->searchNode(point.GetId(), pointRef);
-
-                                if (pointRef.Valid()) {
-
-
-                                    //if (pointRef.Get()->GetTagCount() > 0)
-                                    //    qDebug() << pointRef.Get()->GetId() << " | " << QString::fromStdString(pointRef.Get()->GetTagValue(0));
-                               }
-
-                                osmscout::WayRef waj;
-                                searching->searchWay(point.GetId(), waj);
-
-                                if (waj.Valid()) {
-                                    for (unsigned int j = 0; j < waj.Get()->GetTagCount(); j++)
-                                        qDebug() << waj.Get()->GetTagKey(j) << " / " << QString(waj.Get()->GetTagValue(j).c_str());
-                                    if (waj.Get()->GetTagCount() > 0)
-                                        qDebug() << "\n";
-                                }
-
-                            }
-
-                        }
-                    }
-
-
-                    for (unsigned int i = 0; i < ways.size(); i++) {
-                        osmscout::WayRef way = ways.at(i);
-                        osmscout::WayRef way2;
-
-                        searching->searchWay(way.Get()->GetId(), way2);
-                        //qDebug() << QString::fromStdString(way2.Get()->GetTagValue(0));
-
-                        if (way2.Valid()) {
-                            std::vector<osmscout::Point> points = way.Get()->nodes;
-
-                            for (unsigned int j = 0; j < points.size(); j++) {
-                                osmscout::Point point = points.at(j);
-                                osmscout::NodeRef pointRef;
-                                searching->searchNode(point.GetId(), pointRef);
-
-                                osmscout::WayRef way3;
-                                searching->searchWay(point.GetId(), way3);
-
-                                if (way3.Valid()) {
-                                //   qDebug() << QString::fromStdString(way3.Get()->GetTagValue(0));
-                                }
-
-                                if (pointRef.Valid()) {
-
-                                    if (pointRef.Get()->GetTagCount() > 0)
-                                        qDebug() << pointRef.Get()->GetId() << " | " << QString(pointRef.Get()->GetTagValue(0).c_str());
-                               }
-
-                            }
-                        }
-
-
-                    }
-
-
-                }
-            }
-            break;
-
-        deafult: std::cerr << "Error! Searching type is not initialized!"; break;
-        }
-
-        ui->treeWidget->clear();
-    }
-}*/
-
-/*
   INFO click
   */
 void PointSelectionWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
@@ -712,60 +572,6 @@ void PointSelectionWindow::on_cityEditBtn_clicked(){
     }
 }
 
-/*
-void PointSelectionWindow::fillPOIWidget(QString type)
-{
-    QVector<osmscout::NodeRef> poiRef;
-
-    double cx = currentLocation.x();
-    double cy = currentLocation.y();
-
-    searching->searchPoi(cx, cy, 0, type, poiRef);
-
-    QVector<double> distances;
-    QVector<osmscout::NodeRef> poiRefSorted;
-
-    for (int i = 0; i < poiRef.size(); i++) {
-        osmscout::NodeRef node = poiRef.at(i);
-
-        double dist = searching->CalculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
-
-        int j = 0;
-        for (; j < distances.size(); j++) {
-            if (dist < distances.at(j))
-                break;
-        }
-
-        distances.insert(j, dist);
-        poiRefSorted.insert(j, node);
-    }
-
-    QTreeWidgetItem *item;
-
-    for (int i = 0; i < poiRefSorted.size(); i++) {
-        item = new QTreeWidgetItem(ui->poiTreeWidget);
-
-        osmscout::NodeRef node = poiRefSorted.at(i);
-
-        QString name = "";
-
-        if (node.Get()->GetTagCount() > 1) {
-            name = QString::fromUtf8(node.Get()->GetTagValue(1).c_str());
-        }
-
-        //double distance = searching->calculateDistance(cx, cy, node.Get()->GetLon(), node.Get()->GetLat());
-
-        item->setText(ID_COLUMN, QString::number(node.Get()->GetId()));
-        item->setText(NAME_COLUMN, name);
-        item->setText(PATH_COLUMN, QString::number(distances.at(i)) + " km");
-        item->setText(INFO_COLUMN, "INFO");
-
-        ui->poiTreeWidget->resizeColumnToContents(NAME_COLUMN);
-        ui->poiTreeWidget->resizeColumnToContents(PATH_COLUMN);
-    }
-}
-*/
-
 void PointSelectionWindow::fillPOIWidget(int type, QString name)
 {
     double cx = currentLocation.x();
@@ -862,6 +668,7 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
 }
 
 void PointSelectionWindow::on_poiOK_clicked() {
+<<<<<<< HEAD
 
     NavigationWindow *par = qobject_cast<NavigationWindow*>(parent());
 
@@ -878,6 +685,9 @@ void PointSelectionWindow::on_poiOK_clicked() {
     TWidgetManager::getInstance()->setRouting(true);
 
     //par->setRoute(QList<osmscout::Routing::Step>::fromStdVector(route));
+=======
+    //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
+>>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);

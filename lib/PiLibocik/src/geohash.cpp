@@ -157,7 +157,6 @@ namespace PiLibocik{
     bool Geohash::operator==(Geohash &q){
         if(geohashSize!=q.geohashSize){
             return false;
-            qDebug()<<"WTF";
         }
         for(int i=0;i<geohashSize&&i<q.geohashSize;i++){
             if(geohashValue[i]!=q.geohashValue[i]){

@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 QT      -= gui
-QT       += sql xml
+#QT       += sql xml
 
 TARGET = PiLibocik
 TEMPLATE = lib
 CONFIG += staticlib
 
-DEFINES += PiLibocik_WRITE_MODE
+#DEFINES += PiLibocik_WRITE_MODE
 
 SOURCES += src/pilibocik.cpp \
     src/geohash.cpp \

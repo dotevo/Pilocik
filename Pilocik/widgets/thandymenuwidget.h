@@ -5,6 +5,7 @@
 #include "tmovableframe.h"
 #include "infowindow.h"
 #include "../../lib/PiLibocik/include/pilibocik/position.h"
+#include "../../lib/PiLibocik/include/pilibocik/poi.h"
 
 namespace Ui {
     class THandyMenuWidget;
@@ -32,13 +33,20 @@ public:
      * @brief Set poi window to show.
      *
      */
-    void setPOIInfoWindow(InfoWindow * info);
+    void setPOI(PiLibocik::Poi poi);
+    /**
+     * @brief
+     *
+     * @param lon
+     * @param lat
+     */
     void setPosition(double lon, double lat);
     /**
      * @brief Sets widget to show.
      *
      */
     void showMenu(int x, int y);
+    void reset();
 
 private slots:
     void on_poInfoButton_clicked();
@@ -50,7 +58,7 @@ private slots:
 private:
     QPoint clicked;
     PiLibocik::Position position;
-    InfoWindow * infoWindow;
+    PiLibocik::Poi poi;
     bool poiClicked;
     bool shown;
     Ui::THandyMenuWidget *ui;

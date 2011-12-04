@@ -17,7 +17,7 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
 
     ui->label->setText(tr("ROUTE PLANNING"));
 
-    //connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
+    connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
 
     startSet(0, 0, tr("Current position"));
     //connect(NavigationWindow::main->gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(FromCurrent(GPSdata)));

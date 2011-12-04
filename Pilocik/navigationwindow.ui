@@ -139,7 +139,7 @@ border-bottom-left-radius: 0px;
        </property>
       </widget>
      </item>
-     <item row="1" column="0" colspan="8">
+     <item row="1" column="0" colspan="7">
       <spacer name="verticalSpacer_2">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -202,29 +202,6 @@ border-bottom-left-radius: 0px;
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="creditsButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="icons.qrc">
-         <normaloff>:/gif/images/icons/64x64/user_ico.gif</normaloff>:/gif/images/icons/64x64/user_ico.gif</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>48</width>
-         <height>48</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
       <widget class="QPushButton" name="exitButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -260,7 +237,7 @@ border-bottom-left-radius: 0px;
        </property>
       </spacer>
      </item>
-     <item row="0" column="7">
+     <item row="0" column="6">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

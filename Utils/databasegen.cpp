@@ -10,13 +10,13 @@ void DatabaseGen::init(QString osmPath, QString outputDir, bool addIndexes)
     outputPath.clear();
     this->osmPath = osmPath;
     createIdx = addIndexes;
-    QString fileName = osmPath.split('\\').last();
-    fileName.truncate(fileName.size()-3);
-    fileName.append("db");
+    //QString fileName = osmPath.split('\\').last();
+    //fileName.truncate(fileName.size()-3);
+    //fileName.append("db");
     outputPath = outputDir;
-    if(!outputDir.isEmpty()&&!outputDir.endsWith('\\'))
-        outputPath.append('\\');
-    outputPath.append(fileName);
+    //if(!outputDir.isEmpty()&&!outputDir.endsWith('\\'))
+    //    outputPath.append('\\');
+    //outputPath.append(fileName);
     qDebug()<<outputPath;
 }
 

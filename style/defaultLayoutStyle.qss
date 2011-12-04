@@ -295,12 +295,7 @@ QTreeWidget::item:selected {
 }
 
 QScrollArea  QWidget#scrollAreaWidgetContents_2{
-
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                             stop: 0 rgba(42, 42, 42, 200),
-                             stop: 0.49 rgba(74, 74, 74, 200),
-                             stop: 0.5 rgba(16, 16, 16, 200),
-                             stop: 1 rgba(42, 42, 42, 200));
+    background rgba(0, 0, 0, 0);
     border-radius: 10px;
     border: 1px solid rgba(106, 106, 106, 200);
 }
@@ -313,3 +308,32 @@ QScrollBar{
                              stop: 1 rgba(42, 42, 42, 200));
 }
 
+QListWidget {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                         stop: 0 rgba(42, 42, 42, 200),
+                         stop: 0.49 rgba(74, 74, 74, 200),
+                         stop: 0.5 rgba(16, 16, 16, 200),
+                         stop: 1 rgba(42, 42, 42, 200));
+     border-radius: 10px;
+     color: #FFF;
+     border: 1px solid rgba(106, 106, 106, 200);
+     padding: 10px;
+}
+
+QListWidget::item {
+    height: 30px;
+    color: #DDD;
+    font: bold ;
+    font-size: 18px;
+}
+
+QGroupBox {
+    background: rgba(0, 0, 0, 0);
+}
+
+QGroupBox::title {
+    color:white;
+    font-size: 16px;
+    font-weight: bold;
+    border: 0px;
+}

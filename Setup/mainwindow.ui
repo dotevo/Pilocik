@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Setup - Pilocik</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/images/pilocik_ico.png</normaloff>:/images/pilocik_ico.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	background-image: url(':/images/background.png');
@@ -318,7 +322,6 @@ download</string>
            <number>23</number>
           </property>
          </layout>
-         <zorder>headerFrame</zorder>
         </widget>
        </item>
       </layout>
