@@ -48,7 +48,7 @@ public:
      *
      * @return node object
      */
-    RouteNode getPrevNode();
+    RouteNode *getPrevNode();
     /**
      * @brief
      *

@@ -29,9 +29,9 @@ RoutingManager::~RoutingManager()
 void RoutingManager::run()
 {
     QList< osmscout::Routing::Step > routeList;
-    QVector< osmscout::Routing::Step > routeVector;
+    QList< osmscout::Routing::Step > finalRoute;
 
-    NavigationWindow::main->mapRenderer->setRoute(routeVector.toList());
+    NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
     emit NewRoute();
 
     // first
@@ -51,10 +51,11 @@ void RoutingManager::run()
         QListIterator< osmscout::Routing::Step > routeIterator(routeList);
         osmscout::Routing::Step step = routeIterator.next();
         PiLibocik::Position prevPosition(step.lon, step.lat);
+        finalRoute.push_back(step);
         while(routeIterator.hasNext()) {
             step = routeIterator.next();
             if(step.routing) {
-                NavigationWindow::main->mapRenderer->setRoute(routeVector.toList());
+                NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
                 emit NewRoute();
 
                 QList< osmscout::Routing::Step > routingEdgeRoute = routingEdgeToRoute(prevPosition, PiLibocik::Position(step.lon, step.lat));
@@ -65,12 +66,12 @@ void RoutingManager::run()
 
                     prevPosition.setLon(step.lon);
                     prevPosition.setLat(step.lat);
-                    routeVector.push_back(step);
+                    finalRoute.push_back(step);
                 }
             } else {
                 prevPosition.setLon(step.lon);
                 prevPosition.setLat(step.lat);
-                routeVector.push_back(step);
+                finalRoute.push_back(step);
             }
         }
     }

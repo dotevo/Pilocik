@@ -16,7 +16,6 @@ RouteWindow::RouteWindow(NavigationWindow *parent) :
 
     ui->label->setText(tr("ROUTE PLANNING"));
 
-    // TODO: Nie wiem dlaczego nie dziala...
     //connect(routingManager, SIGNAL(NewRoute()), this, SLOT(NewRouteSlot()));
 
     startSet(0, 0, tr("Current position"));
