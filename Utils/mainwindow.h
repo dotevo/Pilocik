@@ -23,7 +23,11 @@ private:
     DatabaseGen *gen;
     GPSemulator *gps;
     osmscout::Partitioning *part;
+    QPoint dragPosition;
+    bool isDraging;
+    short currentTab;
 
+    void updateTab();
 
 private slots:
     void calculationFinished();
@@ -49,6 +53,17 @@ private slots:
     void on_partBinaryRenderButton_clicked();
     void on_partDatabaseRenderPathButton_clicked();
     void on_partitionRenderButton_clicked();
+    void on_hideButton_clicked();
+    void on_closeButton_clicked();
+    void on_tabMapGenButton_clicked();
+    void on_tabSimButton_clicked();
+    void on_tabPartGenButton_clicked();
+    void on_tabPartRenderButton_clicked();
+
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 };
 
 #endif // MAINWINDOW_H

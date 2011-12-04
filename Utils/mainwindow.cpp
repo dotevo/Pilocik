@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     part = new osmscout::Partitioning();
     gps = new GPSemulator();
 
+    currentTab = 0;
+
+    updateTab();
+
     if(false) {
         //osmscout::Routing *r = new osmscout::Routing();
         //PiLibocik::Position p1(17.0151, 51.1234);
@@ -31,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
             qDebug() << s.lon << ":" << s.lat << ((s.crossing) ? " x" : "");
         }*/
     }
+
+    Qt::WindowFlags flags = Qt::FramelessWindowHint;
+    setWindowFlags(flags);
+    setAttribute(Qt::WA_TranslucentBackground);
 
     connect(gen, SIGNAL(progressUpdate(int)), ui->mcProgressBar, SLOT(setValue(int)));
     connect(gen, SIGNAL(statusUpdate(QString)), ui->mcStatus, SLOT(setText(QString)));
@@ -63,6 +71,36 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::updateTab()
+{
+    ui->tabWidget->setCurrentIndex(currentTab);
+
+    QString activeTabStyle("background: qradialgradient(cx:0.5, cy:0.5, radius: 1,fx:0.5, fy:0.5,stop:0 #3c434d,stop:1 #45484d); color: white; border: 0; border-top-right-radius: 0px; border-bottom-right-radius: 0px; padding: 2px; font-weight: bold; border-radius: 5px; border-right: 0; height: 56px; width: 130px;");
+    QString inactiveTabStyle("background: qradialgradient(cx:0.5, cy:0.5, radius: 1,fx:0.5, fy:0.5,stop:0 #ffffff,stop:1 #bbbbbb); color: orange; border: 1px solid darkorange; height: 56px; width: 130px;");
+
+    ui->tabMapGenButton->setStyleSheet(activeTabStyle);
+    ui->tabPartGenButton->setStyleSheet(activeTabStyle);
+    ui->tabPartRenderButton->setStyleSheet(activeTabStyle);
+    ui->tabSimButton->setStyleSheet(activeTabStyle);
+
+    switch(currentTab) {
+    case 0:
+        ui->tabMapGenButton->setStyleSheet(inactiveTabStyle);
+        break;
+    case 1:
+        ui->tabSimButton->setStyleSheet(inactiveTabStyle);
+        break;
+    case 2:
+        ui->tabPartGenButton->setStyleSheet(inactiveTabStyle);
+        break;
+    case 3:
+        ui->tabPartRenderButton->setStyleSheet(inactiveTabStyle);
+        break;
+    default:
+        break;
+    }
 }
 
 void MainWindow::calculationFinished()
@@ -218,4 +256,63 @@ void MainWindow::on_partDatabaseRenderPathButton_clicked()
 void MainWindow::on_partitionRenderButton_clicked()
 {
     ui->widget->init(ui->partBinaryRenderPath->text());
+}
+
+void MainWindow::on_hideButton_clicked()
+{
+    showMinimized();
+}
+
+void MainWindow::on_closeButton_clicked()
+{
+    setVisible(false);
+    this->close();
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton &&
+            (event->globalY() - geometry().y()) < 103 &&
+            (event->globalX() - geometry().x()) < 692) {
+        isDraging = true;
+        dragPosition = event->globalPos() - QPoint(geometry().x(), geometry().y());
+        event->accept();
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (isDraging && event->buttons() & Qt::LeftButton) {
+        move(event->globalPos() - dragPosition);
+        event->accept();
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    isDraging = false;
+}
+
+void MainWindow::on_tabMapGenButton_clicked()
+{
+    currentTab = 0;
+    updateTab();
+}
+
+void MainWindow::on_tabSimButton_clicked()
+{
+    currentTab = 1;
+    updateTab();
+}
+
+void MainWindow::on_tabPartGenButton_clicked()
+{
+    currentTab = 2;
+    updateTab();
+}
+
+void MainWindow::on_tabPartRenderButton_clicked()
+{
+    currentTab = 3;
+    updateTab();
 }
