@@ -343,8 +343,14 @@ bool GPSreceiver::parseFile()
                 simulationRoute.append(step);
 
                 node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(step.lon, step.lat));
+                //qDebug() << node.getWaysObj().size();
+                //qDebug() << node.getId();
                 double actDist = osmscout::Searching::CalculateDistance(node.getLon(), node.getLat(), step.lon, step.lat);
                 if (ids.contains(node.getId()) || ids.size() == 0) {
+                    if (ids.size() == 0) {
+                        ids.append(node.getId());
+                    }
+                    //qDebug() << "X" << " " << dist << " " << actDist << " IDS SIZE: " << ids.size();
                     if (actDist < dist) {
                         dist = actDist;
                         if (lastCross >= 0) {
@@ -355,6 +361,8 @@ bool GPSreceiver::parseFile()
                             //simulationRoute.at(lastCross).setCrossing(false);
                         }
                         lastCross = i;
+                        //qDebug() << lastCross << " " << i;
+                        //qDebug() << "y";
                         osmscout::Routing::Step s = simulationRoute.at(i);
                         s.crossing = true;
                         simulationRoute.removeAt(i);
@@ -364,6 +372,7 @@ bool GPSreceiver::parseFile()
                     }
                 }
                 else {
+                    //qDebug() << "I change distance " << dist << " " << actDist;
                     ids.append(node.getId());
                     dist = actDist;
                     lastCross = i;
