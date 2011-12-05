@@ -399,6 +399,7 @@ void MapRenderWidget::newPixmapRendered(QImage *pixmap,osmscout::MercatorProject
     if(pixmap->isNull())return;
     this->image=pixmap->copy();
     this->poiList = poiList;
+    delete pixmap;
 	qDebug()<<"beforeTest";
     testPixmap();
     repaint();
@@ -770,7 +771,6 @@ void MapRenderWidget::DrawRouteMarkers(const osmscout::Projection& projection,QP
 MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
     mapPainter=new osmscout::MapPainterQt();
     started=false;
-pixmap=0;
 }
 
 void MapPixmapRenderer::getPixmap(){
@@ -792,8 +792,8 @@ void MapPixmapRenderer::run(){
 //    qDebug()<<"tak";
         QSize size(projection->GetWidth(),projection->GetHeight());
         //TODO: TEST FORMATS
-        if(pixmap!=0)delete pixmap;
-       pixmap=new QImage(size,QImage::Format_RGB16);
+
+       QImage *pixmap=new QImage(size,QImage::Format_RGB16);
 //        qDebug()<<"LL"<<projection->GetWidth();
         osmscout::MapData             data;
         osmscout::MapParameter        drawParameter;
