@@ -881,7 +881,8 @@ void MapPixmapRenderer::drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection &pr
                 }
             }
         }
-        painter->drawImage(QPointF(x-6,y-6), image);
+        if(!image.isNull())
+            painter->drawImage(QPointF(x-6,y-6), image);
     }
 }
 
