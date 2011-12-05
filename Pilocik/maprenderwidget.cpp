@@ -450,6 +450,9 @@ bool MapRenderWidget::getTracking(){
 void MapRenderWidget::setRouting(bool routing)
 {
     this->routing = routing;
+    //It must be killed if really gps is On
+    if (route.size() > 0)
+        setMyCoordinates(route.at(0).lon, route.at(0).lat, 0);
 }
 
 bool MapRenderWidget::getRouting()
@@ -651,7 +654,7 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
         }
     }
 
-    if (lastNodeIndex < route.size() ) {
+    if (lastNodeIndex + 1< route.size() ) {
         osmscout::Routing::Step lastNode = route.at(lastNodeIndex);
 
         double actX, actY, lastX, lastY;

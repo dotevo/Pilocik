@@ -81,6 +81,7 @@ void RoutingManager::run()
     }
 
     NavigationWindow::main->mapRenderer->setRoute(finalRoute);
+
     emit NewRoute();
 }
 

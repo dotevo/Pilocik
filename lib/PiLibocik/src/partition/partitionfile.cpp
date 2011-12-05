@@ -332,23 +332,14 @@ Node PartitionFile::getNearestNode(Position pos){
     while(posAroundIter.hasNext()) {
         Position tmpPos = posAroundIter.next();
         Geohash geo = tmpPos.getGeohash(prec);
-<<<<<<< HEAD
-        //qDebug() << "POS " << pos.getGeohash(prec).toQString() << " TMPPOS " << geo.toQString();
-        //qDebug()<<geo.toQString();
-=======
->>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
+
         qint64 index = indexNodeFile->getNodesBlock(geo);
 
         if(index != -1)
             n.append(nodeFile->getBlock(index));
     }
 
-<<<<<<< HEAD
     QListIterator <Node> iter(n);
-    //qDebug() << "START";
-=======
-    QListIterator <Node> iter(n);    
->>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
     double value=100000;
     while(iter.hasNext()){
         Node node=iter.next();
@@ -366,19 +357,11 @@ Node PartitionFile::getNearestNode(Position pos){
             double value2=node.getDistance(pos);
             if(value2<value){
                 value=value2;
-<<<<<<< HEAD
-                //qDebug() << node.getGeohash(prec).toQString();
-=======
->>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
+
                 ret=node;
             }
         }
     }
-<<<<<<< HEAD
-
-    //qDebug() << ret.getLon();
-=======
->>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
     return ret;
 }
 

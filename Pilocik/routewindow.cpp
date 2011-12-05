@@ -33,6 +33,10 @@ RouteWindow::~RouteWindow()
 
 void RouteWindow::NewRouteSlot()
 {
+    TWidgetManager::getInstance()->setRouting(true);
+    TWidgetManager::getInstance()->showAllWidgets();
+    NavigationWindow::main->mapRenderer->setRouting(true);
+
     NavigationWindow::main->mapRenderer->repaint();
 }
 

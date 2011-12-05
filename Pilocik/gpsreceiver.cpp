@@ -336,6 +336,9 @@ bool GPSreceiver::parseFile()
             }
 
             i++;
+            if (i % 100 == 0) {
+                qDebug() << i;
+            }
         }
     }
 

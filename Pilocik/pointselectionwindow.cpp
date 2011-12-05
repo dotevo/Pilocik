@@ -668,7 +668,7 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
 }
 
 void PointSelectionWindow::on_poiOK_clicked() {
-<<<<<<< HEAD
+/*
 
     NavigationWindow *par = qobject_cast<NavigationWindow*>(parent());
 
@@ -685,9 +685,9 @@ void PointSelectionWindow::on_poiOK_clicked() {
     TWidgetManager::getInstance()->setRouting(true);
 
     //par->setRoute(QList<osmscout::Routing::Step>::fromStdVector(route));
-=======
+
     //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
->>>>>>> fa05be7f8086d72672445a254294efcb2fd4f556
+*/
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);
