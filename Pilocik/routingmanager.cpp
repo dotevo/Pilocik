@@ -76,8 +76,7 @@ void RoutingManager::run()
         }
     }
 
-    NavigationWindow::main->mapRenderer->setRoute(routeList);
-    //NavigationWindow::main->mapRenderer->setRoute((QVector< osmscout::Routing::Step >) routeVector);
+    NavigationWindow::main->mapRenderer->setRoute(finalRoute);
     emit NewRoute();
 }
 

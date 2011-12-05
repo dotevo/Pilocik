@@ -104,4 +104,5 @@ void THandyMenuWidget::reset()
     shown = false;
     this->setFixedHeight(120);
     setVisible(false);
+    NavigationWindow::main->repaint();
 }
