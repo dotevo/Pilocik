@@ -125,6 +125,8 @@ signals:
      * @param status Text status of simulation.
      */
     void simStatusUpdate(QString status);
+
+    void startSim();
 };
 
 #endif // GPSRECEIVER_H

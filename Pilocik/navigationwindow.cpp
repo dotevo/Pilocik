@@ -90,6 +90,7 @@ void NavigationWindow::addWidgets(){
     connect(gps, SIGNAL(positionUpdate(GPSdata)), TWidgetManager::getInstance()->getWidget("SpeedMeter"), SLOT(updateSpeed(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), this, SLOT(positionUpdated(GPSdata)));
     connect(gps, SIGNAL(positionUpdate(GPSdata)), mapRenderer, SLOT(positionUpdated(GPSdata)));
+    connect(gps, SIGNAL(startSim()), this, SLOT(startedSim()));
     TWidgetManager::getInstance()->showAllWidgets();
 }
 
@@ -201,7 +202,15 @@ void NavigationWindow::on_sliderButton_clicked() {
 }
 
 void NavigationWindow::positionUpdated(GPSdata gps_data){
+
     ui->widget->setMyCoordinates(gps_data.lon,gps_data.lat,gps_data.angle);
+    //ui->widget->setRouting(true);
+
+}
+
+void NavigationWindow::startedSim()
+{
+    mapRenderer->setRouting(true);
 }
 
 void NavigationWindow::retranslate()
@@ -213,7 +222,7 @@ void NavigationWindow::setRoute(QList<osmscout::Routing::Step> route)
 {
     mapRenderer->setRoute(route);
     mapRenderer->setRouting(true);
-    mapRenderer->setMyCoordinates(route.at(0).lon, route.at(0).lat, 45);
+    //mapRenderer->setMyCoordinates(route.at(0).lon, route.at(0).lat, 45);
 }
 
 void NavigationWindow::changeEvent(QEvent *e)

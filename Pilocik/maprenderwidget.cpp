@@ -669,6 +669,10 @@ void MapRenderWidget::DrawRoute(const osmscout::Projection &projection, QPainter
         painter->setPen(setPenStyle(ROUTE_LINE));
         painter->drawLine(QPointF(actX, actY), QPointF(nextX, nextY));
 
+        //qDebug() << getNextCrossIndex() << " " << route.size();
+        //for (int i = 0; i < route.size(); i++) {
+        //    qDebug() << route.at(i).crossing;
+        //}
         projection.GeoToPixel(route.at(getNextCrossIndex()).lon, route.at(getNextCrossIndex()).lat, nextX, nextY);
         painter->setPen(setPenStyle());
         painter->setBrush(Qt::red);
