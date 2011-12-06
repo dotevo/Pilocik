@@ -40,5 +40,6 @@ void TPOIInfoWidget::showInfo(PiLibocik::Poi poi)
 void TPOIInfoWidget::on_okButton_clicked()
 {
     isPOI = false;
+
     setVisible(false);
 }

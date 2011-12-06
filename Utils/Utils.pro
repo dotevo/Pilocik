@@ -13,9 +13,9 @@ DEFINES += PiLibocik_WRITE_MODE
 TARGET = Utils
 TEMPLATE = app
 
-#Debug:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
-#Release:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
-LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+Debug:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+Release:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+#LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
 
 HEADERS  += mainwindow.h \
     ../lib/sosmscout/include/osmscout/Partitioning.h \

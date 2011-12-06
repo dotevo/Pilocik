@@ -248,12 +248,6 @@ void MainWindow::on_partBinaryRenderButton_clicked()
     ui->partBinaryRenderPath->setText(QFileDialog::getExistingDirectory());
 }
 
-void MainWindow::on_partDatabaseRenderPathButton_clicked()
-{
-    ui->partDatabaseRenderPath->setText(QFileDialog::getOpenFileName(this,
-        tr("Chose file"), "", tr("Database Files (*.db)")));
-}
-
 void MainWindow::on_partitionRenderButton_clicked()
 {
     ui->widget->init(ui->partBinaryRenderPath->text());
