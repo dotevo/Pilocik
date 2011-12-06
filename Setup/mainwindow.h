@@ -1,8 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "activesynccomm.h"
+#include "resourcesmanager.h"
+
 #include <QMainWindow>
 #include <QPushButton>
+#include <QFrame>
 
 namespace Ui {
     class MainWindow;
@@ -19,12 +23,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    ActiveSyncComm *asc;
+    ResourcesManager *rm;
+
     QList<QPushButton *> tabs;
+    QList<QFrame *> tabFrames;
     int activeTab;
     QPoint dragPosition;
     bool isDraging;
 
     void selectTab(int id);
+    void hideAllTabs();
 
 private slots:
     void showEvent(QShowEvent *event);

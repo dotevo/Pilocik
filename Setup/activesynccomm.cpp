@@ -2,7 +2,27 @@
 #include <QDebug>
 #include <QString>
 
-ActiveSyncComm::ActiveSyncComm()
+ActiveSyncComm *ActiveSyncComm::instance = 0;
+
+ActiveSyncComm* ActiveSyncComm::getInstance(QApplication* a)
+{
+    if(instance==0)
+        instance=new ActiveSyncComm(a);
+    return instance;
+}
+
+ActiveSyncComm::ActiveSyncComm(QApplication* a)
+{
+    app = a;
+}
+
+ActiveSyncComm::~ActiveSyncComm()
+{
+     CeRapiUninit();
+}
+
+
+void ActiveSyncComm::reconnect()
 {
     HRESULT hr;
 
@@ -11,25 +31,13 @@ ActiveSyncComm::ActiveSyncComm()
     {
         qDebug()<<"Could not find device";
     } else {
-        appPath = rapiReadFile("\\ResidentFlash\\Pilocik.info");
-        qDebug()<<appPath;
+        emit connected();
     }
 }
 
-ActiveSyncComm::~ActiveSyncComm()
+QString ActiveSyncComm::getResources()
 {
-     CeRapiUninit();
-}
-
-void ActiveSyncComm::setInstallPath(QString path)
-{
-    rapiWriteFile(path, "\\ResidentFlash\\Pilocik.info");
-    appPath = path;
-}
-
-QString ActiveSyncComm::getInstallPath()
-{
-    return appPath;
+    return rapiReadFile("\\ResidentFlash\\pilocik.xml");
 }
 
 QString ActiveSyncComm::getDeviceSettings(bool reload)
@@ -41,7 +49,11 @@ QString ActiveSyncComm::getDeviceSettings(bool reload)
     return settings;
 }
 
-
+void ActiveSyncComm::createPath(QString path)
+{
+    const wchar_t * p = reinterpret_cast<const wchar_t *>(path.utf16());
+    CeCreateDirectory(p, NULL);
+}
 
 HRESULT ActiveSyncComm::TryRapiConnect(DWORD dwTimeOut)
 {

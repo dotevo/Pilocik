@@ -19,7 +19,6 @@ NewsFrame::NewsFrame(QWidget *parent) :
     news = new FileDownload();
     news->doDownload(QUrl("http://localhost/news.xml"));
     connect(news, SIGNAL(finished(QString)), this, SLOT(parseNewsXML(QString)));
-    ActiveSyncComm asc = ActiveSyncComm();
 }
 
 NewsFrame::~NewsFrame()
@@ -53,7 +52,7 @@ void NewsFrame::addItem(QString title, QString date, QString body)
     QVBoxLayout *vbl = new QVBoxLayout(MainWindow::main);
     vbl->setSpacing(0);
     QLabel *titleLbl = new QLabel(title, MainWindow::main);
-    titleLbl->setStyleSheet("font-weight: bold; font-size: 16px; font-family:'Trebuchet MS', Tahoma, Verdana; color: #fe7e00");
+    titleLbl->setObjectName("header");
     titleLbl->setWordWrap(true);
     QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
     effect->setBlurRadius(0);
