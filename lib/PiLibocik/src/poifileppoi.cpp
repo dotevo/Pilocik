@@ -75,7 +75,7 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     in >> geoHashSize;
     char *firstGeo=new char[geoHashSize];
     in >> geoHashsCount;
-    qDebug()<<"LKLK"<<geoHashSize<<"L"<<geoHashsCount;
+    //qDebug()<<"LKLK"<<geoHashSize<<"L"<<geoHashsCount;
     int a=0;
     a+=geoHashSize;
     //qDebug()<<a;
@@ -113,12 +113,12 @@ QList<Poi> PoiFilePPOI::loadPOIsFromFile(QString file,BoundaryBox& bbox, int poi
     for(int i=0;i<geohashes.size();i++){
         Geohash gg=geohashes.at(i);
         qint64 n=gg-geoFirst;
-        qDebug()<<gg.toQString()<<"{}"<<geoFirst.toQString();
+        //qDebug()<<gg.toQString()<<"{}"<<geoFirst.toQString();
         if(n>=0&&n<=geoHashsCount){
             in.device()->seek(positionINX+n*sizeof(qint64));
             qint64 ind;
             in >> ind;
-            qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
+            //qDebug()<<ind<<":"<<gg.toQString()<<":"<<geoFirst.toQString()<<"L"<<n<<":"<<in.device()->pos();
             //if empty
             if(ind!=0)
                 indexes.push_back(ind);
@@ -203,14 +203,14 @@ QList<Poi> PoiFilePPOI::loadPoisInType(QDataStream &inData,int position,int type
 
 #ifdef PiLibocik_WRITE_MODE
 void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &types){
-    qDebug()<<pois.length();
+    //qDebug()<<pois.length();
     QMap <Geohash, QVector<Poi*>* > geoHashedPOIs;
     QListIterator <Poi> iter(pois);
     //Convert List to hashed map
     while(iter.hasNext()){
         Poi *poi=(Poi*)&iter.next();
         QString geo=poi->getGeohash();
-        qDebug()<<geo;
+        //qDebug()<<geo;
         Geohash geoH(geo.left(5));
         if(geoHashedPOIs.contains(geoH)){
             geoHashedPOIs.value(geoH)->push_back(poi);
@@ -220,7 +220,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
             geoHashedPOIs.insert(geoH,dupa);
         }
     }
-    qDebug()<<geoHashedPOIs.size()<<"P";
+    //qDebug()<<geoHashedPOIs.size()<<"P";
 
 
     QMapIterator <Geohash ,QVector<Poi*> *> mIter(geoHashedPOIs);
@@ -273,7 +273,7 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
                 //geohash size
                 Geohash last=geokeys.at(geokeys.size()-1);
                 quint64 l=last-geo2;
-                qDebug()<<last.toQString()<<":"<<geo2.toQString()<<"L"<<l;
+                //qDebug()<<last.toQString()<<":"<<geo2.toQString()<<"L"<<l;
 
                 outIndex << l;
 
@@ -298,12 +298,12 @@ void PoiFilePPOI::saveToFile(QString file,QList<Poi>&pois,QMap<int,QString> &typ
                     //qDebug()<<"SAVE"+geo1.toQString()+" POS:"+QString::number(0)+" INDEX:"+QString::number(outIndex.device()->pos());
                 }
                 outIndex << outData.device()->pos();
-                qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
+                //qDebug()<<"SAVE"+geo2.toQString()+" POS:"+QString::number(outData.device()->pos())+" INDEX:"+QString::number(outIndex.device()->pos());
                 makeBlock(outData,geoHashedPOIs.value(geo2),typesC);
             //}
             }
         }
-        qDebug()<<"File data size:"<<outData.device()->size()<<" Index:"<<outIndex.device()->size();
+        //qDebug()<<"File data size:"<<outData.device()->size()<<" Index:"<<outIndex.device()->size();
 
         qfileData.close();
         qfileIndex.close();
@@ -372,7 +372,7 @@ void PoiFilePPOI::makeBlock(QDataStream &stream,QVector<Poi*>*data,int types){
                     QString valueP=pair.first+"="+pair.second;                    
                     QByteArray aZ=valueP.toUtf8();
                     out<<((quint8)aZ.size());
-                    qDebug()<<"valueP:"<<valueP.length()<<":"<<"s"<<aZ.size();
+                    //qDebug()<<"valueP:"<<valueP.length()<<":"<<"s"<<aZ.size();
                     out.writeRawData(aZ.data(),aZ.size());
                 }
             }

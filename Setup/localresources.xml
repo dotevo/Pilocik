@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <maps>
+
+    </maps>
+    <styles>
+        <style version="1.0" name="Default" file="defaultLayoutStyle.qss"/>
+    </styles>
+    <plugins/>
+    <applications>
+        <application size="0" path="app/winCE/" name="Pilocik" architecture="winCE">
+            <file version="1.0.0" name="Pilocik.exe"/>
+            <file version="1.0.0" name="msvcr90.dll"/>
+			<file version="1.0.0" name="settings.xml"/>
+			<file version="1.0.0" name="defaultLayoutStyle.qss"/>
+        </application>
+    </applications>
+</resources>

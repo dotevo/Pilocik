@@ -59,6 +59,7 @@ private slots:
     void on_tabSimButton_clicked();
     void on_tabPartGenButton_clicked();
     void on_tabPartRenderButton_clicked();
+    void on_poiGenerateButton_clicked();
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);
