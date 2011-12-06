@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "newsframe.h"
+#include "installframe.h"
+#include "mapdownloadframe.h"
+#include "resourcesmanager.h"
 #include <QTimer>
 #include <QMouseEvent>
 #include <QDebug>
@@ -24,11 +27,29 @@ MainWindow::MainWindow(QWidget *parent) :
     tabs.append(ui->tab4);
     tabs.append(ui->tab5);
     tabs.append(ui->tab6);
+
+    NewsFrame *nframe = new NewsFrame();
+    ui->contentFrame->layout()->addWidget(nframe);
+    tabFrames.append(nframe);
+    MapDownloadFrame *mdframe = new MapDownloadFrame;
+    mdframe->hide();
+    tabFrames.append(mdframe);
+    ui->contentFrame->layout()->addWidget(mdframe);
+    InstallFrame *iframe = new InstallFrame();
+    iframe->hide();
+    tabFrames.append(iframe);
+    ui->contentFrame->layout()->addWidget(iframe);
+
     activeTab = 0;
     selectTab(0);
 
-    NewsFrame* nf = new NewsFrame();
-    ui->contentFrame->layout()->addWidget(nf);
+    asc = ActiveSyncComm::getInstance(qApp);
+    rm = ResourcesManager::getInstance(qApp);
+    connect(asc, SIGNAL(connected()), rm, SLOT(getDeviceResources()));
+    asc->reconnect();
+
+    connect(rm, SIGNAL(serverResObtained()), mdframe, SLOT(init()));
+    connect(rm, SIGNAL(localResObtained()), iframe, SLOT(init()));
 }
 
 MainWindow::~MainWindow()
@@ -36,7 +57,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::hideAllTabs()
+{
+    foreach(QFrame *el, tabFrames)
+        el->hide();
+}
+
 void MainWindow::selectTab(int id){
+    hideAllTabs();
+    tabFrames.at(id)->show();
     QString activeTabStyle = "QPushButton{width:173px;height:65px;padding: 0;padding-left: 15px;font-size: 16px;"
             "font-family: 'Trebuchet MS', Tahoma, Verdana;font-weight: bold;color: #e37201;"
             "text-align: left;background-image: url(':/images/activeTab.png');background-repeat: no-repeat;"

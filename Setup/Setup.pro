@@ -18,14 +18,18 @@ SOURCES += main.cpp\
     filedownload.cpp \
     mapdownloadframe.cpp \
     activesynccomm.cpp \
-    installframe.cpp
+    installframe.cpp \
+    resourcesmanager.cpp \
+    installer.cpp
 
 HEADERS  += mainwindow.h \
     newsframe.h \
     filedownload.h \
     mapdownloadframe.h \
     activesynccomm.h \
-    installframe.h
+    installframe.h \
+    resourcesmanager.h \
+    installer.h
 
 FORMS    += mainwindow.ui \
     newsframe.ui \
@@ -36,6 +40,10 @@ INCLUDEPATH += activesync\inc
 
 RESOURCES += \
     res.qrc
+
+
+
+
 
 
 

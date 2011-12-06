@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/_poland.db","../test/config.xml");
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/_poland.db","../config.xml");
 
     //------------SAVE-----------------
 //    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData("g:/poi.db");

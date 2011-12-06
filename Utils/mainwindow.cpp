@@ -6,6 +6,10 @@
 
 #include <osmscout/Partitionmodel.h>
 #include <osmscout/Routing.h>
+#include <pilibocik/preparedata.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/boundarybox.h>
 #include "../lib/PiLibocik/include/pilibocik/boundarybox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -46,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->zoom, SIGNAL(valueChanged(int)), ui->widget, SLOT(changeZoom(int)));
     connect(ui->showNodes, SIGNAL(stateChanged(int)), ui->widget, SLOT(showNodesChange(int)));
     connect(ui->showWays, SIGNAL(stateChanged(int)),ui->widget, SLOT(showWaysChange(int)));
-    connect(ui->showBoundaryEdges, SIGNAL(stateChanged(int)), ui->widget, SLOT(showBoundaryEdges(int)));
 
     connect(gps, SIGNAL(dataSend(QString)), ui->simOutput, SLOT(setText(QString)));
     connect(gps, SIGNAL(progressUpdate(int)), ui->simSlider, SLOT(setValue(int)));
@@ -152,6 +155,7 @@ void MainWindow::on_prioCalcDataFilePathButton_clicked()
 {
     ui->prioCalcDataFilePath->setText(QFileDialog::getOpenFileName(this,
          tr("Chose file"), "", tr("Text Files (*.txt)")));
+    ui->partCalcDataFilePath->setText(ui->prioCalcDataFilePath->text());
 }
 
 void MainWindow::on_prioCalcOutputFilePathButton_clicked()
@@ -188,12 +192,25 @@ void MainWindow::on_outputDirButton_clicked()
 {
     ui->outputDir->setText(QFileDialog::getSaveFileName(this,
          tr("Chose file"), "", tr("Database Files (*.db)")));
+    ui->poiMapPath->setText(ui->outputDir->text());
 }
 
 void MainWindow::on_simPathButton_clicked()
 {
     ui->simPath->setText(QFileDialog::getOpenFileName(this,
          tr("Chose file"), "", tr("GPS Files (*.gps)")));
+}
+
+void MainWindow::on_poiMapPathBrowseButton_clicked()
+{
+    ui->poiMapPath->setText(QFileDialog::getOpenFileName(this,
+        tr("Chose file"), "", tr("Database Files (*.db)")));
+}
+
+void MainWindow::on_poiConfigBrowseButton_clicked()
+{
+    ui->poiConfigPath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("XML Files (*.xml)")));
 }
 
 void MainWindow::on_cancelBtn_clicked()
@@ -262,6 +279,18 @@ void MainWindow::on_closeButton_clicked()
 {
     setVisible(false);
     this->close();
+}
+
+void MainWindow::on_poiGenerateButton_clicked()
+{
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData();
+    connect(pd, SIGNAL(progress(int)),ui->poiProgressBar, SLOT(setValue(int)));
+    pd->init(ui->poiMapPath->text(),ui->poiConfigPath->text());
+    QList<PiLibocik::Poi> pois=pd->getPoiList();
+    QMap<int,QString> types=pd->getPoiTypeNames();
+    PiLibocik::PoiFilePPOI n;
+    n.saveToFile(ui->poiFilePath->text(),pois,types);
+    ui->poiProgressBar->setValue(100);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

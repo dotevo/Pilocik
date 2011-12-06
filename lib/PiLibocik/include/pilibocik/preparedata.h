@@ -21,8 +21,9 @@
 
 namespace PiLibocik{
 
-    class PrepareData
+    class PrepareData: public QObject
     {
+        Q_OBJECT
     private:
         QSqlDatabase db;
         QStringList queriesBuffer;
@@ -41,14 +42,19 @@ namespace PiLibocik{
         PrepareData(QString dbMapPath, QString dbOutPath, QString XMLconfigPath);
         PrepareData(QString dbMapPath, QString XMLconfigPath);
         PrepareData(QString dbLoadPath);
+        PrepareData();
 
         QList<Poi> getPoiList();
         QMap<int,QString> getPoiTypeNames();
 
+        void init(QString dbMapPath, QString XMLconfigPath);
         void generateData();
         void saveToDatabase();
         void loadXMLconfig(QString XMLpath);
         void loadFromDatabase(QString dbLoadPath);
+
+    signals:
+        void progress(int percent);
 
     };
 }

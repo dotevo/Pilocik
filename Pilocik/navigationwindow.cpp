@@ -53,6 +53,10 @@ NavigationWindow::NavigationWindow(QWidget *parent) :
     QString layoutStyle = layoutStyleFile.readAll();
     this->setStyleSheet(layoutStyle);
     layoutStyleFile.close();
+
+    Qt::WindowFlags flags = Qt::FramelessWindowHint;
+    setWindowFlags(flags);
+    setAttribute(Qt::WA_TranslucentBackground);
 }
 
 NavigationWindow::~NavigationWindow()

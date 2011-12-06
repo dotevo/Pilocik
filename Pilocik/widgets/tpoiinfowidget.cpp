@@ -6,6 +6,8 @@ TPOIInfoWidget::TPOIInfoWidget(QWidget *parent) :
     ui(new Ui::TPOIInfoWidget)
 {
     ui->setupUi(this);
+
+    isPOI = false;
 }
 
 TPOIInfoWidget::~TPOIInfoWidget()

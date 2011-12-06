@@ -58,6 +58,11 @@ private slots:
     void on_tabSimButton_clicked();
     void on_tabPartGenButton_clicked();
     void on_tabPartRenderButton_clicked();
+    void on_poiGenerateButton_clicked();
+
+    void on_poiConfigBrowseButton_clicked();
+
+    void on_poiMapPathBrowseButton_clicked();
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);
