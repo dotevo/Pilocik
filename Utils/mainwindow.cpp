@@ -6,6 +6,10 @@
 
 #include <osmscout/Partitionmodel.h>
 #include <osmscout/Routing.h>
+#include <pilibocik/preparedata.h>
+#include <pilibocik/poi.h>
+#include <pilibocik/poifileppoi.h>
+#include <pilibocik/boundarybox.h>
 #include "../lib/PiLibocik/include/pilibocik/boundarybox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -268,6 +272,18 @@ void MainWindow::on_closeButton_clicked()
 {
     setVisible(false);
     this->close();
+}
+
+void MainWindow::on_poiGenerateButton_clicked()
+{
+    PiLibocik::PrepareData* pd = new PiLibocik::PrepareData();
+    connect(pd, SIGNAL(progress(int)),ui->poiProgressBar, SLOT(setValue(int)));
+    pd->init(ui->poiMapPath->text(),ui->poiConfigPath->text());
+    QList<PiLibocik::Poi> pois=pd->getPoiList();
+    QMap<int,QString> types=pd->getPoiTypeNames();
+    PiLibocik::PoiFilePPOI n;
+    n.saveToFile(ui->poiFilePath->text(),pois,types);
+    ui->poiProgressBar->setValue(100);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

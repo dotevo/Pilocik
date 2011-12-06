@@ -13,13 +13,10 @@
   <property name="windowTitle">
    <string>Setup - Pilocik</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="res.qrc">
-    <normaloff>:/images/pilocik_ico.png</normaloff>:/images/pilocik_ico.png</iconset>
-  </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	background-image: url(':/images/background.png');
+	background-repeat: no-repeat;
 } 
 
 #tab1,#tab2,#tab3,#tab4,#tab5,#tab6{
@@ -60,6 +57,13 @@
 
 #minimalizeBtn:hover{
 	background-image: url(':/images/minimalize_hover.png');
+}
+
+#header{
+	font-weight: bold; 
+	font-size: 16px; 
+	font-family:'Trebuchet MS', Tahoma, Verdana;
+	color: #fe7e00;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -223,6 +227,9 @@ download</string>
           </item>
           <item>
            <widget class="QPushButton" name="tab4">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -243,6 +250,9 @@ download</string>
           </item>
           <item>
            <widget class="QPushButton" name="tab5">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -263,6 +273,9 @@ download</string>
           </item>
           <item>
            <widget class="QPushButton" name="tab6">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>

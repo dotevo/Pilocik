@@ -1,7 +1,9 @@
 #ifndef INSTALLFRAME_H
 #define INSTALLFRAME_H
 
+#include "resourcesmanager.h"
 #include <QFrame>
+#include <QList>
 
 namespace Ui {
     class InstallFrame;
@@ -17,6 +19,19 @@ public:
 
 private:
     Ui::InstallFrame *ui;
+    QList<MapResource> maps;
+    static const int WINCEactivesync = 0;
+    static const int WINCEmemorycard = 1;
+    static const int PCharddrive = 2;
+    int installMode;
+
+private slots:
+    void init();
+    void on_installBtn_clicked();
+    void on_mapsList_itemSelectionChanged();
+    void on_winCEbtn_clicked();
+    void on_sdBtn_clicked();
+    void on_PCbtn_clicked();
 };
 
 #endif // INSTALLFRAME_H

@@ -27,6 +27,21 @@ namespace PiLibocik{
 
     PrepareData::PrepareData(QString dbMapPath, QString XMLconfigPath)
     {
+        init(dbMapPath, XMLconfigPath);
+    }
+
+    PrepareData::PrepareData(QString dbLoadPath)
+    {
+        loadFromDatabase(dbLoadPath);
+    }
+
+    PrepareData::PrepareData()
+    {
+
+    }
+
+    void PrepareData::init(QString dbMapPath, QString XMLconfigPath)
+    {
         db = QSqlDatabase::addDatabase("QSQLITE");
         db.setDatabaseName(dbMapPath);
         db.open();
@@ -35,11 +50,6 @@ namespace PiLibocik{
         generateData();
 
         db.close();
-    }
-
-    PrepareData::PrepareData(QString dbLoadPath)
-    {
-        loadFromDatabase(dbLoadPath);
     }
 
     void PrepareData::loadXMLconfig(QString XMLpath)
@@ -153,7 +163,7 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                 }
 
                 QSqlQuery qwaynodes;
@@ -221,10 +231,12 @@ namespace PiLibocik{
                     {
                         strtags.append("(").append(tags.at(x).first).append("=").append((tags.at(x)).second).append(")");
                     }
-                    qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
+                    //qDebug()<<lon<<lat<<name<<i.key()<<strtags<<hash;
                     wayNodes.clear();
                 }
             }
+            emit progress(i.key()*100/poiTypes.size());
+            qDebug()<<i.key()*100/poiTypes.size();
         }
 
         removePoiDuplicates();
@@ -239,7 +251,7 @@ namespace PiLibocik{
             {
                 Poi nodePoi = poiFromNodesList.takeLast();
                 if(poi.getGeohash().left(7)==nodePoi.getGeohash().left(7)&&poi.getType()==nodePoi.getType()){
-                    qDebug()<<poi.getGeohash()<<nodePoi.getGeohash();
+                    //qDebug()<<poi.getGeohash()<<nodePoi.getGeohash();
                     removed++;
                 }
                 else
@@ -247,7 +259,7 @@ namespace PiLibocik{
             }
         }
         poiFromNodesList.clear();
-        qDebug()<<"removed"<<removed<<"duplicates";
+        //qDebug()<<"removed"<<removed<<"duplicates";
     }
 
     void PrepareData::createTables()

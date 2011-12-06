@@ -18,10 +18,11 @@ FileDownload::FileDownload()
              SLOT(downloadFinished(QNetworkReply*)));
  }
 
- void FileDownload::doDownload(const QUrl &url)
+ void FileDownload::doDownload(const QUrl &url, QString savePath)
  {
      QNetworkRequest request(url);
      QNetworkReply *reply = manager.get(request);
+     this->savePath = savePath;
 
      connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
              SLOT(downloadProgress(qint64,qint64)));
@@ -29,7 +30,7 @@ FileDownload::FileDownload()
      currentDownloads.append(reply);
  }
 
- QString FileDownload::saveFileName(const QUrl &url)
+ QString FileDownload::saveFileName(const QUrl &url, bool rewrite)
  {
      QString path = url.path();
      QString basename = QFileInfo(path).fileName();
@@ -37,7 +38,7 @@ FileDownload::FileDownload()
      if (basename.isEmpty())
          basename = "download";
 
-     if (QFile::exists(basename)) {
+     if (!rewrite && QFile::exists(basename)) {
          // already exists, don't overwrite
          int i = 0;
          basename += '.';
@@ -47,7 +48,7 @@ FileDownload::FileDownload()
          basename += QString::number(i);
      }
 
-     return basename;
+     return savePath+basename;
  }
 
  bool FileDownload::saveToDisk(const QString &filename, QIODevice *data)
@@ -68,7 +69,7 @@ FileDownload::FileDownload()
 
  void FileDownload::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
  {
-    qDebug()<<bytesReceived<<bytesTotal;
+    emit progress(bytesReceived, bytesTotal);
  }
 
 

@@ -13,6 +13,8 @@
         <file>images/exit_hover.png</file>
         <file>images/minimalize.png</file>
         <file>images/minimalize_hover.png</file>
-        <file>images/pilocik_ico.png</file>
+        <file>images/arrow.png</file>
+        <file>images/Device.png</file>
+        <file>images/Laptop.png</file>
     </qresource>
 </RCC>
