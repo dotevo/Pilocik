@@ -10,7 +10,7 @@ class ActiveSyncComm: public QObject
     Q_OBJECT
 public:
     ~ActiveSyncComm();
-    static ActiveSyncComm *getInstance(QApplication* a = 0);
+    static ActiveSyncComm* getInstance(QApplication* a = 0);
     static ActiveSyncComm *instance;
     void reconnect();
     QString getDeviceSettings(bool reload=false);

@@ -30,7 +30,6 @@ private slots:
     void on_installBtn_clicked();
     void on_mapsList_itemSelectionChanged();
     void on_winCEbtn_clicked();
-    void on_sdBtn_clicked();
     void on_PCbtn_clicked();
 };
 
