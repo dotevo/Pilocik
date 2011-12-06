@@ -16,6 +16,7 @@
 
 #include <QDebug>
 
+
 #include <QMouseEvent>
 #include <QLineF>
 #include <QDebug>
@@ -90,7 +91,7 @@ MapRenderWidget::MapRenderWidget(QWidget *parent,int width,int height):QWidget(p
 
     rendererThread=new MapPixmapRenderer(this);
     qRegisterMetaType<osmscout::MercatorProjection>("osmscout::MercatorProjection");
-    connect(rendererThread, SIGNAL(pixmapRendered(QImage*,osmscout::MercatorProjection,QList<PiLibocik::Poi>)), this, SLOT(newPixmapRendered(QImage*,osmscout::MercatorProjection,QList<PiLibocik::Poi>)));
+    connect(rendererThread, SIGNAL(pixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)), this, SLOT(newPixmapRendered(QImage,osmscout::MercatorProjection,QList<PiLibocik::Poi>)));
     //testPixmap();
 
     searching = new osmscout::Searching();
@@ -417,16 +418,11 @@ QList<osmscout::Routing::Step> MapRenderWidget::getRoute()
     return route;
 }
 
-void MapRenderWidget::newPixmapRendered(QImage *pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList){
-    if(pixmap==0)return;
-	qDebug()<<"newPixmapRendered";
+void MapRenderWidget::newPixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList){
+    if(pixmap.isNull())return;
     projectionRendered=projection;
-	qDebug()<<"isNull?"<<pixmap->isNull();
-    if(pixmap->isNull())return;
-    this->image=pixmap->copy();
+    this->image=pixmap;
     this->poiList = poiList;
-    delete pixmap;
-	qDebug()<<"beforeTest";
     testPixmap();
     repaint();
 }
@@ -835,13 +831,14 @@ void MapPixmapRenderer::run(){
         QSize size(projection->GetWidth(),projection->GetHeight());
         //TODO: TEST FORMATS
 
-       QImage *pixmap=new QImage(size,QImage::Format_RGB16);
+       //QImage *pixmap=new QImage(size,QImage::Format_RGB16);
+        QImage pixmap(size,QImage::Format_RGB16);
 //        qDebug()<<"LL"<<projection->GetWidth();
         osmscout::MapData             data;
         osmscout::MapParameter        drawParameter;
         osmscout::AreaSearchParameter searchParameter;
 
-        QPainter *painter=new QPainter(pixmap);
+        QPainter *painter=new QPainter(&pixmap);
         drawParameter.SetOptimizeAreaNodes(true);
         drawParameter.SetOptimizeWayNodes(true);
         database->GetObjects(*(styleConfig),
@@ -924,7 +921,14 @@ void MapPixmapRenderer::drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection &pr
             }
         }
         if(!image.isNull())
+            try
+            {
             painter->drawImage(QPointF(x-6,y-6), image);
+            }
+        catch(...){
+                qDebug() << "exception thrown\n";
+            }
+
     }
 }
 

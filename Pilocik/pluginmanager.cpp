@@ -97,6 +97,7 @@ void PluginManager::unloadPlugin(QString name){
     if(a==0)return;
 
     PluginInterface *pi=qobject_cast<PluginInterface *>(a->instance());
+    if(pi==0)return;
     Settings::getInstance()->modifyPluginSettings(pi->getName(),pi->getSettings());
     QListIterator <PluginWidget*> plugin(pi->getWidgets());
     while(plugin.hasNext()){
