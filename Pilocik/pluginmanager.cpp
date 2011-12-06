@@ -41,7 +41,7 @@ PluginManager::PluginManager(){
 }
 
 void PluginManager::loadPlugins(){
-    //todo Load plugins from settings
+
     initAll();
     runAll();
 }
