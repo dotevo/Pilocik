@@ -10,7 +10,6 @@ Way::Way(){
     restriction=new QVector<Restriction>();
 }
 
-
 Way::Way(const Way &way){
     id=way.id;
     prio=way.prio;
@@ -21,8 +20,6 @@ Way::Way(const Way &way){
     for(int i=0;i<way.restriction->size();i++)
         restriction->push_back(way.restriction->at(i));
 }
-
-
 
 Way::Way(int id,double prio,qint8 oneway,PartitionFile*p):id(id),prio(prio),oneway(oneway),part(p){
     restriction=new QVector<Restriction>();

@@ -1,7 +1,14 @@
 #include "gpsreceiver.h"
 #include <cstdlib>
+#include "navigationwindow.h"
+#include "twidgetmanager.h"
 
-
+#include <QDebug>
+#include "routewindow.h"
+#include <pilibocik/partition/node.h>
+#include <pilibocik/partition/way.h>
+#include "osmscout/Routing.h"
+#include <QList>
 
 GPSreceiver::GPSreceiver() : sharedMem("GPSDATA")
 {
@@ -23,6 +30,15 @@ void GPSreceiver::setSimPath(QString path)
 
 bool GPSreceiver::startSimulation()
 {
+    parseFile();
+
+    NavigationWindow::main->mapRenderer->setRoute(simulationRoute);
+    //NavigationWindow::main->setRoute(simulationRoute);
+   //NavigationWindow::main->mapRenderer->setRouting(true);
+    TWidgetManager::getInstance()->setRouting(true);
+
+    emit startSim();
+
     QFile file(path);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -246,6 +262,152 @@ void GPSreceiver::run()
 void GPSreceiver::clearBuffer()
 {
     output.clear();
+}
+
+bool GPSreceiver::parseFile()
+{
+    QFile file(path);
+    QStringList outputData;
+    GPSdata gps_data = GPSdata();
+
+    QString dpath = path;
+    dpath = dpath.left(dpath.length() - 1);
+    dpath += "d";
+
+    qDebug() << path << " " << dpath;
+
+    if (QFile::exists(dpath)) {
+        QFile dfile(dpath);
+
+        dfile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        while (!dfile.atEnd()) {
+            QByteArray l = dfile.readLine();
+            QString line(l);
+            QStringList list = line.split(',');
+
+            osmscout::Routing::Step step;
+            step.id = list.at(0).toInt();
+            step.lon = list.at(1).toDouble();
+            step.lat = list.at(2).toDouble();
+
+            //qDebug() << list.at(3);
+            if (list.at(3).compare("C\n", Qt::CaseInsensitive) == 0)
+                step.crossing = true;
+            else
+                step.crossing = false;
+
+            simulationRoute.append(step);
+
+        }
+
+        dfile.close();
+    }
+
+    else {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            emit simStatusUpdate("Unable to open specified file.");
+            return false;
+        }
+
+        int i = 0;
+        QList<int> ids;
+        double dist = 99999;
+        PiLibocik::Partition::Node node;
+        while (!file.atEnd()) {
+            QByteArray line = file.readLine();
+            outputData.append(line);
+            int lastCross = -1;
+            if(line.contains("$GPRMC"))
+            {
+                /*
+                osmscout::Routing::Step step = gps_data.getRouteFromBuffer(&outputData);
+
+                PiLibocik::Partition::Node node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(step.lon, step.lat));
+
+                step.id = node.getId();
+
+                //if (node)
+                //qDebug() << node.getWaysObj().size();
+                //if (!simulationRoute.contains(step))
+                if (!simulationRoute.contains(step)) {
+                    simulationRoute.append(step);
+                //    qDebug() << "Node has " << node.getWaysObj().size() << " ways";
+                } else {
+
+                }
+                */
+                osmscout::Routing::Step step = gps_data.getRouteFromBuffer(&outputData);
+                step.crossing = false;
+                simulationRoute.append(step);
+
+                node = NavigationWindow::main->routeWin->routingManager->getPartitionFile()->getNearestNode(PiLibocik::Position(step.lon, step.lat));
+                //qDebug() << node.getWaysObj().size();
+                //qDebug() << node.getId();
+                double actDist = osmscout::Searching::CalculateDistance(node.getLon(), node.getLat(), step.lon, step.lat);
+                if (ids.contains(node.getId()) || ids.size() == 0) {
+                    if (ids.size() == 0) {
+                        ids.append(node.getId());
+                    }
+                    //qDebug() << "X" << " " << dist << " " << actDist << " IDS SIZE: " << ids.size();
+                    if (actDist < dist) {
+                        dist = actDist;
+                        if (lastCross >= 0) {
+                            osmscout::Routing::Step s = simulationRoute.at(lastCross);
+                            s.crossing = false;
+                            simulationRoute.removeAt(lastCross);
+                            simulationRoute.insert(lastCross, s);
+                            //simulationRoute.at(lastCross).setCrossing(false);
+                        }
+                        lastCross = i;
+                        //qDebug() << lastCross << " " << i;
+                        //qDebug() << "y";
+                        osmscout::Routing::Step s = simulationRoute.at(i);
+                        s.crossing = true;
+                        simulationRoute.removeAt(i);
+                        simulationRoute.insert(i, s);
+                    } else {
+
+                    }
+                }
+                else {
+                    //qDebug() << "I change distance " << dist << " " << actDist;
+                    ids.append(node.getId());
+                    dist = actDist;
+                    lastCross = i;
+                    osmscout::Routing::Step s = simulationRoute.at(i);
+                    s.crossing = true;
+                    simulationRoute.removeAt(i);
+                    simulationRoute.insert(i, s);
+                }
+
+                i++;
+                if (i % 100 == 0) {
+                    qDebug() << i;
+                }
+            }
+        }
+
+        qDebug() << "SIMULATION ROUTE: " << simulationRoute.length();
+        file.close();
+
+        QFile dfile(dpath);
+
+        dfile.open(QIODevice::WriteOnly | QIODevice::Text);
+
+        QTextStream stream(&dfile);
+
+        foreach (osmscout::Routing::Step step, simulationRoute) {
+            QString symbol = step.crossing ? "C":"N";
+            stream << QString::number(step.id) << ',' << QString::number((double)step.lon, 'f', 10) << ',' << QString::number((double)step.lat, 'f', 10) << ',' << symbol << "\n";
+        }
+
+        dfile.close();
+    }
+
+    qDebug() << "Finish load data";
+    return true;
 }
 
 void GPSreceiver::setMode(int m)

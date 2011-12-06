@@ -332,13 +332,14 @@ Node PartitionFile::getNearestNode(Position pos){
     while(posAroundIter.hasNext()) {
         Position tmpPos = posAroundIter.next();
         Geohash geo = tmpPos.getGeohash(prec);
+
         qint64 index = indexNodeFile->getNodesBlock(geo);
 
         if(index != -1)
             n.append(nodeFile->getBlock(index));
     }
 
-    QListIterator <Node> iter(n);    
+    QListIterator <Node> iter(n);
     double value=100000;
     while(iter.hasNext()){
         Node node=iter.next();
@@ -356,6 +357,7 @@ Node PartitionFile::getNearestNode(Position pos){
             double value2=node.getDistance(pos);
             if(value2<value){
                 value=value2;
+
                 ret=node;
             }
         }

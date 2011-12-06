@@ -668,7 +668,26 @@ void PointSelectionWindow::on_showOpened_stateChanged(int state)
 }
 
 void PointSelectionWindow::on_poiOK_clicked() {
+/*
+
+    NavigationWindow *par = qobject_cast<NavigationWindow*>(parent());
+
+    //par->setRoute(QVector<osmscout::Routing::Step>::fromStdVector(route));
+
+    PiLibocik::Position p1(17.0300428, 51.0814354);
+    PiLibocik::Position p2(17.0392651, 51.0761212);
+    //osmscout::Routing r(RoutingManager::getInstance()->getPartitionFile());
+    QList<osmscout::Routing::Step> route = NavigationWindow::main->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
+    //QList<osmscout::Routing::Step> route = par->routeWin->routingManager->getRouting()->CalculateRoute(p1, p2);
+
+    par->setRoute(route);
+
+    TWidgetManager::getInstance()->setRouting(true);
+
+    //par->setRoute(QList<osmscout::Routing::Step>::fromStdVector(route));
+
     //int selectedId = ui->poiTreeWidget->currentItem()->text(ID_COLUMN).toInt();
+*/
 
     if(retLon!=0 && retLat!=0 && !retName.isEmpty())
         emit positionChoosen(retLon, retLat, retName);

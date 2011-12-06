@@ -55,7 +55,7 @@ private:
 
     void drawPoiIcon(PiLibocik::Poi poi, osmscout::Projection& projection,QPainter *painter);
 signals:
-    void pixmapRendered(QImage *pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
+    void pixmapRendered(QImage pixmap,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 };
 
@@ -160,6 +160,7 @@ public:
         NoHint,
         NormalHint,
         LeaveRouteHint,
+        NearlyFinish,
         FinishRouteHint
     };
 
@@ -223,14 +224,13 @@ private:
     QPen setPenStyle(PenStyle penStyle = NORMAL_LINE);
     void setRouteSizes(int zoom);
 
-    void manualMove(QMouseEvent *e);
+    void manualMove(QPointF point);
 
 public slots:
-
     void leaveRoute(double actLon, double actLat, double destLon, double destLat);
     void DrawArrow(const osmscout::Projection& projection, QPainter *painter, double lon, double lat);
 
-    void newPixmapRendered(QImage *image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
+    void newPixmapRendered(QImage image,osmscout::MercatorProjection projection,QList<PiLibocik::Poi> poiList);
 
 };
 

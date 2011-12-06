@@ -3,6 +3,8 @@
 
 #include <QStringList>
 
+#include <osmscout/Routing.h>
+
 class GPSdata
 {
 public:
@@ -27,6 +29,11 @@ public:
      * @param gpsDataBuffer List of atomic NMEA GPS output information.
      */
     void parseBuffer(QStringList* gpsDataBuffer);
+
+    /**
+      @brief It gets part of route from buffer.
+      */
+    osmscout::Routing::Step getRouteFromBuffer(QStringList* gpsDataBuffer);
 };
 
 

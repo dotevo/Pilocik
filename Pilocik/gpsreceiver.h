@@ -17,8 +17,6 @@
 
 #include "gpsdata.h"
 
-
-
 /**
  * @brief Provides GPS device and Simulation support.
  *
@@ -59,6 +57,8 @@ public:
     GPSreceiver();
     ~GPSreceiver();
 
+    QList<osmscout::Routing::Step> simulationRoute;
+
     /**
      * @brief Set path of simulation file.
      *
@@ -85,13 +85,18 @@ public:
      */
     void setMode(int m);
 
-
     /**
      * @brief Clears buffer responsible for receiving GPS data.
      *
      * Buffer should be cleaned after each read from it to ensure best performance.
      */
     void clearBuffer();
+
+    /**
+      @brief Parsing file with gps data to gets route.
+      @return True if file is parsed to end.
+      */
+    bool parseFile();
 
 protected:
     void run();
@@ -120,6 +125,8 @@ signals:
      * @param status Text status of simulation.
      */
     void simStatusUpdate(QString status);
+
+    void startSim();
 };
 
 #endif // GPSRECEIVER_H

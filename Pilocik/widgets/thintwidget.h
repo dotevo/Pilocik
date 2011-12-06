@@ -28,6 +28,8 @@ public:
     void setFinishRoute();
     void setLeaveRoute();
 
+    void setNearlyFinish(bool finish);
+
     void setIntersection(osmscout::Searching::Intersection intersection);
 
     QPointF calculateWay(double px, double py);
@@ -54,7 +56,7 @@ private:
 
     double distance;
 
-
+    bool finish;
 
     //osmscout::Searching::Intersection *intersection;
 

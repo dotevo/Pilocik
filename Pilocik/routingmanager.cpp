@@ -31,7 +31,11 @@ void RoutingManager::run()
     QList< osmscout::Routing::Step > routeList;
     QList< osmscout::Routing::Step > finalRoute;
 
+
+//    NavigationWindow::main->mapRenderer->setRoute( routeList);
+
     NavigationWindow::main->mapRenderer->setRoute((QList< osmscout::Routing::Step >) finalRoute);
+
     emit NewRoute();
 
     // first
@@ -77,6 +81,7 @@ void RoutingManager::run()
     }
 
     NavigationWindow::main->mapRenderer->setRoute(finalRoute);
+
     emit NewRoute();
 }
 
