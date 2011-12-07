@@ -55,6 +55,7 @@ public:
      * @brief
      *
      * @fn isEmpty
+     * @return If empty return true.
      */
     bool isEmpty();
     /**
@@ -64,7 +65,7 @@ public:
      */
     int getId();
     /**
-     * @brief
+     * @brief Get Priority (in routing)
      *
      * @fn getPrioritet
      */
@@ -77,28 +78,28 @@ public:
      */
     void addNode(qint64 node);
     /**
-     * @brief
+     * @brief Get nodes indexes.
      *
      * @fn getNodes
      * @return all nodes Inx pos in way
      */
     QVector<qint64> getNodes();
     /**
-     * @brief
+     * @brief Get nodes objects.
      *
      * @fn getNodesObj
      * @return all nodes objects in way
      */
     QVector<Node> getNodesObj();
     /**
-     * @brief
+     * @brief Add new restriction to way.
      *
      * @fn addRestriction
      * @param r
      */
     void addRestriction(Restriction r);
     /**
-     * @brief
+     * @brief Get restrictions in this way.
      *
      * @fn getRestrictions
      */
