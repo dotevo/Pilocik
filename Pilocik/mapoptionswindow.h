@@ -16,6 +16,9 @@ public:
     explicit MapOptionsWindow(NavigationWindow *parent);
     ~MapOptionsWindow();
 
+    /**
+      @brief Sets focus to other object than qlineedit to prevent keyboard widget autostart.
+      */
     void setStartFocus();
 
 private slots:

@@ -32,8 +32,10 @@ namespace Ui {
 class MapPixmapRenderer: public QThread{
     Q_OBJECT
 public:
-    MapPixmapRenderer(QObject *parent = 0);
-    void getPixmap();
+    MapPixmapRenderer(QObject *parent = 0);    
+    /**
+      @brief Main body of thread. Renders new map.
+      */
     void run();
     /**
       @brief Init
@@ -43,6 +45,10 @@ public:
       @param magnification ratio
       */
     void init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d);
+
+    /**
+      @brief Returns true if rendering thread is working.
+      */
     bool isWorking();
 private:
     float d;
@@ -177,6 +183,11 @@ public:
       */
     void setCacheSettings(int cachePixmapSize, double delta);
 
+    /**
+      @brief Draws arrow on map in specified position. Used to mark point position in point information window.
+      @param lon Longitude of marked point.
+      @param lat Latitude of marked point.
+      */
     void insertArrow(double lon, double lat);
 
     bool PixelToGeo(double x, double y,

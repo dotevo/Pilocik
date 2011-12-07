@@ -18,6 +18,9 @@ public:
     explicit GPSOptionsWindow(NavigationWindow *parent);
     ~GPSOptionsWindow();
 
+    /**
+      @brief Sets focus at startup to something other than qlineedit object.
+      */
     void setStartFocus();
 
 private slots:
