@@ -596,8 +596,41 @@ Rendering</string>
                  </item>
                  <item>
                   <widget class="QPushButton" name="cancelBtn">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Cancel</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_31">
+                 <item>
+                  <widget class="QLabel" name="label_22">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>95</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Status:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="mcStatus">
+                   <property name="text">
+                    <string>Ready...</string>
                    </property>
                   </widget>
                  </item>
@@ -649,36 +682,6 @@ Rendering</string>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_31">
-                 <item>
-                  <widget class="QLabel" name="label_22">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>95</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Status:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="mcStatus">
-                   <property name="text">
-                    <string>Ready...</string>
                    </property>
                   </widget>
                  </item>
@@ -803,6 +806,16 @@ Rendering</string>
                   <widget class="QPushButton" name="poiGenerateButton">
                    <property name="text">
                     <string>Generate poi</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="poiCancelButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="text">
+                    <string>Cancel</string>
                    </property>
                   </widget>
                  </item>
@@ -1842,58 +1855,7 @@ Rendering</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_24">
-                 <item>
-                  <widget class="QRadioButton" name="partDatabaseRadioButton">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="partRenderPathL">
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>15</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Partition database path:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="partDatabaseRenderPath">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="partDatabaseRenderPathButton">
-                   <property name="text">
-                    <string>Browse</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_33">
-                 <item>
-                  <widget class="QRadioButton" name="partBinaryRadioButton">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
                  <item>
                   <widget class="QLabel" name="label_23">
                    <property name="minimumSize">
@@ -1903,7 +1865,7 @@ Rendering</string>
                     </size>
                    </property>
                    <property name="text">
-                    <string>Partition binary files:</string>
+                    <string>Partition binary files path:</string>
                    </property>
                   </widget>
                  </item>
@@ -1935,16 +1897,6 @@ Rendering</string>
                   <widget class="QCheckBox" name="showNodes">
                    <property name="text">
                     <string>Show nodes</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="showBoundaryEdges">
-                   <property name="text">
-                    <string>Show boundary edges</string>
                    </property>
                    <property name="checked">
                     <bool>true</bool>

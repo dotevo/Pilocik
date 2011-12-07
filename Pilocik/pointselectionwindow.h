@@ -29,6 +29,10 @@ class PointSelectionWindow : public QFullScreenFrame
 public:
     explicit PointSelectionWindow(NavigationWindow *parent = 0, double currentLocationX = 0, double currentLocationY = 0);
     ~PointSelectionWindow();
+
+    /**
+      @brief If PointSelectionWindow is used to select neares point, information is displayed at top of window.
+      */
     void showNearestInfo();
 
 private slots:
@@ -49,6 +53,10 @@ private slots:
       */
     void on_streetLineEdit_textChanged(const QString &arg1);
 
+
+    /**
+      @brief Enables city line edit.
+      */
     void on_cityEditBtn_clicked();
 
     /**

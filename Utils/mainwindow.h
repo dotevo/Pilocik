@@ -51,7 +51,6 @@ private slots:
     void on_prioCalcButton_clicked();
     void on_partCalcButton_clicked();
     void on_partBinaryRenderButton_clicked();
-    void on_partDatabaseRenderPathButton_clicked();
     void on_partitionRenderButton_clicked();
     void on_hideButton_clicked();
     void on_closeButton_clicked();
@@ -60,6 +59,10 @@ private slots:
     void on_tabPartGenButton_clicked();
     void on_tabPartRenderButton_clicked();
     void on_poiGenerateButton_clicked();
+
+    void on_poiConfigBrowseButton_clicked();
+
+    void on_poiMapPathBrowseButton_clicked();
 
 protected:
     void mouseMoveEvent(QMouseEvent *event);

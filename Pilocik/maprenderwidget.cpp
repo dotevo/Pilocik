@@ -811,10 +811,6 @@ MapPixmapRenderer::MapPixmapRenderer(QObject *parent):QThread(parent){
     started=false;
 }
 
-void MapPixmapRenderer::getPixmap(){
-
-}
-
 void MapPixmapRenderer::init(osmscout::Database *database,osmscout::MercatorProjection  *projection,osmscout::StyleConfig*style,float d){
     this->database=database;
     this->projection=projection;

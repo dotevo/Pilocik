@@ -74,10 +74,5 @@ void InstallFrame::on_winCEbtn_clicked()
     ui->mapFrame->show();
 }
 
-void InstallFrame::on_sdBtn_clicked()
-{
-    installMode = WINCEmemorycard;
-}
-
 
 

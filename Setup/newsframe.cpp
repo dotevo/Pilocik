@@ -17,7 +17,7 @@ NewsFrame::NewsFrame(QWidget *parent) :
     ui->setupUi(this);
 
     news = new FileDownload();
-    news->doDownload(QUrl("http://localhost/news.xml"));
+    news->doDownload(QUrl("http://194.54.16.66/news.xml"));
     connect(news, SIGNAL(finished(QString)), this, SLOT(parseNewsXML(QString)));
 }
 

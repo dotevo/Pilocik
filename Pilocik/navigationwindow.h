@@ -22,12 +22,28 @@ public:
     GPSreceiver* gps;
     explicit NavigationWindow(QWidget *parent = 0);
     ~NavigationWindow();
+    /**
+      @brief Resize evenet overload to keep buttons in correct place.
+      @param event Resize event.
+      */
     void    resizeEvent ( QResizeEvent * event );
     static NavigationWindow *main;
     MapRenderWidget *mapRenderer;
 
+    /**
+      @brief Retranslates application after language change.
+      */
     void retranslate();
+    /**
+      @brief Sets route that will be rendered.
+      @param route Route as list of routing steps.
+      */
     void setRoute(QList<osmscout::Routing::Step> route);
+
+    /**
+      @brief Returns map coordinates.
+      @return Coordinates of map central point.
+      */
     QPointF getCoordinates();
 
 private slots:

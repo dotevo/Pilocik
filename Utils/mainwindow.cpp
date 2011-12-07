@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->zoom, SIGNAL(valueChanged(int)), ui->widget, SLOT(changeZoom(int)));
     connect(ui->showNodes, SIGNAL(stateChanged(int)), ui->widget, SLOT(showNodesChange(int)));
     connect(ui->showWays, SIGNAL(stateChanged(int)),ui->widget, SLOT(showWaysChange(int)));
-    connect(ui->showBoundaryEdges, SIGNAL(stateChanged(int)), ui->widget, SLOT(showBoundaryEdges(int)));
 
     connect(gps, SIGNAL(dataSend(QString)), ui->simOutput, SLOT(setText(QString)));
     connect(gps, SIGNAL(progressUpdate(int)), ui->simSlider, SLOT(setValue(int)));
@@ -156,6 +155,7 @@ void MainWindow::on_prioCalcDataFilePathButton_clicked()
 {
     ui->prioCalcDataFilePath->setText(QFileDialog::getOpenFileName(this,
          tr("Chose file"), "", tr("Text Files (*.txt)")));
+    ui->partCalcDataFilePath->setText(ui->prioCalcDataFilePath->text());
 }
 
 void MainWindow::on_prioCalcOutputFilePathButton_clicked()
@@ -192,12 +192,25 @@ void MainWindow::on_outputDirButton_clicked()
 {
     ui->outputDir->setText(QFileDialog::getSaveFileName(this,
          tr("Chose file"), "", tr("Database Files (*.db)")));
+    ui->poiMapPath->setText(ui->outputDir->text());
 }
 
 void MainWindow::on_simPathButton_clicked()
 {
     ui->simPath->setText(QFileDialog::getOpenFileName(this,
          tr("Chose file"), "", tr("GPS Files (*.gps)")));
+}
+
+void MainWindow::on_poiMapPathBrowseButton_clicked()
+{
+    ui->poiMapPath->setText(QFileDialog::getOpenFileName(this,
+        tr("Chose file"), "", tr("Database Files (*.db)")));
+}
+
+void MainWindow::on_poiConfigBrowseButton_clicked()
+{
+    ui->poiConfigPath->setText(QFileDialog::getOpenFileName(this,
+         tr("Chose file"), "", tr("XML Files (*.xml)")));
 }
 
 void MainWindow::on_cancelBtn_clicked()
@@ -250,12 +263,6 @@ void MainWindow::on_partCalcButton_clicked()
 void MainWindow::on_partBinaryRenderButton_clicked()
 {
     ui->partBinaryRenderPath->setText(QFileDialog::getExistingDirectory());
-}
-
-void MainWindow::on_partDatabaseRenderPathButton_clicked()
-{
-    ui->partDatabaseRenderPath->setText(QFileDialog::getOpenFileName(this,
-        tr("Chose file"), "", tr("Database Files (*.db)")));
 }
 
 void MainWindow::on_partitionRenderButton_clicked()

@@ -1,4 +1,8 @@
 /*WINDOW*/
+QMainWindow {
+    border: 3px solid black;
+}
+
 QWidget > QTabWidget{
     background: #3c3c3c;
 }

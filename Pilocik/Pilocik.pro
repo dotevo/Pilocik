@@ -10,9 +10,9 @@ QT       += core gui sql \
 TARGET = ../../build/Pilocik
 TEMPLATE = app
 
-LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
-#Debug:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
-#Release:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
+#LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+Debug:LIBS += ../lib/PiLibocik/debug/libPiLibocik.a
+Release:LIBS += ../lib/PiLibocik/release/libPiLibocik.a
 
 TRANSLATIONS = lang/pl_PL.tr \
         lang/en_EN.tr
