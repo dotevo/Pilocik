@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QDir>
+#include <QGraphicsEffect>
 
 MapDownloadFrame::MapDownloadFrame(QWidget *parent) :
     QFrame(parent),
@@ -16,6 +17,12 @@ MapDownloadFrame::MapDownloadFrame(QWidget *parent) :
     ui->setupUi(this);
     selectedIdx = -1;
     ui->downloadProgress->hide();
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
+    effect->setBlurRadius(0);
+    effect->setColor(QColor("#FFFFFF"));
+    effect->setOffset(1,1);
+    ui->header->setGraphicsEffect(effect);
+    ui->mapsList->header()->setResizeMode(1, QHeaderView::Stretch);
 }
 
 MapDownloadFrame::~MapDownloadFrame()
@@ -45,7 +52,12 @@ void MapDownloadFrame::init()
                 break;
             }
         }
-        item->setText(4, downloaded.isEmpty()?"No":downloaded);
+        if(!downloaded.isEmpty())
+            item->setForeground(4, QColor("Green"));
+        else
+            item->setForeground(4, QColor("Red"));
+        item->setFont(4, QFont("Trebuchet MS", 9, QFont::Bold));
+        item->setText(4, downloaded.isEmpty()?"No":"Yes - ver. "+downloaded);
         foreach(MapResource dmr, ResourcesManager::instance->deviceMaps)
         {
             if(mr.name == dmr.name)
@@ -54,7 +66,19 @@ void MapDownloadFrame::init()
                 break;
             }
         }
-        item->setText(5, installed.isEmpty()?"No":installed);
+        item->setFont(5, QFont("Trebuchet MS", 9, QFont::Bold));
+        if(ActiveSyncComm::getInstance()->getStatus() != 1){
+            item->setForeground(5,QColor("Grey"));
+            item->setText(5, "Unknown");
+        }
+        else if(!installed.isEmpty()){
+            item->setForeground(5, QColor("Green"));
+            item->setText(5, "Yes - ver. "+installed);
+        }
+        else{
+            item->setForeground(5, QColor("Red"));
+            item->setText(5, "No");
+        }
     }
 }
 
@@ -97,9 +121,9 @@ void MapDownloadFrame::nextDownload()
     FileDownload *fd = new FileDownload();
     QString url = downloadUrls.last();
     downloadUrls.removeLast();
-    fd->doDownload(QUrl(url), "resources/map/"+selectedName+"/");
     connect(fd, SIGNAL(finished(QString)), this, SLOT(nextDownload()));
     connect(fd, SIGNAL(progress(qint64,qint64)), this, SLOT(progressUpdate(qint64,qint64)));
+    fd->doDownload(QUrl(url), "resources/map/"+selectedName+"/");
 }
 
 void MapDownloadFrame::progressUpdate(qint64 bytesReceived, qint64 bytesTotal)

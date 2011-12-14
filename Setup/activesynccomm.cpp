@@ -1,6 +1,7 @@
 #include "activesynccomm.h"
 #include <QDebug>
 #include <QString>
+#include <QTimer>
 
 ActiveSyncComm *ActiveSyncComm::instance = 0;
 
@@ -24,15 +25,52 @@ ActiveSyncComm::~ActiveSyncComm()
 
 void ActiveSyncComm::reconnect()
 {
+    start();
+}
+
+int ActiveSyncComm::getStatus()
+{
+    return status;
+}
+
+void ActiveSyncComm::run()
+{
+    qDebug()<<"connecting";
     HRESULT hr;
 
-    hr = TryRapiConnect(5000);
-    if( !SUCCEEDED(hr) )
-    {
-        qDebug()<<"Could not find device";
-    } else {
-        emit connected();
+    while(status!=1){
+        status = 0;
+        emit statusUpdate(0);
+        hr = TryRapiConnect(2000);
+        if( !SUCCEEDED(hr) )
+        {
+            qDebug()<<"Could not find device";
+            status = -1;
+            emit statusUpdate(-1);
+            Sleep(30000);
+        } else {
+            status = 1;
+            emit statusUpdate(1);
+            emit connected();
+        }
     }
+//    bool connected = true;
+//    while(connected)
+//    {
+//        LPWSTR buff;
+//        connected = CeGetTempPath(50,buff) != 0;
+//        Sleep(1000);
+//    }
+//    status = -1;
+//    emit statusUpdate(-1);
+//    qDebug()<<"uuuu kiszka";
+//    CeRapiUninit();
+//    qDebug()<<"uninit";
+    //reconnect();
+}
+
+void ActiveSyncComm::rapiDisconnect(){
+    CeRapiUninit();
 }
 
 QString ActiveSyncComm::getResources()

@@ -2,7 +2,10 @@
 #include "ui_mainwindow.h"
 #include "newsframe.h"
 #include "installframe.h"
+#include "stylesframe.h"
 #include "mapdownloadframe.h"
+#include "updateframe.h"
+#include "pluginsframe.h"
 #include "resourcesmanager.h"
 #include <QTimer>
 #include <QMouseEvent>
@@ -39,17 +42,34 @@ MainWindow::MainWindow(QWidget *parent) :
     iframe->hide();
     tabFrames.append(iframe);
     ui->contentFrame->layout()->addWidget(iframe);
+    UpdateFrame *uframe = new UpdateFrame();
+    uframe->hide();
+    tabFrames.append(uframe);
+    ui->contentFrame->layout()->addWidget(uframe);
+    StylesFrame *sframe = new StylesFrame();
+    sframe->hide();
+    tabFrames.append(sframe);
+    ui->contentFrame->layout()->addWidget(sframe);
+    PluginsFrame *pframe = new PluginsFrame();
+    pframe->hide();
+    tabFrames.append(pframe);
+    ui->contentFrame->layout()->addWidget(pframe);
 
     activeTab = 0;
     selectTab(0);
 
     asc = ActiveSyncComm::getInstance(qApp);
     rm = ResourcesManager::getInstance(qApp);
+    connect(asc, SIGNAL(statusUpdate(int)), this, SLOT(activesyncStatus(int)));
     connect(asc, SIGNAL(connected()), rm, SLOT(getDeviceResources()));
-    asc->reconnect();
-
     connect(rm, SIGNAL(serverResObtained()), mdframe, SLOT(init()));
+    connect(rm, SIGNAL(deviceResObtained()), mdframe, SLOT(init()));
+    connect(rm, SIGNAL(serverResObtained()), sframe, SLOT(init()));
+    connect(rm, SIGNAL(deviceResObtained()), sframe, SLOT(init()));
+    connect(rm, SIGNAL(serverResObtained()), pframe, SLOT(init()));
+    connect(rm, SIGNAL(deviceResObtained()), pframe, SLOT(init()));
     connect(rm, SIGNAL(localResObtained()), iframe, SLOT(init()));
+    asc->reconnect();
 }
 
 MainWindow::~MainWindow()
@@ -113,6 +133,26 @@ void MainWindow::on_tab6_clicked(){
 void MainWindow::on_exitBtn_clicked(){
     setVisible(false);
     this->close();
+}
+
+void MainWindow::activesyncStatus(int status){
+    switch(status){
+    case -1:
+        ui->deviceBtn->setStyleSheet("background-image: url(:/images/devDisconn.png);");
+        break;
+    case 0:
+        ui->deviceBtn->setStyleSheet("background-image: url(:/images/devRefresh.png);");
+        break;
+    case 1:
+        ui->deviceBtn->setStyleSheet("background-image: url(:/images/devConn.png);");
+        break;
+    }
+}
+
+void MainWindow::on_deviceBtn_clicked()
+{
+
+    asc->reconnect();
 }
 
 void MainWindow::on_minimalizeBtn_clicked(){

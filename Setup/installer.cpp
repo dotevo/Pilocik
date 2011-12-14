@@ -17,6 +17,8 @@ void Installer::init(QString p, QList<MapResource> maps)
     this->maps = maps;
     paths.append(path);
     paths.append(path+"map");
+    paths.append(path+"styles");
+    paths.append(path+"plugins");
     foreach(MapResource map, maps)
     {
         QString mapPath = path+map.path;
@@ -107,6 +109,12 @@ void Installer::install()
         qDebug()<<cp.first<<cp.second;
         emit progressUpdate(++i*100/copyBuffer.size());
     }
+    QStringList mapNames;
+    foreach(MapResource map, maps)
+        mapNames.append(map.name);
+    ResourcesManager::getInstance()->deviceInstall(path, "/ResidentFlash/Pilocik.xml",
+                                                   mapNames, QStringList("Default"),
+                                                   QStringList(), "Pilocik", "winCE");
 }
 
 void Installer::run()

@@ -7,11 +7,41 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>527</height>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Frame</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#errorFrame{
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: rgb(226, 226, 226);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(248, 248, 248, 255), stop:1 rgba(255, 255, 255, 255));
+}
+
+QTreeWidget QHeaderView{
+	text-align: center;
+	font-weight: bold;
+	color: rgb(63, 63, 63);
+	font-family: &quot;Trebuchet MS&quot;, Tahoma, Verdana;
+}
+
+QTreeWidget{
+	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.7 rgba(255, 255, 255, 255), stop:1 rgba(228, 228, 228, 255));
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(200, 200, 200);
+}
+
+QTreeWidget::item{
+	height: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-family: &quot;Trebuchet MS&quot;, Tahoma, Verdana;
+}</string>
   </property>
   <property name="frameShape">
    <enum>QFrame::StyledPanel</enum>
@@ -20,6 +50,9 @@
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="topMargin">
+    <number>20</number>
+   </property>
    <item>
     <widget class="QLabel" name="header">
      <property name="text">
@@ -96,9 +129,6 @@ font-size: 14px;
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="PCbtn">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="styleSheet">
          <string notr="true">width: 200px;
 height: 50px;
@@ -133,6 +163,58 @@ font-size: 14px;
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QFrame" name="errorFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="res.qrc">:/images/Signal attention.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="font">
+            <font>
+             <family>Trebuchet MS</family>
+             <pointsize>8</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Device is disconnected. Please connect device to PC and click on GPS device icon on top right corner to try connect again. If device is connected please ensure it is powered on. </string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -46,6 +46,9 @@ private slots:
     void on_tab6_clicked();
     void on_exitBtn_clicked();
     void on_minimalizeBtn_clicked();
+    void on_deviceBtn_clicked();
+
+    void activesyncStatus(int status);
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);

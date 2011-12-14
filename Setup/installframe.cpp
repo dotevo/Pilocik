@@ -5,6 +5,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QGraphicsDropShadowEffect>
 
 InstallFrame::InstallFrame(QWidget *parent) :
     QFrame(parent),
@@ -14,11 +15,31 @@ InstallFrame::InstallFrame(QWidget *parent) :
     ui->pbFrame->hide();
     ui->pathFrame->hide();
     ui->mapFrame->hide();
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
+    effect->setBlurRadius(0);
+    effect->setColor(QColor("#FFFFFF"));
+    effect->setOffset(1,1);
+    ui->header->setGraphicsEffect(effect);
+    ui->mapsList->header()->setResizeMode(1, QHeaderView::Stretch);
+    ui->errorFrame->setVisible(false);
+
 }
 
 InstallFrame::~InstallFrame()
 {
     delete ui;
+}
+
+void InstallFrame::deviceStatus(int status)
+{
+    if(status == 1)
+    {
+        ui->errorFrame->setVisible(false);
+        if(installMode == WINCEactivesync){
+            ui->pathFrame->setVisible(true);
+            ui->mapFrame->setVisible(true);
+        }
+    }
 }
 
 void InstallFrame::init()
@@ -51,14 +72,15 @@ void InstallFrame::on_installBtn_clicked()
 {
     if(!maps.isEmpty())
     {
-        Installer inst = Installer();
-        inst.init(ui->installPath->text(), maps);
+        Installer *inst = new Installer();
+        inst->init(ui->installPath->text(), maps);
         ui->pathFrame->hide();
         ui->mapFrame->hide();
         ui->selectFrame->hide();
         ui->pbFrame->show();
-        connect(&inst, SIGNAL(progressUpdate(int)), ui->progressBar, SLOT(setValue(int)));
-        inst.install();
+        connect(inst, SIGNAL(progressUpdate(int)), ui->progressBar, SLOT(setValue(int)));
+        //inst.install();
+        inst->start();
     }
 }
 
@@ -70,8 +92,14 @@ void InstallFrame::on_PCbtn_clicked()
 void InstallFrame::on_winCEbtn_clicked()
 {
     installMode = WINCEactivesync;
-    ui->pathFrame->show();
-    ui->mapFrame->show();
+    if(ActiveSyncComm::getInstance()->getStatus()!=1)
+    {
+        ui->errorFrame->setVisible(true);
+        connect(ActiveSyncComm::getInstance(), SIGNAL(statusUpdate(int)), this, SLOT(deviceStatus(int)));
+    } else {
+        ui->pathFrame->show();
+        ui->mapFrame->show();
+    }
 }
 
 

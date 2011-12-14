@@ -9,12 +9,16 @@
 #include <QGraphicsDropShadowEffect>
 #include <QLabel>
 #include <QDomElement>
+#include <QMovie>
 
 NewsFrame::NewsFrame(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::NewsFrame)
 {
     ui->setupUi(this);
+    QMovie *movie = new QMovie(":/images/ajax-loader.gif");
+    ui->loadingGIF->setMovie(movie);
+    movie->start();
 
     news = new FileDownload();
     news->doDownload(QUrl("http://194.54.16.66/news.xml"));
@@ -28,6 +32,7 @@ NewsFrame::~NewsFrame()
 
 void NewsFrame::parseNewsXML(QString fileName)
 {
+    ui->loadingFrame->setVisible(false);
     doc = new QDomDocument();
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

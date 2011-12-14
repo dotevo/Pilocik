@@ -6,7 +6,7 @@
 
 QT       += core gui network xml
 
-LIBS += ..\Setup\activesync\Lib\rapi.lib
+LIBS += D:\Projects\Pilocik\!!NEW\Pilocik\Setup\activesync\Lib\rapi.lib
 
 TARGET = Setup
 TEMPLATE = app
@@ -20,7 +20,10 @@ SOURCES += main.cpp\
     activesynccomm.cpp \
     installframe.cpp \
     resourcesmanager.cpp \
-    installer.cpp
+    installer.cpp \
+    stylesframe.cpp \
+    updateframe.cpp \
+    pluginsframe.cpp
 
 HEADERS  += mainwindow.h \
     newsframe.h \
@@ -29,17 +32,32 @@ HEADERS  += mainwindow.h \
     activesynccomm.h \
     installframe.h \
     resourcesmanager.h \
-    installer.h
+    installer.h \
+    stylesframe.h \
+    updateframe.h \
+    pluginsframe.h
 
 FORMS    += mainwindow.ui \
     newsframe.ui \
     mapdownloadframe.ui \
-    installframe.ui
+    installframe.ui \
+    stylesframe.ui \
+    updateframe.ui \
+    pluginsframe.ui
 
 INCLUDEPATH += activesync\inc
 
 RESOURCES += \
     res.qrc
+
+
+
+
+
+
+
+
+
 
 
 

@@ -16,5 +16,10 @@
         <file>images/arrow.png</file>
         <file>images/Device.png</file>
         <file>images/Laptop.png</file>
+        <file>images/devConn.png</file>
+        <file>images/devDisconn.png</file>
+        <file>images/devRefresh.png</file>
+        <file>images/ajax-loader.gif</file>
+        <file>images/Signal attention.png</file>
     </qresource>
 </RCC>

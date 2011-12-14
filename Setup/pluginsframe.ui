@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MapDownloadFrame</class>
- <widget class="QFrame" name="MapDownloadFrame">
+ <class>PluginsFrame</class>
+ <widget class="QFrame" name="PluginsFrame">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>583</width>
-    <height>429</height>
+    <width>560</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,23 +42,17 @@ QTreeWidget::item{
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="topMargin">
-    <number>20</number>
-   </property>
    <item>
     <widget class="QLabel" name="header">
      <property name="text">
-      <string>Available maps for download:</string>
+      <string>Available plugins for download:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QTreeWidget" name="mapsList">
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
+    <widget class="QTreeWidget" name="stylesList">
      <attribute name="headerDefaultSectionSize">
-      <number>90</number>
+      <number>100</number>
      </attribute>
      <attribute name="headerStretchLastSection">
       <bool>false</bool>
@@ -70,22 +64,12 @@ QTreeWidget::item{
      </column>
      <column>
       <property name="text">
-       <string>Map name</string>
+       <string>Name</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string notr="true">Map version</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Size</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Downloaded</string>
+       <string>Version</string>
       </property>
      </column>
      <column>
@@ -96,7 +80,7 @@ QTreeWidget::item{
     </widget>
    </item>
    <item>
-    <widget class="QProgressBar" name="downloadProgress">
+    <widget class="QProgressBar" name="progressBar">
      <property name="value">
       <number>0</number>
      </property>
@@ -104,6 +88,13 @@ QTreeWidget::item{
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="status">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -118,10 +109,10 @@ QTreeWidget::item{
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="downloadBtn">
+      <widget class="QPushButton" name="installBtn">
        <property name="minimumSize">
         <size>
-         <width>95</width>
+         <width>90</width>
          <height>30</height>
         </size>
        </property>
@@ -132,11 +123,17 @@ QTreeWidget::item{
         </font>
        </property>
        <property name="text">
-        <string>Download</string>
+        <string>Install</string>
        </property>
        <property name="icon">
         <iconset resource="res.qrc">
          <normaloff>:/images/arrow.png</normaloff>:/images/arrow.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -150,7 +147,7 @@ QTreeWidget::item{
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>196</height>
       </size>
      </property>
     </spacer>
